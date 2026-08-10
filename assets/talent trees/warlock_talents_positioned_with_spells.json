@@ -1,0 +1,2558 @@
+{
+  "class": "Warlock",
+  "source": "Turtle WoW",
+  "parsedAt": "2025-12-28T23:37:58.003Z",
+  "positionedAt": "2026-01-17T13:42:46.359Z",
+  "totalTalents": 53,
+  "spellMatchingStats": {
+    "totalTalentsWithSpells": 53,
+    "autoMatched": 53,
+    "manuallyConfigured": 0,
+    "spellMatchesFileUsed": true
+  },
+  "trees": [
+    {
+      "name": "Affliction",
+      "talents": [
+        {
+          "id": 1,
+          "treeIndex": 0,
+          "icon": "spell_shadow_unsummonbuilding",
+          "ranks": 5,
+          "name": "Suppression",
+          "description": [
+            "SuppressionInstantReduces the chance for enemies to resist your Affliction spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 1,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 2,
+          "spellIds": {
+            "rank1": 18174,
+            "rank2": 18175,
+            "rank3": 18176,
+            "rank4": 18177,
+            "rank5": 18178
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18174,
+              "description": "SuppressionRank 1InstantReduces the chance for enemies to resist your Affliction spells by 2%."
+            },
+            "rank2": {
+              "spellId": 18175,
+              "description": "SuppressionRank 2InstantReduces the chance for enemies to resist your Affliction spells by 4%."
+            },
+            "rank3": {
+              "spellId": 18176,
+              "description": "SuppressionRank 3InstantReduces the chance for enemies to resist your Affliction spells by 6%."
+            },
+            "rank4": {
+              "spellId": 18177,
+              "description": "SuppressionRank 4InstantReduces the chance for enemies to resist your Affliction spells by 8%."
+            },
+            "rank5": {
+              "spellId": 18178,
+              "description": "SuppressionRank 5InstantReduces the chance for enemies to resist your Affliction spells by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 2,
+          "treeIndex": 0,
+          "icon": "spell_shadow_abominationexplosion",
+          "ranks": 5,
+          "name": "Improved Corruption",
+          "description": [
+            "Improved CorruptionInstantReduces the casting time of your Corruption spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 2,
+                "values": [
+                  "300",
+                  "600",
+                  "900",
+                  "1200",
+                  "1500"
+                ]
+              }
+            ],
+            " sec."
+          ],
+          "row": 1,
+          "col": 3,
+          "spellIds": {
+            "rank1": 17810,
+            "rank2": 17811,
+            "rank3": 17812,
+            "rank4": 17813,
+            "rank5": 17814
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 17810,
+              "description": "Improved CorruptionRank 1InstantReduces the casting time of your Corruption spell by 300 sec."
+            },
+            "rank2": {
+              "spellId": 17811,
+              "description": "Improved CorruptionRank 2InstantReduces the casting time of your Corruption spell by 600 sec."
+            },
+            "rank3": {
+              "spellId": 17812,
+              "description": "Improved CorruptionRank 3InstantReduces the casting time of your Corruption spell by 900 sec."
+            },
+            "rank4": {
+              "spellId": 17813,
+              "description": "Improved CorruptionRank 4InstantReduces the casting time of your Corruption spell by 1200 sec."
+            },
+            "rank5": {
+              "spellId": 17814,
+              "description": "Improved CorruptionRank 5InstantReduces the casting time of your Corruption spell by 1500 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 3,
+          "treeIndex": 0,
+          "icon": "ability_rogue_envelopingshadows",
+          "ranks": 3,
+          "name": "Sinister Pursuit",
+          "description": [
+            "Sinister PursuitInstantIncreases the movement speed of your demons by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 3,
+                "values": [
+                  "5",
+                  "10",
+                  "15"
+                ]
+              }
+            ],
+            "% for 3 sec after they attack a target affected by Affliction effects."
+          ],
+          "row": 1,
+          "col": 4,
+          "spellIds": {
+            "rank1": 52737,
+            "rank2": 52739,
+            "rank3": 52740
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 52737,
+              "description": "Sinister PursuitRank 1InstantIncreases the movement speed of your demons by 5% for 3 sec after they attack a target affected by Affliction effects."
+            },
+            "rank2": {
+              "spellId": 52739,
+              "description": "Sinister PursuitRank 2InstantIncreases the movement speed of your demons by 10% for 3 sec after they attack a target affected by Affliction effects."
+            },
+            "rank3": {
+              "spellId": 52740,
+              "description": "Sinister PursuitRank 3InstantIncreases the movement speed of your demons by 15% for 3 sec after they attack a target affected by Affliction effects."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 4,
+          "treeIndex": 0,
+          "icon": "spell_shadow_curseofmannoroth",
+          "ranks": 2,
+          "name": "Improved Curse of Weakness",
+          "description": [
+            "Improved Curse of WeaknessInstantIncreases the attack speed reduction of your Curse of Weakness by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 4,
+                "values": [
+                  "3",
+                  "5"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 1,
+          "spellIds": {
+            "rank1": 18179,
+            "rank2": 18180
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18179,
+              "description": "Improved Curse of WeaknessRank 1InstantIncreases the attack speed reduction of your Curse of Weakness by 3%."
+            },
+            "rank2": {
+              "spellId": 18180,
+              "description": "Improved Curse of WeaknessRank 2InstantIncreases the attack speed reduction of your Curse of Weakness by 5%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 5,
+          "treeIndex": 0,
+          "icon": "spell_shadow_soulleech_1",
+          "ranks": 3,
+          "name": "Resilient Shadows",
+          "description": [
+            "Resilient ShadowsInstantReduces the chance your Affliction spells will be dispelled by an additional ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 5,
+                "values": [
+                  "5",
+                  "10",
+                  "15"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 2,
+          "spellIds": {
+            "rank1": 52547,
+            "rank2": 52548,
+            "rank3": 52549
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 52547,
+              "description": "Resilient ShadowsRank 1InstantReduces the chance your Affliction spells will be dispelled by an additional 5%."
+            },
+            "rank2": {
+              "spellId": 52548,
+              "description": "Resilient ShadowsRank 2InstantReduces the chance your Affliction spells will be dispelled by an additional 10%."
+            },
+            "rank3": {
+              "spellId": 52549,
+              "description": "Resilient ShadowsRank 3InstantReduces the chance your Affliction spells will be dispelled by an additional 15%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 6,
+          "treeIndex": 0,
+          "icon": "spell_shadow_burningspirit",
+          "ranks": 2,
+          "name": "Improved Life Tap",
+          "description": [
+            "Improved Life TapInstantIncreases the amount of Mana awarded by your Life Tap spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 6,
+                "values": [
+                  "10",
+                  "20"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 3,
+          "spellIds": {
+            "rank1": 18182,
+            "rank2": 18183
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18182,
+              "description": "Improved Life TapRank 1InstantIncreases the amount of Mana awarded by your Life Tap spell by 10%."
+            },
+            "rank2": {
+              "spellId": 18183,
+              "description": "Improved Life TapRank 2InstantIncreases the amount of Mana awarded by your Life Tap spell by 20%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 7,
+          "treeIndex": 0,
+          "icon": "spell_shadow_lifedrain02",
+          "ranks": 2,
+          "name": "Improved Drains",
+          "description": [
+            "Improved DrainsInstantIncreases the effectiveness of your Drain Soul, Drain Life and Drain Mana by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 7,
+                "values": [
+                  "5",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 4,
+          "spellIds": {
+            "rank1": 45913,
+            "rank2": 45914
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 45913,
+              "description": "Improved DrainsRank 1InstantIncreases the effectiveness of your Drain Soul, Drain Life and Drain Mana by 5%."
+            },
+            "rank2": {
+              "spellId": 45914,
+              "description": "Improved DrainsRank 2InstantIncreases the effectiveness of your Drain Soul, Drain Life and Drain Mana by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 8,
+          "treeIndex": 0,
+          "icon": "spell_shadow_curseofsargeras",
+          "ranks": 3,
+          "name": "Improved Curse of Agony",
+          "description": [
+            "Improved Curse of AgonyInstantIncreases the damage done by your Curse of Agony by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 8,
+                "values": [
+                  "3",
+                  "6",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 3,
+          "col": 1,
+          "spellIds": {
+            "rank1": 18827,
+            "rank2": 18829,
+            "rank3": 18830
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18827,
+              "description": "Improved Curse of AgonyRank 1InstantIncreases the damage done by your Curse of Agony by 3%."
+            },
+            "rank2": {
+              "spellId": 18829,
+              "description": "Improved Curse of AgonyRank 2InstantIncreases the damage done by your Curse of Agony by 6%."
+            },
+            "rank3": {
+              "spellId": 18830,
+              "description": "Improved Curse of AgonyRank 3InstantIncreases the damage done by your Curse of Agony by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 9,
+          "treeIndex": 0,
+          "icon": "spell_shadow_fingerofdeath",
+          "ranks": 2,
+          "name": "Fel Concentration",
+          "description": [
+            "Fel ConcentrationInstantGives your Affliction spells a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 9,
+                "values": [
+                  "35",
+                  "70"
+                ]
+              }
+            ],
+            "% chance to not lose casting time when you take damage."
+          ],
+          "row": 3,
+          "col": 2,
+          "spellIds": {
+            "rank1": 17783,
+            "rank2": 17784
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 17783,
+              "description": "Fel ConcentrationRank 1InstantGives your Affliction spells a 35% chance to not lose casting time when you take damage."
+            },
+            "rank2": {
+              "spellId": 17784,
+              "description": "Fel ConcentrationRank 2InstantGives your Affliction spells a 70% chance to not lose casting time when you take damage."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 10,
+          "treeIndex": 0,
+          "icon": "spell_shadow_grimward",
+          "ranks": 1,
+          "name": "Curse of Exhaustion",
+          "description": "Curse of Exhaustion8% of base mana30 yd rangeInstantReduces the target's movement speed by 10% for 12 sec. Only one Curse per Warlock can be active on any one target.",
+          "row": 3,
+          "col": 3,
+          "spellIds": {
+            "rank1": 18223
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18223,
+              "description": "Curse of Exhaustion8% of base mana30 yd rangeInstantReduces the target's movement speed by 10% for 12 sec.  Only one Curse per Warlock can be active on any one target."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 12,
+          "treeIndex": 0,
+          "icon": "spell_shadow_callofbone",
+          "ranks": 2,
+          "name": "Grim Reach",
+          "description": [
+            "Grim ReachInstantIncreases the range of your Affliction spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 12,
+                "values": [
+                  "10",
+                  "20"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 1,
+          "spellIds": {
+            "rank1": 18218,
+            "rank2": 18219
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18218,
+              "description": "Grim ReachRank 1InstantIncreases the range of your Affliction spells by 10%."
+            },
+            "rank2": {
+              "spellId": 18219,
+              "description": "Grim ReachRank 2InstantIncreases the range of your Affliction spells by 20%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 13,
+          "treeIndex": 0,
+          "icon": "spell_shadow_twilight",
+          "ranks": 2,
+          "name": "Nightfall",
+          "description": [
+            "NightfallInstantGives your Corruption, Dark Harvest and Drain spells a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 13,
+                "values": [
+                  "2",
+                  "4"
+                ]
+              }
+            ],
+            "% chance to cause you to enter a Shadow Trance state after damaging the opponent. The Shadow Trance state reduces the casting time of your next Shadow Bolt spell by 100% and makes it guaranteed to land."
+          ],
+          "row": 4,
+          "col": 2,
+          "spellIds": {
+            "rank1": 18094,
+            "rank2": 18095
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18094,
+              "description": "NightfallRank 1InstantGives your Corruption, Dark Harvest and Drain spells a 2% chance to cause you to enter a Shadow Trance state after damaging the opponent.  The Shadow Trance state reduces the casting time of your next Shadow Bolt spell by 100% and makes it guaranteed to land."
+            },
+            "rank2": {
+              "spellId": 18095,
+              "description": "NightfallRank 2InstantGives your Corruption, Dark Harvest and Drain spells a 4% chance to cause you to enter a Shadow Trance state after damaging the opponent.  The Shadow Trance state reduces the casting time of your next Shadow Bolt spell by 100% and makes it guaranteed to land."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 15,
+          "treeIndex": 0,
+          "icon": "spell_shadow_haunting",
+          "ranks": 3,
+          "name": "Soul Siphon",
+          "description": [
+            "Soul SiphonInstantIncreases the damage of your Drain Soul, Dark Harvest and Death Coil by an additional ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 15,
+                "values": [
+                  "2",
+                  "4",
+                  "6"
+                ]
+              }
+            ],
+            "% for each of your Affliction effects on the target, up to a maximum of 4 effects."
+          ],
+          "row": 4,
+          "col": 4,
+          "spellIds": {
+            "rank1": 52558,
+            "rank2": 52559,
+            "rank3": 52560
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 52558,
+              "description": "Soul SiphonRank 1InstantIncreases the damage of your Drain Soul, Dark Harvest and Death Coil by an additional 2% for each of your Affliction effects on the target, up to a maximum of 4 effects."
+            },
+            "rank2": {
+              "spellId": 52559,
+              "description": "Soul SiphonRank 2InstantIncreases the damage of your Drain Soul, Dark Harvest and Death Coil by an additional 4% for each of your Affliction effects on the target, up to a maximum of 4 effects."
+            },
+            "rank3": {
+              "spellId": 52560,
+              "description": "Soul SiphonRank 3InstantIncreases the damage of your Drain Soul, Dark Harvest and Death Coil by an additional 6% for each of your Affliction effects on the target, up to a maximum of 4 effects."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 16,
+          "treeIndex": 0,
+          "icon": "spell_shadow_detectinvisibility",
+          "ranks": 2,
+          "name": "Rapid Deterioration",
+          "description": [
+            "Rapid DeteriorationInstantIncreases the casting speed of your Affliction spells by 6%. In addition, casting speed increase effects increase the tick speed of your damage over time and channeled Affliction spells with ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 16,
+                "values": [
+                  "50",
+                  "100"
+                ]
+              }
+            ],
+            "% efficiency, reducing their duration."
+          ],
+          "row": 5,
+          "col": 1,
+          "requires": 17,
+          "reqRanks": 1,
+          "spellIds": {
+            "rank1": 52555,
+            "rank2": 52556
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 52555,
+              "description": "Rapid DeteriorationRank 1InstantIncreases the casting speed of your Affliction spells by 6%.  In addition, casting speed increase effects increase the tick speed of your damage over time and channeled Affliction spells with 50% efficiency, reducing their duration."
+            },
+            "rank2": {
+              "spellId": 52556,
+              "description": "Rapid DeteriorationRank 2InstantIncreases the casting speed of your Affliction spells by 6%.  In addition, casting speed increase effects increase the tick speed of your damage over time and channeled Affliction spells with 100% efficiency, reducing their duration."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 17,
+          "treeIndex": 0,
+          "icon": "spell_shadow_requiem",
+          "ranks": 1,
+          "name": "Siphon Life",
+          "description": "Siphon Life mana30 yd rangeInstantTransfers 15 Health from the target to the caster over 30 sec.",
+          "row": 5,
+          "col": 2,
+          "spellIds": {
+            "rank1": 18265
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18265,
+              "description": "Siphon LifeRank 1150 mana30 yd rangeInstantTransfers 15 Health from the target to the caster over 30 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 18,
+          "treeIndex": 0,
+          "icon": "spell_shadow_grimward",
+          "ranks": 2,
+          "name": "Improved Curse of Exhaustion",
+          "description": [
+            "Improved Curse of ExhaustionInstantIncreases the speed reduction of your Curse of Exhaustion by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 18,
+                "values": [
+                  "15",
+                  "30"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 5,
+          "col": 3,
+          "requires": 10,
+          "reqRanks": 1,
+          "spellIds": {
+            "rank1": 18310,
+            "rank2": 18311
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18310,
+              "description": "Improved Curse of ExhaustionRank 1InstantIncreases the speed reduction of your Curse of Exhaustion by 15%."
+            },
+            "rank2": {
+              "spellId": 18311,
+              "description": "Improved Curse of ExhaustionRank 2InstantIncreases the speed reduction of your Curse of Exhaustion by 30%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 19,
+          "treeIndex": 0,
+          "icon": "spell_shadow_curseofachimonde",
+          "ranks": 1,
+          "name": "Malediction",
+          "description": "MaledictionInstantYour Curse of Agony can be used alongside your other curses, except Curse of Doom.\\n\\nApplying Curse of Recklessness, Curse of Shadows, or Curse of Elements also afflicts the target with the highest rank of your Curse of Agony.",
+          "row": 5,
+          "col": 4,
+          "spellIds": {
+            "rank1": 52546
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 52546,
+              "description": "MaledictionInstantYour Curse of Agony can be used alongside your other curses, except Curse of Doom.\\n\\nApplying Curse of Recklessness, Curse of Shadows, or Curse of Elements also afflicts the target with the highest rank of your Curse of Agony."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 21,
+          "treeIndex": 0,
+          "icon": "spell_shadow_shadetruesight",
+          "ranks": 5,
+          "name": "Shadow Mastery",
+          "description": [
+            "Shadow MasteryInstantIncreases the damage dealt or life drained by your Shadow spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 21,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 6,
+          "col": 2,
+          "spellIds": {
+            "rank1": 18271,
+            "rank2": 18272,
+            "rank3": 18273,
+            "rank4": 18274,
+            "rank5": 18275
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18271,
+              "description": "Shadow MasteryRank 1InstantIncreases the damage dealt or life drained by your Shadow spells by 2%."
+            },
+            "rank2": {
+              "spellId": 18272,
+              "description": "Shadow MasteryRank 2InstantIncreases the damage dealt or life drained by your Shadow spells by 4%."
+            },
+            "rank3": {
+              "spellId": 18273,
+              "description": "Shadow MasteryRank 3InstantIncreases the damage dealt or life drained by your Shadow spells by 6%."
+            },
+            "rank4": {
+              "spellId": 18274,
+              "description": "Shadow MasteryRank 4InstantIncreases the damage dealt or life drained by your Shadow spells by 8%."
+            },
+            "rank5": {
+              "spellId": 18275,
+              "description": "Shadow MasteryRank 5InstantIncreases the damage dealt or life drained by your Shadow spells by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 25,
+          "treeIndex": 0,
+          "icon": "spell_shadow_soulleech",
+          "ranks": 1,
+          "name": "Dark Harvest",
+          "description": "Dark Harvest mana30 yd rangeChanneledReaps the target's life, dealing 88 Shadow damage over 8 sec. While channeling, the time between periodic ticks of your Affliction spells on the target is reduced by 30%. If the target dies while channeling, the cooldown of Dark Harvest is reset.",
+          "row": 7,
+          "col": 2,
+          "requires": 21,
+          "reqRanks": 5,
+          "spellIds": {
+            "rank1": 52550
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 52550,
+              "description": "Dark HarvestRank 1230 mana30 yd rangeChanneledReaps the target's life, dealing 88 Shadow damage over 8 sec. While channeling, the time between periodic ticks of your Affliction spells on the target is reduced by 30%. If the target dies while channeling, the cooldown of Dark Harvest is reset."
+            }
+          },
+          "spellMatchMethod": "auto"
+        }
+      ]
+    },
+    {
+      "name": "Demonology",
+      "talents": [
+        {
+          "id": 1,
+          "treeIndex": 1,
+          "icon": "inv_stone_04",
+          "ranks": 2,
+          "name": "Master Conjuror",
+          "description": [
+            "Master ConjurorInstantIncreases the amount of Health restored by your Healthstone by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 1,
+                "values": [
+                  "10",
+                  "20"
+                ]
+              }
+            ],
+            "% and increases the Health and Mana your Soulstone target is resurrected with by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 1,
+                "talent": 1,
+                "values": [
+                  "10",
+                  "20"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 2,
+          "spellIds": {
+            "rank1": 45902,
+            "rank2": 45903
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 45902,
+              "description": "Master ConjurorRank 1InstantIncreases the amount of Health restored by your Healthstone by 10% and increases the Health and Mana your Soulstone target is resurrected with by 10%."
+            },
+            "rank2": {
+              "spellId": 45903,
+              "description": "Master ConjurorRank 2InstantIncreases the amount of Health restored by your Healthstone by 20% and increases the Health and Mana your Soulstone target is resurrected with by 20%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 2,
+          "treeIndex": 1,
+          "icon": "spell_shadow_metamorphosis",
+          "ranks": 5,
+          "name": "Demonic Embrace",
+          "description": [
+            "Demonic EmbraceInstantIncreases your total Stamina by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 2,
+                "values": [
+                  "3",
+                  "6",
+                  "9",
+                  "12",
+                  "15"
+                ]
+              }
+            ],
+            "% but reduces your total Spirit by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 1,
+                "talent": 2,
+                "values": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 3,
+          "spellIds": {
+            "rank1": 18697,
+            "rank2": 18698,
+            "rank3": 18699,
+            "rank4": 18700,
+            "rank5": 18701
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18697,
+              "description": "Demonic EmbraceRank 1InstantIncreases your total Stamina by 3% but reduces your total Spirit by 1%."
+            },
+            "rank2": {
+              "spellId": 18698,
+              "description": "Demonic EmbraceRank 2InstantIncreases your total Stamina by 6% but reduces your total Spirit by 2%."
+            },
+            "rank3": {
+              "spellId": 18699,
+              "description": "Demonic EmbraceRank 3InstantIncreases your total Stamina by 9% but reduces your total Spirit by 3%."
+            },
+            "rank4": {
+              "spellId": 18700,
+              "description": "Demonic EmbraceRank 4InstantIncreases your total Stamina by 12% but reduces your total Spirit by 4%."
+            },
+            "rank5": {
+              "spellId": 18701,
+              "description": "Demonic EmbraceRank 5InstantIncreases your total Stamina by 15% but reduces your total Spirit by 5%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 3,
+          "treeIndex": 1,
+          "icon": "trade_archaeology_highbornesoulmirror",
+          "ranks": 3,
+          "name": "Soul Entrapment",
+          "description": [
+            "Soul EntrapmentInstantWhile you have no demon under your control, all damage dealt is increased by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 3,
+                "values": [
+                  "2",
+                  "4",
+                  "6"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 4,
+          "spellIds": {
+            "rank1": 51706,
+            "rank2": 51707,
+            "rank3": 51708
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51706,
+              "description": "Soul EntrapmentRank 1InstantWhile you have no demon under your control, all damage dealt is increased by 2%."
+            },
+            "rank2": {
+              "spellId": 51707,
+              "description": "Soul EntrapmentRank 2InstantWhile you have no demon under your control, all damage dealt is increased by 4%."
+            },
+            "rank3": {
+              "spellId": 51708,
+              "description": "Soul EntrapmentRank 3InstantWhile you have no demon under your control, all damage dealt is increased by 6%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 4,
+          "treeIndex": 1,
+          "icon": "spell_shadow_lifedrain",
+          "ranks": 2,
+          "name": "Soul Funnel",
+          "description": [
+            "Soul FunnelInstantIncreases the amount of Health transferred by your Health Funnel by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 4,
+                "values": [
+                  "10",
+                  "20"
+                ]
+              }
+            ],
+            "% of your demon's missing Health and the Mana transferred by your Mana Funnel by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 1,
+                "talent": 4,
+                "values": [
+                  "10",
+                  "20"
+                ]
+              }
+            ],
+            "% of your demon's missing Mana. This additional transfer drains 30% of that amount from you."
+          ],
+          "row": 2,
+          "col": 1,
+          "spellIds": {
+            "rank1": 18703,
+            "rank2": 18704
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18703,
+              "description": "Soul FunnelRank 1InstantIncreases the amount of Health transferred by your Health Funnel by 10% of your demon's missing Health and the Mana transferred by your Mana Funnel by 10% of your demon's missing Mana. This additional transfer drains 30% of that amount from you."
+            },
+            "rank2": {
+              "spellId": 18704,
+              "description": "Soul FunnelRank 2InstantIncreases the amount of Health transferred by your Health Funnel by 20% of your demon's missing Health and the Mana transferred by your Mana Funnel by 20% of your demon's missing Mana. This additional transfer drains 30% of that amount from you."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 5,
+          "treeIndex": 1,
+          "icon": "spell_shadow_ragingscream",
+          "ranks": 3,
+          "name": "Demonic Aegis",
+          "description": [
+            "Demonic AegisInstantIncreases the effectiveness of your Demon Armor spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 5,
+                "values": [
+                  "20",
+                  "40",
+                  "60"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 2,
+          "spellIds": {
+            "rank1": 45921,
+            "rank2": 45922,
+            "rank3": 45923
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 45921,
+              "description": "Demonic AegisRank 1InstantIncreases the effectiveness of your Demon Armor spell by 20%."
+            },
+            "rank2": {
+              "spellId": 45922,
+              "description": "Demonic AegisRank 2InstantIncreases the effectiveness of your Demon Armor spell by 40%."
+            },
+            "rank3": {
+              "spellId": 45923,
+              "description": "Demonic AegisRank 3InstantIncreases the effectiveness of your Demon Armor spell by 60%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 6,
+          "treeIndex": 1,
+          "icon": "spell_holy_magicalsentry",
+          "ranks": 3,
+          "name": "Fel Intellect",
+          "description": [
+            "Fel IntellectInstantIncreases your demon's Intellect by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 6,
+                "values": [
+                  "10",
+                  "20",
+                  "30"
+                ]
+              }
+            ],
+            "% of your total Intellect and allows ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 1,
+                "talent": 6,
+                "values": [
+                  "5",
+                  "10",
+                  "15"
+                ]
+              }
+            ],
+            "% of its Mana regeneration to continue while casting."
+          ],
+          "row": 2,
+          "col": 3,
+          "spellIds": {
+            "rank1": 18731,
+            "rank2": 18743,
+            "rank3": 18744
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18731,
+              "description": "Fel IntellectRank 1InstantIncreases your demon's Intellect by 10% of your total Intellect and allows 5% of its Mana regeneration to continue while casting."
+            },
+            "rank2": {
+              "spellId": 18743,
+              "description": "Fel IntellectRank 2InstantIncreases your demon's Intellect by 20% of your total Intellect and allows 10% of its Mana regeneration to continue while casting."
+            },
+            "rank3": {
+              "spellId": 18744,
+              "description": "Fel IntellectRank 3InstantIncreases your demon's Intellect by 30% of your total Intellect and allows 15% of its Mana regeneration to continue while casting."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 9,
+          "treeIndex": 1,
+          "icon": "spell_nature_removecurse",
+          "ranks": 1,
+          "name": "Fel Domination",
+          "description": "Fel DominationInstant300 sec cooldownYour next Common demon summoning spell has its casting time reduced by 4500 sec and its Mana cost reduced by 40%.",
+          "row": 3,
+          "col": 2,
+          "spellIds": {
+            "rank1": 18708
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18708,
+              "description": "Fel DominationInstant300 sec cooldownYour next Common demon summoning spell has its casting time reduced by 4500 sec and its Mana cost reduced by 40%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 10,
+          "treeIndex": 1,
+          "icon": "spell_shadow_antishadow",
+          "ranks": 5,
+          "name": "Fel Stamina",
+          "description": [
+            "Fel StaminaInstantIncreases your demon's Stamina by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 10,
+                "values": [
+                  "10",
+                  "20",
+                  "30",
+                  "40",
+                  "50"
+                ]
+              }
+            ],
+            "% of your total Stamina and reduces its chance to be critically struck by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 1,
+                "talent": 10,
+                "values": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 3,
+          "col": 3,
+          "spellIds": {
+            "rank1": 18748,
+            "rank2": 18749,
+            "rank3": 18750,
+            "rank4": 18751,
+            "rank5": 18752
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18748,
+              "description": "Fel StaminaRank 1InstantIncreases your demon's Stamina by 10% of your total Stamina and reduces its chance to be critically struck by 1%."
+            },
+            "rank2": {
+              "spellId": 18749,
+              "description": "Fel StaminaRank 2InstantIncreases your demon's Stamina by 20% of your total Stamina and reduces its chance to be critically struck by 2%."
+            },
+            "rank3": {
+              "spellId": 18750,
+              "description": "Fel StaminaRank 3InstantIncreases your demon's Stamina by 30% of your total Stamina and reduces its chance to be critically struck by 3%."
+            },
+            "rank4": {
+              "spellId": 18751,
+              "description": "Fel StaminaRank 4InstantIncreases your demon's Stamina by 40% of your total Stamina and reduces its chance to be critically struck by 4%."
+            },
+            "rank5": {
+              "spellId": 18752,
+              "description": "Fel StaminaRank 5InstantIncreases your demon's Stamina by 50% of your total Stamina and reduces its chance to be critically struck by 5%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 11,
+          "treeIndex": 1,
+          "icon": "spell_shadow_psychicscream",
+          "ranks": 1,
+          "name": "Demonic Sacrifice",
+          "description": "Demonic Sacrifice100 yd rangeInstantWhen activated, sacrifices your summoned demon to grant you an effect. The effect is canceled if any demon is summoned or enslaved.\\n\\nImp: Increases spell damage done by 4%.\\n\\nVoidwalker: Restores 3% of total Health every 4 sec.\\n\\nSuccubus: Reduces threat generated by 10%.\\n\\nFelhunter: Restores 3% of total Mana every 4 sec.",
+          "row": 3,
+          "col": 4,
+          "requires": 3,
+          "reqRanks": 3,
+          "spellIds": {
+            "rank1": 18788
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18788,
+              "description": "Demonic Sacrifice100 yd rangeInstantWhen activated, sacrifices your summoned demon to grant you an effect. The effect is canceled if any demon is summoned or enslaved.\\n\\nImp: Increases spell damage done by 4%.\\n\\nVoidwalker: Restores 3% of total Health every 4 sec.\\n\\nSuccubus: Reduces threat generated by 10%.\\n\\nFelhunter: Restores 3% of total Mana every 4 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 12,
+          "treeIndex": 1,
+          "icon": "inv_jewelry_talisman_fireice",
+          "ranks": 2,
+          "name": "Improved Stones",
+          "description": [
+            "Improved StonesInstantIncreases the effectiveness of your Felstone, Wrathstone, Voidstone, and Spellstone by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 12,
+                "values": [
+                  "25",
+                  "50"
+                ]
+              }
+            ],
+            "%, and increases the critical strike chance bonus of your Firestone by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 1,
+                "talent": 12,
+                "values": [
+                  "50",
+                  "100"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 1,
+          "spellIds": {
+            "rank1": 51712,
+            "rank2": 51713
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51712,
+              "description": "Improved StonesRank 1InstantIncreases the effectiveness of your Felstone, Wrathstone, Voidstone, and Spellstone by 25%, and increases the critical strike chance bonus of your Firestone by 50%."
+            },
+            "rank2": {
+              "spellId": 51713,
+              "description": "Improved StonesRank 2InstantIncreases the effectiveness of your Felstone, Wrathstone, Voidstone, and Spellstone by 50%, and increases the critical strike chance bonus of your Firestone by 100%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 13,
+          "treeIndex": 1,
+          "icon": "spell_shadow_impphaseshift",
+          "ranks": 2,
+          "name": "Master Summoner",
+          "description": [
+            "Master SummonerInstantReduces the casting time of your Imp, Voidwalker, Succubus and Felhunter summoning spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 13,
+                "values": [
+                  "2000",
+                  "4000"
+                ]
+              }
+            ],
+            " sec and their Mana cost by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 1,
+                "talent": 13,
+                "values": [
+                  "30",
+                  "60"
+                ]
+              }
+            ],
+            "%. In addition, reduces the cooldown of your Inferno and Demon Gate spells by ",
+            [
+              "$",
+              "$L22",
+              "3",
+              {
+                "tree": 1,
+                "talent": 13,
+                "values": [
+                  "25",
+                  "50"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 2,
+          "requires": 9,
+          "reqRanks": 1,
+          "spellIds": {
+            "rank1": 18709,
+            "rank2": 18710
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18709,
+              "description": "Master SummonerRank 1InstantReduces the casting time of your Imp, Voidwalker, Succubus and Felhunter summoning spells by 2000 sec and their Mana cost by 30%.  In addition, reduces the cooldown of your Inferno and Demon Gate spells by 25%."
+            },
+            "rank2": {
+              "spellId": 18710,
+              "description": "Master SummonerRank 2InstantReduces the casting time of your Imp, Voidwalker, Succubus and Felhunter summoning spells by 4000 sec and their Mana cost by 60%.  In addition, reduces the cooldown of your Inferno and Demon Gate spells by 50%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 14,
+          "treeIndex": 1,
+          "icon": "inv_misc_book_06",
+          "ranks": 3,
+          "name": "Nether Studies",
+          "description": [
+            "Nether StudiesInstantIncreases the effect of your Succubus' Seduction, your Voidwalker's Torment, your Imp's Blood Pact, and your Felhunter's Tainted Blood spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 14,
+                "values": [
+                  "15",
+                  "30",
+                  "45"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 3,
+          "spellIds": {
+            "rank1": 51709,
+            "rank2": 51710,
+            "rank3": 51711
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51709,
+              "description": "Nether StudiesRank 1InstantIncreases the effect of your Succubus' Seduction, your Voidwalker's Torment, your Imp's Blood Pact, and your Felhunter's Tainted Blood spells by 15%."
+            },
+            "rank2": {
+              "spellId": 51710,
+              "description": "Nether StudiesRank 2InstantIncreases the effect of your Succubus' Seduction, your Voidwalker's Torment, your Imp's Blood Pact, and your Felhunter's Tainted Blood spells by 30%."
+            },
+            "rank3": {
+              "spellId": 51711,
+              "description": "Nether StudiesRank 3InstantIncreases the effect of your Succubus' Seduction, your Voidwalker's Torment, your Imp's Blood Pact, and your Felhunter's Tainted Blood spells by 45%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 15,
+          "treeIndex": 1,
+          "icon": "spell_shadow_shadowworddominate",
+          "ranks": 3,
+          "name": "Unholy Power",
+          "description": [
+            "Unholy PowerInstantIncreases the damage done by your demons by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 15,
+                "values": [
+                  "5",
+                  "10",
+                  "15"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 4,
+          "spellIds": {
+            "rank1": 18769,
+            "rank2": 18770,
+            "rank3": 18771
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18769,
+              "description": "Unholy PowerRank 1InstantIncreases the damage done by your demons by 5%."
+            },
+            "rank2": {
+              "spellId": 18770,
+              "description": "Unholy PowerRank 2InstantIncreases the damage done by your demons by 10%."
+            },
+            "rank3": {
+              "spellId": 18771,
+              "description": "Unholy PowerRank 3InstantIncreases the damage done by your demons by 15%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 17,
+          "treeIndex": 1,
+          "icon": "ability_warlock_power_overwhelming",
+          "ranks": 1,
+          "name": "Power Overwhelming",
+          "description": "Power Overwhelming80 manaInstant14 sec cooldownChannel energy into your demon, breaking all crowd control effects and increasing its damage dealt by 20% for 10 sec. The demon takes 40% of its base health as damage over the duration.",
+          "row": 5,
+          "col": 2,
+          "spellIds": {
+            "rank1": 51714
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51714,
+              "description": "Power Overwhelming80 manaInstant14 sec cooldownChannel energy into your demon, breaking all crowd control effects and increasing its damage dealt by 20% for 10 sec. The demon takes 40% of its base health as damage over the duration."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 18,
+          "treeIndex": 1,
+          "icon": "spell_shadow_curseoftounges",
+          "ranks": 3,
+          "name": "Demonic Precision",
+          "description": [
+            "Demonic PrecisionInstantYour demons ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 18,
+                "values": [
+                  "1",
+                  "2",
+                  "3"
+                ]
+              }
+            ],
+            "% melee and spell hit chance and inherit ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 1,
+                "talent": 18,
+                "values": [
+                  "30",
+                  "60",
+                  "90"
+                ]
+              }
+            ],
+            "% of your spell hit chance and spell critical chance as both melee and spell hit chance, and melee and spell critical chance, respectively."
+          ],
+          "row": 5,
+          "col": 3,
+          "spellIds": {
+            "rank1": 51715,
+            "rank2": 51716,
+            "rank3": 51717
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51715,
+              "description": "Demonic PrecisionRank 1InstantYour demons 1% melee and spell hit chance and inherit 30% of your spell hit chance and spell critical chance as both melee and spell hit chance, and melee and spell critical chance, respectively."
+            },
+            "rank2": {
+              "spellId": 51716,
+              "description": "Demonic PrecisionRank 2InstantYour demons 2% melee and spell hit chance and inherit 60% of your spell hit chance and spell critical chance as both melee and spell hit chance, and melee and spell critical chance, respectively."
+            },
+            "rank3": {
+              "spellId": 51717,
+              "description": "Demonic PrecisionRank 3InstantYour demons 3% melee and spell hit chance and inherit 90% of your spell hit chance and spell critical chance as both melee and spell hit chance, and melee and spell critical chance, respectively."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 21,
+          "treeIndex": 1,
+          "icon": "spell_shadow_shadowpact",
+          "ranks": 5,
+          "name": "Master Demonologist",
+          "description": [
+            "Master DemonologistInstantGrants both the Warlock and the summoned demon an effect as long as that demon is active.\\n\\nImp - Reduces spell costs by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 21,
+                "values": [
+                  "3",
+                  "6",
+                  "9",
+                  "12",
+                  "15"
+                ]
+              }
+            ],
+            "%.\\n\\nVoidwalker - Reduces physical damage taken by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 1,
+                "talent": 21,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "%.\\n\\nSuccubus - Increases all damage done by ",
+            [
+              "$",
+              "$L22",
+              "3",
+              {
+                "tree": 1,
+                "talent": 21,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "%.\\n\\nFelhunter - Increases all resistances by 0.\\n\\nGreater Demons - Increases spell critical chance by ",
+            [
+              "$",
+              "$L22",
+              "4",
+              {
+                "tree": 1,
+                "talent": 21,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "%, but reduces healing received by ",
+            [
+              "$",
+              "$L22",
+              "5",
+              {
+                "tree": 1,
+                "talent": 21,
+                "values": [
+                  "8",
+                  "16",
+                  "24",
+                  "32",
+                  "40"
+                ]
+              }
+            ],
+            "%.\\n"
+          ],
+          "row": 6,
+          "col": 2,
+          "spellIds": {
+            "rank1": 23785,
+            "rank2": 23822,
+            "rank3": 23823,
+            "rank4": 23824,
+            "rank5": 23825
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 23785,
+              "description": "Master DemonologistRank 1InstantGrants both the Warlock and the summoned demon an effect as long as that demon is active.\\n\\nImp - Reduces spell costs by 3%.\\n\\nVoidwalker - Reduces physical damage taken by 2%.\\n\\nSuccubus - Increases all damage done by 2%.\\n\\nFelhunter - Increases all resistances by 0.\\n\\nGreater Demons - Increases spell critical chance by 2%, but reduces healing received by 8%.\\n"
+            },
+            "rank2": {
+              "spellId": 23822,
+              "description": "Master DemonologistRank 2InstantGrants both the Warlock and the summoned demon an effect as long as that demon is active.\\n\\nImp - Reduces spell costs by 6%.\\n\\nVoidwalker - Reduces physical damage taken by 4%.\\n\\nSuccubus - Increases all damage done by 4%.\\n\\nFelhunter - Increases all resistances by 0.\\n\\nGreater Demons - Increases spell critical chance by 4%, but reduces healing received by 16%.\\n"
+            },
+            "rank3": {
+              "spellId": 23823,
+              "description": "Master DemonologistRank 3InstantGrants both the Warlock and the summoned demon an effect as long as that demon is active.\\n\\nImp - Reduces spell costs by 9%.\\n\\nVoidwalker - Reduces physical damage taken by 6%.\\n\\nSuccubus - Increases all damage done by 6%.\\n\\nFelhunter - Increases all resistances by 0.\\n\\nGreater Demons - Increases spell critical chance by 6%, but reduces healing received by 24%.\\n"
+            },
+            "rank4": {
+              "spellId": 23824,
+              "description": "Master DemonologistRank 4InstantGrants both the Warlock and the summoned demon an effect as long as that demon is active.\\n\\nImp - Reduces spell costs by 12%.\\n\\nVoidwalker - Reduces physical damage taken by 8%.\\n\\nSuccubus - Increases all damage done by 8%.\\n\\nFelhunter - Increases all resistances by 0.\\n\\nGreater Demons - Increases spell critical chance by 8%, but reduces healing received by 32%.\\n"
+            },
+            "rank5": {
+              "spellId": 23825,
+              "description": "Master DemonologistRank 5InstantGrants both the Warlock and the summoned demon an effect as long as that demon is active.\\n\\nImp - Reduces spell costs by 15%.\\n\\nVoidwalker - Reduces physical damage taken by 10%.\\n\\nSuccubus - Increases all damage done by 10%.\\n\\nFelhunter - Increases all resistances by 0.\\n\\nGreater Demons - Increases spell critical chance by 10%, but reduces healing received by 40%.\\n"
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 22,
+          "treeIndex": 1,
+          "icon": "ability_warlock_demonicpower",
+          "ranks": 3,
+          "name": "Unleashed Potential",
+          "description": [
+            "Unleashed PotentialInstantYour direct damage spell critical strikes allow your demon to benefit from ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 22,
+                "values": [
+                  "5",
+                  "10",
+                  "15"
+                ]
+              }
+            ],
+            "% of your Fire and Shadow spell bonus damage for 20 sec. Each tick of your funnel spells refreshes its duration. Stacks up to 20001 times."
+          ],
+          "row": 6,
+          "col": 3,
+          "spellIds": {
+            "rank1": 51721,
+            "rank2": 51722,
+            "rank3": 51723
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51721,
+              "description": "Unleashed PotentialRank 1InstantYour direct damage spell critical strikes allow your demon to benefit from 5% of your Fire and Shadow spell bonus damage for 20 sec. Each tick of your funnel spells refreshes its duration. Stacks up to 20001 times."
+            },
+            "rank2": {
+              "spellId": 51722,
+              "description": "Unleashed PotentialRank 2InstantYour direct damage spell critical strikes allow your demon to benefit from 10% of your Fire and Shadow spell bonus damage for 20 sec. Each tick of your funnel spells refreshes its duration. Stacks up to 20001 times."
+            },
+            "rank3": {
+              "spellId": 51723,
+              "description": "Unleashed PotentialRank 3InstantYour direct damage spell critical strikes allow your demon to benefit from 15% of your Fire and Shadow spell bonus damage for 20 sec. Each tick of your funnel spells refreshes its duration. Stacks up to 20001 times."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 25,
+          "treeIndex": 1,
+          "icon": "spell_shadow_gathershadows",
+          "ranks": 1,
+          "name": "Soul Link",
+          "description": "Soul LinkPassiveInstantWhile a demon is under your control, the damage dealt by you and your demon is increased by 5%. In addition, 25% of all damage you take is taken by your demon. Your Greater and Enslaved Demons can no longer break free from your control early.",
+          "row": 7,
+          "col": 2,
+          "requires": 21,
+          "reqRanks": 5,
+          "spellIds": {
+            "rank1": 19028
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19028,
+              "description": "Soul LinkPassiveInstantWhile a demon is under your control, the damage dealt by you and your demon is increased by 5%. In addition, 25% of all damage you take is taken by your demon.  Your Greater and Enslaved Demons can no longer break free from your control early."
+            }
+          },
+          "spellMatchMethod": "auto"
+        }
+      ]
+    },
+    {
+      "name": "Destruction",
+      "talents": [
+        {
+          "id": 1,
+          "treeIndex": 2,
+          "icon": "spell_shadow_shadowbolt",
+          "ranks": 5,
+          "name": "Shadow Vulnerability",
+          "description": [
+            "Shadow VulnerabilityInstantYour Shadow Bolt and Drain Soul have a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 1,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "% chance to increase Shadow damage dealt to the target by 20% for 10 sec, with a higher chance to trigger on critical hits."
+          ],
+          "row": 1,
+          "col": 2,
+          "spellIds": {
+            "rank1": 17793,
+            "rank2": 17796,
+            "rank3": 17801,
+            "rank4": 17802,
+            "rank5": 17803
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 17793,
+              "description": "Shadow VulnerabilityRank 1InstantYour Shadow Bolt and Drain Soul have a 2% chance to increase Shadow damage dealt to the target by 20% for 10 sec, with a higher chance to trigger on critical hits."
+            },
+            "rank2": {
+              "spellId": 17796,
+              "description": "Shadow VulnerabilityRank 2InstantYour Shadow Bolt and Drain Soul have a 4% chance to increase Shadow damage dealt to the target by 20% for 10 sec, with a higher chance to trigger on critical hits."
+            },
+            "rank3": {
+              "spellId": 17801,
+              "description": "Shadow VulnerabilityRank 3InstantYour Shadow Bolt and Drain Soul have a 6% chance to increase Shadow damage dealt to the target by 20% for 10 sec, with a higher chance to trigger on critical hits."
+            },
+            "rank4": {
+              "spellId": 17802,
+              "description": "Shadow VulnerabilityRank 4InstantYour Shadow Bolt and Drain Soul have a 8% chance to increase Shadow damage dealt to the target by 20% for 10 sec, with a higher chance to trigger on critical hits."
+            },
+            "rank5": {
+              "spellId": 17803,
+              "description": "Shadow VulnerabilityRank 5InstantYour Shadow Bolt and Drain Soul have a 10% chance to increase Shadow damage dealt to the target by 20% for 10 sec, with a higher chance to trigger on critical hits."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 2,
+          "treeIndex": 2,
+          "icon": "spell_fire_windsofwoe",
+          "ranks": 5,
+          "name": "Cataclysm",
+          "description": [
+            "CataclysmInstantReduces the Mana cost of your Destruction spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 2,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 3,
+          "spellIds": {
+            "rank1": 17778,
+            "rank2": 17779,
+            "rank3": 17780,
+            "rank4": 17781,
+            "rank5": 17782
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 17778,
+              "description": "CataclysmRank 1InstantReduces the Mana cost of your Destruction spells by 2%."
+            },
+            "rank2": {
+              "spellId": 17779,
+              "description": "CataclysmRank 2InstantReduces the Mana cost of your Destruction spells by 4%."
+            },
+            "rank3": {
+              "spellId": 17780,
+              "description": "CataclysmRank 3InstantReduces the Mana cost of your Destruction spells by 6%."
+            },
+            "rank4": {
+              "spellId": 17781,
+              "description": "CataclysmRank 4InstantReduces the Mana cost of your Destruction spells by 8%."
+            },
+            "rank5": {
+              "spellId": 17782,
+              "description": "CataclysmRank 5InstantReduces the Mana cost of your Destruction spells by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 4,
+          "treeIndex": 2,
+          "icon": "spell_shadow_curseoftounges",
+          "ranks": 2,
+          "name": "Demonic Swiftness",
+          "description": [
+            "Demonic SwiftnessInstantReduces the casting time of your Imp's Firebolt spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 4,
+                "values": [
+                  "250",
+                  "500"
+                ]
+              }
+            ],
+            " sec and reduces the cooldown of your Succubus' Lash of Pain spell by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 4,
+                "values": [
+                  "3000",
+                  "6000"
+                ]
+              }
+            ],
+            " sec."
+          ],
+          "row": 2,
+          "col": 1,
+          "spellIds": {
+            "rank1": 57730,
+            "rank2": 57731
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 57730,
+              "description": "Demonic SwiftnessRank 1InstantReduces the casting time of your Imp's Firebolt spell by 250 sec and reduces the cooldown of your Succubus' Lash of Pain spell by 3000 sec."
+            },
+            "rank2": {
+              "spellId": 57731,
+              "description": "Demonic SwiftnessRank 2InstantReduces the casting time of your Imp's Firebolt spell by 500 sec and reduces the cooldown of your Succubus' Lash of Pain spell by 6000 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 5,
+          "treeIndex": 2,
+          "icon": "spell_shadow_deathpact",
+          "ranks": 5,
+          "name": "Bane",
+          "description": [
+            "BaneInstantReduces the casting time of your Shadow Bolt and Immolate spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 5,
+                "values": [
+                  "100",
+                  "200",
+                  "300",
+                  "400",
+                  "500"
+                ]
+              }
+            ],
+            " sec and your Soul Fire spell by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 5,
+                "values": [
+                  "400",
+                  "800",
+                  "1200",
+                  "1600",
+                  "2000"
+                ]
+              }
+            ],
+            " sec."
+          ],
+          "row": 2,
+          "col": 2,
+          "spellIds": {
+            "rank1": 17788,
+            "rank2": 17789,
+            "rank3": 17790,
+            "rank4": 17791,
+            "rank5": 17792
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 17788,
+              "description": "BaneRank 1InstantReduces the casting time of your Shadow Bolt and Immolate spells by 100 sec and your Soul Fire spell by 400 sec."
+            },
+            "rank2": {
+              "spellId": 17789,
+              "description": "BaneRank 2InstantReduces the casting time of your Shadow Bolt and Immolate spells by 200 sec and your Soul Fire spell by 800 sec."
+            },
+            "rank3": {
+              "spellId": 17790,
+              "description": "BaneRank 3InstantReduces the casting time of your Shadow Bolt and Immolate spells by 300 sec and your Soul Fire spell by 1200 sec."
+            },
+            "rank4": {
+              "spellId": 17791,
+              "description": "BaneRank 4InstantReduces the casting time of your Shadow Bolt and Immolate spells by 400 sec and your Soul Fire spell by 1600 sec."
+            },
+            "rank5": {
+              "spellId": 17792,
+              "description": "BaneRank 5InstantReduces the casting time of your Shadow Bolt and Immolate spells by 500 sec and your Soul Fire spell by 2000 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 6,
+          "treeIndex": 2,
+          "icon": "spell_fire_fire",
+          "ranks": 3,
+          "name": "Aftermath",
+          "description": [
+            "AftermathInstantIncreases the periodic damage of your Immolate spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 6,
+                "values": [
+                  "2",
+                  "4",
+                  "6"
+                ]
+              }
+            ],
+            "% and gives your Destruction spells a ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 6,
+                "values": [
+                  "4",
+                  "7",
+                  "10"
+                ]
+              }
+            ],
+            "% chance to slow the target by 50% for 5 sec."
+          ],
+          "row": 2,
+          "col": 3,
+          "spellIds": {
+            "rank1": 18119,
+            "rank2": 18120,
+            "rank3": 18121
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18119,
+              "description": "AftermathRank 1InstantIncreases the periodic damage of your Immolate spell by 2% and gives your Destruction spells a 4% chance to slow the target by 50% for 5 sec."
+            },
+            "rank2": {
+              "spellId": 18120,
+              "description": "AftermathRank 2InstantIncreases the periodic damage of your Immolate spell by 4% and gives your Destruction spells a 7% chance to slow the target by 50% for 5 sec."
+            },
+            "rank3": {
+              "spellId": 18121,
+              "description": "AftermathRank 3InstantIncreases the periodic damage of your Immolate spell by 6% and gives your Destruction spells a 10% chance to slow the target by 50% for 5 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 8,
+          "treeIndex": 2,
+          "icon": "spell_fire_lavaspawn",
+          "ranks": 2,
+          "name": "Intensity",
+          "description": [
+            "IntensityInstantGives your Fire spells a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 8,
+                "values": [
+                  "35",
+                  "70"
+                ]
+              }
+            ],
+            "% chance to not lose casting time when you take damage."
+          ],
+          "row": 3,
+          "col": 1,
+          "spellIds": {
+            "rank1": 18135,
+            "rank2": 18136
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18135,
+              "description": "IntensityRank 1InstantGives your Fire spells a 35% chance to not lose casting time when you take damage."
+            },
+            "rank2": {
+              "spellId": 18136,
+              "description": "IntensityRank 2InstantGives your Fire spells a 70% chance to not lose casting time when you take damage."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 9,
+          "treeIndex": 2,
+          "icon": "spell_shadow_scourgebuild",
+          "ranks": 1,
+          "name": "Shadowburn",
+          "description": "Shadowburn mana20 yd rangeInstantReagents: Soul ShardInstantly blasts the target for 87 to 100 Shadow damage. If the target dies within 5 sec of Shadowburn, and yields experience or honor, the caster gains a Soul Shard.",
+          "row": 3,
+          "col": 2,
+          "spellIds": {
+            "rank1": 17877
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 17877,
+              "description": "ShadowburnRank 1105 mana20 yd rangeInstantReagents: Soul ShardInstantly blasts the target for 87 to 100 Shadow damage.  If the target dies within 5 sec of Shadowburn, and yields experience or honor, the caster gains a Soul Shard."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 10,
+          "treeIndex": 2,
+          "icon": "spell_fire_flameshock",
+          "ranks": 5,
+          "name": "Devastation",
+          "description": [
+            "DevastationInstantIncreases the critical strike chance of your Destruction spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 10,
+                "values": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 3,
+          "col": 3,
+          "spellIds": {
+            "rank1": 18130,
+            "rank2": 18131,
+            "rank3": 18132,
+            "rank4": 18133,
+            "rank5": 18134
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18130,
+              "description": "DevastationRank 1InstantIncreases the critical strike chance of your Destruction spells by 1%."
+            },
+            "rank2": {
+              "spellId": 18131,
+              "description": "DevastationRank 2InstantIncreases the critical strike chance of your Destruction spells by 2%."
+            },
+            "rank3": {
+              "spellId": 18132,
+              "description": "DevastationRank 3InstantIncreases the critical strike chance of your Destruction spells by 3%."
+            },
+            "rank4": {
+              "spellId": 18133,
+              "description": "DevastationRank 4InstantIncreases the critical strike chance of your Destruction spells by 4%."
+            },
+            "rank5": {
+              "spellId": 18134,
+              "description": "DevastationRank 5InstantIncreases the critical strike chance of your Destruction spells by 5%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 12,
+          "treeIndex": 2,
+          "icon": "spell_fire_volcano",
+          "ranks": 2,
+          "name": "Pyroclasm",
+          "description": [
+            "PyroclasmInstantGives your Rain of Fire, Hellfire, Conflagrate, and Soul Fire spells a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 12,
+                "values": [
+                  "13",
+                  "26"
+                ]
+              }
+            ],
+            "% chance to stun the target for 3 sec."
+          ],
+          "row": 4,
+          "col": 1,
+          "requires": 8,
+          "reqRanks": 2,
+          "spellIds": {
+            "rank1": 18096,
+            "rank2": 18073
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18096,
+              "description": "PyroclasmRank 1InstantGives your Rain of Fire, Hellfire, Conflagrate, and Soul Fire spells a 13% chance to stun the target for 3 sec."
+            },
+            "rank2": {
+              "spellId": 18073,
+              "description": "PyroclasmRank 2InstantGives your Rain of Fire, Hellfire, Conflagrate, and Soul Fire spells a 26% chance to stun the target for 3 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 13,
+          "treeIndex": 2,
+          "icon": "spell_shadow_corpseexplode",
+          "ranks": 2,
+          "name": "Destructive Reach",
+          "description": [
+            "Destructive ReachInstantIncreases the range of your Destruction spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 13,
+                "values": [
+                  "10",
+                  "20"
+                ]
+              }
+            ],
+            "% and the radius of your Hellfire by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 13,
+                "values": [
+                  "10",
+                  "20"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 2,
+          "spellIds": {
+            "rank1": 17917,
+            "rank2": 17918
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 17917,
+              "description": "Destructive ReachRank 1InstantIncreases the range of your Destruction spells by 10% and the radius of your Hellfire by 10%."
+            },
+            "rank2": {
+              "spellId": 17918,
+              "description": "Destructive ReachRank 2InstantIncreases the range of your Destruction spells by 20% and the radius of your Hellfire by 20%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 15,
+          "treeIndex": 2,
+          "icon": "spell_fire_soulburn",
+          "ranks": 5,
+          "name": "Improved Searing Pain",
+          "description": [
+            "Improved Searing PainInstantIncreases the critical strike chance of your Searing Pain spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 15,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 4,
+          "spellIds": {
+            "rank1": 17927,
+            "rank2": 17929,
+            "rank3": 17930,
+            "rank4": 17931,
+            "rank5": 17932
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 17927,
+              "description": "Improved Searing PainRank 1InstantIncreases the critical strike chance of your Searing Pain spell by 2%."
+            },
+            "rank2": {
+              "spellId": 17929,
+              "description": "Improved Searing PainRank 2InstantIncreases the critical strike chance of your Searing Pain spell by 4%."
+            },
+            "rank3": {
+              "spellId": 17930,
+              "description": "Improved Searing PainRank 3InstantIncreases the critical strike chance of your Searing Pain spell by 6%."
+            },
+            "rank4": {
+              "spellId": 17931,
+              "description": "Improved Searing PainRank 4InstantIncreases the critical strike chance of your Searing Pain spell by 8%."
+            },
+            "rank5": {
+              "spellId": 17932,
+              "description": "Improved Searing PainRank 5InstantIncreases the critical strike chance of your Searing Pain spell by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 16,
+          "treeIndex": 2,
+          "icon": "spell_fire_fireball02",
+          "ranks": 2,
+          "name": "Improved Soul Fire",
+          "description": [
+            "Improved Soul FireInstantYour Soul Fire has a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 16,
+                "values": [
+                  "50",
+                  "100"
+                ]
+              }
+            ],
+            "% chance to refund a Soul Shard and increase your Fire damage by 10% for 30 sec."
+          ],
+          "row": 5,
+          "col": 1,
+          "spellIds": {
+            "rank1": 51736,
+            "rank2": 51737
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51736,
+              "description": "Improved Soul FireRank 1InstantYour Soul Fire has a 50% chance to refund a Soul Shard and increase your Fire damage by 10% for 30 sec."
+            },
+            "rank2": {
+              "spellId": 51737,
+              "description": "Improved Soul FireRank 2InstantYour Soul Fire has a 100% chance to refund a Soul Shard and increase your Fire damage by 10% for 30 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 17,
+          "treeIndex": 2,
+          "icon": "spell_fire_immolation",
+          "ranks": 5,
+          "name": "Improved Immolate",
+          "description": [
+            "Improved ImmolateInstantIncreases the damage of your Immolate spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 17,
+                "values": [
+                  "4",
+                  "8",
+                  "12",
+                  "16",
+                  "20"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 5,
+          "col": 2,
+          "spellIds": {
+            "rank1": 17815,
+            "rank2": 17833,
+            "rank3": 17834,
+            "rank4": 17835,
+            "rank5": 17836
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 17815,
+              "description": "Improved ImmolateRank 1InstantIncreases the damage of your Immolate spell by 4%."
+            },
+            "rank2": {
+              "spellId": 17833,
+              "description": "Improved ImmolateRank 2InstantIncreases the damage of your Immolate spell by 8%."
+            },
+            "rank3": {
+              "spellId": 17834,
+              "description": "Improved ImmolateRank 3InstantIncreases the damage of your Immolate spell by 12%."
+            },
+            "rank4": {
+              "spellId": 17835,
+              "description": "Improved ImmolateRank 4InstantIncreases the damage of your Immolate spell by 16%."
+            },
+            "rank5": {
+              "spellId": 17836,
+              "description": "Improved ImmolateRank 5InstantIncreases the damage of your Immolate spell by 20%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 18,
+          "treeIndex": 2,
+          "icon": "spell_shadow_shadowwordpain",
+          "ranks": 1,
+          "name": "Ruin",
+          "description": "RuinInstantIncreases the critical strike damage bonus of your Destruction spells by 100%.",
+          "row": 5,
+          "col": 3,
+          "requires": 10,
+          "reqRanks": 5,
+          "spellIds": {
+            "rank1": 17959
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 17959,
+              "description": "RuinRank 1InstantIncreases the critical strike damage bonus of your Destruction spells by 100%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 22,
+          "treeIndex": 2,
+          "icon": "spell_fire_selfdestruct",
+          "ranks": 5,
+          "name": "Emberstorm",
+          "description": [
+            "EmberstormInstantIncreases the damage done by your Fire spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 22,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 6,
+          "col": 3,
+          "spellIds": {
+            "rank1": 17954,
+            "rank2": 17955,
+            "rank3": 17956,
+            "rank4": 17957,
+            "rank5": 17958
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 17954,
+              "description": "EmberstormRank 1InstantIncreases the damage done by your Fire spells by 2%."
+            },
+            "rank2": {
+              "spellId": 17955,
+              "description": "EmberstormRank 2InstantIncreases the damage done by your Fire spells by 4%."
+            },
+            "rank3": {
+              "spellId": 17956,
+              "description": "Emberstorm Rank 3InstantIncreases the damage done by your Fire spells by 6%."
+            },
+            "rank4": {
+              "spellId": 17957,
+              "description": "Emberstorm Rank 4InstantIncreases the damage done by your Fire spells by 8%."
+            },
+            "rank5": {
+              "spellId": 17958,
+              "description": "Emberstorm Rank 5InstantIncreases the damage done by your Fire spells by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 25,
+          "treeIndex": 2,
+          "icon": "spell_fire_fireball",
+          "ranks": 1,
+          "name": "Conflagrate",
+          "description": "Conflagrate mana30 yd rangeInstantIgnites the target, dealing 240 to 307 Fire damage and consuming 3 sec of your Immolate spell to deal an amount of damage equal to it.",
+          "row": 7,
+          "col": 2,
+          "requires": 17,
+          "reqRanks": 5,
+          "spellIds": {
+            "rank1": 17962
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 17962,
+              "description": "ConflagrateRank 1165 mana30 yd rangeInstantIgnites the target, dealing 240 to 307 Fire damage and consuming 3 sec of your Immolate spell to deal an amount of damage equal to it."
+            }
+          },
+          "spellMatchMethod": "auto"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+# Dependencies / build
+node_modules/
+dist/
+__pycache__/
+*.pyc
+.env/
+.env
+
+# Secrets — never commit
+discord.env
+
+# Runtime / user data
+bug-reports/
+backups/
+builds/
+data/users/
+data/inbox/
+data/items_old/
+data/items.zip
+
+# Local / IDE / agent
+.vscode/
+.idea/
+.claude/
+.cursor/
+.DS_Store
+Thumbs.db
+
+# Junk / backups
+AArchive/
+nul
+*.bak
+*.bak-
+app.js.backup_investigation
+C?devIchaCalcmodulesgearprocs.md
+modulesgearenchants.md
+*devIchaCalcmodulesgearprocs.md
+
+# Local debug / personal
+modules/gear/249930058918133761.json
+modules/ui/calculator.js.backup_investigation
+modules/sim/engine.js.backup
+modules/ui/calculator_debug_patch.txt
+debug_setbonus.html
+test_cookie.py
+test_cookie2.py
+test_cookie3.py
+

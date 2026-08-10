@@ -1,0 +1,613 @@
+/* Top Navigation Bar */
+.top-nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: var(--bg-color);
+    border-bottom: 1px solid transparent;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 2000;
+    transition: all 0.3s ease;
+}
+
+/* Add background and shadow when scrolled */
+.top-nav-bar.scrolled {
+    background: rgba(30, 30, 34, 0.95);
+    border-bottom-color: var(--border-color);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+}
+
+/* Left side - bug report controls */
+.top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-self: start;
+}
+
+/* Center - site title */
+.site-title {
+    margin: 0;
+    font-size: 1.5em;
+    color: var(--accent-color);
+    font-weight: bold;
+    white-space: nowrap;
+    text-align: center;
+    justify-self: center;
+}
+
+.bug-report-controls {
+    display: flex;
+    gap: 8px;
+}
+
+/* Icon buttons in top nav */
+.top-nav-icon-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--ichacalc-ui-orange, #FFA500);
+    border-radius: 6px;
+    padding: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-color);
+    position: relative;
+}
+
+.top-nav-icon-btn:hover {
+    background: var(--input-bg);
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(30, 255, 0, 0.3);
+}
+
+.top-nav-icon-btn svg {
+    display: block;
+}
+
+/* Badge for bug reports */
+.top-nav-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--secondary-color);
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 10px;
+    min-width: 18px;
+    text-align: center;
+}
+
+.top-nav-badge.has-new {
+    background: #ff4444;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* User controls stay on the right */
+.user-controls {
+    position: static;
+    top: auto;
+    right: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-self: end;
+}
+
+/*
+ * Sidebar + main: full-width row below fixed nav.
+ * Column 1 = class/race (far left). Column 2 = main sheet (max-width centered in remaining space).
+ */
+.app-scroll-layout {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    box-sizing: border-box;
+    padding-top: 60px;
+}
+
+.main-content {
+    grid-column: 2;
+    justify-self: center;
+    width: 100%;
+    max-width: 1850px;
+    margin: 0;
+    padding-top: 0;
+    padding-left: 0;
+    min-width: 0;
+}
+
+/* Shaman sim hero: in-flow sibling of #character-status-bar inside .center-top-row (scrolls with page) */
+.sim-global-hero-host {
+    position: relative;
+    z-index: 3;
+    box-sizing: border-box;
+    pointer-events: none;
+    overflow-x: auto;
+    overflow-y: visible;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Non-shaman: wallpaper-style panel (backgrounds from Turtle talent calculator — talents.turtlecraft.gg) */
+.sim-global-hero-host .sim-hero-placeholder {
+    pointer-events: auto;
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid var(--border-color);
+    box-sizing: border-box;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.sim-global-hero-host .sim-hero-placeholder__bg {
+    position: absolute;
+    inset: 0;
+    background-color: #1a1815;
+    /* Same layered bgs as the talent calculator UI (anniversary + anomalus webp) */
+    background-image:
+        linear-gradient(145deg, rgba(21, 21, 24, 0.5) 0%, rgba(21, 21, 24, 0.82) 100%),
+        url('https://talents.turtlecraft.gg/bgs/anomalus.webp'),
+        url('https://talents.turtlecraft.gg/bgs/anniversary.webp');
+    background-size: cover, cover, cover;
+    background-position: center, center, center;
+    background-repeat: no-repeat;
+}
+
+.sim-global-hero-host .sim-hero-placeholder__veil {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 90% 70% at 50% 40%, transparent 0%, rgba(15, 15, 18, 0.55) 100%);
+    pointer-events: none;
+}
+
+.sim-global-hero-host .sim-hero-placeholder__caption {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 12px 16px;
+    max-width: 22rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+}
+
+.sim-global-hero-host .sim-hero-placeholder__title {
+    font-size: clamp(1.75rem, 4.2vw, 2.85rem);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 1.1;
+    color: var(--accent-color);
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.92);
+}
+
+.sim-global-hero-host .sim-hero-placeholder__sub {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: rgba(220, 222, 228, 0.92);
+    line-height: 1.35;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.85);
+}
+
+/* Match .character-status-bar chrome; fill host height so layout is stable before/after sim */
+.sim-global-hero-host .sim-results-hero {
+    position: relative;
+    pointer-events: auto;
+    margin: 0;
+    flex: 1 1 auto;
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    border-radius: 12px;
+    background: var(--card-bg-transparent);
+    border: 2px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Clipboard snip: icon only (no box chrome); orange strokes via currentColor */
+.sim-global-hero-host .sim-hero-copy-snip-btn {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    z-index: 6;
+    pointer-events: auto;
+    margin: 0;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    box-shadow: none;
+    color: var(--ichacalc-ui-orange, #ffa500);
+    cursor: pointer;
+    transition: filter 0.15s ease, opacity 0.15s ease;
+}
+
+.sim-global-hero-host .sim-hero-copy-snip-btn:hover:not(:disabled) {
+    filter: brightness(1.2);
+}
+
+.sim-global-hero-host .sim-hero-copy-snip-btn:focus-visible {
+    outline: 2px solid var(--ichacalc-ui-orange, #ffa500);
+    outline-offset: 2px;
+}
+
+.sim-global-hero-host .sim-hero-copy-snip-btn svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+}
+
+.sim-global-hero-host .sim-hero-copy-snip-btn--busy:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+/* 1fr | auto | 1fr: outer tracks absorb space; side stats sit next to arrows with only column-gap */
+.sim-global-hero-host .sim-results-hero__grid {
+    flex: 1 1 auto;
+    min-height: 0;
+    align-items: stretch;
+    align-content: stretch;
+    grid-template-columns: 1fr auto 1fr;
+    column-gap: 10px;
+    row-gap: 8px;
+}
+
+.sim-global-hero-host .sim-results-hero__col--left,
+.sim-global-hero-host .sim-results-hero__col--right {
+    justify-content: center;
+}
+
+.sim-global-hero-host .sim-results-hero__col--left {
+    justify-self: end;
+    width: max-content;
+    max-width: 100%;
+    min-width: 0;
+    align-items: flex-end;
+    text-align: right;
+}
+
+.sim-global-hero-host .sim-results-hero__col--left .sim-hero-mini {
+    align-items: flex-end;
+}
+
+.sim-global-hero-host .sim-results-hero__col--right {
+    justify-self: start;
+    width: max-content;
+    max-width: 100%;
+    min-width: 0;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.sim-global-hero-host .sim-results-hero__col--right .sim-hero-mini {
+    align-items: flex-start;
+}
+
+.sim-global-hero-host .sim-results-hero__col--center {
+    justify-self: center;
+    width: auto;
+    min-width: 0;
+    box-sizing: border-box;
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    gap: 6px;
+}
+
+.sim-global-hero-host .sim-hero-mini__lbl {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.sim-global-hero-host .sim-hero-mini__val {
+    color: #fff;
+    font-weight: bold;
+}
+
+.sim-global-hero-host .sim-hero-mini__val--fire {
+    color: #f44336;
+}
+
+.sim-global-hero-host .sim-hero-mini__val--nature {
+    color: #81c784;
+}
+
+.sim-global-hero-host .sim-hero-mini__val--frost {
+    color: #42a5f5;
+}
+
+/* Inner DPS card: fixed width (no content-driven shrink/grow); full row height */
+.sim-global-hero-host .sim-results-hero__center-card {
+    box-sizing: border-box;
+    background: radial-gradient(120% 80% at 50% 0, #ffc10724, #0000 55%),
+        linear-gradient(#ffffff12 0%, #00000040 100%);
+    border: 1px solid #ffd70047;
+    border-radius: 10px;
+    flex-direction: column;
+    flex: auto;
+    justify-content: center;
+    align-self: stretch;
+    width: 100%;
+    min-width: 275px;
+    max-width: 275px;
+    min-height: 0;
+    padding: 14px 18px 16px;
+    display: flex;
+    box-shadow: inset 0 0 24px #ffb4000f;
+    overflow: visible;
+}
+
+.sim-global-hero-host .sim-hero-run-wrap {
+    max-width: 100%;
+}
+
+.sim-global-hero-host .sim-results-hero[data-metric="tps"] .sim-results-hero__center-card {
+    background: radial-gradient(120% 80% at 50% 0, #e040fb1f, #0000 55%),
+        linear-gradient(#ffffff0f 0%, #00000047 100%);
+    border-color: #ce93d859;
+    box-shadow: inset 0 0 24px #ab47bc14;
+}
+
+.sim-global-hero-host .sim-hero-metric-arrow {
+    align-self: stretch;
+    height: auto;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--card-bg) 0%, var(--bg-color) 100%);
+    border: 2px solid var(--border-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    color: var(--accent-color);
+}
+
+.sim-global-hero-host .sim-hero-metric-arrow:hover {
+    background: linear-gradient(135deg, var(--card-bg) 0%, var(--bg-color) 100%);
+    color: var(--primary-color);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .site-title {
+        font-size: 1.2em;
+    }
+
+    .sim-global-hero-host .sim-results-hero__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sim-global-hero-host .sim-results-hero__col--left,
+    .sim-global-hero-host .sim-results-hero__col--right {
+        justify-self: center;
+        width: 100%;
+        max-width: 100%;
+        align-items: center;
+        text-align: center;
+    }
+
+    .sim-global-hero-host .sim-results-hero__col--left .sim-hero-mini,
+    .sim-global-hero-host .sim-results-hero__col--right .sim-hero-mini {
+        align-items: center;
+    }
+
+    .sim-global-hero-host .sim-results-hero__col--center {
+        order: -1;
+        width: 100%;
+        max-width: 100%;
+        justify-self: stretch;
+    }
+}
+
+@media (max-width: 768px) {
+    .top-nav-bar {
+        height: auto;
+        padding: 10px;
+        grid-template-columns: auto 1fr auto;
+    }
+
+    .top-nav-left {
+        order: 1;
+    }
+
+    .site-title {
+        font-size: 1em;
+        order: 2;
+    }
+
+    .user-controls {
+        flex-wrap: wrap;
+        gap: 8px;
+        order: 3;
+    }
+
+    .app-scroll-layout {
+        padding-top: 70px; /* Extra padding for wrapped nav */
+    }
+
+    .main-content {
+        padding-top: 0;
+        padding-left: 0;
+    }
+
+}
+
+@media (max-width: 480px) {
+    .site-title {
+        font-size: 0.9em;
+    }
+
+    .bug-report-controls {
+        gap: 4px;
+    }
+
+    .top-nav-icon-btn {
+        padding: 6px;
+    }
+
+    .top-nav-icon-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+/* Class / race: grid col 1; `margin-top` from JS aligns top with `#character-status-bar` */
+.class-race-sidebar {
+    position: static;
+    grid-column: 1;
+    justify-self: start;
+    margin-left: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.class-race-sidebar .cr-drawer {
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 88px;
+}
+
+.cr-drawer-toggle {
+    display: block;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    line-height: 0;
+    border-radius: 50%;
+    filter: saturate(0.55);
+    transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.cr-drawer-toggle:hover {
+    filter: saturate(0.9);
+    transform: scale(1.04);
+}
+
+.cr-drawer-toggle:focus-visible {
+    outline: 2px solid var(--ichacalc-ui-orange, #FFA500);
+    outline-offset: 3px;
+}
+
+.cr-drawer-toggle img {
+    display: block;
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--ichacalc-ui-orange, #FFA500);
+    box-sizing: border-box;
+}
+
+.cr-drawer-toggle--race {
+    border-radius: 10px;
+}
+
+.cr-drawer-toggle--race img {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+}
+
+.cr-drawer-panel {
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.38s ease;
+}
+
+.cr-drawer.is-open .cr-drawer-panel {
+    /* Large cap so full list fits — panel height follows content; no inner scrollbar */
+    max-height: 2400px;
+    overflow: visible;
+}
+
+/* One vertical column, centered under the toggle (not a horizontal wrap) */
+.class-race-sidebar .cr-drawer-icons {
+    padding: 10px 10px 6px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+}
+
+/* Sidebar picks: avoid scale() on active so glow/border stay centered (no clip/offset vs overflow) */
+.class-race-sidebar .class-icon,
+.class-race-sidebar .race-icon {
+    transform: none;
+    transform-origin: center center;
+    flex-shrink: 0;
+    margin: 0;
+}
+
+.class-race-sidebar .class-icon:hover,
+.class-race-sidebar .race-icon:hover {
+    transform: none;
+    filter: saturate(0.85);
+}
+
+.class-race-sidebar .class-icon.active,
+.class-race-sidebar .race-icon.active {
+    transform: none;
+    filter: saturate(1);
+    border-color: #ffd700;
+    /* Single centered glow (no scale — fixes asymmetric “offset” look) */
+    box-shadow: 0 0 0 1px rgba(255, 215, 0, 0.35), 0 0 14px rgba(255, 215, 0, 0.5);
+}
+
+@media (max-width: 768px) {
+    .class-race-sidebar .cr-drawer {
+        max-width: 84px;
+    }
+}
+
+
+

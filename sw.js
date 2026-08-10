@@ -1,0 +1,118 @@
+// Service Worker for IchaCalc
+const CACHE_VERSION = 'v132';
+const CACHE_NAME = `ichacalc-${CACHE_VERSION}`;
+
+// Vite handles JS/CSS caching via content-hashed filenames + immutable Cache-Control headers.
+// The SW only caches the HTML shell for offline fallback.
+const urlsToCache = [
+    '/',
+    '/index.html',
+];
+
+// Install event - cache HTML shell only
+self.addEventListener('install', event => {
+    console.log('[Service Worker] Installing version:', CACHE_VERSION);
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(cache => {
+                console.log('[Service Worker] Caching HTML shell');
+                return Promise.allSettled(
+                    urlsToCache.map(url => cache.add(url).catch(err => {
+                        console.warn('[Service Worker] Failed to cache:', url, err.message);
+                    }))
+                );
+            })
+            .then(() => self.skipWaiting())
+    );
+});
+
+// Activate event - clean up old caches
+self.addEventListener('activate', event => {
+    console.log('[Service Worker] Activating version:', CACHE_VERSION);
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(cacheName => {
+                    if (cacheName.startsWith('ichacalc-') && cacheName !== CACHE_NAME) {
+                        console.log('[Service Worker] Deleting old cache:', cacheName);
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        }).then(() => self.clients.claim()) // Take control immediately
+    );
+});
+
+// Fetch event
+self.addEventListener('fetch', event => {
+    const url = new URL(event.request.url);
+
+    // Skip service worker for API routes - always fetch from network
+    // GET /profiles (list) has no trailing slash — must bypass cache-first static handler.
+    if (url.pathname.startsWith('/auth/') ||
+        url.pathname === '/user' ||
+        url.pathname === '/profiles' ||
+        url.pathname.startsWith('/profiles/') ||
+        url.pathname.startsWith('/inbox') ||
+        url.pathname.startsWith('/share')) {
+        return;
+    }
+
+    // Skip service worker for ES modules and workers — Vite bundles these with content hashes
+    // and the browser caches them via immutable Cache-Control headers.
+    if (url.pathname.startsWith('/modules/') ||
+        url.pathname.startsWith('/_app/')) {
+        return;
+    }
+
+    // Skip service worker for item JSON files — large, pre-compressed, no benefit from SW cache
+    if (url.pathname.startsWith('/data/items/')) {
+        return;
+    }
+
+    // Skip JS and CSS — Vite's immutable hashed bundles handle their own caching
+    if (url.pathname.endsWith('.js') || url.pathname.endsWith('.css')) {
+        return;
+    }
+
+    // Network-first for HTML (index.html / '/'), cache as offline fallback
+    if (url.pathname.endsWith('.html') || url.pathname === '/') {
+        event.respondWith(
+            fetch(event.request)
+                .then(response => {
+                    const responseToCache = response.clone();
+                    caches.open(CACHE_NAME).then(cache => {
+                        cache.put(event.request, responseToCache);
+                    });
+                    return response;
+                })
+                .catch(() =>
+                    caches.match(event.request).then(
+                        cached => cached || new Response('', { status: 503, statusText: 'Unavailable' })
+                    ))
+        );
+        return;
+    }
+
+    // Cache-first for other static assets (images, fonts, etc.)
+    event.respondWith(
+        caches.match(event.request)
+            .then(response => {
+                if (response) {
+                    return response;
+                }
+                return fetch(event.request)
+                    .then(response => {
+                        const responseToCache = response.clone();
+                        caches.open(CACHE_NAME).then(cache => {
+                            cache.put(event.request, responseToCache);
+                        });
+                        return response;
+                    })
+                    .catch(() =>
+                        caches.match(event.request).then(
+                            cached => cached || new Response('', { status: 503, statusText: 'Unavailable' })
+                        ));
+            })
+    );
+});

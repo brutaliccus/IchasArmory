@@ -1,0 +1,4869 @@
+{
+  "DPS - Physhance": {
+    "opener": {
+      "enabled": true,
+      "sequence": [
+        "flameShock",
+        "bloodlust",
+        "stormstrike",
+        "lightningStrike"
+      ]
+    },
+    "autoAttack": {
+      "enabled": true,
+      "priority": 100,
+      "rules": {}
+    },
+    "lightningShieldCritical": {
+      "enabled": true,
+      "priority": 2,
+      "rules": {
+        "triggerWhenCharges": 0,
+        "requireLightningStrikeReady": true
+      }
+    },
+    "elementalMastery": {
+      "enabled": true,
+      "priority": 2.5,
+      "rules": {
+        "useBeforeFlameShock": true,
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "flameShock": {
+      "enabled": true,
+      "priority": 5,
+      "rules": {
+        "reapplyTiming": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "stormstrike": {
+      "enabled": true,
+      "priority": 1,
+      "rules": {
+        "delayWhenFlameShockExpiring": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningStrike": {
+      "enabled": true,
+      "priority": 3,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningBolt": {
+      "enabled": false,
+      "priority": 4,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "earthShock": {
+      "enabled": true,
+      "priority": 6,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningShieldLow": {
+      "enabled": true,
+      "priority": 9,
+      "rules": {
+        "triggerWhenCharges": 3,
+        "requireLightningStrikeReady": false,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningShieldProactive": {
+      "enabled": true,
+      "priority": 7,
+      "rules": {
+        "triggerWhenCharges": 1,
+        "requireLightningStrikeReady": true,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "chainLightning": {
+      "enabled": false,
+      "priority": 10,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "fireNovaTotem": {
+      "enabled": true,
+      "priority": 8,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "magmaTotem": {
+      "enabled": false,
+      "priority": 11,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "bloodlust": {
+      "enabled": true,
+      "priority": 12,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "kissOfTheSpider": {
+      "enabled": true,
+      "priority": 11,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "naturalAlignmentCrystal": {
+      "enabled": true,
+      "priority": 12,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "shardOfTheFallenStar": {
+      "enabled": true,
+      "priority": 13,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "jewelOfWildMagics": {
+      "enabled": true,
+      "priority": 13.5,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "eyeOfDiminution": {
+      "enabled": true,
+      "priority": 14,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "restrainedEssenceOfSapphiron": {
+      "enabled": true,
+      "priority": 15,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "slayersCrest": {
+      "enabled": true,
+      "priority": 16,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "earthstrike": {
+      "enabled": true,
+      "priority": 17,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "moltenEmberstone": {
+      "enabled": true,
+      "priority": 18,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "talismanOfEphemeralPower": {
+      "enabled": true,
+      "priority": 19,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "zandalarianHeroCharm": {
+      "enabled": true,
+      "priority": 20,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "handOfEdwardTheOdd": {
+      "enabled": true,
+      "priority": 3,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "potionOfQuickness": {
+      "enabled": true,
+      "priority": 11,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "jujuFlurry": {
+      "enabled": true,
+      "priority": 11,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningBoltCast": {
+      "enabled": false,
+      "priority": 13,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "moltenBlastCast": {
+      "enabled": false,
+      "priority": 14,
+      "rules": {
+        "onlyRefreshFlameShock": false,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "casterPriority": {
+      "lightningBoltCast": {
+        "enabled": true,
+        "priority": 1,
+        "rules": {}
+      },
+      "chainLightning": {
+        "enabled": true,
+        "priority": 2,
+        "rules": {}
+      },
+      "earthquake": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {}
+      },
+      "flameShock": {
+        "enabled": true,
+        "priority": 4,
+        "rules": {
+          "reapplyTiming": 0
+        }
+      },
+      "moltenBlastCast": {
+        "enabled": true,
+        "priority": 5,
+        "rules": {
+          "onlyRefreshFlameShock": false
+        }
+      },
+      "earthShock": {
+        "enabled": true,
+        "priority": 6,
+        "rules": {}
+      },
+      "elementalMastery": {
+        "enabled": true,
+        "priority": 7,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "bloodlust": {
+        "enabled": true,
+        "priority": 8,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "kissOfTheSpider": {
+        "enabled": true,
+        "priority": 9,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "naturalAlignmentCrystal": {
+        "enabled": true,
+        "priority": 10,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "shardOfTheFallenStar": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jewelOfWildMagics": {
+        "enabled": true,
+        "priority": 12,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "eyeOfDiminution": {
+        "enabled": true,
+        "priority": 13,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "restrainedEssenceOfSapphiron": {
+        "enabled": true,
+        "priority": 14,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "slayersCrest": {
+        "enabled": true,
+        "priority": 15,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "earthstrike": {
+        "enabled": true,
+        "priority": 16,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "moltenEmberstone": {
+        "enabled": true,
+        "priority": 17,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "talismanOfEphemeralPower": {
+        "enabled": true,
+        "priority": 18,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "zandalarianHeroCharm": {
+        "enabled": true,
+        "priority": 19,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jomGabbar": {
+        "enabled": true,
+        "priority": 20,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "potionOfQuickness": {
+        "enabled": true,
+        "priority": 21,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jujuFlurry": {
+        "enabled": true,
+        "priority": 22,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      }
+    },
+    "casterOpener": {
+      "enabled": true,
+      "sequence": [
+        "lightningBoltCast",
+        "flameShock"
+      ]
+    },
+    "casterAoePriority": {
+      "chainLightning": {
+        "enabled": true,
+        "priority": 1,
+        "rules": {}
+      },
+      "earthquake": {
+        "enabled": true,
+        "priority": 2,
+        "rules": {}
+      },
+      "fireNovaTotem": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {}
+      },
+      "magmaTotem": {
+        "enabled": true,
+        "priority": 4,
+        "rules": {}
+      },
+      "lightningBoltCast": {
+        "enabled": true,
+        "priority": 5,
+        "rules": {}
+      },
+      "flameShock": {
+        "enabled": true,
+        "priority": 6,
+        "rules": {
+          "reapplyTiming": 0
+        }
+      },
+      "moltenBlastCast": {
+        "enabled": true,
+        "priority": 7,
+        "rules": {
+          "onlyRefreshFlameShock": false
+        }
+      },
+      "earthShock": {
+        "enabled": true,
+        "priority": 8,
+        "rules": {}
+      },
+      "elementalMastery": {
+        "enabled": true,
+        "priority": 9,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "bloodlust": {
+        "enabled": true,
+        "priority": 10,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      }
+    },
+    "casterAoeOpener": {
+      "enabled": true,
+      "sequence": [
+        "chainLightning",
+        "flameShock"
+      ]
+    },
+    "_casterDefaultsApplied": true,
+    "aoePriority": {
+      "opener": {
+        "enabled": true,
+        "sequence": [
+          "stormstrike",
+          "lightningStrike",
+          "flameShock"
+        ]
+      },
+      "autoAttack": {
+        "enabled": true,
+        "priority": 100,
+        "rules": {}
+      },
+      "lightningShieldCritical": {
+        "enabled": true,
+        "priority": 2,
+        "rules": {
+          "triggerWhenCharges": 0,
+          "requireLightningStrikeReady": true
+        }
+      },
+      "elementalMastery": {
+        "enabled": true,
+        "priority": 2.5,
+        "rules": {
+          "useBeforeFlameShock": true,
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "flameShock": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {
+          "reapplyTiming": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "stormstrike": {
+        "enabled": true,
+        "priority": 1,
+        "rules": {
+          "delayWhenFlameShockExpiring": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningStrike": {
+        "enabled": true,
+        "priority": 4,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningBolt": {
+        "enabled": false,
+        "priority": 5,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "earthShock": {
+        "enabled": true,
+        "priority": 5,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningShieldLow": {
+        "enabled": true,
+        "priority": 8,
+        "rules": {
+          "triggerWhenCharges": 3,
+          "requireLightningStrikeReady": false,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningShieldProactive": {
+        "enabled": true,
+        "priority": 6,
+        "rules": {
+          "triggerWhenCharges": 1,
+          "requireLightningStrikeReady": true,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "chainLightning": {
+        "enabled": false,
+        "priority": 8.5,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "fireNovaTotem": {
+        "enabled": true,
+        "priority": 7,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "magmaTotem": {
+        "enabled": false,
+        "priority": 9.5,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "bloodlust": {
+        "enabled": true,
+        "priority": 10,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "kissOfTheSpider": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "naturalAlignmentCrystal": {
+        "enabled": true,
+        "priority": 12,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "shardOfTheFallenStar": {
+        "enabled": true,
+        "priority": 13,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jewelOfWildMagics": {
+        "enabled": true,
+        "priority": 13.5,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "eyeOfDiminution": {
+        "enabled": true,
+        "priority": 14,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "restrainedEssenceOfSapphiron": {
+        "enabled": true,
+        "priority": 15,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "slayersCrest": {
+        "enabled": true,
+        "priority": 16,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "earthstrike": {
+        "enabled": true,
+        "priority": 17,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "moltenEmberstone": {
+        "enabled": true,
+        "priority": 18,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "talismanOfEphemeralPower": {
+        "enabled": true,
+        "priority": 19,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "zandalarianHeroCharm": {
+        "enabled": true,
+        "priority": 20,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "handOfEdwardTheOdd": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "potionOfQuickness": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jujuFlurry": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningBoltCast": {
+        "enabled": false,
+        "priority": 12,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "moltenBlastCast": {
+        "enabled": false,
+        "priority": 14,
+        "rules": {
+          "onlyRefreshFlameShock": false,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "casterPriority": {
+        "lightningBoltCast": {
+          "enabled": true,
+          "priority": 1,
+          "rules": {}
+        },
+        "chainLightning": {
+          "enabled": true,
+          "priority": 2,
+          "rules": {}
+        },
+        "earthquake": {
+          "enabled": true,
+          "priority": 3,
+          "rules": {}
+        },
+        "flameShock": {
+          "enabled": true,
+          "priority": 4,
+          "rules": {
+            "reapplyTiming": 0
+          }
+        },
+        "moltenBlastCast": {
+          "enabled": true,
+          "priority": 5,
+          "rules": {
+            "onlyRefreshFlameShock": false
+          }
+        },
+        "earthShock": {
+          "enabled": true,
+          "priority": 6,
+          "rules": {}
+        },
+        "elementalMastery": {
+          "enabled": true,
+          "priority": 7,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "bloodlust": {
+          "enabled": true,
+          "priority": 8,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "kissOfTheSpider": {
+          "enabled": true,
+          "priority": 9,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "naturalAlignmentCrystal": {
+          "enabled": true,
+          "priority": 10,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "shardOfTheFallenStar": {
+          "enabled": true,
+          "priority": 11,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "jewelOfWildMagics": {
+          "enabled": true,
+          "priority": 12,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "eyeOfDiminution": {
+          "enabled": true,
+          "priority": 13,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "restrainedEssenceOfSapphiron": {
+          "enabled": true,
+          "priority": 14,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "slayersCrest": {
+          "enabled": true,
+          "priority": 15,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "earthstrike": {
+          "enabled": true,
+          "priority": 16,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "moltenEmberstone": {
+          "enabled": true,
+          "priority": 17,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "talismanOfEphemeralPower": {
+          "enabled": true,
+          "priority": 18,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "zandalarianHeroCharm": {
+          "enabled": true,
+          "priority": 19,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "jomGabbar": {
+          "enabled": true,
+          "priority": 20,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "potionOfQuickness": {
+          "enabled": true,
+          "priority": 21,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "jujuFlurry": {
+          "enabled": true,
+          "priority": 22,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        }
+      },
+      "casterOpener": {
+        "enabled": true,
+        "sequence": [
+          "lightningBoltCast",
+          "flameShock"
+        ]
+      },
+      "casterAoePriority": {
+        "chainLightning": {
+          "enabled": true,
+          "priority": 1,
+          "rules": {}
+        },
+        "earthquake": {
+          "enabled": true,
+          "priority": 2,
+          "rules": {}
+        },
+        "fireNovaTotem": {
+          "enabled": true,
+          "priority": 3,
+          "rules": {}
+        },
+        "magmaTotem": {
+          "enabled": true,
+          "priority": 4,
+          "rules": {}
+        },
+        "lightningBoltCast": {
+          "enabled": true,
+          "priority": 5,
+          "rules": {}
+        },
+        "flameShock": {
+          "enabled": true,
+          "priority": 6,
+          "rules": {
+            "reapplyTiming": 0
+          }
+        },
+        "moltenBlastCast": {
+          "enabled": true,
+          "priority": 7,
+          "rules": {
+            "onlyRefreshFlameShock": false
+          }
+        },
+        "earthShock": {
+          "enabled": true,
+          "priority": 8,
+          "rules": {}
+        },
+        "elementalMastery": {
+          "enabled": true,
+          "priority": 9,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "bloodlust": {
+          "enabled": true,
+          "priority": 10,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        }
+      },
+      "casterAoeOpener": {
+        "enabled": true,
+        "sequence": [
+          "chainLightning",
+          "flameShock"
+        ]
+      },
+      "_casterDefaultsApplied": true
+    },
+    "aoeOpener": {
+      "enabled": true,
+      "sequence": [
+        "stormstrike",
+        "lightningStrike",
+        "flameShock"
+      ]
+    }
+  },
+  "Tank - Physhance": {
+    "opener": {
+      "enabled": true,
+      "sequence": [
+        "flameShock",
+        "bloodlust",
+        "stormstrike",
+        "lightningStrike"
+      ]
+    },
+    "autoAttack": {
+      "enabled": true,
+      "priority": 100,
+      "rules": {}
+    },
+    "lightningShieldCritical": {
+      "enabled": true,
+      "priority": 4,
+      "rules": {
+        "triggerWhenCharges": 0,
+        "requireLightningStrikeReady": true
+      }
+    },
+    "elementalMastery": {
+      "enabled": true,
+      "priority": 2,
+      "rules": {
+        "useBeforeFlameShock": true,
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "flameShock": {
+      "enabled": false,
+      "priority": 2,
+      "rules": {
+        "reapplyTiming": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "stormstrike": {
+      "enabled": true,
+      "priority": 3,
+      "rules": {
+        "delayWhenFlameShockExpiring": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningStrike": {
+      "enabled": true,
+      "priority": 5,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningBolt": {
+      "enabled": false,
+      "priority": 6,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "earthShock": {
+      "enabled": true,
+      "priority": 7,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningShieldLow": {
+      "enabled": true,
+      "priority": 8,
+      "rules": {
+        "triggerWhenCharges": 3,
+        "requireLightningStrikeReady": false,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningShieldProactive": {
+      "enabled": true,
+      "priority": 10,
+      "rules": {
+        "triggerWhenCharges": 1,
+        "requireLightningStrikeReady": true,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "chainLightning": {
+      "enabled": false,
+      "priority": 11,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "fireNovaTotem": {
+      "enabled": true,
+      "priority": 9,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "magmaTotem": {
+      "enabled": false,
+      "priority": 12,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "bloodlust": {
+      "enabled": true,
+      "priority": 1,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "kissOfTheSpider": {
+      "enabled": true,
+      "priority": 11,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "naturalAlignmentCrystal": {
+      "enabled": true,
+      "priority": 12,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "shardOfTheFallenStar": {
+      "enabled": true,
+      "priority": 13,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "jewelOfWildMagics": {
+      "enabled": true,
+      "priority": 13.5,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "eyeOfDiminution": {
+      "enabled": true,
+      "priority": 14,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "restrainedEssenceOfSapphiron": {
+      "enabled": true,
+      "priority": 15,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "slayersCrest": {
+      "enabled": true,
+      "priority": 16,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "earthstrike": {
+      "enabled": true,
+      "priority": 17,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "moltenEmberstone": {
+      "enabled": true,
+      "priority": 18,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "talismanOfEphemeralPower": {
+      "enabled": true,
+      "priority": 19,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "zandalarianHeroCharm": {
+      "enabled": true,
+      "priority": 20,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "handOfEdwardTheOdd": {
+      "enabled": true,
+      "priority": 3,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "potionOfQuickness": {
+      "enabled": true,
+      "priority": 11,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "jujuFlurry": {
+      "enabled": true,
+      "priority": 11,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningBoltCast": {
+      "enabled": false,
+      "priority": 13,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "moltenBlastCast": {
+      "enabled": false,
+      "priority": 14,
+      "rules": {
+        "onlyRefreshFlameShock": false,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "casterPriority": {
+      "lightningBoltCast": {
+        "enabled": true,
+        "priority": 1,
+        "rules": {}
+      },
+      "chainLightning": {
+        "enabled": true,
+        "priority": 2,
+        "rules": {}
+      },
+      "earthquake": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {}
+      },
+      "flameShock": {
+        "enabled": true,
+        "priority": 4,
+        "rules": {
+          "reapplyTiming": 0
+        }
+      },
+      "moltenBlastCast": {
+        "enabled": true,
+        "priority": 5,
+        "rules": {
+          "onlyRefreshFlameShock": false
+        }
+      },
+      "earthShock": {
+        "enabled": true,
+        "priority": 6,
+        "rules": {}
+      },
+      "elementalMastery": {
+        "enabled": true,
+        "priority": 7,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "bloodlust": {
+        "enabled": true,
+        "priority": 8,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "kissOfTheSpider": {
+        "enabled": true,
+        "priority": 9,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "naturalAlignmentCrystal": {
+        "enabled": true,
+        "priority": 10,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "shardOfTheFallenStar": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jewelOfWildMagics": {
+        "enabled": true,
+        "priority": 12,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "eyeOfDiminution": {
+        "enabled": true,
+        "priority": 13,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "restrainedEssenceOfSapphiron": {
+        "enabled": true,
+        "priority": 14,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "slayersCrest": {
+        "enabled": true,
+        "priority": 15,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "earthstrike": {
+        "enabled": true,
+        "priority": 16,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "moltenEmberstone": {
+        "enabled": true,
+        "priority": 17,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "talismanOfEphemeralPower": {
+        "enabled": true,
+        "priority": 18,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "zandalarianHeroCharm": {
+        "enabled": true,
+        "priority": 19,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jomGabbar": {
+        "enabled": true,
+        "priority": 20,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "potionOfQuickness": {
+        "enabled": true,
+        "priority": 21,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jujuFlurry": {
+        "enabled": true,
+        "priority": 22,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      }
+    },
+    "casterOpener": {
+      "enabled": true,
+      "sequence": [
+        "lightningBoltCast",
+        "flameShock"
+      ]
+    },
+    "casterAoePriority": {
+      "chainLightning": {
+        "enabled": true,
+        "priority": 1,
+        "rules": {}
+      },
+      "earthquake": {
+        "enabled": true,
+        "priority": 2,
+        "rules": {}
+      },
+      "fireNovaTotem": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {}
+      },
+      "magmaTotem": {
+        "enabled": true,
+        "priority": 4,
+        "rules": {}
+      },
+      "lightningBoltCast": {
+        "enabled": true,
+        "priority": 5,
+        "rules": {}
+      },
+      "flameShock": {
+        "enabled": true,
+        "priority": 6,
+        "rules": {
+          "reapplyTiming": 0
+        }
+      },
+      "moltenBlastCast": {
+        "enabled": true,
+        "priority": 7,
+        "rules": {
+          "onlyRefreshFlameShock": false
+        }
+      },
+      "earthShock": {
+        "enabled": true,
+        "priority": 8,
+        "rules": {}
+      },
+      "elementalMastery": {
+        "enabled": true,
+        "priority": 9,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "bloodlust": {
+        "enabled": true,
+        "priority": 10,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      }
+    },
+    "casterAoeOpener": {
+      "enabled": true,
+      "sequence": [
+        "chainLightning",
+        "flameShock"
+      ]
+    },
+    "aoePriority": {
+      "opener": {
+        "enabled": true,
+        "sequence": [
+          "flameShock",
+          "stormstrike",
+          "lightningStrike"
+        ]
+      },
+      "autoAttack": {
+        "enabled": true,
+        "priority": 100,
+        "rules": {}
+      },
+      "lightningShieldCritical": {
+        "enabled": true,
+        "priority": 1,
+        "rules": {
+          "triggerWhenCharges": 0,
+          "requireLightningStrikeReady": true
+        }
+      },
+      "elementalMastery": {
+        "enabled": true,
+        "priority": 2,
+        "rules": {
+          "useBeforeFlameShock": true,
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "flameShock": {
+        "enabled": true,
+        "priority": 2,
+        "rules": {
+          "reapplyTiming": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "stormstrike": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {
+          "delayWhenFlameShockExpiring": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningStrike": {
+        "enabled": true,
+        "priority": 4,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningBolt": {
+        "enabled": false,
+        "priority": 5,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "earthShock": {
+        "enabled": true,
+        "priority": 6,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningShieldLow": {
+        "enabled": true,
+        "priority": 6.5,
+        "rules": {
+          "triggerWhenCharges": 3,
+          "requireLightningStrikeReady": false,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningShieldProactive": {
+        "enabled": true,
+        "priority": 8,
+        "rules": {
+          "triggerWhenCharges": 1,
+          "requireLightningStrikeReady": true,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "chainLightning": {
+        "enabled": false,
+        "priority": 8.5,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "fireNovaTotem": {
+        "enabled": true,
+        "priority": 9,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "magmaTotem": {
+        "enabled": false,
+        "priority": 9.5,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "bloodlust": {
+        "enabled": true,
+        "priority": 10,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "kissOfTheSpider": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "naturalAlignmentCrystal": {
+        "enabled": true,
+        "priority": 12,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "shardOfTheFallenStar": {
+        "enabled": true,
+        "priority": 13,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jewelOfWildMagics": {
+        "enabled": true,
+        "priority": 13.5,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "eyeOfDiminution": {
+        "enabled": true,
+        "priority": 14,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "restrainedEssenceOfSapphiron": {
+        "enabled": true,
+        "priority": 15,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "slayersCrest": {
+        "enabled": true,
+        "priority": 16,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "earthstrike": {
+        "enabled": true,
+        "priority": 17,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "moltenEmberstone": {
+        "enabled": true,
+        "priority": 18,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "talismanOfEphemeralPower": {
+        "enabled": true,
+        "priority": 19,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "zandalarianHeroCharm": {
+        "enabled": true,
+        "priority": 20,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "handOfEdwardTheOdd": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "potionOfQuickness": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jujuFlurry": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningBoltCast": {
+        "enabled": false,
+        "priority": 12,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "moltenBlastCast": {
+        "enabled": false,
+        "priority": 14,
+        "rules": {
+          "onlyRefreshFlameShock": false,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "casterPriority": {
+        "lightningBoltCast": {
+          "enabled": true,
+          "priority": 1,
+          "rules": {}
+        },
+        "chainLightning": {
+          "enabled": true,
+          "priority": 2,
+          "rules": {}
+        },
+        "earthquake": {
+          "enabled": true,
+          "priority": 3,
+          "rules": {}
+        },
+        "flameShock": {
+          "enabled": true,
+          "priority": 4,
+          "rules": {
+            "reapplyTiming": 0
+          }
+        },
+        "moltenBlastCast": {
+          "enabled": true,
+          "priority": 5,
+          "rules": {
+            "onlyRefreshFlameShock": false
+          }
+        },
+        "earthShock": {
+          "enabled": true,
+          "priority": 6,
+          "rules": {}
+        },
+        "elementalMastery": {
+          "enabled": true,
+          "priority": 7,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "bloodlust": {
+          "enabled": true,
+          "priority": 8,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "kissOfTheSpider": {
+          "enabled": true,
+          "priority": 9,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "naturalAlignmentCrystal": {
+          "enabled": true,
+          "priority": 10,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "shardOfTheFallenStar": {
+          "enabled": true,
+          "priority": 11,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "jewelOfWildMagics": {
+          "enabled": true,
+          "priority": 12,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "eyeOfDiminution": {
+          "enabled": true,
+          "priority": 13,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "restrainedEssenceOfSapphiron": {
+          "enabled": true,
+          "priority": 14,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "slayersCrest": {
+          "enabled": true,
+          "priority": 15,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "earthstrike": {
+          "enabled": true,
+          "priority": 16,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "moltenEmberstone": {
+          "enabled": true,
+          "priority": 17,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "talismanOfEphemeralPower": {
+          "enabled": true,
+          "priority": 18,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "zandalarianHeroCharm": {
+          "enabled": true,
+          "priority": 19,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "jomGabbar": {
+          "enabled": true,
+          "priority": 20,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "potionOfQuickness": {
+          "enabled": true,
+          "priority": 21,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "jujuFlurry": {
+          "enabled": true,
+          "priority": 22,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        }
+      },
+      "casterOpener": {
+        "enabled": true,
+        "sequence": [
+          "lightningBoltCast",
+          "flameShock"
+        ]
+      },
+      "casterAoePriority": {
+        "chainLightning": {
+          "enabled": true,
+          "priority": 1,
+          "rules": {}
+        },
+        "earthquake": {
+          "enabled": true,
+          "priority": 2,
+          "rules": {}
+        },
+        "fireNovaTotem": {
+          "enabled": true,
+          "priority": 3,
+          "rules": {}
+        },
+        "magmaTotem": {
+          "enabled": true,
+          "priority": 4,
+          "rules": {}
+        },
+        "lightningBoltCast": {
+          "enabled": true,
+          "priority": 5,
+          "rules": {}
+        },
+        "flameShock": {
+          "enabled": true,
+          "priority": 6,
+          "rules": {
+            "reapplyTiming": 0
+          }
+        },
+        "moltenBlastCast": {
+          "enabled": true,
+          "priority": 7,
+          "rules": {
+            "onlyRefreshFlameShock": false
+          }
+        },
+        "earthShock": {
+          "enabled": true,
+          "priority": 8,
+          "rules": {}
+        },
+        "elementalMastery": {
+          "enabled": true,
+          "priority": 9,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "bloodlust": {
+          "enabled": true,
+          "priority": 10,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        }
+      },
+      "casterAoeOpener": {
+        "enabled": true,
+        "sequence": [
+          "chainLightning",
+          "flameShock"
+        ]
+      }
+    },
+    "aoeOpener": {
+      "enabled": true,
+      "sequence": [
+        "flameShock",
+        "stormstrike",
+        "lightningStrike"
+      ]
+    },
+    "_casterDefaultsApplied": true
+  },
+  "DPS - Spellhance": {
+    "opener": {
+      "enabled": true,
+      "sequence": [
+        "lightningBoltCast",
+        "flameShock",
+        "stormstrike",
+        "lightningStrike"
+      ]
+    },
+    "autoAttack": {
+      "enabled": true,
+      "priority": 100,
+      "rules": {}
+    },
+    "lightningShieldCritical": {
+      "enabled": true,
+      "priority": 3,
+      "rules": {
+        "triggerWhenCharges": 0,
+        "requireLightningStrikeReady": true
+      }
+    },
+    "elementalMastery": {
+      "enabled": true,
+      "priority": 2,
+      "rules": {
+        "useBeforeFlameShock": true,
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "flameShock": {
+      "enabled": true,
+      "priority": 1,
+      "rules": {
+        "reapplyTiming": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "stormstrike": {
+      "enabled": true,
+      "priority": 2,
+      "rules": {
+        "delayWhenFlameShockExpiring": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningStrike": {
+      "enabled": true,
+      "priority": 4,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningBolt": {
+      "enabled": false,
+      "priority": 6,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "earthShock": {
+      "enabled": true,
+      "priority": 5,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningShieldLow": {
+      "enabled": true,
+      "priority": 7,
+      "rules": {
+        "triggerWhenCharges": 3,
+        "requireLightningStrikeReady": false,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningShieldProactive": {
+      "enabled": true,
+      "priority": 9,
+      "rules": {
+        "triggerWhenCharges": 1,
+        "requireLightningStrikeReady": true,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "chainLightning": {
+      "enabled": false,
+      "priority": 10,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "fireNovaTotem": {
+      "enabled": true,
+      "priority": 8,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "magmaTotem": {
+      "enabled": false,
+      "priority": 11,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "bloodlust": {
+      "enabled": true,
+      "priority": 10,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "kissOfTheSpider": {
+      "enabled": true,
+      "priority": 11,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "naturalAlignmentCrystal": {
+      "enabled": true,
+      "priority": 12,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "shardOfTheFallenStar": {
+      "enabled": true,
+      "priority": 13,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "jewelOfWildMagics": {
+      "enabled": true,
+      "priority": 13.5,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "eyeOfDiminution": {
+      "enabled": true,
+      "priority": 14,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "restrainedEssenceOfSapphiron": {
+      "enabled": true,
+      "priority": 15,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "slayersCrest": {
+      "enabled": true,
+      "priority": 16,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "earthstrike": {
+      "enabled": true,
+      "priority": 17,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "moltenEmberstone": {
+      "enabled": true,
+      "priority": 18,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "talismanOfEphemeralPower": {
+      "enabled": true,
+      "priority": 19,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "zandalarianHeroCharm": {
+      "enabled": true,
+      "priority": 20,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "handOfEdwardTheOdd": {
+      "enabled": true,
+      "priority": 3,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "potionOfQuickness": {
+      "enabled": true,
+      "priority": 11,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "jujuFlurry": {
+      "enabled": true,
+      "priority": 11,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningBoltCast": {
+      "enabled": false,
+      "priority": 12,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "moltenBlastCast": {
+      "enabled": false,
+      "priority": 13,
+      "rules": {
+        "onlyRefreshFlameShock": false,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "casterPriority": {
+      "lightningBoltCast": {
+        "enabled": true,
+        "priority": 1,
+        "rules": {}
+      },
+      "chainLightning": {
+        "enabled": true,
+        "priority": 2,
+        "rules": {}
+      },
+      "earthquake": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {}
+      },
+      "flameShock": {
+        "enabled": true,
+        "priority": 4,
+        "rules": {
+          "reapplyTiming": 0
+        }
+      },
+      "moltenBlastCast": {
+        "enabled": true,
+        "priority": 5,
+        "rules": {
+          "onlyRefreshFlameShock": false
+        }
+      },
+      "earthShock": {
+        "enabled": true,
+        "priority": 6,
+        "rules": {}
+      },
+      "elementalMastery": {
+        "enabled": true,
+        "priority": 7,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "bloodlust": {
+        "enabled": true,
+        "priority": 8,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "kissOfTheSpider": {
+        "enabled": true,
+        "priority": 9,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "naturalAlignmentCrystal": {
+        "enabled": true,
+        "priority": 10,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "shardOfTheFallenStar": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jewelOfWildMagics": {
+        "enabled": true,
+        "priority": 12,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "eyeOfDiminution": {
+        "enabled": true,
+        "priority": 13,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "restrainedEssenceOfSapphiron": {
+        "enabled": true,
+        "priority": 14,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "slayersCrest": {
+        "enabled": true,
+        "priority": 15,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "earthstrike": {
+        "enabled": true,
+        "priority": 16,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "moltenEmberstone": {
+        "enabled": true,
+        "priority": 17,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "talismanOfEphemeralPower": {
+        "enabled": true,
+        "priority": 18,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "zandalarianHeroCharm": {
+        "enabled": true,
+        "priority": 19,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jomGabbar": {
+        "enabled": true,
+        "priority": 20,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "potionOfQuickness": {
+        "enabled": true,
+        "priority": 21,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jujuFlurry": {
+        "enabled": true,
+        "priority": 22,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      }
+    },
+    "casterOpener": {
+      "enabled": true,
+      "sequence": [
+        "lightningBoltCast",
+        "flameShock"
+      ]
+    },
+    "casterAoePriority": {
+      "chainLightning": {
+        "enabled": true,
+        "priority": 1,
+        "rules": {}
+      },
+      "earthquake": {
+        "enabled": true,
+        "priority": 2,
+        "rules": {}
+      },
+      "fireNovaTotem": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {}
+      },
+      "magmaTotem": {
+        "enabled": true,
+        "priority": 4,
+        "rules": {}
+      },
+      "lightningBoltCast": {
+        "enabled": true,
+        "priority": 5,
+        "rules": {}
+      },
+      "flameShock": {
+        "enabled": true,
+        "priority": 6,
+        "rules": {
+          "reapplyTiming": 0
+        }
+      },
+      "moltenBlastCast": {
+        "enabled": true,
+        "priority": 7,
+        "rules": {
+          "onlyRefreshFlameShock": false
+        }
+      },
+      "earthShock": {
+        "enabled": true,
+        "priority": 8,
+        "rules": {}
+      },
+      "elementalMastery": {
+        "enabled": true,
+        "priority": 9,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "bloodlust": {
+        "enabled": true,
+        "priority": 10,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      }
+    },
+    "casterAoeOpener": {
+      "enabled": true,
+      "sequence": [
+        "chainLightning",
+        "flameShock"
+      ]
+    },
+    "aoePriority": {
+      "opener": {
+        "enabled": true,
+        "sequence": [
+          "flameShock",
+          "stormstrike",
+          "lightningStrike"
+        ]
+      },
+      "autoAttack": {
+        "enabled": true,
+        "priority": 100,
+        "rules": {}
+      },
+      "lightningShieldCritical": {
+        "enabled": true,
+        "priority": 1,
+        "rules": {
+          "triggerWhenCharges": 0,
+          "requireLightningStrikeReady": true
+        }
+      },
+      "elementalMastery": {
+        "enabled": true,
+        "priority": 2,
+        "rules": {
+          "useBeforeFlameShock": true,
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "flameShock": {
+        "enabled": true,
+        "priority": 2,
+        "rules": {
+          "reapplyTiming": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "stormstrike": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {
+          "delayWhenFlameShockExpiring": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningStrike": {
+        "enabled": true,
+        "priority": 4,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningBolt": {
+        "enabled": false,
+        "priority": 5,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "earthShock": {
+        "enabled": true,
+        "priority": 6,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningShieldLow": {
+        "enabled": true,
+        "priority": 6.5,
+        "rules": {
+          "triggerWhenCharges": 3,
+          "requireLightningStrikeReady": false,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningShieldProactive": {
+        "enabled": true,
+        "priority": 8,
+        "rules": {
+          "triggerWhenCharges": 1,
+          "requireLightningStrikeReady": true,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "chainLightning": {
+        "enabled": false,
+        "priority": 8.5,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "fireNovaTotem": {
+        "enabled": true,
+        "priority": 9,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "magmaTotem": {
+        "enabled": false,
+        "priority": 9.5,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "bloodlust": {
+        "enabled": true,
+        "priority": 10,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "kissOfTheSpider": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "naturalAlignmentCrystal": {
+        "enabled": true,
+        "priority": 12,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "shardOfTheFallenStar": {
+        "enabled": true,
+        "priority": 13,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jewelOfWildMagics": {
+        "enabled": true,
+        "priority": 13.5,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "eyeOfDiminution": {
+        "enabled": true,
+        "priority": 14,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "restrainedEssenceOfSapphiron": {
+        "enabled": true,
+        "priority": 15,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "slayersCrest": {
+        "enabled": true,
+        "priority": 16,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "earthstrike": {
+        "enabled": true,
+        "priority": 17,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "moltenEmberstone": {
+        "enabled": true,
+        "priority": 18,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "talismanOfEphemeralPower": {
+        "enabled": true,
+        "priority": 19,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "zandalarianHeroCharm": {
+        "enabled": true,
+        "priority": 20,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "handOfEdwardTheOdd": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "potionOfQuickness": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jujuFlurry": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningBoltCast": {
+        "enabled": false,
+        "priority": 12,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "moltenBlastCast": {
+        "enabled": false,
+        "priority": 14,
+        "rules": {
+          "onlyRefreshFlameShock": false,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "casterPriority": {
+        "lightningBoltCast": {
+          "enabled": true,
+          "priority": 1,
+          "rules": {}
+        },
+        "chainLightning": {
+          "enabled": true,
+          "priority": 2,
+          "rules": {}
+        },
+        "earthquake": {
+          "enabled": true,
+          "priority": 3,
+          "rules": {}
+        },
+        "flameShock": {
+          "enabled": true,
+          "priority": 4,
+          "rules": {
+            "reapplyTiming": 0
+          }
+        },
+        "moltenBlastCast": {
+          "enabled": true,
+          "priority": 5,
+          "rules": {
+            "onlyRefreshFlameShock": false
+          }
+        },
+        "earthShock": {
+          "enabled": true,
+          "priority": 6,
+          "rules": {}
+        },
+        "elementalMastery": {
+          "enabled": true,
+          "priority": 7,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "bloodlust": {
+          "enabled": true,
+          "priority": 8,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "kissOfTheSpider": {
+          "enabled": true,
+          "priority": 9,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "naturalAlignmentCrystal": {
+          "enabled": true,
+          "priority": 10,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "shardOfTheFallenStar": {
+          "enabled": true,
+          "priority": 11,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "jewelOfWildMagics": {
+          "enabled": true,
+          "priority": 12,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "eyeOfDiminution": {
+          "enabled": true,
+          "priority": 13,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "restrainedEssenceOfSapphiron": {
+          "enabled": true,
+          "priority": 14,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "slayersCrest": {
+          "enabled": true,
+          "priority": 15,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "earthstrike": {
+          "enabled": true,
+          "priority": 16,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "moltenEmberstone": {
+          "enabled": true,
+          "priority": 17,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "talismanOfEphemeralPower": {
+          "enabled": true,
+          "priority": 18,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "zandalarianHeroCharm": {
+          "enabled": true,
+          "priority": 19,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "jomGabbar": {
+          "enabled": true,
+          "priority": 20,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "potionOfQuickness": {
+          "enabled": true,
+          "priority": 21,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "jujuFlurry": {
+          "enabled": true,
+          "priority": 22,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        }
+      },
+      "casterOpener": {
+        "enabled": true,
+        "sequence": [
+          "lightningBoltCast",
+          "flameShock"
+        ]
+      },
+      "casterAoePriority": {
+        "chainLightning": {
+          "enabled": true,
+          "priority": 1,
+          "rules": {}
+        },
+        "earthquake": {
+          "enabled": true,
+          "priority": 2,
+          "rules": {}
+        },
+        "fireNovaTotem": {
+          "enabled": true,
+          "priority": 3,
+          "rules": {}
+        },
+        "magmaTotem": {
+          "enabled": true,
+          "priority": 4,
+          "rules": {}
+        },
+        "lightningBoltCast": {
+          "enabled": true,
+          "priority": 5,
+          "rules": {}
+        },
+        "flameShock": {
+          "enabled": true,
+          "priority": 6,
+          "rules": {
+            "reapplyTiming": 0
+          }
+        },
+        "moltenBlastCast": {
+          "enabled": true,
+          "priority": 7,
+          "rules": {
+            "onlyRefreshFlameShock": false
+          }
+        },
+        "earthShock": {
+          "enabled": true,
+          "priority": 8,
+          "rules": {}
+        },
+        "elementalMastery": {
+          "enabled": true,
+          "priority": 9,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "bloodlust": {
+          "enabled": true,
+          "priority": 10,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        }
+      },
+      "casterAoeOpener": {
+        "enabled": true,
+        "sequence": [
+          "chainLightning",
+          "flameShock"
+        ]
+      }
+    },
+    "aoeOpener": {
+      "enabled": true,
+      "sequence": [
+        "flameShock",
+        "stormstrike",
+        "lightningStrike"
+      ]
+    },
+    "_casterDefaultsApplied": true
+  },
+  "Tank - Spellhance": {
+    "opener": {
+      "enabled": true,
+      "sequence": [
+        "lightningBoltCast",
+        "earthShock",
+        "stormstrike",
+        "lightningStrike"
+      ]
+    },
+    "autoAttack": {
+      "enabled": true,
+      "priority": 100,
+      "rules": {}
+    },
+    "lightningShieldCritical": {
+      "enabled": true,
+      "priority": 4,
+      "rules": {
+        "triggerWhenCharges": 0,
+        "requireLightningStrikeReady": true
+      }
+    },
+    "elementalMastery": {
+      "enabled": true,
+      "priority": 2,
+      "rules": {
+        "useBeforeFlameShock": true,
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "flameShock": {
+      "enabled": false,
+      "priority": 1,
+      "rules": {
+        "reapplyTiming": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "stormstrike": {
+      "enabled": true,
+      "priority": 3,
+      "rules": {
+        "delayWhenFlameShockExpiring": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningStrike": {
+      "enabled": true,
+      "priority": 5,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningBolt": {
+      "enabled": false,
+      "priority": 6,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "earthShock": {
+      "enabled": true,
+      "priority": 2,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningShieldLow": {
+      "enabled": true,
+      "priority": 7,
+      "rules": {
+        "triggerWhenCharges": 3,
+        "requireLightningStrikeReady": false,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningShieldProactive": {
+      "enabled": true,
+      "priority": 9,
+      "rules": {
+        "triggerWhenCharges": 1,
+        "requireLightningStrikeReady": true,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "chainLightning": {
+      "enabled": false,
+      "priority": 10,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "fireNovaTotem": {
+      "enabled": true,
+      "priority": 8,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "magmaTotem": {
+      "enabled": false,
+      "priority": 11,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "bloodlust": {
+      "enabled": true,
+      "priority": 10,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "kissOfTheSpider": {
+      "enabled": true,
+      "priority": 11,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "naturalAlignmentCrystal": {
+      "enabled": true,
+      "priority": 12,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "shardOfTheFallenStar": {
+      "enabled": true,
+      "priority": 13,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "jewelOfWildMagics": {
+      "enabled": true,
+      "priority": 13.5,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "eyeOfDiminution": {
+      "enabled": true,
+      "priority": 14,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "restrainedEssenceOfSapphiron": {
+      "enabled": true,
+      "priority": 15,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "slayersCrest": {
+      "enabled": true,
+      "priority": 16,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "earthstrike": {
+      "enabled": true,
+      "priority": 17,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "moltenEmberstone": {
+      "enabled": true,
+      "priority": 18,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "talismanOfEphemeralPower": {
+      "enabled": true,
+      "priority": 19,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "zandalarianHeroCharm": {
+      "enabled": true,
+      "priority": 20,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "handOfEdwardTheOdd": {
+      "enabled": true,
+      "priority": 3,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "potionOfQuickness": {
+      "enabled": true,
+      "priority": 11,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "jujuFlurry": {
+      "enabled": true,
+      "priority": 11,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningBoltCast": {
+      "enabled": false,
+      "priority": 12,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "moltenBlastCast": {
+      "enabled": false,
+      "priority": 13,
+      "rules": {
+        "onlyRefreshFlameShock": false,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "casterPriority": {
+      "lightningBoltCast": {
+        "enabled": true,
+        "priority": 1,
+        "rules": {}
+      },
+      "chainLightning": {
+        "enabled": true,
+        "priority": 2,
+        "rules": {}
+      },
+      "earthquake": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {}
+      },
+      "flameShock": {
+        "enabled": true,
+        "priority": 4,
+        "rules": {
+          "reapplyTiming": 0
+        }
+      },
+      "moltenBlastCast": {
+        "enabled": true,
+        "priority": 5,
+        "rules": {
+          "onlyRefreshFlameShock": false
+        }
+      },
+      "earthShock": {
+        "enabled": true,
+        "priority": 6,
+        "rules": {}
+      },
+      "elementalMastery": {
+        "enabled": true,
+        "priority": 7,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "bloodlust": {
+        "enabled": true,
+        "priority": 8,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "kissOfTheSpider": {
+        "enabled": true,
+        "priority": 9,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "naturalAlignmentCrystal": {
+        "enabled": true,
+        "priority": 10,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "shardOfTheFallenStar": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jewelOfWildMagics": {
+        "enabled": true,
+        "priority": 12,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "eyeOfDiminution": {
+        "enabled": true,
+        "priority": 13,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "restrainedEssenceOfSapphiron": {
+        "enabled": true,
+        "priority": 14,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "slayersCrest": {
+        "enabled": true,
+        "priority": 15,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "earthstrike": {
+        "enabled": true,
+        "priority": 16,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "moltenEmberstone": {
+        "enabled": true,
+        "priority": 17,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "talismanOfEphemeralPower": {
+        "enabled": true,
+        "priority": 18,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "zandalarianHeroCharm": {
+        "enabled": true,
+        "priority": 19,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jomGabbar": {
+        "enabled": true,
+        "priority": 20,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "potionOfQuickness": {
+        "enabled": true,
+        "priority": 21,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jujuFlurry": {
+        "enabled": true,
+        "priority": 22,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      }
+    },
+    "casterOpener": {
+      "enabled": true,
+      "sequence": [
+        "lightningBoltCast",
+        "flameShock"
+      ]
+    },
+    "casterAoePriority": {
+      "chainLightning": {
+        "enabled": true,
+        "priority": 1,
+        "rules": {}
+      },
+      "earthquake": {
+        "enabled": true,
+        "priority": 2,
+        "rules": {}
+      },
+      "fireNovaTotem": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {}
+      },
+      "magmaTotem": {
+        "enabled": true,
+        "priority": 4,
+        "rules": {}
+      },
+      "lightningBoltCast": {
+        "enabled": true,
+        "priority": 5,
+        "rules": {}
+      },
+      "flameShock": {
+        "enabled": true,
+        "priority": 6,
+        "rules": {
+          "reapplyTiming": 0
+        }
+      },
+      "moltenBlastCast": {
+        "enabled": true,
+        "priority": 7,
+        "rules": {
+          "onlyRefreshFlameShock": false
+        }
+      },
+      "earthShock": {
+        "enabled": true,
+        "priority": 8,
+        "rules": {}
+      },
+      "elementalMastery": {
+        "enabled": true,
+        "priority": 9,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "bloodlust": {
+        "enabled": true,
+        "priority": 10,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      }
+    },
+    "casterAoeOpener": {
+      "enabled": true,
+      "sequence": [
+        "chainLightning",
+        "flameShock"
+      ]
+    },
+    "aoePriority": {
+      "opener": {
+        "enabled": true,
+        "sequence": [
+          "flameShock",
+          "stormstrike",
+          "lightningStrike"
+        ]
+      },
+      "autoAttack": {
+        "enabled": true,
+        "priority": 100,
+        "rules": {}
+      },
+      "lightningShieldCritical": {
+        "enabled": true,
+        "priority": 1,
+        "rules": {
+          "triggerWhenCharges": 0,
+          "requireLightningStrikeReady": true
+        }
+      },
+      "elementalMastery": {
+        "enabled": true,
+        "priority": 2,
+        "rules": {
+          "useBeforeFlameShock": true,
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "flameShock": {
+        "enabled": true,
+        "priority": 2,
+        "rules": {
+          "reapplyTiming": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "stormstrike": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {
+          "delayWhenFlameShockExpiring": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningStrike": {
+        "enabled": true,
+        "priority": 4,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningBolt": {
+        "enabled": false,
+        "priority": 5,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "earthShock": {
+        "enabled": true,
+        "priority": 6,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningShieldLow": {
+        "enabled": true,
+        "priority": 6.5,
+        "rules": {
+          "triggerWhenCharges": 3,
+          "requireLightningStrikeReady": false,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningShieldProactive": {
+        "enabled": true,
+        "priority": 8,
+        "rules": {
+          "triggerWhenCharges": 1,
+          "requireLightningStrikeReady": true,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "chainLightning": {
+        "enabled": false,
+        "priority": 8.5,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "fireNovaTotem": {
+        "enabled": true,
+        "priority": 9,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "magmaTotem": {
+        "enabled": false,
+        "priority": 9.5,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "bloodlust": {
+        "enabled": true,
+        "priority": 10,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "kissOfTheSpider": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "naturalAlignmentCrystal": {
+        "enabled": true,
+        "priority": 12,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "shardOfTheFallenStar": {
+        "enabled": true,
+        "priority": 13,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jewelOfWildMagics": {
+        "enabled": true,
+        "priority": 13.5,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "eyeOfDiminution": {
+        "enabled": true,
+        "priority": 14,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "restrainedEssenceOfSapphiron": {
+        "enabled": true,
+        "priority": 15,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "slayersCrest": {
+        "enabled": true,
+        "priority": 16,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "earthstrike": {
+        "enabled": true,
+        "priority": 17,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "moltenEmberstone": {
+        "enabled": true,
+        "priority": 18,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "talismanOfEphemeralPower": {
+        "enabled": true,
+        "priority": 19,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "zandalarianHeroCharm": {
+        "enabled": true,
+        "priority": 20,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "handOfEdwardTheOdd": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "potionOfQuickness": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jujuFlurry": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningBoltCast": {
+        "enabled": false,
+        "priority": 12,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "moltenBlastCast": {
+        "enabled": false,
+        "priority": 14,
+        "rules": {
+          "onlyRefreshFlameShock": false,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "casterPriority": {
+        "lightningBoltCast": {
+          "enabled": true,
+          "priority": 1,
+          "rules": {}
+        },
+        "chainLightning": {
+          "enabled": true,
+          "priority": 2,
+          "rules": {}
+        },
+        "earthquake": {
+          "enabled": true,
+          "priority": 3,
+          "rules": {}
+        },
+        "flameShock": {
+          "enabled": true,
+          "priority": 4,
+          "rules": {
+            "reapplyTiming": 0
+          }
+        },
+        "moltenBlastCast": {
+          "enabled": true,
+          "priority": 5,
+          "rules": {
+            "onlyRefreshFlameShock": false
+          }
+        },
+        "earthShock": {
+          "enabled": true,
+          "priority": 6,
+          "rules": {}
+        },
+        "elementalMastery": {
+          "enabled": true,
+          "priority": 7,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "bloodlust": {
+          "enabled": true,
+          "priority": 8,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "kissOfTheSpider": {
+          "enabled": true,
+          "priority": 9,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "naturalAlignmentCrystal": {
+          "enabled": true,
+          "priority": 10,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "shardOfTheFallenStar": {
+          "enabled": true,
+          "priority": 11,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "jewelOfWildMagics": {
+          "enabled": true,
+          "priority": 12,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "eyeOfDiminution": {
+          "enabled": true,
+          "priority": 13,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "restrainedEssenceOfSapphiron": {
+          "enabled": true,
+          "priority": 14,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "slayersCrest": {
+          "enabled": true,
+          "priority": 15,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "earthstrike": {
+          "enabled": true,
+          "priority": 16,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "moltenEmberstone": {
+          "enabled": true,
+          "priority": 17,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "talismanOfEphemeralPower": {
+          "enabled": true,
+          "priority": 18,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "zandalarianHeroCharm": {
+          "enabled": true,
+          "priority": 19,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "jomGabbar": {
+          "enabled": true,
+          "priority": 20,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "potionOfQuickness": {
+          "enabled": true,
+          "priority": 21,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "jujuFlurry": {
+          "enabled": true,
+          "priority": 22,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        }
+      },
+      "casterOpener": {
+        "enabled": true,
+        "sequence": [
+          "lightningBoltCast",
+          "flameShock"
+        ]
+      },
+      "casterAoePriority": {
+        "chainLightning": {
+          "enabled": true,
+          "priority": 1,
+          "rules": {}
+        },
+        "earthquake": {
+          "enabled": true,
+          "priority": 2,
+          "rules": {}
+        },
+        "fireNovaTotem": {
+          "enabled": true,
+          "priority": 3,
+          "rules": {}
+        },
+        "magmaTotem": {
+          "enabled": true,
+          "priority": 4,
+          "rules": {}
+        },
+        "lightningBoltCast": {
+          "enabled": true,
+          "priority": 5,
+          "rules": {}
+        },
+        "flameShock": {
+          "enabled": true,
+          "priority": 6,
+          "rules": {
+            "reapplyTiming": 0
+          }
+        },
+        "moltenBlastCast": {
+          "enabled": true,
+          "priority": 7,
+          "rules": {
+            "onlyRefreshFlameShock": false
+          }
+        },
+        "earthShock": {
+          "enabled": true,
+          "priority": 8,
+          "rules": {}
+        },
+        "elementalMastery": {
+          "enabled": true,
+          "priority": 9,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "bloodlust": {
+          "enabled": true,
+          "priority": 10,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        }
+      },
+      "casterAoeOpener": {
+        "enabled": true,
+        "sequence": [
+          "chainLightning",
+          "flameShock"
+        ]
+      }
+    },
+    "aoeOpener": {
+      "enabled": true,
+      "sequence": [
+        "flameShock",
+        "stormstrike",
+        "lightningStrike"
+      ]
+    },
+    "_casterDefaultsApplied": true
+  },
+  "Elemental": {
+    "opener": {
+      "enabled": true,
+      "sequence": [
+        "flameShock",
+        "stormstrike",
+        "lightningStrike"
+      ]
+    },
+    "autoAttack": {
+      "enabled": true,
+      "priority": 100,
+      "rules": {}
+    },
+    "lightningShieldCritical": {
+      "enabled": true,
+      "priority": 1,
+      "rules": {
+        "triggerWhenCharges": 0,
+        "requireLightningStrikeReady": true
+      }
+    },
+    "elementalMastery": {
+      "enabled": true,
+      "priority": 2,
+      "rules": {
+        "useBeforeFlameShock": true,
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "flameShock": {
+      "enabled": true,
+      "priority": 2,
+      "rules": {
+        "reapplyTiming": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "stormstrike": {
+      "enabled": true,
+      "priority": 3,
+      "rules": {
+        "delayWhenFlameShockExpiring": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningStrike": {
+      "enabled": true,
+      "priority": 4,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningBolt": {
+      "enabled": false,
+      "priority": 5,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "earthShock": {
+      "enabled": true,
+      "priority": 6,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningShieldLow": {
+      "enabled": true,
+      "priority": 6.5,
+      "rules": {
+        "triggerWhenCharges": 3,
+        "requireLightningStrikeReady": false,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningShieldProactive": {
+      "enabled": true,
+      "priority": 8,
+      "rules": {
+        "triggerWhenCharges": 1,
+        "requireLightningStrikeReady": true,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "chainLightning": {
+      "enabled": false,
+      "priority": 8.5,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "fireNovaTotem": {
+      "enabled": true,
+      "priority": 9,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "magmaTotem": {
+      "enabled": false,
+      "priority": 9.5,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "bloodlust": {
+      "enabled": true,
+      "priority": 10,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "kissOfTheSpider": {
+      "enabled": true,
+      "priority": 11,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "naturalAlignmentCrystal": {
+      "enabled": true,
+      "priority": 12,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "shardOfTheFallenStar": {
+      "enabled": true,
+      "priority": 13,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "jewelOfWildMagics": {
+      "enabled": true,
+      "priority": 13.5,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "eyeOfDiminution": {
+      "enabled": true,
+      "priority": 14,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "restrainedEssenceOfSapphiron": {
+      "enabled": true,
+      "priority": 15,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "slayersCrest": {
+      "enabled": true,
+      "priority": 16,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "earthstrike": {
+      "enabled": true,
+      "priority": 17,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "moltenEmberstone": {
+      "enabled": true,
+      "priority": 18,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "talismanOfEphemeralPower": {
+      "enabled": true,
+      "priority": 19,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "zandalarianHeroCharm": {
+      "enabled": true,
+      "priority": 20,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "handOfEdwardTheOdd": {
+      "enabled": true,
+      "priority": 3,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "potionOfQuickness": {
+      "enabled": true,
+      "priority": 11,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "jujuFlurry": {
+      "enabled": true,
+      "priority": 11,
+      "rules": {
+        "useAfterFightTime": 0,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "lightningBoltCast": {
+      "enabled": false,
+      "priority": 12,
+      "rules": {
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "moltenBlastCast": {
+      "enabled": false,
+      "priority": 14,
+      "rules": {
+        "onlyRefreshFlameShock": false,
+        "delayIfHigherPriorityReadyIn": 0
+      }
+    },
+    "casterPriority": {
+      "lightningBoltCast": {
+        "enabled": true,
+        "priority": 6,
+        "rules": {}
+      },
+      "chainLightning": {
+        "enabled": true,
+        "priority": 4,
+        "rules": {}
+      },
+      "earthquake": {
+        "enabled": true,
+        "priority": 5,
+        "rules": {}
+      },
+      "flameShock": {
+        "enabled": true,
+        "priority": 2,
+        "rules": {
+          "reapplyTiming": 0
+        }
+      },
+      "moltenBlastCast": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {
+          "onlyRefreshFlameShock": true,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "earthShock": {
+        "enabled": false,
+        "priority": 7,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "elementalMastery": {
+        "enabled": true,
+        "priority": 1,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "bloodlust": {
+        "enabled": true,
+        "priority": 8,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "kissOfTheSpider": {
+        "enabled": true,
+        "priority": 9,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "naturalAlignmentCrystal": {
+        "enabled": true,
+        "priority": 10,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "shardOfTheFallenStar": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jewelOfWildMagics": {
+        "enabled": true,
+        "priority": 12,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "eyeOfDiminution": {
+        "enabled": true,
+        "priority": 13,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "restrainedEssenceOfSapphiron": {
+        "enabled": true,
+        "priority": 14,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "slayersCrest": {
+        "enabled": true,
+        "priority": 15,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "earthstrike": {
+        "enabled": true,
+        "priority": 16,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "moltenEmberstone": {
+        "enabled": true,
+        "priority": 17,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "talismanOfEphemeralPower": {
+        "enabled": true,
+        "priority": 18,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "zandalarianHeroCharm": {
+        "enabled": true,
+        "priority": 19,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jomGabbar": {
+        "enabled": true,
+        "priority": 20,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "potionOfQuickness": {
+        "enabled": true,
+        "priority": 8,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jujuFlurry": {
+        "enabled": true,
+        "priority": 9,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      }
+    },
+    "casterOpener": {
+      "enabled": true,
+      "sequence": [
+        "lightningBoltCast",
+        "elementalMastery",
+        "flameShock",
+        "chainLightning",
+        "earthquake"
+      ]
+    },
+    "casterAoePriority": {
+      "chainLightning": {
+        "enabled": true,
+        "priority": 1,
+        "rules": {}
+      },
+      "earthquake": {
+        "enabled": true,
+        "priority": 2,
+        "rules": {}
+      },
+      "fireNovaTotem": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {}
+      },
+      "magmaTotem": {
+        "enabled": true,
+        "priority": 4,
+        "rules": {}
+      },
+      "lightningBoltCast": {
+        "enabled": true,
+        "priority": 5,
+        "rules": {}
+      },
+      "flameShock": {
+        "enabled": true,
+        "priority": 6,
+        "rules": {
+          "reapplyTiming": 0
+        }
+      },
+      "moltenBlastCast": {
+        "enabled": true,
+        "priority": 7,
+        "rules": {
+          "onlyRefreshFlameShock": false
+        }
+      },
+      "earthShock": {
+        "enabled": true,
+        "priority": 8,
+        "rules": {}
+      },
+      "elementalMastery": {
+        "enabled": true,
+        "priority": 9,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "bloodlust": {
+        "enabled": true,
+        "priority": 10,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "priority": 99
+    },
+    "casterAoeOpener": {
+      "enabled": true,
+      "sequence": [
+        "chainLightning",
+        "flameShock"
+      ],
+      "priority": 99
+    },
+    "aoePriority": {
+      "lightningShieldCritical": {
+        "enabled": true,
+        "priority": 1,
+        "rules": {
+          "triggerWhenCharges": 0,
+          "requireLightningStrikeReady": true
+        }
+      },
+      "flameShock": {
+        "enabled": true,
+        "priority": 2,
+        "rules": {
+          "reapplyTiming": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "stormstrike": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {
+          "delayWhenFlameShockExpiring": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningStrike": {
+        "enabled": true,
+        "priority": 4,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningBolt": {
+        "enabled": false,
+        "priority": 5,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "earthShock": {
+        "enabled": true,
+        "priority": 6,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningShieldLow": {
+        "enabled": true,
+        "priority": 6.5,
+        "rules": {
+          "triggerWhenCharges": 3,
+          "requireLightningStrikeReady": false,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningShieldProactive": {
+        "enabled": true,
+        "priority": 8,
+        "rules": {
+          "triggerWhenCharges": 1,
+          "requireLightningStrikeReady": true,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "chainLightning": {
+        "enabled": false,
+        "priority": 8.5,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "fireNovaTotem": {
+        "enabled": true,
+        "priority": 9,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "magmaTotem": {
+        "enabled": false,
+        "priority": 9.5,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "lightningBoltCast": {
+        "enabled": false,
+        "priority": 12,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "moltenBlastCast": {
+        "enabled": false,
+        "priority": 14,
+        "rules": {
+          "onlyRefreshFlameShock": false,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "casterAoePriority": {
+        "chainLightning": {
+          "enabled": true,
+          "priority": 1,
+          "rules": {}
+        },
+        "earthquake": {
+          "enabled": true,
+          "priority": 2,
+          "rules": {}
+        },
+        "fireNovaTotem": {
+          "enabled": true,
+          "priority": 3,
+          "rules": {}
+        },
+        "magmaTotem": {
+          "enabled": true,
+          "priority": 4,
+          "rules": {}
+        },
+        "lightningBoltCast": {
+          "enabled": true,
+          "priority": 5,
+          "rules": {}
+        },
+        "flameShock": {
+          "enabled": true,
+          "priority": 6,
+          "rules": {
+            "reapplyTiming": 0
+          }
+        },
+        "moltenBlastCast": {
+          "enabled": true,
+          "priority": 7,
+          "rules": {
+            "onlyRefreshFlameShock": false
+          }
+        },
+        "earthShock": {
+          "enabled": true,
+          "priority": 8,
+          "rules": {}
+        },
+        "elementalMastery": {
+          "enabled": true,
+          "priority": 9,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "bloodlust": {
+          "enabled": true,
+          "priority": 10,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "priority": 99
+      },
+      "casterAoeOpener": {
+        "enabled": true,
+        "sequence": [
+          "chainLightning",
+          "flameShock"
+        ],
+        "priority": 99
+      },
+      "elementalMastery": {
+        "enabled": true,
+        "priority": 2,
+        "rules": {
+          "useBeforeFlameShock": true,
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "bloodlust": {
+        "enabled": true,
+        "priority": 10,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "kissOfTheSpider": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "naturalAlignmentCrystal": {
+        "enabled": true,
+        "priority": 12,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "shardOfTheFallenStar": {
+        "enabled": true,
+        "priority": 13,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jewelOfWildMagics": {
+        "enabled": true,
+        "priority": 13.5,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "eyeOfDiminution": {
+        "enabled": true,
+        "priority": 14,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "restrainedEssenceOfSapphiron": {
+        "enabled": true,
+        "priority": 15,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "slayersCrest": {
+        "enabled": true,
+        "priority": 16,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "earthstrike": {
+        "enabled": true,
+        "priority": 17,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "moltenEmberstone": {
+        "enabled": true,
+        "priority": 18,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "talismanOfEphemeralPower": {
+        "enabled": true,
+        "priority": 19,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "zandalarianHeroCharm": {
+        "enabled": true,
+        "priority": 20,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "handOfEdwardTheOdd": {
+        "enabled": true,
+        "priority": 3,
+        "rules": {
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "potionOfQuickness": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "jujuFlurry": {
+        "enabled": true,
+        "priority": 11,
+        "rules": {
+          "useAfterFightTime": 0,
+          "delayIfHigherPriorityReadyIn": 0
+        }
+      },
+      "casterPriority": {
+        "lightningBoltCast": {
+          "enabled": true,
+          "priority": 1,
+          "rules": {}
+        },
+        "chainLightning": {
+          "enabled": true,
+          "priority": 2,
+          "rules": {}
+        },
+        "earthquake": {
+          "enabled": true,
+          "priority": 3,
+          "rules": {}
+        },
+        "flameShock": {
+          "enabled": true,
+          "priority": 4,
+          "rules": {
+            "reapplyTiming": 0
+          }
+        },
+        "moltenBlastCast": {
+          "enabled": true,
+          "priority": 5,
+          "rules": {
+            "onlyRefreshFlameShock": false
+          }
+        },
+        "earthShock": {
+          "enabled": true,
+          "priority": 6,
+          "rules": {}
+        },
+        "elementalMastery": {
+          "enabled": true,
+          "priority": 7,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "bloodlust": {
+          "enabled": true,
+          "priority": 8,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "kissOfTheSpider": {
+          "enabled": true,
+          "priority": 9,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "naturalAlignmentCrystal": {
+          "enabled": true,
+          "priority": 10,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "shardOfTheFallenStar": {
+          "enabled": true,
+          "priority": 11,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "jewelOfWildMagics": {
+          "enabled": true,
+          "priority": 12,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "eyeOfDiminution": {
+          "enabled": true,
+          "priority": 13,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "restrainedEssenceOfSapphiron": {
+          "enabled": true,
+          "priority": 14,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "slayersCrest": {
+          "enabled": true,
+          "priority": 15,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "earthstrike": {
+          "enabled": true,
+          "priority": 16,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "moltenEmberstone": {
+          "enabled": true,
+          "priority": 17,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "talismanOfEphemeralPower": {
+          "enabled": true,
+          "priority": 18,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "zandalarianHeroCharm": {
+          "enabled": true,
+          "priority": 19,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "jomGabbar": {
+          "enabled": true,
+          "priority": 20,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "potionOfQuickness": {
+          "enabled": true,
+          "priority": 21,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        },
+        "jujuFlurry": {
+          "enabled": true,
+          "priority": 22,
+          "rules": {
+            "useAfterFightTime": 0,
+            "delayIfHigherPriorityReadyIn": 0
+          }
+        }
+      },
+      "casterOpener": {
+        "enabled": true,
+        "sequence": [
+          "lightningBoltCast",
+          "flameShock"
+        ]
+      }
+    },
+    "aoeOpener": {
+      "enabled": true,
+      "sequence": [
+        "flameShock",
+        "stormstrike",
+        "lightningStrike"
+      ]
+    },
+    "_casterDefaultsApplied": true
+  }
+}

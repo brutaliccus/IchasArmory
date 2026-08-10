@@ -1,0 +1,2659 @@
+{
+  "class": "Hunter",
+  "source": "Turtle WoW",
+  "parsedAt": "2025-12-28T23:37:58.008Z",
+  "positionedAt": "2026-01-17T13:26:14.115Z",
+  "totalTalents": 54,
+  "spellMatchingStats": {
+    "totalTalentsWithSpells": 54,
+    "autoMatched": 54,
+    "manuallyConfigured": 0,
+    "spellMatchesFileUsed": true
+  },
+  "trees": [
+    {
+      "name": "Beast Mastery",
+      "talents": [
+        {
+          "id": 1,
+          "treeIndex": 0,
+          "icon": "spell_nature_ravenform",
+          "ranks": 5,
+          "name": "Swift Aspects",
+          "description": [
+            "Swift AspectsInstantWhile Aspect of the Hawk is active, all normal ranged attacks have a 10% chance of increasing ranged attack speed by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 1,
+                "values": [
+                  "3",
+                  "6",
+                  "9",
+                  "12",
+                  "15"
+                ]
+              }
+            ],
+            "% for 12 sec. While Aspect of the Wolf is active, all normal melee attacks have a 10% chance of increasing melee attack speed by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 1,
+                "values": [
+                  "3",
+                  "6",
+                  "9",
+                  "12",
+                  "15"
+                ]
+              }
+            ],
+            "% for 12 sec."
+          ],
+          "row": 1,
+          "col": 2,
+          "spellIds": {
+            "rank1": 19552,
+            "rank2": 19553,
+            "rank3": 19554,
+            "rank4": 19555,
+            "rank5": 19556
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19552,
+              "description": "Swift AspectsRank 1InstantWhile Aspect of the Hawk is active, all normal ranged attacks have a 10% chance of increasing ranged attack speed by 3% for 12 sec.  While Aspect of the Wolf is active, all normal melee attacks have a 10% chance of increasing melee attack speed by 3% for 12 sec."
+            },
+            "rank2": {
+              "spellId": 19553,
+              "description": "Swift AspectsRank 2InstantWhile Aspect of the Hawk is active, all normal ranged attacks have a 10% chance of increasing ranged attack speed by 6% for 12 sec.  While Aspect of the Wolf is active, all normal melee attacks have a 10% chance of increasing melee attack speed by 6% for 12 sec."
+            },
+            "rank3": {
+              "spellId": 19554,
+              "description": "Swift AspectsRank 3InstantWhile Aspect of the Hawk is active, all normal ranged attacks have a 10% chance of increasing ranged attack speed by 9% for 12 sec.  While Aspect of the Wolf is active, all normal melee attacks have a 10% chance of increasing melee attack speed by 9% for 12 sec."
+            },
+            "rank4": {
+              "spellId": 19555,
+              "description": "Swift AspectsRank 4InstantWhile Aspect of the Hawk is active, all normal ranged attacks have a 10% chance of increasing ranged attack speed by 12% for 12 sec.  While Aspect of the Wolf is active, all normal melee attacks have a 10% chance of increasing melee attack speed by 12% for 12 sec."
+            },
+            "rank5": {
+              "spellId": 19556,
+              "description": "Swift AspectsRank 5InstantWhile Aspect of the Hawk is active, all normal ranged attacks have a 10% chance of increasing ranged attack speed by 15% for 12 sec.  While Aspect of the Wolf is active, all normal melee attacks have a 10% chance of increasing melee attack speed by 15% for 12 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 2,
+          "treeIndex": 0,
+          "icon": "spell_nature_reincarnation",
+          "ranks": 5,
+          "name": "Endurance Training",
+          "description": [
+            "Endurance TrainingInstantAdds ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 2,
+                "values": [
+                  "6",
+                  "12",
+                  "18",
+                  "24",
+                  "30"
+                ]
+              }
+            ],
+            "% of your Stamina to the Stamina of your pets and increases the Health of your pets by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 2,
+                "values": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 3,
+          "spellIds": {
+            "rank1": 19583,
+            "rank2": 19584,
+            "rank3": 19585,
+            "rank4": 19586,
+            "rank5": 19587
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19583,
+              "description": "Endurance TrainingRank 1InstantAdds 6% of your Stamina to the Stamina of your pets and increases the Health of your pets by 1%."
+            },
+            "rank2": {
+              "spellId": 19584,
+              "description": "Endurance TrainingRank 2InstantAdds 12% of your Stamina to the Stamina of your pets and increases the Health of your pets by 2%."
+            },
+            "rank3": {
+              "spellId": 19585,
+              "description": "Endurance TrainingRank 3InstantAdds 18% of your Stamina to the Stamina of your pets and increases the Health of your pets by 3%."
+            },
+            "rank4": {
+              "spellId": 19586,
+              "description": "Endurance TrainingRank 4InstantAdds 24% of your Stamina to the Stamina of your pets and increases the Health of your pets by 4%."
+            },
+            "rank5": {
+              "spellId": 19587,
+              "description": "Endurance TrainingRank 5InstantAdds 30% of your Stamina to the Stamina of your pets and increases the Health of your pets by 5%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 4,
+          "treeIndex": 0,
+          "icon": "ability_eyeoftheowl",
+          "ranks": 2,
+          "name": "Improved Eyes of the Beast",
+          "description": [
+            "Improved Eyes of the BeastInstantIncreases the duration of your Eyes of the Beast by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 4,
+                "values": [
+                  "30000",
+                  "60000"
+                ]
+              }
+            ],
+            " sec.\\n\\nWhile channeling Eyes of the Beast, your pet deals ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 4,
+                "values": [
+                  "16",
+                  "31"
+                ]
+              }
+            ],
+            "% additional damage and gains ",
+            [
+              "$",
+              "$L22",
+              "3",
+              {
+                "tree": 0,
+                "talent": 4,
+                "values": [
+                  "16",
+                  "31"
+                ]
+              }
+            ],
+            "% increased Focus regeneration."
+          ],
+          "row": 2,
+          "col": 1,
+          "spellIds": {
+            "rank1": 19557,
+            "rank2": 19558
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19557,
+              "description": "Improved Eyes of the BeastRank 1InstantIncreases the duration of your Eyes of the Beast by 30000 sec.\\n\\nWhile channeling Eyes of the Beast, your pet deals 16% additional damage and gains 16% increased Focus regeneration."
+            },
+            "rank2": {
+              "spellId": 19558,
+              "description": "Improved Eyes of the BeastRank 2InstantIncreases the duration of your Eyes of the Beast by 60000 sec.\\n\\nWhile channeling Eyes of the Beast, your pet deals 31% additional damage and gains 31% increased Focus regeneration."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 5,
+          "treeIndex": 0,
+          "icon": "ability_hunter_aspectofthemonkey",
+          "ranks": 3,
+          "name": "Improved Primal Aspects",
+          "description": [
+            "Improved Primal AspectsInstantIncreases the Dodge bonus of your Aspect of the Monkey by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 5,
+                "values": [
+                  "2",
+                  "4",
+                  "6"
+                ]
+              }
+            ],
+            "%. While Aspect of the Wolf is active, you're healed for ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 5,
+                "values": [
+                  "2",
+                  "4",
+                  "6"
+                ]
+              }
+            ],
+            "% of your melee damage."
+          ],
+          "row": 2,
+          "col": 2,
+          "spellIds": {
+            "rank1": 19549,
+            "rank2": 19550,
+            "rank3": 19551
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19549,
+              "description": "Improved Primal AspectsRank 1InstantIncreases the Dodge bonus of your Aspect of the Monkey by 2%. While Aspect of the Wolf is active, you're healed for 2% of your melee damage."
+            },
+            "rank2": {
+              "spellId": 19550,
+              "description": "Improved Primal AspectsRank 2InstantIncreases the Dodge bonus of your Aspect of the Monkey by 4%. While Aspect of the Wolf is active, you're healed for 4% of your melee damage."
+            },
+            "rank3": {
+              "spellId": 19551,
+              "description": "Improved Primal AspectsRank 3InstantIncreases the Dodge bonus of your Aspect of the Monkey by 6%. While Aspect of the Wolf is active, you're healed for 6% of your melee damage."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 6,
+          "treeIndex": 0,
+          "icon": "inv_misc_pelt_bear_03",
+          "ranks": 3,
+          "name": "Thick Hide",
+          "description": [
+            "Thick HideInstantAdds ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 6,
+                "values": [
+                  "12",
+                  "24",
+                  "36"
+                ]
+              }
+            ],
+            "% of your armor value from items to the armor value of your pets and increases the armor value of your pets by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 6,
+                "values": [
+                  "4",
+                  "7",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 3,
+          "spellIds": {
+            "rank1": 19609,
+            "rank2": 19610,
+            "rank3": 19612
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19609,
+              "description": "Thick HideRank 1InstantAdds 12% of your armor value from items to the armor value of your pets and increases the armor value of your pets by 4%."
+            },
+            "rank2": {
+              "spellId": 19610,
+              "description": "Thick HideRank 2InstantAdds 24% of your armor value from items to the armor value of your pets and increases the armor value of your pets by 7%."
+            },
+            "rank3": {
+              "spellId": 19612,
+              "description": "Thick HideRank 3InstantAdds 36% of your armor value from items to the armor value of your pets and increases the armor value of your pets by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 7,
+          "treeIndex": 0,
+          "icon": "ability_hunter_beastsoothe",
+          "ranks": 2,
+          "name": "Improved Revive Pet",
+          "description": [
+            "Improved Revive PetInstantRevive Pet's casting time is reduced by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 7,
+                "values": [
+                  "3000",
+                  "6000"
+                ]
+              }
+            ],
+            " sec, mana cost is reduced by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 7,
+                "values": [
+                  "20",
+                  "40"
+                ]
+              }
+            ],
+            "%, and increases the health your pet returns with by an additional ",
+            [
+              "$",
+              "$L22",
+              "3",
+              {
+                "tree": 0,
+                "talent": 7,
+                "values": [
+                  "15",
+                  "30"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 4,
+          "spellIds": {
+            "rank1": 24443,
+            "rank2": 19575
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 24443,
+              "description": "Improved Revive PetRank 1InstantRevive Pet's casting time is reduced by 3000 sec, mana cost is reduced by 20%, and increases the health your pet returns with by an additional 15%."
+            },
+            "rank2": {
+              "spellId": 19575,
+              "description": "Improved Revive PetRank 2InstantRevive Pet's casting time is reduced by 6000 sec, mana cost is reduced by 40%, and increases the health your pet returns with by an additional 30%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 8,
+          "treeIndex": 0,
+          "icon": "ability_mount_jungletiger",
+          "ranks": 2,
+          "name": "Pathfinding",
+          "description": [
+            "PathfindingInstantIncreases the speed bonus of your Aspect of the Cheetah and Aspect of the Pack by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 8,
+                "values": [
+                  "3",
+                  "6"
+                ]
+              }
+            ],
+            "% and increases your pet's movement speed by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 8,
+                "values": [
+                  "15",
+                  "30"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 3,
+          "col": 1,
+          "spellIds": {
+            "rank1": 19559,
+            "rank2": 19560
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19559,
+              "description": "PathfindingRank 1InstantIncreases the speed bonus of your Aspect of the Cheetah and Aspect of the Pack by 3% and increases your pet's movement speed by 15%."
+            },
+            "rank2": {
+              "spellId": 19560,
+              "description": "PathfindingRank 2InstantIncreases the speed bonus of your Aspect of the Cheetah and Aspect of the Pack by 6% and increases your pet's movement speed by 30%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 9,
+          "treeIndex": 0,
+          "icon": "spell_coordinated_assault_1",
+          "ranks": 1,
+          "name": "Coordinated Assault",
+          "description": "Coordinated AssaultInstantHitting an enemy with Arcane Shot, Steady Shot or Raptor Strike causes your pet's next attack within 6 sec to also perform an attack that deals Physical damage equal to 30% of its Attack Power. This effect can trigger only once every 3 sec.",
+          "row": 3,
+          "col": 2,
+          "spellIds": {
+            "rank1": 49559
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 49559,
+              "description": "Coordinated AssaultInstantHitting an enemy with Arcane Shot, Steady Shot or Raptor Strike causes your pet's next attack within 6 sec to also perform an attack that deals Physical damage equal to 30% of its Attack Power.  This effect can trigger only once every 3 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 10,
+          "treeIndex": 0,
+          "icon": "ability_bullrush",
+          "ranks": 5,
+          "name": "Unleashed Fury",
+          "description": [
+            "Unleashed FuryInstantIncreases the damage done by your pets by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 10,
+                "values": [
+                  "4",
+                  "8",
+                  "12",
+                  "16",
+                  "20"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 3,
+          "col": 3,
+          "spellIds": {
+            "rank1": 19616,
+            "rank2": 19617,
+            "rank3": 19618,
+            "rank4": 19619,
+            "rank5": 19620
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19616,
+              "description": "Unleashed FuryRank 1InstantIncreases the damage done by your pets by 4%."
+            },
+            "rank2": {
+              "spellId": 19617,
+              "description": "Unleashed FuryRank 2InstantIncreases the damage done by your pets by 8%."
+            },
+            "rank3": {
+              "spellId": 19618,
+              "description": "Unleashed FuryRank 3InstantIncreases the damage done by your pets by 12%."
+            },
+            "rank4": {
+              "spellId": 19619,
+              "description": "Unleashed FuryRank 4InstantIncreases the damage done by your pets by 16%."
+            },
+            "rank5": {
+              "spellId": 19620,
+              "description": "Unleashed FuryRank 5InstantIncreases the damage done by your pets by 20%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 12,
+          "treeIndex": 0,
+          "icon": "spell_nature_abolishmagic",
+          "ranks": 2,
+          "name": "Bestial Discipline",
+          "description": [
+            "Bestial DisciplineInstantIncreases the Focus regeneration of your pets by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 12,
+                "values": [
+                  "2",
+                  "5"
+                ]
+              }
+            ],
+            " each tick and reduces the cooldown of your pets' special ability by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 12,
+                "values": [
+                  "10",
+                  "20"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 1,
+          "spellIds": {
+            "rank1": 19590,
+            "rank2": 19592
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19590,
+              "description": "Bestial DisciplineRank 1InstantIncreases the Focus regeneration of your pets by 2 each tick and reduces the cooldown of your pets' special ability by 10%."
+            },
+            "rank2": {
+              "spellId": 19592,
+              "description": "Bestial DisciplineRank 2InstantIncreases the Focus regeneration of your pets by 5 each tick and reduces the cooldown of your pets' special ability by 20%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 13,
+          "treeIndex": 0,
+          "icon": "ability_hunter_mendpet",
+          "ranks": 2,
+          "name": "Improved Mend Pet",
+          "description": [
+            "Improved Mend PetInstantIncreases amount you heal your pet with Mend Pet by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 13,
+                "values": [
+                  "20",
+                  "40"
+                ]
+              }
+            ],
+            "% and gives the spell a ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 13,
+                "values": [
+                  "15",
+                  "50"
+                ]
+              }
+            ],
+            "% chance of cleansing 1 Curse, Disease, Magic or Poison effect from the pet each tick."
+          ],
+          "row": 4,
+          "col": 2,
+          "spellIds": {
+            "rank1": 19572,
+            "rank2": 19573
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19572,
+              "description": "Improved Mend PetRank 1InstantIncreases amount you heal your pet with Mend Pet by 20% and gives the spell a 15% chance of cleansing 1 Curse, Disease, Magic or Poison effect from the pet each tick."
+            },
+            "rank2": {
+              "spellId": 19573,
+              "description": "Improved Mend PetRank 2InstantIncreases amount you heal your pet with Mend Pet by 40% and gives the spell a 50% chance of cleansing 1 Curse, Disease, Magic or Poison effect from the pet each tick."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 14,
+          "treeIndex": 0,
+          "icon": "inv_misc_monsterclaw_04",
+          "ranks": 5,
+          "name": "Ferocity",
+          "description": [
+            "FerocityInstantIncreases the critical strike chance of your pets by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 14,
+                "values": [
+                  "3",
+                  "6",
+                  "9",
+                  "12",
+                  "15"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 3,
+          "spellIds": {
+            "rank1": 19598,
+            "rank2": 19599,
+            "rank3": 19600,
+            "rank4": 19601,
+            "rank5": 19602
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19598,
+              "description": "FerocityRank 1InstantIncreases the critical strike chance of your pets by 3%."
+            },
+            "rank2": {
+              "spellId": 19599,
+              "description": "FerocityRank 2InstantIncreases the critical strike chance of your pets by 6%."
+            },
+            "rank3": {
+              "spellId": 19600,
+              "description": "FerocityRank 3InstantIncreases the critical strike chance of your pets by 9%."
+            },
+            "rank4": {
+              "spellId": 19601,
+              "description": "FerocityRank 4InstantIncreases the critical strike chance of your pets by 12%."
+            },
+            "rank5": {
+              "spellId": 19602,
+              "description": "FerocityRank 5InstantIncreases the critical strike chance of your pets by 15%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 16,
+          "treeIndex": 0,
+          "icon": "ability_devour",
+          "ranks": 1,
+          "name": "Intimidation",
+          "description": "Intimidation8% of base mana100 yd rangeInstant60 sec cooldownCommand your pet to intimidate the target on the next successful melee attack, stunning the target for 3 sec, and increasing the pet's threat generation by 50% for 8 sec.",
+          "row": 5,
+          "col": 1,
+          "spellIds": {
+            "rank1": 19577
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19577,
+              "description": "Intimidation8% of base mana100 yd rangeInstant60 sec cooldownCommand your pet to intimidate the target on the next successful melee attack, stunning the target for 3 sec, and increasing the pet's threat generation by 50% for 8 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 17,
+          "treeIndex": 0,
+          "icon": "ability_hunter_killcommand",
+          "ranks": 1,
+          "name": "Kill Command",
+          "description": "Kill Command5% of base mana45 yd rangeInstant12 sec cooldownGive the command to kill, removing any crowd control effects from your pet and causing your pet's next 2 abilities within 10 sec to be guaranteed to critically strike with 50% increased critical strike damage if that ability is capable of striking critically.",
+          "row": 5,
+          "col": 2,
+          "spellIds": {
+            "rank1": 41827
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 41827,
+              "description": "Kill Command5% of base mana45 yd rangeInstant12 sec cooldownGive the command to kill, removing any crowd control effects from your pet and causing your pet's next 2 abilities within 10 sec to be guaranteed to critically strike with 50% increased critical strike damage if that ability is capable of striking critically."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 19,
+          "treeIndex": 0,
+          "icon": "ability_druid_rake",
+          "ranks": 2,
+          "name": "Bestial Precision",
+          "description": [
+            "Bestial PrecisionInstantIncreases the physical hit chance of your pets by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 19,
+                "values": [
+                  "4",
+                  "8"
+                ]
+              }
+            ],
+            "% and the spell hit chance of your pets by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 19,
+                "values": [
+                  "9",
+                  "18"
+                ]
+              }
+            ],
+            "%. In addition, increases the weapon skill of your pets by ",
+            [
+              "$",
+              "$L22",
+              "3",
+              {
+                "tree": 0,
+                "talent": 19,
+                "values": [
+                  "5.",
+                  "10."
+                ]
+              }
+            ]
+          ],
+          "row": 5,
+          "col": 4,
+          "spellIds": {
+            "rank1": 51554,
+            "rank2": 51555
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51554,
+              "description": "Bestial PrecisionRank 1InstantIncreases the physical hit chance of your pets by 4% and the spell hit chance of your pets by 9%. In addition, increases the weapon skill of your pets by 5."
+            },
+            "rank2": {
+              "spellId": 51555,
+              "description": "Bestial PrecisionRank 2InstantIncreases the physical hit chance of your pets by 8% and the spell hit chance of your pets by 18%. In addition, increases the weapon skill of your pets by 10."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 20,
+          "treeIndex": 0,
+          "icon": "ability_druid_demoralizingroar",
+          "ranks": 2,
+          "name": "Spirit Bond",
+          "description": [
+            "Spirit BondInstantYour pet gains melee attack power equal to ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 20,
+                "values": [
+                  "12",
+                  "25"
+                ]
+              }
+            ],
+            "% of your ranged attack power and spell power equal to ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 20,
+                "values": [
+                  "7",
+                  "15"
+                ]
+              }
+            ],
+            "% of your ranged attack power. While your pet is active, you and your pet will regenerate ",
+            [
+              "$",
+              "$L22",
+              "3",
+              {
+                "tree": 0,
+                "talent": 20,
+                "values": [
+                  "1",
+                  "2"
+                ]
+              }
+            ],
+            "% of total health every 5 sec."
+          ],
+          "row": 6,
+          "col": 1,
+          "spellIds": {
+            "rank1": 19578,
+            "rank2": 20895
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19578,
+              "description": "Spirit BondRank 1InstantYour pet gains melee attack power equal to 12% of your ranged attack power and spell power equal to 7% of your ranged attack power. While your pet is active, you and your pet will regenerate 1% of total health every 5 sec."
+            },
+            "rank2": {
+              "spellId": 20895,
+              "description": "Spirit BondRank 2InstantYour pet gains melee attack power equal to 25% of your ranged attack power and spell power equal to 15% of your ranged attack power. While your pet is active, you and your pet will regenerate 2% of total health every 5 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 22,
+          "treeIndex": 0,
+          "icon": "inv_misc_monsterclaw_03",
+          "ranks": 5,
+          "name": "Frenzy",
+          "description": [
+            "FrenzyInstantGives your pet a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 22,
+                "values": [
+                  "20",
+                  "40",
+                  "60",
+                  "80",
+                  "100"
+                ]
+              }
+            ],
+            "% chance to gain a 30% attack speed increase for 8 sec after dealing a critical strike."
+          ],
+          "row": 6,
+          "col": 3,
+          "requires": 14,
+          "reqRanks": 5,
+          "spellIds": {
+            "rank1": 19621,
+            "rank2": 19622,
+            "rank3": 19623,
+            "rank4": 19624,
+            "rank5": 19625
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19621,
+              "description": "FrenzyRank 1InstantGives your pet a 20% chance to gain a 30% attack speed increase for 8 sec after dealing a critical strike."
+            },
+            "rank2": {
+              "spellId": 19622,
+              "description": "FrenzyRank 2InstantGives your pet a 40% chance to gain a 30% attack speed increase for 8 sec after dealing a critical strike."
+            },
+            "rank3": {
+              "spellId": 19623,
+              "description": "FrenzyRank 3InstantGives your pet a 60% chance to gain a 30% attack speed increase for 8 sec after dealing a critical strike."
+            },
+            "rank4": {
+              "spellId": 19624,
+              "description": "FrenzyRank 4InstantGives your pet a 80% chance to gain a 30% attack speed increase for 8 sec after dealing a critical strike."
+            },
+            "rank5": {
+              "spellId": 19625,
+              "description": "FrenzyRank 5InstantGives your pet a 100% chance to gain a 30% attack speed increase for 8 sec after dealing a critical strike."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 25,
+          "treeIndex": 0,
+          "icon": "inv_misc_food_66",
+          "ranks": 1,
+          "name": "Baited Shot",
+          "description": "Baited Shot7% of base mana35 yd range-1000 sec cast8 sec cooldownAn instant shot that deals 125% weapon damage and attaches a bait to the target. The target takes 15% more damage from your pet and your pet's attacks to the target generate 5 Focus for 8 sec. Can only be used after your pet critically strikes a target and Focus generation can trigger only once every 2 sec.",
+          "row": 7,
+          "col": 2,
+          "requires": 17,
+          "reqRanks": 1,
+          "spellIds": {
+            "rank1": 46321
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 46321,
+              "description": "Baited Shot7% of base mana35 yd range-1000 sec cast8 sec cooldownAn instant shot that deals 125% weapon damage and attaches a bait to the target. The target takes 15% more damage from your pet and your pet's attacks to the target generate 5 Focus for 8 sec. Can only be used after your pet critically strikes a target and Focus generation can trigger only once every 2 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        }
+      ]
+    },
+    {
+      "name": "Marksmanship",
+      "talents": [
+        {
+          "id": 1,
+          "treeIndex": 1,
+          "icon": "spell_frost_stun",
+          "ranks": 5,
+          "name": "Improved Concussive Shot",
+          "description": [
+            "Improved Concussive ShotInstantGives your Concussive Shot a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 1,
+                "values": [
+                  "4",
+                  "8",
+                  "12",
+                  "16",
+                  "20"
+                ]
+              }
+            ],
+            "% chance to stun the target for 3 sec."
+          ],
+          "row": 1,
+          "col": 2,
+          "spellIds": {
+            "rank1": 19407,
+            "rank2": 19412,
+            "rank3": 19413,
+            "rank4": 19414,
+            "rank5": 19415
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19407,
+              "description": "Improved Concussive ShotRank 1InstantGives your Concussive Shot a 4% chance to stun the target for 3 sec."
+            },
+            "rank2": {
+              "spellId": 19412,
+              "description": "Improved Concussive ShotRank 2InstantGives your Concussive Shot a 8% chance to stun the target for 3 sec."
+            },
+            "rank3": {
+              "spellId": 19413,
+              "description": "Improved Concussive ShotRank 3InstantGives your Concussive Shot a 12% chance to stun the target for 3 sec."
+            },
+            "rank4": {
+              "spellId": 19414,
+              "description": "Improved Concussive ShotRank 4InstantGives your Concussive Shot a 16% chance to stun the target for 3 sec."
+            },
+            "rank5": {
+              "spellId": 19415,
+              "description": "Improved Concussive ShotRank 5InstantGives your Concussive Shot a 20% chance to stun the target for 3 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 2,
+          "treeIndex": 1,
+          "icon": "spell_frost_wizardmark",
+          "ranks": 5,
+          "name": "Efficiency",
+          "description": [
+            "EfficiencyInstantReduces the Mana cost of your Shots and Stings by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 2,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 3,
+          "spellIds": {
+            "rank1": 19416,
+            "rank2": 19417,
+            "rank3": 19418,
+            "rank4": 19419,
+            "rank5": 19420
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19416,
+              "description": "EfficiencyRank 1InstantReduces the Mana cost of your Shots and Stings by 2%."
+            },
+            "rank2": {
+              "spellId": 19417,
+              "description": "EfficiencyRank 2InstantReduces the Mana cost of your Shots and Stings by 4%."
+            },
+            "rank3": {
+              "spellId": 19418,
+              "description": "EfficiencyRank 3InstantReduces the Mana cost of your Shots and Stings by 6%."
+            },
+            "rank4": {
+              "spellId": 19419,
+              "description": "EfficiencyRank 4InstantReduces the Mana cost of your Shots and Stings by 8%."
+            },
+            "rank5": {
+              "spellId": 19420,
+              "description": "EfficiencyRank 5InstantReduces the Mana cost of your Shots and Stings by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 5,
+          "treeIndex": 1,
+          "icon": "ability_hunter_quickshot",
+          "ranks": 5,
+          "name": "Improved Stings",
+          "description": [
+            "Improved StingsInstantIncreases the damage done by your Serpent Sting by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 5,
+                "values": [
+                  "6",
+                  "12",
+                  "18",
+                  "24",
+                  "30"
+                ]
+              }
+            ],
+            "% and increases the mana drained by Viper Sting by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 1,
+                "talent": 5,
+                "values": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 2,
+          "spellIds": {
+            "rank1": 19464,
+            "rank2": 19465,
+            "rank3": 19466,
+            "rank4": 19467,
+            "rank5": 19468
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19464,
+              "description": "Improved StingsRank 1InstantIncreases the damage done by your Serpent Sting by 6% and increases the mana drained by Viper Sting by 1%."
+            },
+            "rank2": {
+              "spellId": 19465,
+              "description": "Improved StingsRank 2InstantIncreases the damage done by your Serpent Sting by 12% and increases the mana drained by Viper Sting by 2%."
+            },
+            "rank3": {
+              "spellId": 19466,
+              "description": "Improved StingsRank 3InstantIncreases the damage done by your Serpent Sting by 18% and increases the mana drained by Viper Sting by 3%."
+            },
+            "rank4": {
+              "spellId": 19467,
+              "description": "Improved StingsRank 4InstantIncreases the damage done by your Serpent Sting by 24% and increases the mana drained by Viper Sting by 4%."
+            },
+            "rank5": {
+              "spellId": 19468,
+              "description": "Improved StingsRank 5InstantIncreases the damage done by your Serpent Sting by 30% and increases the mana drained by Viper Sting by 5%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 6,
+          "treeIndex": 1,
+          "icon": "ability_searingarrow",
+          "ranks": 5,
+          "name": "Lethal Shots",
+          "description": [
+            "Lethal ShotsInstantIncreases your critical strike chance with ranged weapons by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 6,
+                "values": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 3,
+          "spellIds": {
+            "rank1": 19426,
+            "rank2": 19427,
+            "rank3": 19429,
+            "rank4": 19430,
+            "rank5": 19431
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19426,
+              "description": "Lethal ShotsRank 1InstantIncreases your critical strike chance with ranged weapons by 1%."
+            },
+            "rank2": {
+              "spellId": 19427,
+              "description": "Lethal ShotsRank 2InstantIncreases your critical strike chance with ranged weapons by 2%."
+            },
+            "rank3": {
+              "spellId": 19429,
+              "description": "Lethal ShotsRank 3InstantIncreases your critical strike chance with ranged weapons by 3%."
+            },
+            "rank4": {
+              "spellId": 19430,
+              "description": "Lethal ShotsRank 4InstantIncreases your critical strike chance with ranged weapons by 4%."
+            },
+            "rank5": {
+              "spellId": 19431,
+              "description": "Lethal ShotsRank 5InstantIncreases your critical strike chance with ranged weapons by 5%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 8,
+          "treeIndex": 1,
+          "icon": "ability_townwatch",
+          "ranks": 2,
+          "name": "Hawk Eye",
+          "description": [
+            "Hawk EyeInstantIncreases the range of your ranged weapons by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 8,
+                "values": [
+                  "3",
+                  "6"
+                ]
+              }
+            ],
+            " yards."
+          ],
+          "row": 3,
+          "col": 1,
+          "spellIds": {
+            "rank1": 19498,
+            "rank2": 19499
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19498,
+              "description": "Hawk EyeRank 1InstantIncreases the range of your ranged weapons by 3 yards."
+            },
+            "rank2": {
+              "spellId": 19499,
+              "description": "Hawk EyeRank 2InstantIncreases the range of your ranged weapons by 6 yards."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 9,
+          "treeIndex": 1,
+          "icon": "ability_hunter_criticalshot",
+          "ranks": 2,
+          "name": "Improved Scorpid Sting",
+          "description": [
+            "Improved Scorpid StingInstantScorpid String reduces enemy attack speed by an additional ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 9,
+                "values": [
+                  "5",
+                  "10"
+                ]
+              }
+            ],
+            "% and reduces their damage done by an additional ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 1,
+                "talent": 9,
+                "values": [
+                  "1",
+                  "2"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 3,
+          "col": 2,
+          "spellIds": {
+            "rank1": 19491,
+            "rank2": 19493
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19491,
+              "description": "Improved Scorpid StingRank 1InstantScorpid String reduces enemy attack speed by an additional 5% and reduces their damage done by an additional 1%."
+            },
+            "rank2": {
+              "spellId": 19493,
+              "description": "Improved Scorpid StingRank 2InstantScorpid String reduces enemy attack speed by an additional 10% and reduces their damage done by an additional 2%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 11,
+          "treeIndex": 1,
+          "icon": "ability_hunter_steadyshot",
+          "ranks": 1,
+          "name": "Steady Shot",
+          "description": "Steady Shot% of base mana35 yd range1 sec castA precise shot with a ranged weapon that strikes the target for 60% weapon damage plus an additional 10 damage.",
+          "row": 3,
+          "col": 4,
+          "spellIds": {
+            "rank1": 3035
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 3035,
+              "description": "Steady ShotRank 15% of base mana35 yd range1 sec castA precise shot with a ranged weapon that strikes the target for 60% weapon damage plus an additional 10 damage."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 12,
+          "treeIndex": 1,
+          "icon": "ability_hunter_snipershot",
+          "ranks": 3,
+          "name": "Improved Hunter's Mark",
+          "description": [
+            "Improved Hunter's MarkInstantIncreases the Ranged Attack Power bonus of your Hunter's Mark spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 12,
+                "values": [
+                  "5",
+                  "10",
+                  "15"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 1,
+          "spellIds": {
+            "rank1": 19421,
+            "rank2": 19422,
+            "rank3": 19423
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19421,
+              "description": "Improved Hunter's MarkRank 1InstantIncreases the Ranged Attack Power bonus of your Hunter's Mark spell by 5%."
+            },
+            "rank2": {
+              "spellId": 19422,
+              "description": "Improved Hunter's MarkRank 2InstantIncreases the Ranged Attack Power bonus of your Hunter's Mark spell by 10%."
+            },
+            "rank3": {
+              "spellId": 19423,
+              "description": "Improved Hunter's MarkRank 3InstantIncreases the Ranged Attack Power bonus of your Hunter's Mark spell by 15%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 13,
+          "treeIndex": 1,
+          "icon": "ability_impalingbolt",
+          "ranks": 3,
+          "name": "Swiftshot",
+          "description": [
+            "SwiftshotInstantReduces the cooldown of your Arcane Shot and Aimed Shot by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 13,
+                "values": [
+                  "300",
+                  "600",
+                  "1000"
+                ]
+              }
+            ],
+            " sec."
+          ],
+          "row": 4,
+          "col": 2,
+          "spellIds": {
+            "rank1": 19454,
+            "rank2": 19455,
+            "rank3": 19456
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19454,
+              "description": "SwiftshotRank 1InstantReduces the cooldown of your Arcane Shot and Aimed Shot by 300 sec."
+            },
+            "rank2": {
+              "spellId": 19455,
+              "description": "SwiftshotRank 2InstantReduces the cooldown of your Arcane Shot and Aimed Shot by 600 sec."
+            },
+            "rank3": {
+              "spellId": 19456,
+              "description": "SwiftshotRank 3InstantReduces the cooldown of your Arcane Shot and Aimed Shot by 1000 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 14,
+          "treeIndex": 1,
+          "icon": "ability_piercedamage",
+          "ranks": 5,
+          "name": "Mortal Shots",
+          "description": [
+            "Mortal ShotsInstantIncreases your ranged weapon critical strike damage bonus by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 14,
+                "values": [
+                  "6",
+                  "12",
+                  "18",
+                  "24",
+                  "30"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 3,
+          "requires": 6,
+          "reqRanks": 5,
+          "spellIds": {
+            "rank1": 19485,
+            "rank2": 19487,
+            "rank3": 19488,
+            "rank4": 19489,
+            "rank5": 19490
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19485,
+              "description": "Mortal ShotsRank 1InstantIncreases your ranged weapon critical strike damage bonus by 6%."
+            },
+            "rank2": {
+              "spellId": 19487,
+              "description": "Mortal ShotsRank 2InstantIncreases your ranged weapon critical strike damage bonus by 12%."
+            },
+            "rank3": {
+              "spellId": 19488,
+              "description": "Mortal ShotsRank 3InstantIncreases your ranged weapon critical strike damage bonus by 18%."
+            },
+            "rank4": {
+              "spellId": 19489,
+              "description": "Mortal ShotsRank 4InstantIncreases your ranged weapon critical strike damage bonus by 24%."
+            },
+            "rank5": {
+              "spellId": 19490,
+              "description": "Mortal ShotsRank 5InstantIncreases your ranged weapon critical strike damage bonus by 30%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 16,
+          "treeIndex": 1,
+          "icon": "ability_golemstormbolt",
+          "ranks": 1,
+          "name": "Scatter Shot",
+          "description": "Scatter Shot8% of base mana15 yd range-1000 sec cast30 sec cooldownA short-range shot that deals 50% weapon damage and disorients the target for 4 sec. Any damage caused will remove the effect. Turns off your attack when used.",
+          "row": 5,
+          "col": 1,
+          "spellIds": {
+            "rank1": 19503
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19503,
+              "description": "Scatter Shot8% of base mana15 yd range-1000 sec cast30 sec cooldownA short-range shot that deals 50% weapon damage and disorients the target for 4 sec.  Any damage caused will remove the effect.  Turns off your attack when used."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 17,
+          "treeIndex": 1,
+          "icon": "ability_upgrademoonglaive",
+          "ranks": 3,
+          "name": "Barrage",
+          "description": [
+            "BarrageInstantIncreases the damage done by your Multi-Shot and Volley spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 17,
+                "values": [
+                  "5",
+                  "10",
+                  "15"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 5,
+          "col": 2,
+          "spellIds": {
+            "rank1": 19461,
+            "rank2": 19462,
+            "rank3": 24691
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19461,
+              "description": "BarrageRank 1InstantIncreases the damage done by your Multi-Shot and Volley spells by 5%."
+            },
+            "rank2": {
+              "spellId": 19462,
+              "description": "BarrageRank 2InstantIncreases the damage done by your Multi-Shot and Volley spells by 10%."
+            },
+            "rank3": {
+              "spellId": 24691,
+              "description": "BarrageRank 3InstantIncreases the damage done by your Multi-Shot and Volley spells by 15%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 18,
+          "treeIndex": 1,
+          "icon": "ability_hunter_disarmingshot",
+          "ranks": 2,
+          "name": "Piercing Shots",
+          "description": [
+            "Piercing ShotsInstantYour critical strikes from Multi-Shot, Steady Shot and Aimed Shot cause the target to bleed, dealing ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 18,
+                "values": [
+                  "15",
+                  "30"
+                ]
+              }
+            ],
+            "% of the damage over 8 sec. This damage generates no threat."
+          ],
+          "row": 5,
+          "col": 3,
+          "spellIds": {
+            "rank1": 51512,
+            "rank2": 51513
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51512,
+              "description": "Piercing ShotsRank 1InstantYour critical strikes from Multi-Shot, Steady Shot and Aimed Shot cause the target to bleed, dealing 15% of the damage over 8 sec.  This damage generates no threat."
+            },
+            "rank2": {
+              "spellId": 51513,
+              "description": "Piercing ShotsRank 2InstantYour critical strikes from Multi-Shot, Steady Shot and Aimed Shot cause the target to bleed, dealing 30% of the damage over 8 sec.  This damage generates no threat."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 19,
+          "treeIndex": 1,
+          "icon": "ability_hunter_improvedsteadyshot",
+          "ranks": 2,
+          "name": "Improved Steady Shot",
+          "description": "Improved Steady ShotInstantIncreases the damage done by your Steady Shot by 8%.",
+          "row": 5,
+          "col": 4,
+          "requires": 11,
+          "reqRanks": 1,
+          "spellIds": {
+            "rank1": 51515,
+            "rank2": 51516
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51515,
+              "description": "Improved Steady ShotRank 1InstantIncreases the damage done by your Steady Shot by 8%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 20,
+          "treeIndex": 1,
+          "icon": "inv_misc_quiver_03",
+          "ranks": 2,
+          "name": "Endless Quiver",
+          "description": [
+            "Endless QuiverInstantYour Auto Shot, Arcane Shot, Steady Shot and Multi-Shot have a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 20,
+                "values": [
+                  "3",
+                  "6"
+                ]
+              }
+            ],
+            "% chance to fire an additional normal ranged attack. This additional shot does not spend ammo."
+          ],
+          "row": 6,
+          "col": 1,
+          "spellIds": {
+            "rank1": 51517,
+            "rank2": 51518
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51517,
+              "description": "Endless QuiverRank 1InstantYour Auto Shot, Arcane Shot, Steady Shot and Multi-Shot have a 3% chance to fire an additional normal ranged attack.  This additional shot does not spend ammo."
+            },
+            "rank2": {
+              "spellId": 51518,
+              "description": "Endless QuiverRank 2InstantYour Auto Shot, Arcane Shot, Steady Shot and Multi-Shot have a 6% chance to fire an additional normal ranged attack.  This additional shot does not spend ammo."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 22,
+          "treeIndex": 1,
+          "icon": "inv_weapon_rifle_06",
+          "ranks": 5,
+          "name": "Ranged Weapon Specialization",
+          "description": [
+            "Ranged Weapon SpecializationInstantIncreases the damage you deal with ranged weapons by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 22,
+                "values": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 6,
+          "col": 3,
+          "spellIds": {
+            "rank1": 19507,
+            "rank2": 19508,
+            "rank3": 19509,
+            "rank4": 19510,
+            "rank5": 19511
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19507,
+              "description": "Ranged Weapon SpecializationRank 1InstantIncreases the damage you deal with ranged weapons by 1%."
+            },
+            "rank2": {
+              "spellId": 19508,
+              "description": "Ranged Weapon SpecializationRank 2InstantIncreases the damage you deal with ranged weapons by 2%."
+            },
+            "rank3": {
+              "spellId": 19509,
+              "description": "Ranged Weapon SpecializationRank 3InstantIncreases the damage you deal with ranged weapons by 3%."
+            },
+            "rank4": {
+              "spellId": 19510,
+              "description": "Ranged Weapon SpecializationRank 4InstantIncreases the damage you deal with ranged weapons by 4%."
+            },
+            "rank5": {
+              "spellId": 19511,
+              "description": "Ranged Weapon SpecializationRank 5InstantIncreases the damage you deal with ranged weapons by 5%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 25,
+          "treeIndex": 1,
+          "icon": "ability_trueshot",
+          "ranks": 1,
+          "name": "Trueshot Aura",
+          "description": "Trueshot AuraInstantIncreases the attack power of party members within 45 yards by 3%, plus an additional 30. The aura lasts until canceled.",
+          "row": 7,
+          "col": 2,
+          "requires": 17,
+          "reqRanks": 3,
+          "spellIds": {
+            "rank1": 19506
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19506,
+              "description": "Trueshot AuraRank 1InstantIncreases the attack power of party members within 45 yards by 3%, plus an additional 30. The aura lasts until canceled."
+            }
+          },
+          "spellMatchMethod": "auto"
+        }
+      ]
+    },
+    {
+      "name": "Survival",
+      "talents": [
+        {
+          "id": 0,
+          "treeIndex": 2,
+          "icon": "spell_holy_prayerofhealing",
+          "ranks": 3,
+          "name": "Improved Slaying",
+          "description": [
+            "Improved SlayingInstantIncreases all damage caused against Beasts, Giants, Dragonkin, and Humanoid targets by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 0,
+                "values": [
+                  "1",
+                  "2",
+                  "3"
+                ]
+              }
+            ],
+            "% and increases critical damage caused against Beasts, Giants, Dragonkin, and Humanoid targets by an additional ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 0,
+                "values": [
+                  "1",
+                  "2",
+                  "3"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 1,
+          "spellIds": {
+            "rank1": 45977,
+            "rank2": 45978,
+            "rank3": 45979
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 45977,
+              "description": "Improved SlayingRank 1InstantIncreases all damage caused against Beasts, Giants, Dragonkin, and Humanoid targets by 1% and increases critical damage caused against Beasts, Giants, Dragonkin, and Humanoid targets by an additional 1%."
+            },
+            "rank2": {
+              "spellId": 45978,
+              "description": "Improved SlayingRank 1InstantIncreases all damage caused against Beasts, Giants, Dragonkin, and Humanoid targets by 2% and increases critical damage caused against Beasts, Giants, Dragonkin, and Humanoid targets by an additional 2%."
+            },
+            "rank3": {
+              "spellId": 45979,
+              "description": "Improved SlayingRank 1InstantIncreases all damage caused against Beasts, Giants, Dragonkin, and Humanoid targets by 3% and increases critical damage caused against Beasts, Giants, Dragonkin, and Humanoid targets by an additional 3%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 1,
+          "treeIndex": 2,
+          "icon": "inv_misc_book_08",
+          "ranks": 5,
+          "name": "Resourcefulness",
+          "description": [
+            "ResourcefulnessInstantReduces the Mana cost of all traps and melee abilities by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 1,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 2,
+          "spellIds": {
+            "rank1": 51570,
+            "rank2": 51571,
+            "rank3": 51572,
+            "rank4": 51573,
+            "rank5": 51574
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51570,
+              "description": "ResourcefulnessRank 1InstantReduces the Mana cost of all traps and melee abilities by 2%."
+            },
+            "rank2": {
+              "spellId": 51571,
+              "description": "ResourcefulnessRank 2InstantReduces the Mana cost of all traps and melee abilities by 4%."
+            },
+            "rank3": {
+              "spellId": 51572,
+              "description": "ResourcefulnessRank 3InstantReduces the Mana cost of all traps and melee abilities by 6%."
+            },
+            "rank4": {
+              "spellId": 51573,
+              "description": "ResourcefulnessRank 4InstantReduces the Mana cost of all traps and melee abilities by 8%."
+            },
+            "rank5": {
+              "spellId": 51574,
+              "description": "ResourcefulnessRank 5InstantReduces the Mana cost of all traps and melee abilities by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 2,
+          "treeIndex": 2,
+          "icon": "ability_parry",
+          "ranks": 2,
+          "name": "Swift Reflexes",
+          "description": [
+            "Swift ReflexesInstantIncreases your Parry chance and attack speed by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 2,
+                "values": [
+                  "1",
+                  "2"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 3,
+          "spellIds": {
+            "rank1": 19295,
+            "rank2": 19297
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19295,
+              "description": "Swift ReflexesRank 1InstantIncreases your Parry chance and attack speed by 1%."
+            },
+            "rank2": {
+              "spellId": 19297,
+              "description": "Swift ReflexesRank 2InstantIncreases your Parry chance and attack speed by 2%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 4,
+          "treeIndex": 2,
+          "icon": "spell_nature_stranglevines",
+          "ranks": 3,
+          "name": "Entrapment",
+          "description": [
+            "EntrapmentInstantGives your Immolation Trap, Frost Trap, and Explosive Trap a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 4,
+                "values": [
+                  "8",
+                  "16",
+                  "25"
+                ]
+              }
+            ],
+            "% chance to entrap the target, preventing them from moving for 5 sec."
+          ],
+          "row": 2,
+          "col": 1,
+          "spellIds": {
+            "rank1": 19184,
+            "rank2": 19387,
+            "rank3": 19388
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19184,
+              "description": "EntrapmentRank 1InstantGives your Immolation Trap, Frost Trap, and Explosive Trap a 8% chance to entrap the target, preventing them from moving for 5 sec."
+            },
+            "rank2": {
+              "spellId": 19387,
+              "description": "EntrapmentRank 2InstantGives your Immolation Trap, Frost Trap, and Explosive Trap a 16% chance to entrap the target, preventing them from moving for 5 sec."
+            },
+            "rank3": {
+              "spellId": 19388,
+              "description": "EntrapmentRank 3InstantGives your Immolation Trap, Frost Trap, and Explosive Trap a 25% chance to entrap the target, preventing them from moving for 5 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 5,
+          "treeIndex": 2,
+          "icon": "ability_racial_bloodrage",
+          "ranks": 2,
+          "name": "Savage Strikes",
+          "description": [
+            "Savage StrikesInstantIncreases the damage done by your offhand weapon by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 5,
+                "values": [
+                  "13",
+                  "25"
+                ]
+              }
+            ],
+            "% and the critical strike chance of your Lacerate, Raptor Strike, Mongoose Bite, Carve and Wing Clip abilities by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 5,
+                "values": [
+                  "3",
+                  "6"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 2,
+          "spellIds": {
+            "rank1": 19159,
+            "rank2": 19160
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19159,
+              "description": "Savage StrikesRank 1InstantIncreases the damage done by your offhand weapon by 13% and the critical strike chance of your Lacerate, Raptor Strike, Mongoose Bite, Carve and Wing Clip abilities by 3%."
+            },
+            "rank2": {
+              "spellId": 19160,
+              "description": "Savage StrikesRank 2InstantIncreases the damage done by your offhand weapon by 25% and the critical strike chance of your Lacerate, Raptor Strike, Mongoose Bite, Carve and Wing Clip abilities by 6%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 6,
+          "treeIndex": 2,
+          "icon": "ability_rogue_trip",
+          "ranks": 3,
+          "name": "Improved Wing Clip",
+          "description": [
+            "Improved Wing ClipInstantGives your Wing Clip ability a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 6,
+                "values": [
+                  "14",
+                  "28",
+                  "40"
+                ]
+              }
+            ],
+            "% chance to immobilize the target for 5 sec."
+          ],
+          "row": 2,
+          "col": 3,
+          "spellIds": {
+            "rank1": 19228,
+            "rank2": 19232,
+            "rank3": 19233
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19228,
+              "description": "Improved Wing ClipRank 1InstantGives your Wing Clip ability a 14% chance to immobilize the target for 5 sec."
+            },
+            "rank2": {
+              "spellId": 19232,
+              "description": "Improved Wing ClipRank 2InstantGives your Wing Clip ability a 28% chance to immobilize the target for 5 sec."
+            },
+            "rank3": {
+              "spellId": 19233,
+              "description": "Improved Wing ClipRank 3InstantGives your Wing Clip ability a 40% chance to immobilize the target for 5 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 8,
+          "treeIndex": 2,
+          "icon": "inv_misc_map_01",
+          "ranks": 2,
+          "name": "Planning Ahead",
+          "description": [
+            "Planning AheadInstantThe duration of Freezing and Frost Trap effects and the damage of Immolation and Explosive Trap effects are increased by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 8,
+                "values": [
+                  "13",
+                  "25"
+                ]
+              }
+            ],
+            "% if the traps are not triggered within the first 5 sec after being placed."
+          ],
+          "row": 3,
+          "col": 1,
+          "spellIds": {
+            "rank1": 51576,
+            "rank2": 51577
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51576,
+              "description": "Planning AheadRank 1InstantThe duration of Freezing and Frost Trap effects and the damage of Immolation and Explosive Trap effects are increased by 13% if the traps are not triggered within the first 5 sec after being placed."
+            },
+            "rank2": {
+              "spellId": 51577,
+              "description": "Planning AheadRank 2InstantThe duration of Freezing and Frost Trap effects and the damage of Immolation and Explosive Trap effects are increased by 25% if the traps are not triggered within the first 5 sec after being placed."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 9,
+          "treeIndex": 2,
+          "icon": "trade_survival",
+          "ranks": 5,
+          "name": "Survivalist",
+          "description": [
+            "SurvivalistInstantIncreases total health by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 9,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 3,
+          "col": 2,
+          "spellIds": {
+            "rank1": 19255,
+            "rank2": 19256,
+            "rank3": 19257,
+            "rank4": 19258,
+            "rank5": 19259
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19255,
+              "description": "SurvivalistRank 1InstantIncreases total health by 2%."
+            },
+            "rank2": {
+              "spellId": 19256,
+              "description": "SurvivalistRank 2InstantIncreases total health by 4%."
+            },
+            "rank3": {
+              "spellId": 19257,
+              "description": "SurvivalistRank 3InstantIncreases total health by 6%."
+            },
+            "rank4": {
+              "spellId": 19258,
+              "description": "SurvivalistRank 4InstantIncreases total health by 8%."
+            },
+            "rank5": {
+              "spellId": 19259,
+              "description": "SurvivalistRank 5InstantIncreases total health by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 10,
+          "treeIndex": 2,
+          "icon": "inv_throwingknife_06",
+          "ranks": 1,
+          "name": "Carve",
+          "description": "Carve% of base manaInstantA sweeping attack that strikes up to 5 enemies in a 10 yard cone in front of you, dealing 60% weapon damage.\\nThis ability shares a cooldown with Multi-Shot.",
+          "row": 3,
+          "col": 3,
+          "spellIds": {
+            "rank1": 51575
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51575,
+              "description": "CarveRank 18% of base manaInstantA sweeping attack that strikes up to 5 enemies in a 10 yard cone in front of you, dealing 60% weapon damage.\\nThis ability shares a cooldown with Multi-Shot."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 11,
+          "treeIndex": 2,
+          "icon": "ability_whirlwind",
+          "ranks": 1,
+          "name": "Deterrence",
+          "description": "DeterrenceInstant300 sec cooldownWhen activated, increases your Dodge and Parry chance by 25% for 10 sec.",
+          "row": 3,
+          "col": 4,
+          "spellIds": {
+            "rank1": 19263
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19263,
+              "description": "DeterrenceInstant300 sec cooldownWhen activated, increases your Dodge and Parry chance by 25% for 10 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 12,
+          "treeIndex": 2,
+          "icon": "inv_misc_herb_16",
+          "ranks": 2,
+          "name": "Stinging Nettle",
+          "description": [
+            "Stinging NettleInstantYour Mongoose Bite and triggered Fire traps now apply your highest rank of Serpent Sting for ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 12,
+                "values": [
+                  "20",
+                  "40"
+                ]
+              }
+            ],
+            "% of the duration. Serpent Stings applied this way ignore resistances and immunities."
+          ],
+          "row": 4,
+          "col": 1,
+          "spellIds": {
+            "rank1": 51579,
+            "rank2": 51580
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51579,
+              "description": "Stinging NettleRank 1InstantYour Mongoose Bite and triggered Fire traps now apply your highest rank of Serpent Sting for 20% of the duration. Serpent Stings applied this way ignore resistances and immunities."
+            },
+            "rank2": {
+              "spellId": 51580,
+              "description": "Stinging NettleRank 2InstantYour Mongoose Bite and triggered Fire traps now apply your highest rank of Serpent Sting for 40% of the duration. Serpent Stings applied this way ignore resistances and immunities."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 13,
+          "treeIndex": 2,
+          "icon": "ability_kick",
+          "ranks": 3,
+          "name": "Surefooted",
+          "description": [
+            "SurefootedInstantIncreases hit chance by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 13,
+                "values": [
+                  "1",
+                  "2",
+                  "3"
+                ]
+              }
+            ],
+            "% and increases the chance movement impairing effects will be resisted by an additional ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 13,
+                "values": [
+                  "5",
+                  "10",
+                  "15"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 2,
+          "spellIds": {
+            "rank1": 19290,
+            "rank2": 19294,
+            "rank3": 24283
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19290,
+              "description": "SurefootedRank 1InstantIncreases hit chance by 1% and increases the chance movement impairing effects will be resisted by an additional 5%."
+            },
+            "rank2": {
+              "spellId": 19294,
+              "description": "SurefootedRank 2InstantIncreases hit chance by 2% and increases the chance movement impairing effects will be resisted by an additional 10%."
+            },
+            "rank3": {
+              "spellId": 24283,
+              "description": "SurefootedRank 3InstantIncreases hit chance by 3% and increases the chance movement impairing effects will be resisted by an additional 15%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 15,
+          "treeIndex": 2,
+          "icon": "ability_rogue_feigndeath",
+          "ranks": 2,
+          "name": "Improved Feign Death",
+          "description": [
+            "Improved Feign DeathInstantReduces the chance your Feign Death ability will be resisted by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 15,
+                "values": [
+                  "4",
+                  "8"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 4,
+          "spellIds": {
+            "rank1": 19286,
+            "rank2": 19287
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19286,
+              "description": "Improved Feign DeathRank 1InstantReduces the chance your Feign Death ability will be resisted by 4%."
+            },
+            "rank2": {
+              "spellId": 19287,
+              "description": "Improved Feign DeathRank 2InstantReduces the chance your Feign Death ability will be resisted by 8%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 16,
+          "treeIndex": 2,
+          "icon": "spell_holy_blessingofstamina",
+          "ranks": 3,
+          "name": "Killer Instinct",
+          "description": [
+            "Killer InstinctInstantIncreases your critical strike chance with all attacks by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 16,
+                "values": [
+                  "1",
+                  "2",
+                  "3"
+                ]
+              }
+            ],
+            "%, increases your melee critical strike damage bonus by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 16,
+                "values": [
+                  "7",
+                  "14",
+                  "20"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 5,
+          "col": 1,
+          "spellIds": {
+            "rank1": 19370,
+            "rank2": 19371,
+            "rank3": 19373
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19370,
+              "description": "Killer InstinctRank 1InstantIncreases your critical strike chance with all attacks by 1%, increases your melee critical strike damage bonus by 7%."
+            },
+            "rank2": {
+              "spellId": 19371,
+              "description": "Killer InstinctRank 2InstantIncreases your critical strike chance with all attacks by 2%, increases your melee critical strike damage bonus by 14%."
+            },
+            "rank3": {
+              "spellId": 19373,
+              "description": "Killer InstinctRank 3InstantIncreases your critical strike chance with all attacks by 3%, increases your melee critical strike damage bonus by 20%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 17,
+          "treeIndex": 2,
+          "icon": "ability_ensnare",
+          "ranks": 3,
+          "name": "Trap Mastery",
+          "description": [
+            "Trap MasteryInstantIncreases the duration of Freezing and Frost Trap effects by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 17,
+                "values": [
+                  "10",
+                  "20",
+                  "30"
+                ]
+              }
+            ],
+            "% and the damage of Immolation and Explosive Trap effects by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 17,
+                "values": [
+                  "10",
+                  "20",
+                  "30"
+                ]
+              }
+            ],
+            "%. In addition, reduces the chance that enemies will resist trap effects by ",
+            [
+              "$",
+              "$L22",
+              "3",
+              {
+                "tree": 2,
+                "talent": 17,
+                "values": [
+                  "4",
+                  "7",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 5,
+          "col": 2,
+          "spellIds": {
+            "rank1": 19376,
+            "rank2": 19377,
+            "rank3": 51581
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19376,
+              "description": "Trap MasteryRank 1InstantIncreases the duration of Freezing and Frost Trap effects by 10% and the damage of Immolation and Explosive Trap effects by 10%.  In addition, reduces the chance that enemies will resist trap effects by 4%."
+            },
+            "rank2": {
+              "spellId": 19377,
+              "description": "Trap MasteryRank 2InstantIncreases the duration of Freezing and Frost Trap effects by 20% and the damage of Immolation and Explosive Trap effects by 20%.  In addition, reduces the chance that enemies will resist trap effects by 7%."
+            },
+            "rank3": {
+              "spellId": 51581,
+              "description": "Trap MasteryRank 3InstantIncreases the duration of Freezing and Frost Trap effects by 30% and the damage of Immolation and Explosive Trap effects by 30%.  In addition, reduces the chance that enemies will resist trap effects by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 18,
+          "treeIndex": 2,
+          "icon": "spell_lacerate_1c",
+          "ranks": 1,
+          "name": "Lacerate",
+          "description": "Lacerate8% of base mana5 yd rangeInstant10 sec cooldownDeepen your target's open wound, dealing damage equal to 35% of your melee Attack Power and bleeding them for 20% of the damage over 8 sec. Can only be used after critically striking your target. Using this ability from the sides of your target increases its damage by 10% and causes the bleed to deal its total damage 100% faster.",
+          "row": 5,
+          "col": 3,
+          "requires": 10,
+          "reqRanks": 1,
+          "spellIds": {
+            "rank1": 48049
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 48049,
+              "description": "Lacerate8% of base mana5 yd rangeInstant10 sec cooldownDeepen your target's open wound, dealing damage equal to 35% of your melee Attack Power and bleeding them for 20% of the damage over 8 sec. Can only be used after critically striking your target. Using this ability from the sides of your target increases its damage by 10% and causes the bleed to deal its total damage 100% faster."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 20,
+          "treeIndex": 2,
+          "icon": "ability_hunter_swiftstrike",
+          "ranks": 2,
+          "name": "Vicious Strikes",
+          "description": "Vicious StrikesInstantReduces the cooldown of your Raptor Strike and Mongoose Bite abilities by 1000 sec.",
+          "row": 6,
+          "col": 1,
+          "spellIds": {
+            "rank1": 51584,
+            "rank2": 51585
+          },
+          "rankDescriptions": {
+            "rank2": {
+              "spellId": 51585,
+              "description": "Vicious StrikesRank 2InstantReduces the cooldown of your Raptor Strike and Mongoose Bite abilities by 1000 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 22,
+          "treeIndex": 2,
+          "icon": "spell_nature_invisibilty",
+          "ranks": 5,
+          "name": "Lightning Reflexes",
+          "description": [
+            "Lightning ReflexesInstantIncreases your Agility by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 22,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "% and increases your melee attack power by an amount equal to ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 22,
+                "values": [
+                  "20",
+                  "40",
+                  "60",
+                  "80",
+                  "100"
+                ]
+              }
+            ],
+            "% of your Agility."
+          ],
+          "row": 6,
+          "col": 3,
+          "spellIds": {
+            "rank1": 19168,
+            "rank2": 19180,
+            "rank3": 19181,
+            "rank4": 24296,
+            "rank5": 24297
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 19168,
+              "description": "Lightning ReflexesRank 1InstantIncreases your Agility by 2% and increases your melee attack power by an amount equal to 20% of your Agility."
+            },
+            "rank2": {
+              "spellId": 19180,
+              "description": "Lightning ReflexesRank 2InstantIncreases your Agility by 4% and increases your melee attack power by an amount equal to 40% of your Agility."
+            },
+            "rank3": {
+              "spellId": 19181,
+              "description": "Lightning ReflexesRank 3InstantIncreases your Agility by 6% and increases your melee attack power by an amount equal to 60% of your Agility."
+            },
+            "rank4": {
+              "spellId": 24296,
+              "description": "Lightning ReflexesRank 4InstantIncreases your Agility by 8% and increases your melee attack power by an amount equal to 80% of your Agility."
+            },
+            "rank5": {
+              "spellId": 24297,
+              "description": "Lightning ReflexesRank 5InstantIncreases your Agility by 10% and increases your melee attack power by an amount equal to 100% of your Agility."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 25,
+          "treeIndex": 2,
+          "icon": "spell_nature_slow",
+          "ranks": 1,
+          "name": "Untamed Trapper",
+          "description": "Untamed TrapperInstantReduces the mana cost of your Immolation Trap and Explosive Trap effects by 20% and increases their damage based on your melee Attack Power. In addition, all traps can be placed while in combat.",
+          "row": 7,
+          "col": 2,
+          "requires": 17,
+          "reqRanks": 3,
+          "spellIds": {
+            "rank1": 51586
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51586,
+              "description": "Untamed TrapperInstantReduces the mana cost of your Immolation Trap and Explosive Trap effects by 20% and increases their damage based on your melee Attack Power. In addition, all traps can be placed while in combat."
+            }
+          },
+          "spellMatchMethod": "auto"
+        }
+      ]
+    }
+  ]
+}

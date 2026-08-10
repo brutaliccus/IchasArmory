@@ -1,0 +1,2377 @@
+{
+  "class": "Mage",
+  "source": "Turtle WoW",
+  "parsedAt": "2025-12-28T23:37:57.999Z",
+  "positionedAt": "2026-01-17T13:35:47.242Z",
+  "totalTalents": 55,
+  "spellMatchingStats": {
+    "totalTalentsWithSpells": 55,
+    "autoMatched": 55,
+    "manuallyConfigured": 0,
+    "spellMatchesFileUsed": true
+  },
+  "trees": [
+    {
+      "name": "Arcane",
+      "talents": [
+        {
+          "id": 0,
+          "treeIndex": 0,
+          "icon": "spell_holy_dispelmagic",
+          "ranks": 2,
+          "name": "Arcane Subtlety",
+          "description": [
+            "Arcane SubtletyInstantReduces your target's resistance to all your spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 0,
+                "values": [
+                  "5",
+                  "10"
+                ]
+              }
+            ],
+            " and reduces the threat caused by your Arcane spells by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 0,
+                "values": [
+                  "20",
+                  "40"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 1,
+          "spellIds": {
+            "rank1": 11210,
+            "rank2": 12592
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11210,
+              "description": "Arcane SubtletyRank 1InstantReduces your target's resistance to all your spells by 5 and reduces the threat caused by your Arcane spells by 20%."
+            },
+            "rank2": {
+              "spellId": 12592,
+              "description": "Arcane SubtletyRank 2InstantReduces your target's resistance to all your spells by 10 and reduces the threat caused by your Arcane spells by 40%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 1,
+          "treeIndex": 0,
+          "icon": "spell_nature_astralrecalgroup",
+          "ranks": 3,
+          "name": "Magic Absorption",
+          "description": [
+            "Magic AbsorptionInstantIncreases all resistances by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 1,
+                "values": [
+                  "4",
+                  "7",
+                  "10"
+                ]
+              }
+            ],
+            " and whenever one of your spells is partially or fully resisted you restore ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 1,
+                "values": [
+                  "1",
+                  "2",
+                  "3"
+                ]
+              }
+            ],
+            "% of your maximum mana. This effect can occur once every 2 sec."
+          ],
+          "row": 1,
+          "col": 2,
+          "spellIds": {
+            "rank1": 29441,
+            "rank2": 29444,
+            "rank3": 29445
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 29441,
+              "description": "Magic AbsorptionRank 1InstantIncreases all resistances by 4 and whenever one of your spells is partially or fully resisted you restore 1% of your maximum mana.  This effect can occur once every 2 sec."
+            },
+            "rank2": {
+              "spellId": 29444,
+              "description": "Magic AbsorptionRank 2InstantIncreases all resistances by 7 and whenever one of your spells is partially or fully resisted you restore 2% of your maximum mana.  This effect can occur once every 2 sec."
+            },
+            "rank3": {
+              "spellId": 29445,
+              "description": "Magic AbsorptionRank 3InstantIncreases all resistances by 10 and whenever one of your spells is partially or fully resisted you restore 3% of your maximum mana.  This effect can occur once every 2 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 2,
+          "treeIndex": 0,
+          "icon": "spell_nature_starfall",
+          "ranks": 5,
+          "name": "Improved Arcane Missiles",
+          "description": [
+            "Improved Arcane MissilesInstantGives you a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 2,
+                "values": [
+                  "20",
+                  "40",
+                  "60",
+                  "80",
+                  "100"
+                ]
+              }
+            ],
+            "% chance to avoid interruption caused by damage while channeling Arcane Missiles."
+          ],
+          "row": 1,
+          "col": 3,
+          "spellIds": {
+            "rank1": 11237,
+            "rank2": 12463,
+            "rank3": 12464,
+            "rank4": 16769,
+            "rank5": 16770
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11237,
+              "description": "Improved Arcane MissilesRank 1InstantGives you a 20% chance to avoid interruption caused by damage while channeling Arcane Missiles."
+            },
+            "rank2": {
+              "spellId": 12463,
+              "description": "Improved Arcane MissilesRank 2InstantGives you a 40% chance to avoid interruption caused by damage while channeling Arcane Missiles."
+            },
+            "rank3": {
+              "spellId": 12464,
+              "description": "Improved Arcane MissilesRank 3InstantGives you a 60% chance to avoid interruption caused by damage while channeling Arcane Missiles."
+            },
+            "rank4": {
+              "spellId": 16769,
+              "description": "Improved Arcane MissilesRank 4InstantGives you a 80% chance to avoid interruption caused by damage while channeling Arcane Missiles."
+            },
+            "rank5": {
+              "spellId": 16770,
+              "description": "Improved Arcane MissilesRank 5InstantGives you a 100% chance to avoid interruption caused by damage while channeling Arcane Missiles."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 4,
+          "treeIndex": 0,
+          "icon": "inv_wand_01",
+          "ranks": 2,
+          "name": "Wand Specialization",
+          "description": [
+            "Wand SpecializationInstantIncreases your damage and chance to hit with Wands by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 4,
+                "values": [
+                  "13",
+                  "25"
+                ]
+              }
+            ],
+            "% and ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 4,
+                "values": [
+                  "5",
+                  "10"
+                ]
+              }
+            ],
+            "%, respectively. Successful Wand attacks have a chance to restore 0 mana."
+          ],
+          "row": 2,
+          "col": 1,
+          "spellIds": {
+            "rank1": 6057,
+            "rank2": 6085
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 6057,
+              "description": "Wand SpecializationRank 1InstantIncreases your damage and chance to hit with Wands by 13% and 5%, respectively.  Successful Wand attacks have a chance to restore 0 mana."
+            },
+            "rank2": {
+              "spellId": 6085,
+              "description": "Wand SpecializationRank 2InstantIncreases your damage and chance to hit with Wands by 25% and 10%, respectively.  Successful Wand attacks have a chance to restore 0 mana.\\nHigher chance to trigger than Wand Specialization (Rank 1)."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 5,
+          "treeIndex": 0,
+          "icon": "spell_holy_devotion",
+          "ranks": 5,
+          "name": "Arcane Focus",
+          "description": [
+            "Arcane FocusInstantReduces the chance that the opponent can resist your Arcane spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 5,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 2,
+          "spellIds": {
+            "rank1": 11222,
+            "rank2": 12839,
+            "rank3": 12840,
+            "rank4": 12841,
+            "rank5": 12842
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11222,
+              "description": "Arcane FocusRank 1InstantReduces the chance that the opponent can resist your Arcane spells by 2%."
+            },
+            "rank2": {
+              "spellId": 12839,
+              "description": "Arcane FocusRank 2InstantReduces the chance that the opponent can resist your Arcane spells by 4%."
+            },
+            "rank3": {
+              "spellId": 12840,
+              "description": "Arcane FocusRank 3InstantReduces the chance that the opponent can resist your Arcane spells by 6%."
+            },
+            "rank4": {
+              "spellId": 12841,
+              "description": "Arcane FocusRank 4InstantReduces the chance that the opponent can resist your Arcane spells by 8%."
+            },
+            "rank5": {
+              "spellId": 12842,
+              "description": "Arcane FocusRank 5InstantReduces the chance that the opponent can resist your Arcane spells by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 6,
+          "treeIndex": 0,
+          "icon": "spell_shadow_manaburn",
+          "ranks": 5,
+          "name": "Arcane Concentration",
+          "description": [
+            "Arcane ConcentrationInstantGives you a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 6,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "% chance of entering a Clearcasting state after any damage spell hits a target. The Clearcasting state reduces the mana cost of your next damage spell by 1000%. This effect can occur once every 8 sec."
+          ],
+          "row": 2,
+          "col": 3,
+          "spellIds": {
+            "rank1": 11213,
+            "rank2": 12574,
+            "rank3": 12575,
+            "rank4": 12576,
+            "rank5": 12577
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11213,
+              "description": "Arcane ConcentrationRank 1InstantGives you a 2% chance of entering a Clearcasting state after any damage spell hits a target.  The Clearcasting state reduces the mana cost of your next damage spell by 1000%.  This effect can occur once every 8 sec."
+            },
+            "rank2": {
+              "spellId": 12574,
+              "description": "Arcane ConcentrationRank 2InstantGives you a 4% chance of entering a Clearcasting state after any damage spell hits a target.  The Clearcasting state reduces the mana cost of your next damage spell by 1000%.  This effect can occur once every 8 sec."
+            },
+            "rank3": {
+              "spellId": 12575,
+              "description": "Arcane ConcentrationRank 3InstantGives you a 6% chance of entering a Clearcasting state after any damage spell hits a target.  The Clearcasting state reduces the mana cost of your next damage spell by 1000%.  This effect can occur once every 8 sec."
+            },
+            "rank4": {
+              "spellId": 12576,
+              "description": "Arcane ConcentrationRank 4InstantGives you a 8% chance of entering a Clearcasting state after any damage spell hits a target.  The Clearcasting state reduces the mana cost of your next damage spell by 1000%.  This effect can occur once every 8 sec."
+            },
+            "rank5": {
+              "spellId": 12577,
+              "description": "Arcane ConcentrationRank 5InstantGives you a 10% chance of entering a Clearcasting state after any damage spell hits a target.  The Clearcasting state reduces the mana cost of your next damage spell by 1000%.  This effect can occur once every 8 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 8,
+          "treeIndex": 0,
+          "icon": "spell_nature_abolishmagic",
+          "ranks": 1,
+          "name": "Magic Attunement",
+          "description": "Magic AttunementInstantIncreases the effect of your Amplify Magic and Dampen Magic spells by 100% and allows them to be cast on enemies. Only affects targets level 62 or lower.",
+          "row": 3,
+          "col": 1,
+          "spellIds": {
+            "rank1": 11247
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11247,
+              "description": "Magic AttunementInstantIncreases the effect of your Amplify Magic and Dampen Magic spells by 100% and allows them to be cast on enemies.  Only affects targets level 62 or lower."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 9,
+          "treeIndex": 0,
+          "icon": "spell_nature_wispsplode",
+          "ranks": 3,
+          "name": "Arcane Impact",
+          "description": [
+            "Arcane ImpactInstantIncreases the critical strike chance of your Arcane spells by an additional ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 9,
+                "values": [
+                  "2",
+                  "4",
+                  "6"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 3,
+          "col": 2,
+          "spellIds": {
+            "rank1": 11242,
+            "rank2": 12467,
+            "rank3": 12469
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11242,
+              "description": "Arcane ImpactRank 1InstantIncreases the critical strike chance of your Arcane spells by an additional 2%."
+            },
+            "rank2": {
+              "spellId": 12467,
+              "description": "Arcane ImpactRank 2InstantIncreases the critical strike chance of your Arcane spells by an additional 4%."
+            },
+            "rank3": {
+              "spellId": 12469,
+              "description": "Arcane ImpactRank 3InstantIncreases the critical strike chance of your Arcane spells by an additional 6%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 10,
+          "treeIndex": 0,
+          "icon": "spell_arcane_blast",
+          "ranks": 1,
+          "name": "Arcane Rupture",
+          "description": "Arcane Rupture mana30 yd range2.5 sec castRupture your target with the force of concentrated arcane energy, dealing 101 to 115 Arcane damage and increasing the damage and mana cost of your Arcane Missiles spell by 20% for 8 sec.",
+          "row": 3,
+          "col": 3,
+          "spellIds": {
+            "rank1": 51949
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51949,
+              "description": "Arcane RuptureRank 180 mana30 yd range2.5 sec castRupture your target with the force of concentrated arcane energy, dealing 101 to 115 Arcane damage and increasing the damage and mana cost of your Arcane Missiles spell by 20% for 8 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 12,
+          "treeIndex": 0,
+          "icon": "spell_shadow_detectlesserinvisibility",
+          "ranks": 2,
+          "name": "Improved Mana Shield",
+          "description": [
+            "Improved Mana ShieldInstantDecreases the mana lost per point of damage taken when Mana Shield is active by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 12,
+                "values": [
+                  "13",
+                  "25"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 1,
+          "spellIds": {
+            "rank1": 11252,
+            "rank2": 12605
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11252,
+              "description": "Improved Mana ShieldRank 1InstantDecreases the mana lost per point of damage taken when Mana Shield is active by 13%."
+            },
+            "rank2": {
+              "spellId": 12605,
+              "description": "Improved Mana ShieldRank 2InstantDecreases the mana lost per point of damage taken when Mana Shield is active by 25%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 13,
+          "treeIndex": 0,
+          "icon": "spell_frost_iceshock",
+          "ranks": 2,
+          "name": "Improved Counterspell",
+          "description": "Improved CounterspellInstantGives your Counterspell a 50% chance to silence the target for 4 sec.",
+          "row": 4,
+          "col": 2,
+          "spellIds": {
+            "rank1": 11255,
+            "rank2": 12598
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11255,
+              "description": "Improved CounterspellRank 1InstantGives your Counterspell a 50% chance to silence the target for 4 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 14,
+          "treeIndex": 0,
+          "icon": "spell_nature_stormreach",
+          "ranks": 3,
+          "name": "Temporal Convergence",
+          "description": [
+            "Temporal ConvergenceInstantYour Arcane Missiles have a chance of ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 14,
+                "values": [
+                  "5",
+                  "10",
+                  "15"
+                ]
+              }
+            ],
+            "% to reset the cooldown of Arcane Rupture and cause it to return its base mana cost on its next cast. This effect can occur once every 15 sec."
+          ],
+          "row": 4,
+          "col": 3,
+          "requires": 10,
+          "reqRanks": 1,
+          "spellIds": {
+            "rank1": 51963,
+            "rank2": 51964,
+            "rank3": 51965
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51963,
+              "description": "Temporal ConvergenceRank 1InstantYour Arcane Missiles have a chance of 5% to reset the cooldown of Arcane Rupture and cause it to return its base mana cost on its next cast.  This effect can occur once every 15 sec."
+            },
+            "rank2": {
+              "spellId": 51964,
+              "description": "Temporal ConvergenceRank 2InstantYour Arcane Missiles have a chance of 10% to reset the cooldown of Arcane Rupture and cause it to return its base mana cost on its next cast.  This effect can occur once every 15 sec."
+            },
+            "rank3": {
+              "spellId": 51965,
+              "description": "Temporal ConvergenceRank 3InstantYour Arcane Missiles have a chance of 15% to reset the cooldown of Arcane Rupture and cause it to return its base mana cost on its next cast.  This effect can occur once every 15 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 15,
+          "treeIndex": 0,
+          "icon": "spell_shadow_siphonmana",
+          "ranks": 3,
+          "name": "Arcane Meditation",
+          "description": [
+            "Arcane MeditationInstantAllows ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 15,
+                "values": [
+                  "7",
+                  "14",
+                  "20"
+                ]
+              }
+            ],
+            "% of your Mana regeneration to continue while casting. This effect is tripled while below 35% total mana."
+          ],
+          "row": 4,
+          "col": 4,
+          "spellIds": {
+            "rank1": 18462,
+            "rank2": 18463,
+            "rank3": 18464
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18462,
+              "description": "Arcane MeditationRank 1InstantAllows 7% of your Mana regeneration to continue while casting. This effect is tripled while below 35% total mana."
+            },
+            "rank2": {
+              "spellId": 18463,
+              "description": "Arcane MeditationRank 2InstantAllows 14% of your Mana regeneration to continue while casting. This effect is tripled while below 35% total mana."
+            },
+            "rank3": {
+              "spellId": 18464,
+              "description": "Arcane MeditationRank 3InstantAllows 20% of your Mana regeneration to continue while casting. This effect is tripled while below 35% total mana."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 16,
+          "treeIndex": 0,
+          "icon": "spell_shadow_teleport",
+          "ranks": 3,
+          "name": "Arcane Instability",
+          "description": [
+            "Arcane InstabilityInstantYour successful damaging Arcane spells have an ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 16,
+                "values": [
+                  "8",
+                  "16",
+                  "25"
+                ]
+              }
+            ],
+            "% chance to uncontrollably erupt, consuming 2% of your base mana to deal 25% more damage."
+          ],
+          "row": 5,
+          "col": 1,
+          "spellIds": {
+            "rank1": 15058,
+            "rank2": 15059,
+            "rank3": 15060
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 15058,
+              "description": "Arcane InstabilityRank 1InstantYour successful damaging Arcane spells have an 8% chance to uncontrollably erupt, consuming 2% of your base mana to deal 25% more damage."
+            },
+            "rank2": {
+              "spellId": 15059,
+              "description": "Arcane InstabilityRank 2InstantYour successful damaging Arcane spells have an 16% chance to uncontrollably erupt, consuming 2% of your base mana to deal 25% more damage."
+            },
+            "rank3": {
+              "spellId": 15060,
+              "description": "Arcane InstabilityRank 3InstantYour successful damaging Arcane spells have an 25% chance to uncontrollably erupt, consuming 2% of your base mana to deal 25% more damage."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 17,
+          "treeIndex": 0,
+          "icon": "spell_nature_enchantarmor",
+          "ranks": 1,
+          "name": "Presence of Mind",
+          "description": "Presence of MindInstantWhen activated, your next Mage spell with a casting time less than 10 sec becomes an instant cast spell.",
+          "row": 5,
+          "col": 2,
+          "spellIds": {
+            "rank1": 12043
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 12043,
+              "description": "Presence of MindInstantWhen activated, your next Mage spell with a casting time less than 10 sec becomes an instant cast spell."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 18,
+          "treeIndex": 0,
+          "icon": "spell_arcane_portaldarnassus",
+          "ranks": 1,
+          "name": "Accelerated Arcana",
+          "description": "Accelerated ArcanaInstantIncreases the casting speed of your Arcane spells by 5%. In addition, casting speed increase effects increase the cooldown recovery speed of your Arcane spells and the tick speed of your Arcane Missiles, reducing their duration.",
+          "row": 5,
+          "col": 3,
+          "spellIds": {
+            "rank1": 51981
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51981,
+              "description": "Accelerated ArcanaInstantIncreases the casting speed of your Arcane spells by 5%.  In addition, casting speed increase effects increase the cooldown recovery speed of your Arcane spells and the tick speed of your Arcane Missiles, reducing their duration."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 19,
+          "treeIndex": 0,
+          "icon": "inv_enchant_essencemagiclarge",
+          "ranks": 2,
+          "name": "Arcane Potency",
+          "description": [
+            "Arcane PotencyInstantIncreases the critical strike damage bonus of your Arcane spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 19,
+                "values": [
+                  "50",
+                  "100"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 5,
+          "col": 4,
+          "spellIds": {
+            "rank1": 45403,
+            "rank2": 45404
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 45403,
+              "description": "Arcane PotencyRank 1InstantIncreases the critical strike damage bonus of your Arcane spells by 50%."
+            },
+            "rank2": {
+              "spellId": 45404,
+              "description": "Arcane PotencyRank 2InstantIncreases the critical strike damage bonus of your Arcane spells by 100%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 22,
+          "treeIndex": 0,
+          "icon": "spell_mage_focusingcrystal",
+          "ranks": 5,
+          "name": "Resonance Cascade",
+          "description": [
+            "Resonance CascadeInstantYour successful damaging Arcane spells have a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 22,
+                "values": [
+                  "4",
+                  "8",
+                  "12",
+                  "16",
+                  "20"
+                ]
+              }
+            ],
+            "% chance to duplicate for 50% of the damage. This effect can trigger off of itself and duplicated Arcane Missiles are channeled in tandem with the original cast."
+          ],
+          "row": 6,
+          "col": 3,
+          "spellIds": {
+            "rank1": 51262,
+            "rank2": 51987,
+            "rank3": 51988,
+            "rank4": 51989,
+            "rank5": 51990
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51262,
+              "description": "Resonance CascadeRank 1InstantYour successful damaging Arcane spells have a 4% chance to duplicate for 50% of the damage.  This effect can trigger off of itself and duplicated Arcane Missiles are channeled in tandem with the original cast."
+            },
+            "rank2": {
+              "spellId": 51987,
+              "description": "Resonance CascadeRank 2InstantYour successful damaging Arcane spells have a 8% chance to duplicate for 50% of the damage.  This effect can trigger off of itself and duplicated Arcane Missiles are channeled in tandem with the original cast."
+            },
+            "rank3": {
+              "spellId": 51988,
+              "description": "Resonance CascadeRank 3InstantYour successful damaging Arcane spells have a 12% chance to duplicate for 50% of the damage.  This effect can trigger off of itself and duplicated Arcane Missiles are channeled in tandem with the original cast."
+            },
+            "rank4": {
+              "spellId": 51989,
+              "description": "Resonance CascadeRank 4InstantYour successful damaging Arcane spells have a 16% chance to duplicate for 50% of the damage.  This effect can trigger off of itself and duplicated Arcane Missiles are channeled in tandem with the original cast."
+            },
+            "rank5": {
+              "spellId": 51990,
+              "description": "Resonance CascadeRank 5InstantYour successful damaging Arcane spells have a 20% chance to duplicate for 50% of the damage.  This effect can trigger off of itself and duplicated Arcane Missiles are channeled in tandem with the original cast."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 25,
+          "treeIndex": 0,
+          "icon": "spell_nature_lightning",
+          "ranks": 1,
+          "name": "Arcane Power",
+          "description": "Arcane PowerInstant180 sec cooldownWhen activated, your casting speed is increased by 30% while draining 1% of your maximum mana every second and reducing all mana gain by 50%.\\nFalling below 10% maximum mana causes you to violently combust from uncontrollable power, killing you instantly. Lasts 20 sec and cannot be cancelled.",
+          "row": 7,
+          "col": 2,
+          "requires": 17,
+          "reqRanks": 1,
+          "spellIds": {
+            "rank1": 12042
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 12042,
+              "description": "Arcane PowerInstant180 sec cooldownWhen activated, your casting speed is increased by 30% while draining 1% of your maximum mana every second and reducing all mana gain by 50%.\\nFalling below 10% maximum mana causes you to violently combust from uncontrollable power, killing you instantly.  Lasts 20 sec and cannot be cancelled."
+            }
+          },
+          "spellMatchMethod": "auto"
+        }
+      ]
+    },
+    {
+      "name": "Fire",
+      "talents": [
+        {
+          "id": 1,
+          "treeIndex": 1,
+          "icon": "spell_fire_flamebolt",
+          "ranks": 5,
+          "name": "Improved Fireball",
+          "description": [
+            "Improved FireballInstantReduces the casting time of your Fireball spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 1,
+                "values": [
+                  "100",
+                  "200",
+                  "300",
+                  "400",
+                  "500"
+                ]
+              }
+            ],
+            " sec."
+          ],
+          "row": 1,
+          "col": 2,
+          "spellIds": {
+            "rank1": 11069,
+            "rank2": 12338,
+            "rank3": 12339,
+            "rank4": 12340,
+            "rank5": 12341
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11069,
+              "description": "Improved FireballRank 1InstantReduces the casting time of your Fireball spell by 100 sec."
+            },
+            "rank2": {
+              "spellId": 12338,
+              "description": "Improved FireballRank 2InstantReduces the casting time of your Fireball spell by 200 sec."
+            },
+            "rank3": {
+              "spellId": 12339,
+              "description": "Improved FireballRank 3InstantReduces the casting time of your Fireball spell by 300 sec."
+            },
+            "rank4": {
+              "spellId": 12340,
+              "description": "Improved FireballRank 4InstantReduces the casting time of your Fireball spell by 400 sec."
+            },
+            "rank5": {
+              "spellId": 12341,
+              "description": "Improved FireballRank 5InstantReduces the casting time of your Fireball spell by 500 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 2,
+          "treeIndex": 1,
+          "icon": "spell_fire_meteorstorm",
+          "ranks": 5,
+          "name": "Impact",
+          "description": [
+            "ImpactInstantGives your Fire spells a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 2,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "% chance to stun the target for 2 sec."
+          ],
+          "row": 1,
+          "col": 3,
+          "spellIds": {
+            "rank1": 11103,
+            "rank2": 12357,
+            "rank3": 12358,
+            "rank4": 12359,
+            "rank5": 12360
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11103,
+              "description": "ImpactRank 1InstantGives your Fire spells a 2% chance to stun the target for 2 sec."
+            },
+            "rank2": {
+              "spellId": 12357,
+              "description": "ImpactRank 2InstantGives your Fire spells a 4% chance to stun the target for 2 sec."
+            },
+            "rank3": {
+              "spellId": 12358,
+              "description": "ImpactRank 3InstantGives your Fire spells a 6% chance to stun the target for 2 sec."
+            },
+            "rank4": {
+              "spellId": 12359,
+              "description": "ImpactRank 4InstantGives your Fire spells a 8% chance to stun the target for 2 sec."
+            },
+            "rank5": {
+              "spellId": 12360,
+              "description": "ImpactRank 5InstantGives your Fire spells a 10% chance to stun the target for 2 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 4,
+          "treeIndex": 1,
+          "icon": "spell_fire_incinerate",
+          "ranks": 5,
+          "name": "Ignite",
+          "description": [
+            "IgniteInstantYour critical strikes from Fire damage spells cause the target to burn for an additional ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 4,
+                "values": [
+                  "8",
+                  "16",
+                  "24",
+                  "32",
+                  "40"
+                ]
+              }
+            ],
+            "% of your spell's damage over 4 sec."
+          ],
+          "row": 2,
+          "col": 1,
+          "spellIds": {
+            "rank1": 11119,
+            "rank2": 11120,
+            "rank3": 12846,
+            "rank4": 12847,
+            "rank5": 12848
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11119,
+              "description": "IgniteRank 1InstantYour critical strikes from Fire damage spells cause the target to burn for an additional 8% of your spell's damage over 4 sec."
+            },
+            "rank2": {
+              "spellId": 11120,
+              "description": "IgniteRank 2InstantYour critical strikes from Fire damage spells cause the target to burn for an additional 16% of your spell's damage over 4 sec."
+            },
+            "rank3": {
+              "spellId": 12846,
+              "description": "IgniteRank 3InstantYour critical strikes from Fire damage spells cause the target to burn for an additional 24% of your spell's damage over 4 sec."
+            },
+            "rank4": {
+              "spellId": 12847,
+              "description": "IgniteRank 4InstantYour critical strikes from Fire damage spells cause the target to burn for an additional 32% of your spell's damage over 4 sec."
+            },
+            "rank5": {
+              "spellId": 12848,
+              "description": "IgniteRank 5InstantYour critical strikes from Fire damage spells cause the target to burn for an additional 40% of your spell's damage over 4 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 5,
+          "treeIndex": 1,
+          "icon": "spell_fire_flare",
+          "ranks": 2,
+          "name": "Flame Throwing",
+          "description": "Flame ThrowingInstantIncreases the range of your Fire spells by 6 yards and the radius of your Blast Wave by 20%.",
+          "row": 2,
+          "col": 2,
+          "spellIds": {
+            "rank1": 11100,
+            "rank2": 12353
+          },
+          "rankDescriptions": {
+            "rank2": {
+              "spellId": 12353,
+              "description": "Flame ThrowingRank 2InstantIncreases the range of your Fire spells by 6 yards and the radius of your Blast Wave by 20%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 6,
+          "treeIndex": 1,
+          "icon": "spell_fire_fireball",
+          "ranks": 3,
+          "name": "Improved Fire Blast",
+          "description": [
+            "Improved Fire BlastInstantReduces the cooldown of your Fire Blast spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 6,
+                "values": [
+                  "500",
+                  "1000",
+                  "1500"
+                ]
+              }
+            ],
+            " sec and reduces the global cooldown of your Fire Blast spell by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 1,
+                "talent": 6,
+                "values": [
+                  "170",
+                  "340",
+                  "500"
+                ]
+              }
+            ],
+            " sec."
+          ],
+          "row": 2,
+          "col": 3,
+          "spellIds": {
+            "rank1": 11078,
+            "rank2": 11080,
+            "rank3": 12342
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11078,
+              "description": "Improved Fire BlastRank 1InstantReduces the cooldown of your Fire Blast spell by 500 sec and reduces the global cooldown of your Fire Blast spell by 170 sec."
+            },
+            "rank2": {
+              "spellId": 11080,
+              "description": "Improved Fire BlastRank 2InstantReduces the cooldown of your Fire Blast spell by 1000 sec and reduces the global cooldown of your Fire Blast spell by 340 sec."
+            },
+            "rank3": {
+              "spellId": 12342,
+              "description": "Improved Fire BlastRank 3InstantReduces the cooldown of your Fire Blast spell by 1500 sec and reduces the global cooldown of your Fire Blast spell by 500 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 8,
+          "treeIndex": 1,
+          "icon": "spell_fire_flameshock",
+          "ranks": 2,
+          "name": "Incinerate",
+          "description": [
+            "IncinerateInstantIncreases the critical strike chance of your Fire Blast and Scorch spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 8,
+                "values": [
+                  "2",
+                  "4"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 3,
+          "col": 1,
+          "spellIds": {
+            "rank1": 18459,
+            "rank2": 18460
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18459,
+              "description": "IncinerateRank 1InstantIncreases the critical strike chance of your Fire Blast and Scorch spells by 2%."
+            },
+            "rank2": {
+              "spellId": 18460,
+              "description": "IncinerateRank 2InstantIncreases the critical strike chance of your Fire Blast and Scorch spells by 4%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 9,
+          "treeIndex": 1,
+          "icon": "spell_fire_selfdestruct",
+          "ranks": 3,
+          "name": "Improved Flamestrike",
+          "description": [
+            "Improved FlamestrikeInstantIncreases the critical strike chance of your Flamestrike spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 9,
+                "values": [
+                  "5",
+                  "10",
+                  "15"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 3,
+          "col": 2,
+          "spellIds": {
+            "rank1": 11108,
+            "rank2": 12349,
+            "rank3": 12350
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11108,
+              "description": "Improved FlamestrikeRank 1InstantIncreases the critical strike chance of your Flamestrike spell by 5%."
+            },
+            "rank2": {
+              "spellId": 12349,
+              "description": "Improved FlamestrikeRank 2InstantIncreases the critical strike chance of your Flamestrike spell by 10%."
+            },
+            "rank3": {
+              "spellId": 12350,
+              "description": "Improved FlamestrikeRank 3InstantIncreases the critical strike chance of your Flamestrike spell by 15%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 10,
+          "treeIndex": 1,
+          "icon": "spell_fire_fireball02",
+          "ranks": 1,
+          "name": "Pyroblast",
+          "description": "Pyroblast mana35 yd range6 sec castHurls an immense fiery boulder that causes 141 to 188 Fire damage and an additional 56 Fire damage over 12 sec.",
+          "row": 3,
+          "col": 3,
+          "spellIds": {
+            "rank1": 11366
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11366,
+              "description": "PyroblastRank 1125 mana35 yd range6 sec castHurls an immense fiery boulder that causes 141 to 188 Fire damage and an additional 56 Fire damage over 12 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 11,
+          "treeIndex": 1,
+          "icon": "spell_fire_fire",
+          "ranks": 2,
+          "name": "Burning Soul",
+          "description": "Burning SoulInstantGives your Fire spells a 70% chance to not lose casting time when you take damage and reduces the threat caused by your Fire spells by 30%.",
+          "row": 3,
+          "col": 4,
+          "spellIds": {
+            "rank1": 11083,
+            "rank2": 12351
+          },
+          "rankDescriptions": {
+            "rank2": {
+              "spellId": 12351,
+              "description": "Burning SoulRank 2InstantGives your Fire spells a 70% chance to not lose casting time when you take damage and reduces the threat caused by your Fire spells by 30%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 12,
+          "treeIndex": 1,
+          "icon": "spell_fire_soulburn",
+          "ranks": 3,
+          "name": "Fire Vulnerability",
+          "description": [
+            "Fire VulnerabilityInstantYour Scorch and Fire Blast spells have a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 12,
+                "values": [
+                  "33",
+                  "66",
+                  "100"
+                ]
+              }
+            ],
+            "% chance to cause your target to be vulnerable to Fire damage. This vulnerability increases the Fire damage dealt to your target by 3% and lasts 30 sec. Stacks up to 30001 times."
+          ],
+          "row": 4,
+          "col": 1,
+          "spellIds": {
+            "rank1": 11095,
+            "rank2": 12872,
+            "rank3": 12873
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11095,
+              "description": "Fire VulnerabilityRank 1InstantYour Scorch and Fire Blast spells have a 33% chance to cause your target to be vulnerable to Fire damage.  This vulnerability increases the Fire damage dealt to your target by 3% and lasts 30 sec.  Stacks up to 30001 times."
+            },
+            "rank2": {
+              "spellId": 12872,
+              "description": "Fire VulnerabilityRank 2InstantYour Scorch and Fire Blast spells have a 66% chance to cause your target to be vulnerable to Fire damage.  This vulnerability increases the Fire damage dealt to your target by 3% and lasts 30 sec.  Stacks up to 30001 times."
+            },
+            "rank3": {
+              "spellId": 12873,
+              "description": "Fire VulnerabilityRank 3InstantYour Scorch and Fire Blast spells have a 100% chance to cause your target to be vulnerable to Fire damage.  This vulnerability increases the Fire damage dealt to your target by 3% and lasts 30 sec.  Stacks up to 30001 times."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 13,
+          "treeIndex": 1,
+          "icon": "spell_fire_firearmor",
+          "ranks": 2,
+          "name": "Improved Fire Ward",
+          "description": [
+            "Improved Fire WardInstantCauses your Fire Ward to have a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 13,
+                "values": [
+                  "10",
+                  "20"
+                ]
+              }
+            ],
+            "% chance to reflect Fire spells while active."
+          ],
+          "row": 4,
+          "col": 2,
+          "spellIds": {
+            "rank1": 11094,
+            "rank2": 13043
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11094,
+              "description": "Improved Fire WardRank 1InstantCauses your Fire Ward to have a 10% chance to reflect Fire spells while active."
+            },
+            "rank2": {
+              "spellId": 13043,
+              "description": "Improved Fire WardRank 2InstantCauses your Fire Ward to have a 20% chance to reflect Fire spells while active."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 15,
+          "treeIndex": 1,
+          "icon": "spell_fire_masterofelements",
+          "ranks": 3,
+          "name": "Master of Elements",
+          "description": [
+            "Master of ElementsInstantYour Fire and Frost spell criticals will refund ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 15,
+                "values": [
+                  "15",
+                  "30",
+                  "45"
+                ]
+              }
+            ],
+            "% of their base mana cost."
+          ],
+          "row": 4,
+          "col": 4,
+          "spellIds": {
+            "rank1": 29074,
+            "rank2": 29075,
+            "rank3": 29076
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 29074,
+              "description": "Master of ElementsRank 1InstantYour Fire and Frost spell criticals will refund 15% of their base mana cost."
+            },
+            "rank2": {
+              "spellId": 29075,
+              "description": "Master of ElementsRank 2InstantYour Fire and Frost spell criticals will refund 30% of their base mana cost."
+            },
+            "rank3": {
+              "spellId": 29076,
+              "description": "Master of ElementsRank 3InstantYour Fire and Frost spell criticals will refund 45% of their base mana cost."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 16,
+          "treeIndex": 1,
+          "icon": "spell_holy_excorcism_02",
+          "ranks": 1,
+          "name": "Blast Wave",
+          "description": "Blast Wave manaInstantA wave of flame radiates outward from the caster, damaging all enemies caught within the 10 yard blast for 154 to 187 Fire damage, and dazing them for 6 sec.",
+          "row": 5,
+          "col": 1,
+          "spellIds": {
+            "rank1": 11113
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11113,
+              "description": "Blast WaveRank 1215 manaInstantA wave of flame radiates outward from the caster, damaging all enemies caught within the 10 yard blast for 154 to 187 Fire damage, and dazing them for 6 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 17,
+          "treeIndex": 1,
+          "icon": "spell_nature_wispheal",
+          "ranks": 3,
+          "name": "Critical Mass",
+          "description": [
+            "Critical MassInstantIncreases the critical strike chance of your Fire spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 17,
+                "values": [
+                  "2",
+                  "4",
+                  "6"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 5,
+          "col": 2,
+          "spellIds": {
+            "rank1": 11115,
+            "rank2": 11367,
+            "rank3": 11368
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11115,
+              "description": "Critical MassRank 1InstantIncreases the critical strike chance of your Fire spells by 2%."
+            },
+            "rank2": {
+              "spellId": 11367,
+              "description": "Critical MassRank 2InstantIncreases the critical strike chance of your Fire spells by 4%."
+            },
+            "rank3": {
+              "spellId": 11368,
+              "description": "Critical MassRank 3InstantIncreases the critical strike chance of your Fire spells by 6%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 18,
+          "treeIndex": 1,
+          "icon": "ability_mage_firestarter",
+          "ranks": 2,
+          "name": "Hot Streak",
+          "description": "Hot StreakInstantGives your Fireball and Fire Blast critical strikes a 50% chance to grant Hot Streak, reducing the cast time of your next Pyroblast by 1000 sec per stack for 180 sec. Stacks up to 180001 times.",
+          "row": 5,
+          "col": 3,
+          "requires": 10,
+          "reqRanks": 1,
+          "spellIds": {
+            "rank1": 51927,
+            "rank2": 51928
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51927,
+              "description": "Hot StreakRank 1InstantGives your Fireball and Fire Blast critical strikes a 50% chance to grant Hot Streak, reducing the cast time of your next Pyroblast by 1000 sec per stack for 180 sec. Stacks up to 180001 times."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 22,
+          "treeIndex": 1,
+          "icon": "spell_fire_immolation",
+          "ranks": 5,
+          "name": "Fire Power",
+          "description": [
+            "Fire PowerInstantIncreases the damage done by your Fire spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 22,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 6,
+          "col": 3,
+          "spellIds": {
+            "rank1": 11124,
+            "rank2": 12378,
+            "rank3": 12398,
+            "rank4": 12399,
+            "rank5": 12400
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11124,
+              "description": "Fire PowerRank 1InstantIncreases the damage done by your Fire spells by 2%."
+            },
+            "rank2": {
+              "spellId": 12378,
+              "description": "Fire PowerRank 2InstantIncreases the damage done by your Fire spells by 4%."
+            },
+            "rank3": {
+              "spellId": 12398,
+              "description": "Fire PowerRank 3InstantIncreases the damage done by your Fire spells by 6%."
+            },
+            "rank4": {
+              "spellId": 12399,
+              "description": "Fire PowerRank 4InstantIncreases the damage done by your Fire spells by 8%."
+            },
+            "rank5": {
+              "spellId": 12400,
+              "description": "Fire PowerRank 5InstantIncreases the damage done by your Fire spells by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 25,
+          "treeIndex": 1,
+          "icon": "spell_fire_sealoffire",
+          "ranks": 1,
+          "name": "Combustion",
+          "description": "CombustionInstantWhen activated, this spell causes each of your Fire damage spell hits to increase your critical strike chance with Fire damage spells by 10%. This effect lasts until you have caused 3 critical strikes with Fire spells.",
+          "row": 7,
+          "col": 2,
+          "requires": 17,
+          "reqRanks": 3,
+          "spellIds": {
+            "rank1": 11129
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11129,
+              "description": "CombustionInstantWhen activated, this spell causes each of your Fire damage spell hits to increase your critical strike chance with Fire damage spells by 10%.  This effect lasts until you have caused 3 critical strikes with Fire spells."
+            }
+          },
+          "spellMatchMethod": "auto"
+        }
+      ]
+    },
+    {
+      "name": "Frost",
+      "talents": [
+        {
+          "id": 0,
+          "treeIndex": 2,
+          "icon": "spell_frost_frostward",
+          "ranks": 2,
+          "name": "Frost Warding",
+          "description": [
+            "Frost WardingInstantIncreases the armor and resistances given by your Frost Armor and Ice Armor spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 0,
+                "values": [
+                  "15",
+                  "30"
+                ]
+              }
+            ],
+            "%. In addition, gives your Frost Ward a ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 0,
+                "values": [
+                  "10",
+                  "20"
+                ]
+              }
+            ],
+            "% chance to reflect Frost spells and effects while active."
+          ],
+          "row": 1,
+          "col": 1,
+          "spellIds": {
+            "rank1": 11189,
+            "rank2": 28332
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11189,
+              "description": "Frost WardingRank 1InstantIncreases the armor and resistances given by your Frost Armor and Ice Armor spells by 15%.  In addition, gives your Frost Ward a 10% chance to reflect Frost spells and effects while active."
+            },
+            "rank2": {
+              "spellId": 28332,
+              "description": "Frost WardingRank 2InstantIncreases the armor and resistances given by your Frost Armor and Ice Armor spells by 30%.  In addition, gives your Frost Ward a 20% chance to reflect Frost spells and effects while active."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 1,
+          "treeIndex": 2,
+          "icon": "spell_frost_frostbolt02",
+          "ranks": 5,
+          "name": "Improved Frostbolt",
+          "description": [
+            "Improved FrostboltInstantReduces the casting time of your Frostbolt spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 1,
+                "values": [
+                  "200",
+                  "300",
+                  "400",
+                  "500"
+                ]
+              }
+            ],
+            " sec."
+          ],
+          "row": 1,
+          "col": 2,
+          "spellIds": {
+            "rank1": 11070,
+            "rank2": 12473,
+            "rank3": 16763,
+            "rank4": 16765,
+            "rank5": 16766
+          },
+          "rankDescriptions": {
+            "rank2": {
+              "spellId": 12473,
+              "description": "Improved FrostboltRank 2InstantReduces the casting time of your Frostbolt spell by 200 sec."
+            },
+            "rank3": {
+              "spellId": 16763,
+              "description": "Improved FrostboltRank 3InstantReduces the casting time of your Frostbolt spell by 300 sec."
+            },
+            "rank4": {
+              "spellId": 16765,
+              "description": "Improved FrostboltRank 4InstantReduces the casting time of your Frostbolt spell by 400 sec."
+            },
+            "rank5": {
+              "spellId": 16766,
+              "description": "Improved FrostboltRank 5InstantReduces the casting time of your Frostbolt spell by 500 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 2,
+          "treeIndex": 2,
+          "icon": "spell_ice_magicdamage",
+          "ranks": 3,
+          "name": "Elemental Precision",
+          "description": [
+            "Elemental PrecisionInstantReduces the chance that the opponent can resist your Frost and Fire spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 2,
+                "values": [
+                  "2",
+                  "4",
+                  "6"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 3,
+          "spellIds": {
+            "rank1": 29438,
+            "rank2": 29439,
+            "rank3": 29440
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 29438,
+              "description": "Elemental PrecisionRank 1InstantReduces the chance that the opponent can resist your Frost and Fire spells by 2%."
+            },
+            "rank2": {
+              "spellId": 29439,
+              "description": "Elemental PrecisionRank 2InstantReduces the chance that the opponent can resist your Frost and Fire spells by 4%."
+            },
+            "rank3": {
+              "spellId": 29440,
+              "description": "Elemental PrecisionRank 3InstantReduces the chance that the opponent can resist your Frost and Fire spells by 6%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 4,
+          "treeIndex": 2,
+          "icon": "spell_frost_frostbolt",
+          "ranks": 3,
+          "name": "Piercing Ice",
+          "description": [
+            "Piercing IceInstantIncreases the damage done by your Frost spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 4,
+                "values": [
+                  "2",
+                  "4",
+                  "6"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 1,
+          "spellIds": {
+            "rank1": 11151,
+            "rank2": 12952,
+            "rank3": 12953
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11151,
+              "description": "Piercing IceRank 1InstantIncreases the damage done by your Frost spells by 2%."
+            },
+            "rank2": {
+              "spellId": 12952,
+              "description": "Piercing IceRank 2InstantIncreases the damage done by your Frost spells by 4%."
+            },
+            "rank3": {
+              "spellId": 12953,
+              "description": "Piercing IceRank 3InstantIncreases the damage done by your Frost spells by 6%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 5,
+          "treeIndex": 2,
+          "icon": "spell_frost_frostarmor",
+          "ranks": 3,
+          "name": "Frostbite",
+          "description": [
+            "FrostbiteInstantGives your Chill effects a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 5,
+                "values": [
+                  "5",
+                  "10",
+                  "15"
+                ]
+              }
+            ],
+            "% chance to freeze the target for 5 sec."
+          ],
+          "row": 2,
+          "col": 2,
+          "spellIds": {
+            "rank1": 11071,
+            "rank2": 12496,
+            "rank3": 12497
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11071,
+              "description": "FrostbiteRank 1InstantGives your Chill effects a 5% chance to freeze the target for 5 sec."
+            },
+            "rank2": {
+              "spellId": 12496,
+              "description": "FrostbiteRank 2InstantGives your Chill effects a 10% chance to freeze the target for 5 sec."
+            },
+            "rank3": {
+              "spellId": 12497,
+              "description": "FrostbiteRank 3InstantGives your Chill effects a 15% chance to freeze the target for 5 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 6,
+          "treeIndex": 2,
+          "icon": "spell_frost_freezingbreath",
+          "ranks": 2,
+          "name": "Improved Frost Nova",
+          "description": [
+            "Improved Frost NovaInstantReduces the cooldown of your Frost Nova spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 6,
+                "values": [
+                  "2000",
+                  "4000"
+                ]
+              }
+            ],
+            " sec."
+          ],
+          "row": 2,
+          "col": 3,
+          "spellIds": {
+            "rank1": 11165,
+            "rank2": 12475
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11165,
+              "description": "Improved Frost NovaRank 1InstantReduces the cooldown of your Frost Nova spell by 2000 sec."
+            },
+            "rank2": {
+              "spellId": 12475,
+              "description": "Improved Frost NovaRank 2InstantReduces the cooldown of your Frost Nova spell by 4000 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 7,
+          "treeIndex": 2,
+          "icon": "spell_frost_wisp",
+          "ranks": 3,
+          "name": "Permafrost",
+          "description": [
+            "PermafrostInstantIncreases the duration of your Chill effects by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 7,
+                "values": [
+                  "1000",
+                  "2000",
+                  "3000"
+                ]
+              }
+            ],
+            " secs and reduces the target's speed by an additional ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 7,
+                "values": [
+                  "4",
+                  "7",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 4,
+          "spellIds": {
+            "rank1": 11175,
+            "rank2": 12569,
+            "rank3": 12571
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11175,
+              "description": "PermafrostRank 1InstantIncreases the duration of your Chill effects by 1000 secs and reduces the target's speed by an additional 4%."
+            },
+            "rank2": {
+              "spellId": 12569,
+              "description": "PermafrostRank 2InstantIncreases the duration of your Chill effects by 2000 secs and reduces the target's speed by an additional 7%."
+            },
+            "rank3": {
+              "spellId": 12571,
+              "description": "PermafrostRank 3InstantIncreases the duration of your Chill effects by 3000 secs and reduces the target's speed by an additional 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 8,
+          "treeIndex": 2,
+          "icon": "spell_frost_iceshard",
+          "ranks": 5,
+          "name": "Ice Shards",
+          "description": [
+            "Ice ShardsInstantIncreases the critical strike damage bonus of your Frost spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 8,
+                "values": [
+                  "20",
+                  "60",
+                  "80",
+                  "100"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 3,
+          "col": 1,
+          "spellIds": {
+            "rank1": 11207,
+            "rank2": 12672,
+            "rank3": 15047,
+            "rank4": 15052,
+            "rank5": 15053
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11207,
+              "description": "Ice ShardsRank 1InstantIncreases the critical strike damage bonus of your Frost spells by 20%."
+            },
+            "rank3": {
+              "spellId": 15047,
+              "description": "Ice ShardsRank 3InstantIncreases the critical strike damage bonus of your Frost spells by 60%."
+            },
+            "rank4": {
+              "spellId": 15052,
+              "description": "Ice ShardsRank 4InstantIncreases the critical strike damage bonus of your Frost spells by 80%."
+            },
+            "rank5": {
+              "spellId": 15053,
+              "description": "Ice ShardsRank 5InstantIncreases the critical strike damage bonus of your Frost spells by 100%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 9,
+          "treeIndex": 2,
+          "icon": "spell_frost_wizardmark",
+          "ranks": 1,
+          "name": "Cold Snap",
+          "description": "Cold SnapInstant600 sec cooldownWhen activated, this spell finishes the cooldown on all of your Frost spells.",
+          "row": 3,
+          "col": 2,
+          "spellIds": {
+            "rank1": 12472
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 12472,
+              "description": "Cold SnapInstant600 sec cooldownWhen activated, this spell finishes the cooldown on all of your Frost spells."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 11,
+          "treeIndex": 2,
+          "icon": "spell_frost_icestorm",
+          "ranks": 3,
+          "name": "Improved Blizzard",
+          "description": [
+            "Improved BlizzardInstantAdds a chill effect to your Blizzard spell. This effect lowers the target's movement speed by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 11,
+                "values": [
+                  "20",
+                  "30",
+                  "40"
+                ]
+              }
+            ],
+            "%. Lasts 2 sec."
+          ],
+          "row": 3,
+          "col": 4,
+          "spellIds": {
+            "rank1": 11185,
+            "rank2": 12487,
+            "rank3": 12488
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11185,
+              "description": "Improved BlizzardRank 1InstantAdds a chill effect to your Blizzard spell.  This effect lowers the target's movement speed by 20%.  Lasts 2 sec."
+            },
+            "rank2": {
+              "spellId": 12487,
+              "description": "Improved BlizzardRank 2InstantAdds a chill effect to your Blizzard spell.  This effect lowers the target's movement speed by 30%.  Lasts 2 sec."
+            },
+            "rank3": {
+              "spellId": 12488,
+              "description": "Improved BlizzardRank 3InstantAdds a chill effect to your Blizzard spell.  This effect lowers the target's movement speed by 40%.  Lasts 2 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 12,
+          "treeIndex": 2,
+          "icon": "spell_shadow_darkritual",
+          "ranks": 2,
+          "name": "Arctic Reach",
+          "description": [
+            "Arctic ReachInstantIncreases the range of your Frostbolt, Icicles and Blizzard spells and the radius of your Frost Nova and Cone of Cold spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 12,
+                "values": [
+                  "10",
+                  "20"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 1,
+          "spellIds": {
+            "rank1": 16757,
+            "rank2": 16758
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 16757,
+              "description": "Arctic ReachRank 1InstantIncreases the range of your Frostbolt, Icicles and Blizzard spells and the radius of your Frost Nova and Cone of Cold spells by 10%."
+            },
+            "rank2": {
+              "spellId": 16758,
+              "description": "Arctic ReachRank 2InstantIncreases the range of your Frostbolt, Icicles and Blizzard spells and the radius of your Frost Nova and Cone of Cold spells by 20%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 13,
+          "treeIndex": 2,
+          "icon": "spell_frost_stun",
+          "ranks": 3,
+          "name": "Frost Channeling",
+          "description": [
+            "Frost ChannelingInstantReduces the mana cost of your Frost spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 13,
+                "values": [
+                  "5",
+                  "10",
+                  "15"
+                ]
+              }
+            ],
+            "% and reduces the threat caused by your Frost spells by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 13,
+                "values": [
+                  "10",
+                  "20",
+                  "30"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 2,
+          "spellIds": {
+            "rank1": 11160,
+            "rank2": 12518,
+            "rank3": 12519
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11160,
+              "description": "Frost ChannelingRank 1InstantReduces the mana cost of your Frost spells by 5% and reduces the threat caused by your Frost spells by 10%."
+            },
+            "rank2": {
+              "spellId": 12518,
+              "description": "Frost ChannelingRank 2InstantReduces the mana cost of your Frost spells by 10% and reduces the threat caused by your Frost spells by 20%."
+            },
+            "rank3": {
+              "spellId": 12519,
+              "description": "Frost ChannelingRank 3InstantReduces the mana cost of your Frost spells by 15% and reduces the threat caused by your Frost spells by 30%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 14,
+          "treeIndex": 2,
+          "icon": "spell_frost_frostshock",
+          "ranks": 5,
+          "name": "Shatter",
+          "description": [
+            "ShatterInstantIncreases the critical strike chance of all your spells against frozen targets by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 14,
+                "values": [
+                  "7",
+                  "14",
+                  "21",
+                  "28",
+                  "35"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 3,
+          "requires": 6,
+          "reqRanks": 2,
+          "spellIds": {
+            "rank1": 11170,
+            "rank2": 12982,
+            "rank3": 12983,
+            "rank4": 12984,
+            "rank5": 12985
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11170,
+              "description": "ShatterRank 1InstantIncreases the critical strike chance of all your spells against frozen targets by 7%."
+            },
+            "rank2": {
+              "spellId": 12982,
+              "description": "ShatterRank 2InstantIncreases the critical strike chance of all your spells against frozen targets by 14%."
+            },
+            "rank3": {
+              "spellId": 12983,
+              "description": "ShatterRank 3InstantIncreases the critical strike chance of all your spells against frozen targets by 21%."
+            },
+            "rank4": {
+              "spellId": 12984,
+              "description": "ShatterRank 4InstantIncreases the critical strike chance of all your spells against frozen targets by 28%."
+            },
+            "rank5": {
+              "spellId": 12985,
+              "description": "ShatterRank 5InstantIncreases the critical strike chance of all your spells against frozen targets by 35%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 17,
+          "treeIndex": 2,
+          "icon": "spell_frost_frost",
+          "ranks": 1,
+          "name": "Ice Block",
+          "description": "Ice Block15 manaInstantYou become encased in a block of ice, protecting you from all physical attacks and spells for 10 sec, but during that time you cannot attack, move or cast spells.",
+          "row": 5,
+          "col": 2,
+          "spellIds": {
+            "rank1": 11958
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11958,
+              "description": "Ice Block15 manaInstantYou become encased in a block of ice, protecting you from all physical attacks and spells for 10 sec, but during that time you cannot attack, move or cast spells."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 18,
+          "treeIndex": 2,
+          "icon": "spell_frost_frostblast",
+          "ranks": 1,
+          "name": "Icicles",
+          "description": "Icicles mana30 yd rangeChanneledDraw upon frost leylines, becoming frozen in place, and launch icicles at the enemy, dealing 101 Frost damage every 1 sec for 5 sec. Damage taken has a high chance to shatter your icy prison, dealing 30% of your base health as Frost damage to you. Cancelling the effect early will not remove the freeze effect.",
+          "row": 5,
+          "col": 3,
+          "spellIds": {
+            "rank1": 52516
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 52516,
+              "description": "IciclesRank 1200 mana30 yd rangeChanneledDraw upon frost leylines, becoming frozen in place, and launch icicles at the enemy, dealing 101 Frost damage every 1 sec for 5 sec.  Damage taken has a high chance to shatter your icy prison, dealing 30% of your base health as Frost damage to you.  Cancelling the effect early will not remove the freeze effect."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 19,
+          "treeIndex": 2,
+          "icon": "spell_frost_glacier",
+          "ranks": 3,
+          "name": "Improved Cone of Cold",
+          "description": [
+            "Improved Cone of ColdInstantIncreases the damage dealt by your Cone of Cold spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 19,
+                "values": [
+                  "15",
+                  "25",
+                  "35"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 5,
+          "col": 4,
+          "spellIds": {
+            "rank1": 11190,
+            "rank2": 12489,
+            "rank3": 12490
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11190,
+              "description": "Improved Cone of ColdRank 1InstantIncreases the damage dealt by your Cone of Cold spell by 15%."
+            },
+            "rank2": {
+              "spellId": 12489,
+              "description": "Improved Cone of ColdRank 2InstantIncreases the damage dealt by your Cone of Cold spell by 25%."
+            },
+            "rank3": {
+              "spellId": 12490,
+              "description": "Improved Cone of ColdRank 3InstantIncreases the damage dealt by your Cone of Cold spell by 35%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 20,
+          "treeIndex": 2,
+          "icon": "spell_frost_chillingblast",
+          "ranks": 5,
+          "name": "Winter's Chill",
+          "description": [
+            "Winter's ChillInstantGives your Frost damage spells a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 20,
+                "values": [
+                  "20",
+                  "40",
+                  "60",
+                  "80",
+                  "100"
+                ]
+              }
+            ],
+            "% chance to apply the Winter's Chill effect, which increases the chance a Frost spell will critically hit the target by 2% for 15 sec. Stacks up to 15001 times."
+          ],
+          "row": 6,
+          "col": 1,
+          "spellIds": {
+            "rank1": 11180,
+            "rank2": 28592,
+            "rank3": 28593,
+            "rank4": 28594,
+            "rank5": 28595
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11180,
+              "description": "Winter's ChillRank 1InstantGives your Frost damage spells a 20% chance to apply the Winter's Chill effect, which increases the chance a Frost spell will critically hit the target by 2% for 15 sec.  Stacks up to 15001 times."
+            },
+            "rank2": {
+              "spellId": 28592,
+              "description": "Winter's ChillRank 2InstantGives your Frost damage spells a 40% chance to apply the Winter's Chill effect, which increases the chance a Frost spell will critically hit the target by 2% for 15 sec.  Stacks up to 15001 times."
+            },
+            "rank3": {
+              "spellId": 28593,
+              "description": "Winter's ChillRank 3InstantGives your Frost damage spells a 60% chance to apply the Winter's Chill effect, which increases the chance a Frost spell will critically hit the target by 2% for 15 sec.  Stacks up to 15001 times."
+            },
+            "rank4": {
+              "spellId": 28594,
+              "description": "Winter's ChillRank 4InstantGives your Frost damage spells a 80% chance to apply the Winter's Chill effect, which increases the chance a Frost spell will critically hit the target by 2% for 15 sec.  Stacks up to 15001 times."
+            },
+            "rank5": {
+              "spellId": 28595,
+              "description": "Winter's ChillRank 5InstantGives your Frost damage spells a 100% chance to apply the Winter's Chill effect, which increases the chance a Frost spell will critically hit the target by 2% for 15 sec.  Stacks up to 15001 times."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 22,
+          "treeIndex": 2,
+          "icon": "spell_fire_frostresistancetotem",
+          "ranks": 2,
+          "name": "Flash Freeze",
+          "description": [
+            "Flash FreezeInstantIf an effect that causes a target to freeze is not applied due to the target being permanently immune to freeze effects, you have a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 22,
+                "values": [
+                  "50",
+                  "100"
+                ]
+              }
+            ],
+            "% chance to gain Flash Freeze instead. Flash Freeze resets the cooldown of Icicles and reduces the duration and the time between each Icicle by 80% for your next Icicles."
+          ],
+          "row": 6,
+          "col": 3,
+          "requires": 18,
+          "reqRanks": 1,
+          "spellIds": {
+            "rank1": 51999,
+            "rank2": 52501
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51999,
+              "description": "Flash FreezeRank 1InstantIf an effect that causes a target to freeze is not applied due to the target being permanently immune to freeze effects, you have a 50% chance to gain Flash Freeze instead. Flash Freeze resets the cooldown of Icicles and reduces the duration and the time between each Icicle by 80% for your next Icicles."
+            },
+            "rank2": {
+              "spellId": 52501,
+              "description": "Flash FreezeRank 2InstantIf an effect that causes a target to freeze is not applied due to the target being permanently immune to freeze effects, you have a 100% chance to gain Flash Freeze instead. Flash Freeze resets the cooldown of Icicles and reduces the duration and the time between each Icicle by 80% for your next Icicles."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 25,
+          "treeIndex": 2,
+          "icon": "spell_ice_lament",
+          "ranks": 1,
+          "name": "Ice Barrier",
+          "description": "Ice Barrier manaInstantInstantly shields you, absorbing 438 damage and increasing your Frost damage by 15%. Lasts 60 sec. While the shield holds, spells will not be interrupted.",
+          "row": 7,
+          "col": 2,
+          "requires": 17,
+          "reqRanks": 1,
+          "spellIds": {
+            "rank1": 11426
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 11426,
+              "description": "Ice BarrierRank 1305 manaInstantInstantly shields you, absorbing 438 damage and increasing your Frost damage by 15%.  Lasts 60 sec.  While the shield holds, spells will not be interrupted."
+            }
+          },
+          "spellMatchMethod": "auto"
+        }
+      ]
+    }
+  ]
+}

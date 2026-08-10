@@ -1,0 +1,6654 @@
+[
+  {
+    "id": 156,
+    "name": "Refined Dwarven Necklace",
+    "quality": 3,
+    "icon": "INV_Belt_18",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Stamina",
+      "+2 Strength",
+      "Requires Level 30",
+      "Equip:",
+      "Increased Maces +3.",
+      "Equip:",
+      "Increased Axes +3."
+    ]
+  },
+  {
+    "id": 1315,
+    "name": "Lei of Lilies",
+    "quality": 4,
+    "icon": "INV_Misc_Flower_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+10 Stamina",
+      "+15 Spirit",
+      "Requires Level 46",
+      "Use:",
+      "Conjures a Lily Root that restores health and mana when eaten."
+    ]
+  },
+  {
+    "id": 1443,
+    "name": "Jeweled Amulet of Cainwyn",
+    "quality": 4,
+    "icon": "INV_Jewelry_Amulet_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+18 Intellect",
+      "+8 Stamina",
+      "Requires Level 55",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 11."
+    ]
+  },
+  {
+    "id": 1714,
+    "name": "Necklace of Calisea",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_10",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+7 Intellect",
+      "+7 Spirit",
+      "+8 Stamina",
+      "Requires Level 38"
+    ]
+  },
+  {
+    "id": 2543,
+    "name": "Gamemaster's Medallion",
+    "quality": 1,
+    "icon": "INV_Misc_Rune_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "Use:",
+      "Sends player to GM Island."
+    ]
+  },
+  {
+    "id": 4112,
+    "name": "Choker of the High Shaman",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+5 Intellect",
+      "+8 Spirit"
+    ]
+  },
+  {
+    "id": 4430,
+    "name": "Ethereal Talisman",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+5 Strength",
+      "+6 Stamina",
+      "+4 Agility"
+    ]
+  },
+  {
+    "id": 4614,
+    "name": "Pendant of Myzrael",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "This Item Begins a Quest",
+      "Neck",
+      "+4 Stamina",
+      "+6 Spirit",
+      "Requires Level 30"
+    ]
+  },
+  {
+    "id": 4743,
+    "name": "Pulsating Crystalline Shard",
+    "quality": 2,
+    "icon": "INV_Misc_Gem_Sapphire_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Stamina",
+      "+8 Spirit"
+    ]
+  },
+  {
+    "id": 5002,
+    "name": "Glowing Green Talisman",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+1 Stamina",
+      "+6 Spirit",
+      "Requires Level 25"
+    ]
+  },
+  {
+    "id": 5003,
+    "name": "Crystal Starfire Medallion",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_02",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+4 Stamina",
+      "+4 Intellect",
+      "+3 Spirit",
+      "Requires Level 26"
+    ]
+  },
+  {
+    "id": 5004,
+    "name": "Mark of the Kirin Tor",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_08",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+7 Intellect",
+      "+2 Spirit",
+      "Requires Level 30"
+    ]
+  },
+  {
+    "id": 5005,
+    "name": "Emberspark Pendant",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_05",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+2 Stamina",
+      "+7 Spirit",
+      "Requires Level 30"
+    ]
+  },
+  {
+    "id": 5029,
+    "name": "Talisman of the Naga Lord",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_09",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+2 Strength",
+      "+10 Stamina",
+      "Requires Level 42"
+    ]
+  },
+  {
+    "id": 5180,
+    "name": "Necklace of Harmony",
+    "quality": 2,
+    "icon": "INV_Jewelry_Amulet_04",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+7 Spirit",
+      "Requires Level 29"
+    ]
+  },
+  {
+    "id": 5754,
+    "name": "Wolfpack Medallion",
+    "quality": 2,
+    "icon": "INV_Jewelry_Amulet_03",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+5 Stamina",
+      "+3 Agility",
+      "Requires Level 26"
+    ]
+  },
+  {
+    "id": 6695,
+    "name": "Stygian Bone Amulet",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Spirit",
+      "+4 Stamina",
+      "Requires Level 27"
+    ]
+  },
+  {
+    "id": 6723,
+    "name": "Medal of Courage",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+12 Spirit",
+      "+9 Stamina",
+      "Equip:",
+      "Increases your chance to resist Fear effects by 4%."
+    ]
+  },
+  {
+    "id": 7427,
+    "name": "Cerulean Talisman",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_03",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 26",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 7467,
+    "name": "Vermilion Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_03",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 30",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 7548,
+    "name": "Onyx Choker",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_06",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 41",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 7549,
+    "name": "Fairy's Embrace",
+    "quality": 2,
+    "icon": "INV_Belt_31",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+2 Stamina",
+      "+5 Intellect",
+      "+5 Spirit",
+      "Requires Level 42"
+    ]
+  },
+  {
+    "id": 7550,
+    "name": "Warrior's Honor",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_02",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+3 Strength",
+      "+10 Stamina",
+      "Requires Level 42"
+    ]
+  },
+  {
+    "id": 7551,
+    "name": "Entwined Opaline Talisman",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_07",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+10 Stamina",
+      "+3 Agility",
+      "Requires Level 42"
+    ]
+  },
+  {
+    "id": 7673,
+    "name": "Talvash's Enhancing Necklace",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+1 Intellect",
+      "+10 Spirit",
+      "+10 Stamina"
+    ]
+  },
+  {
+    "id": 7722,
+    "name": "Triune Amulet",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+7 Intellect",
+      "+7 Spirit",
+      "+7 Stamina",
+      "Requires Level 39"
+    ]
+  },
+  {
+    "id": 7731,
+    "name": "Ghostshard Talisman",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+9 Stamina",
+      "+4 Spirit",
+      "Requires Level 30"
+    ]
+  },
+  {
+    "id": 7746,
+    "name": "Explorers' League Commendation",
+    "quality": 2,
+    "icon": "INV_Jewelry_Talisman_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Stamina",
+      "+6 Spirit"
+    ]
+  },
+  {
+    "id": 7888,
+    "name": "Jarkal's Enhancing Necklace",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+1 Intellect",
+      "+10 Spirit",
+      "+10 Stamina"
+    ]
+  },
+  {
+    "id": 9243,
+    "name": "Shriveled Heart",
+    "quality": 2,
+    "icon": "INV_Misc_Organ_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+-5 Spirit",
+      "+-5 Strength",
+      "+13 Stamina",
+      "Requires Level 40"
+    ]
+  },
+  {
+    "id": 9333,
+    "name": "Tarnished Silver Necklace",
+    "quality": null,
+    "icon": "INV_Belt_18",
+    "tooltip_lines_raw": [
+      "Neck"
+    ]
+  },
+  {
+    "id": 9338,
+    "name": "Murloc Eye on a String",
+    "quality": 2,
+    "icon": "INV_Misc_Eye_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+1 Spirit",
+      "\"Ewww, you're disgusting!\""
+    ]
+  },
+  {
+    "id": 9417,
+    "name": "Archaedic Shard",
+    "quality": 3,
+    "icon": "INV_Misc_StoneTablet_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "100 Armor",
+      "Requires Level 42"
+    ]
+  },
+  {
+    "id": 9641,
+    "name": "Lifeblood Amulet",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+5 Spirit",
+      "+13 Stamina",
+      "Requires Level 43"
+    ]
+  },
+  {
+    "id": 10299,
+    "name": "Gnomeregan Amulet",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "Requires Level 26",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 10711,
+    "name": "Dragon's Blood Necklace",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+12 Stamina",
+      "+5 Spirit"
+    ]
+  },
+  {
+    "id": 10769,
+    "name": "Glowing Eye of Mordresh",
+    "quality": 3,
+    "icon": "INV_Misc_Orb_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+11 Spirit",
+      "Requires Level 36",
+      "Equip:",
+      "Allows 5% of your Mana regeneration to continue while casting."
+    ]
+  },
+  {
+    "id": 10778,
+    "name": "Necklace of Sanctuary",
+    "quality": 2,
+    "icon": "INV_Jewelry_Amulet_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Fire Resistance",
+      "+10 Shadow Resistance"
+    ]
+  },
+  {
+    "id": 10824,
+    "name": "Amberglow Talisman",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+1 Agility",
+      "+10 Spirit",
+      "+7 Stamina"
+    ]
+  },
+  {
+    "id": 10829,
+    "name": "Dragon's Eye",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Stamina",
+      "+15 Spirit",
+      "Requires Level 51"
+    ]
+  },
+  {
+    "id": 11196,
+    "name": "Mindburst Medallion",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+5 Stamina",
+      "+6 Intellect",
+      "+5 Spirit"
+    ]
+  },
+  {
+    "id": 11755,
+    "name": "Verek's Collar",
+    "quality": 3,
+    "icon": "INV_Misc_Bandage_14",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Strength",
+      "+7 Stamina",
+      "Requires Level 51",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%."
+    ]
+  },
+  {
+    "id": 11933,
+    "name": "Imperial Jewel",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Sapphire_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+7 Stamina",
+      "Requires Level 55",
+      "Equip:",
+      "+32 Attack Power."
+    ]
+  },
+  {
+    "id": 11946,
+    "name": "Fire Opal Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "Requires Level 47",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12019,
+    "name": "Cerulean Talisman",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 27",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12020,
+    "name": "Thallium Choker",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_09",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 31",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12022,
+    "name": "Iridium Chain",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_05",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 36",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12023,
+    "name": "Tellurium Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_03",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 40",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12024,
+    "name": "Vanadium Talisman",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_07",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 45",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12025,
+    "name": "Selenium Chain",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_04",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 49",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12026,
+    "name": "Quicksilver Pendant",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_11",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 54",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12027,
+    "name": "Vermilion Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_10",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 58",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12028,
+    "name": "Basalt Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_08",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 27",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12029,
+    "name": "Greenstone Talisman",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 30",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12030,
+    "name": "Jet Chain",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_06",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 34",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12031,
+    "name": "Lodestone Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_07",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 39",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12032,
+    "name": "Onyx Choker",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_06",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 43",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12034,
+    "name": "Marble Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_07",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 48",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12035,
+    "name": "Obsidian Pendant",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_06",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 52",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12036,
+    "name": "Granite Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_09",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 57",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12039,
+    "name": "Tundra Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_11",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 28",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12040,
+    "name": "Forest Pendant",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 33",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12042,
+    "name": "Marsh Chain",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_04",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 37",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12043,
+    "name": "Desert Choker",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_08",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 42",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12044,
+    "name": "Arctic Pendant",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_07",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 46",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12045,
+    "name": "Swamp Pendant",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_06",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 51",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12046,
+    "name": "Jungle Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 55",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12047,
+    "name": "Spectral Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_04",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 25",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12048,
+    "name": "Prismatic Pendant",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_11",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 60",
+      "Random Bonuses"
+    ]
+  },
+  {
+    "id": 12059,
+    "name": "Conqueror's Medallion",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+11 Stamina",
+      "+10 Strength",
+      "+5 Spirit",
+      "+4 Agility"
+    ]
+  },
+  {
+    "id": 12103,
+    "name": "Star of Mystaria",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_08",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Spirit",
+      "+9 Intellect",
+      "+9 Stamina",
+      "Requires Level 58",
+      "Equip:",
+      "Improves your chance to hit with spells by 1%."
+    ]
+  },
+  {
+    "id": 12929,
+    "name": "Emberfury Talisman",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Stamina",
+      "+5 Spirit",
+      "+7 Fire Resistance",
+      "Requires Level 56",
+      "Equip:",
+      "Improves your chance to get a critical strike by 1%."
+    ]
+  },
+  {
+    "id": 13002,
+    "name": "Lady Alizabeth's Pendant",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_03",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+15 Spirit",
+      "+8 Stamina",
+      "Requires Level 54"
+    ]
+  },
+  {
+    "id": 13084,
+    "name": "Kaleidoscope Chain",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_07",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+4 Intellect",
+      "+4 Spirit",
+      "+4 Stamina",
+      "+4 Strength",
+      "+4 Agility",
+      "Requires Level 30"
+    ]
+  },
+  {
+    "id": 13085,
+    "name": "Horizon Choker",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_11",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+14 Intellect",
+      "+4 Spirit",
+      "+4 Stamina",
+      "Requires Level 46"
+    ]
+  },
+  {
+    "id": 13087,
+    "name": "River Pride Choker",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_09",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+9 Stamina",
+      "+4 Strength",
+      "Requires Level 28"
+    ]
+  },
+  {
+    "id": 13088,
+    "name": "Gazlowe's Charm",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+11 Stamina",
+      "+4 Strength",
+      "+3 Spirit",
+      "Requires Level 36"
+    ]
+  },
+  {
+    "id": 13089,
+    "name": "Skibi's Pendant",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_07",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+5 Strength",
+      "+13 Agility",
+      "+3 Spirit",
+      "Requires Level 44"
+    ]
+  },
+  {
+    "id": 13091,
+    "name": "Medallion of Grand Marshal Morris",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_08",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+7 Stamina",
+      "Requires Level 52",
+      "Equip:",
+      "Increased Defense +10."
+    ]
+  },
+  {
+    "id": 13141,
+    "name": "Tooth of Gnarr",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+14 Intellect",
+      "+8 Stamina",
+      "Requires Level 58",
+      "Equip:",
+      "Restores 3 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 13177,
+    "name": "Talisman of Evasion",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+13 Agility",
+      "Requires Level 55",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%."
+    ]
+  },
+  {
+    "id": 13212,
+    "name": "Halycon's Spiked Collar",
+    "quality": 3,
+    "icon": "INV_Belt_14",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+7 Stamina",
+      "Requires Level 55",
+      "Equip:",
+      "+48 Attack Power when fighting Beasts."
+    ]
+  },
+  {
+    "id": 13473,
+    "name": "Felstone Good Luck Charm",
+    "quality": 2,
+    "icon": "INV_Jewelry_Talisman_11",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+13 Shadow Resistance"
+    ]
+  },
+  {
+    "id": 13811,
+    "name": "Necklace of the Dawn",
+    "quality": 2,
+    "icon": "INV_Jewelry_Talisman_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+15 Stamina"
+    ]
+  },
+  {
+    "id": 13960,
+    "name": "Heart of the Fiend",
+    "quality": 3,
+    "icon": "INV_Misc_Orb_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+15 Spirit",
+      "+5 Intellect",
+      "+5 Stamina",
+      "Requires Level 56"
+    ]
+  },
+  {
+    "id": 14558,
+    "name": "Lady Maye's Pendant",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_08",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+14 Intellect",
+      "+10 Spirit",
+      "Requires Level 59",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 29.",
+      "Equip:",
+      "Restores 2 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 15200,
+    "name": "Senior Sergeant's Insignia",
+    "quality": 3,
+    "icon": "INV_Misc_MonsterScales_15",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+9 Stamina",
+      "+4 Spirit",
+      "Requires Level 30"
+    ]
+  },
+  {
+    "id": 15411,
+    "name": "Mark of Fordring",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "Equip:",
+      "Improves your chance to get a critical strike by 1%.",
+      "Equip:",
+      "+26 Attack Power."
+    ]
+  },
+  {
+    "id": 15690,
+    "name": "Kodobone Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+7 Stamina",
+      "+4 Spirit"
+    ]
+  },
+  {
+    "id": 15704,
+    "name": "Hunter's Insignia Medal",
+    "quality": 2,
+    "icon": "INV_Jewelry_Amulet_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+15 Stamina"
+    ]
+  },
+  {
+    "id": 15799,
+    "name": "Heroic Commendation Medal",
+    "quality": 2,
+    "icon": "INV_Jewelry_Amulet_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+12 Stamina",
+      "+5 Spirit"
+    ]
+  },
+  {
+    "id": 15856,
+    "name": "Archlight Talisman",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_11",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Intellect",
+      "+10 Spirit",
+      "+8 Stamina"
+    ]
+  },
+  {
+    "id": 16009,
+    "name": "Voice Amplification Modulator",
+    "quality": 2,
+    "icon": "INV_Jewelry_Amulet_07",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Equip:",
+      "Increases your resistance to silence effects by 7%."
+    ]
+  },
+  {
+    "id": 16309,
+    "name": "Drakefire Amulet",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_11",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+10 Stamina",
+      "+15 Fire Resistance",
+      "\"The Blood of Drakkisath Flows Within...\""
+    ]
+  },
+  {
+    "id": 16335,
+    "name": "Senior Sergeant's Insignia",
+    "quality": 3,
+    "icon": "INV_Misc_MonsterScales_15",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+17 Stamina",
+      "+7 Spirit",
+      "Requires Level 58"
+    ]
+  },
+  {
+    "id": 16623,
+    "name": "Opaline Medallion",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_08",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+13 Intellect",
+      "+3 Stamina"
+    ]
+  },
+  {
+    "id": 17044,
+    "name": "Will of the Martyr",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Stamina",
+      "Equip:",
+      "+30 Attack Power."
+    ]
+  },
+  {
+    "id": 17065,
+    "name": "Medallion of Steadfast Might",
+    "quality": 4,
+    "icon": "INV_Jewelry_Amulet_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+13 Stamina",
+      "+9 Strength",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%.",
+      "Equip:",
+      "Increased Defense +8."
+    ]
+  },
+  {
+    "id": 17109,
+    "name": "Choker of Enlightenment",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Intellect",
+      "+10 Spirit",
+      "+9 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 16.",
+      "Equip:",
+      "Increases your attack and casting speed by 1%."
+    ]
+  },
+  {
+    "id": 17111,
+    "name": "Blazefury Medallion",
+    "quality": 4,
+    "icon": "INV_Jewelry_Talisman_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+13 Agility",
+      "+14 Stamina",
+      "+12 Fire Resistance",
+      "Requires Level 60",
+      "Equip:",
+      "Adds 2 fire damage to your melee attacks."
+    ]
+  },
+  {
+    "id": 17707,
+    "name": "Gemshard Heart",
+    "quality": 3,
+    "icon": "INV_Stone_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Intellect",
+      "+10 Stamina",
+      "+6 Spirit",
+      "Requires Level 49"
+    ]
+  },
+  {
+    "id": 17772,
+    "name": "Zealous Shadowshard Pendant",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "Equip:",
+      "+20 Attack Power."
+    ]
+  },
+  {
+    "id": 17773,
+    "name": "Prodigious Shadowshard Pendant",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Intellect"
+    ]
+  },
+  {
+    "id": 17782,
+    "name": "Talisman of Binding Shard",
+    "quality": 5,
+    "icon": "INV_Jewelry_Amulet_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+13 Strength",
+      "+8 Stamina",
+      "+5 Agility",
+      "+24 Fire Resistance",
+      "+24 Nature Resistance",
+      "Requires Level 60",
+      "Equip:",
+      "When struck in combat inflicts 4 Nature damage to the attacker."
+    ]
+  },
+  {
+    "id": 17783,
+    "name": "Talisman of Binding Fragment",
+    "quality": 5,
+    "icon": "INV_Jewelry_Amulet_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+13 Strength",
+      "+8 Stamina",
+      "+5 Agility",
+      "+24 Fire Resistance",
+      "+24 Nature Resistance",
+      "Requires Level 60",
+      "Equip:",
+      "When struck in combat inflicts 4 Nature damage to the attacker."
+    ]
+  },
+  {
+    "id": 18023,
+    "name": "Blood Ruby Pendant",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Ruby_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+10 Intellect",
+      "+10 Stamina",
+      "Requires Level 54",
+      "Equip:",
+      "Increases damage done by Arcane spells and effects by up to 13.",
+      "Equip:",
+      "Increases damage done by Shadow spells and effects by up to 13."
+    ]
+  },
+  {
+    "id": 18205,
+    "name": "Eskhandar's Collar",
+    "quality": 4,
+    "icon": "INV_Belt_12",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+17 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%.",
+      "Equip:",
+      "Improves your chance to get a critical strike by 1%.",
+      "Equip:",
+      "Your attacks ignore 30 of the target's armor.",
+      "Spirit of Eskhandar",
+      "(0/4)",
+      "Eskhandar's Right Claw",
+      "Eskhandar's Left Claw",
+      "Eskhandar's Pelt",
+      "Eskhandar's Collar",
+      "(4) Set:",
+      "1% chance on a melee critical hit to call forth the spirit of Eskhandar to protect you in battle for 120 sec."
+    ]
+  },
+  {
+    "id": 18289,
+    "name": "Barbed Thorn Necklace",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_09",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+7 Stamina",
+      "+6 Intellect",
+      "Requires Level 51",
+      "Equip:",
+      "Increases damage done by Nature spells and effects by up to 17."
+    ]
+  },
+  {
+    "id": 18317,
+    "name": "Tempest Talisman",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+7 Intellect",
+      "+6 Spirit",
+      "Requires Level 53",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 1%."
+    ]
+  },
+  {
+    "id": 18340,
+    "name": "Eidolon Talisman",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_14",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+9 Stamina",
+      "+15 Shadow Resistance",
+      "Requires Level 54"
+    ]
+  },
+  {
+    "id": 18381,
+    "name": "Evil Eye Pendant",
+    "quality": 3,
+    "icon": "INV_Misc_Eye_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+15 Agility",
+      "Requires Level 57",
+      "Equip:",
+      "Increased Defense +7."
+    ]
+  },
+  {
+    "id": 18397,
+    "name": "Elder Magus Pendant",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Intellect",
+      "+7 Spirit",
+      "+6 Stamina",
+      "+10 Fire Resistance",
+      "Requires Level 56"
+    ]
+  },
+  {
+    "id": 18404,
+    "name": "Onyxia Tooth Pendant",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+12 Agility",
+      "+9 Stamina",
+      "+10 Fire Resistance",
+      "Equip:",
+      "Improves your chance to hit by 1%.",
+      "Equip:",
+      "Improves your chance to get a critical strike by 1%."
+    ]
+  },
+  {
+    "id": 18428,
+    "name": "Senior Sergeant's Insignia",
+    "quality": 3,
+    "icon": "INV_Misc_MonsterScales_15",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+14 Stamina",
+      "+6 Spirit",
+      "Requires Level 45"
+    ]
+  },
+  {
+    "id": 18442,
+    "name": "Master Sergeant's Insignia",
+    "quality": 3,
+    "icon": "INV_Misc_MonsterScales_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+9 Stamina",
+      "+4 Spirit",
+      "Requires Level 30"
+    ]
+  },
+  {
+    "id": 18443,
+    "name": "Master Sergeant's Insignia",
+    "quality": 3,
+    "icon": "INV_Misc_MonsterScales_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+17 Stamina",
+      "+7 Spirit",
+      "Requires Level 58"
+    ]
+  },
+  {
+    "id": 18444,
+    "name": "Master Sergeant's Insignia",
+    "quality": 3,
+    "icon": "INV_Misc_MonsterScales_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+14 Stamina",
+      "+6 Spirit",
+      "Requires Level 45"
+    ]
+  },
+  {
+    "id": 18678,
+    "name": "Tempestria's Frozen Necklace",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_03",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+8 Stamina",
+      "+5 Intellect",
+      "+15 Frost Resistance",
+      "Requires Level 56"
+    ]
+  },
+  {
+    "id": 18691,
+    "name": "Dark Advisor's Pendant",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Stamina",
+      "+7 Intellect",
+      "Requires Level 56",
+      "Equip:",
+      "Increases damage done by Shadow spells and effects by up to 20."
+    ]
+  },
+  {
+    "id": 18723,
+    "name": "Animated Chain Necklace",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+7 Stamina",
+      "+6 Spirit",
+      "Requires Level 57",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 33."
+    ]
+  },
+  {
+    "id": 18728,
+    "name": "Anastari Heirloom",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_11",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+15 Stamina",
+      "Requires Level 55",
+      "Equip:",
+      "Increases damage done by Shadow spells and effects by up to 13."
+    ]
+  },
+  {
+    "id": 18814,
+    "name": "Choker of the Fire Lord",
+    "quality": 4,
+    "icon": "INV_Jewelry_Amulet_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+7 Intellect",
+      "+7 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 34."
+    ]
+  },
+  {
+    "id": 19095,
+    "name": "Frostwolf Legionnaire's Pendant",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_16",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+15 Stamina",
+      "Requires Level 55",
+      "Equip:",
+      "+18 Attack Power."
+    ]
+  },
+  {
+    "id": 19096,
+    "name": "Frostwolf Advisor's Pendant",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Stamina",
+      "+10 Intellect",
+      "Requires Level 55",
+      "Equip:",
+      "Restores 4 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 19097,
+    "name": "Stormpike Soldier's Pendant",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_15",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+15 Stamina",
+      "Requires Level 55",
+      "Equip:",
+      "+18 Attack Power."
+    ]
+  },
+  {
+    "id": 19098,
+    "name": "Stormpike Sage's Pendant",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_08",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Stamina",
+      "+10 Intellect",
+      "Requires Level 55",
+      "Equip:",
+      "Restores 4 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 19159,
+    "name": "Woven Ivy Necklace",
+    "quality": 3,
+    "icon": "INV_Misc_Herb_15",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+9 Agility",
+      "+10 Stamina",
+      "+6 Strength"
+    ]
+  },
+  {
+    "id": 19303,
+    "name": "Darkmoon Necklace",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_11",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Intellect",
+      "Requires Level 50",
+      "Equip:",
+      "Restores 6 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 19371,
+    "name": "Pendant of the Fallen Dragon",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_12",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+18 Intellect",
+      "+12 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Restores 9 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 19377,
+    "name": "Prestor's Talisman of Connivery",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_17",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+30 Agility",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to hit by 1%."
+    ]
+  },
+  {
+    "id": 19383,
+    "name": "Master Dragonslayer's Medallion",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_18",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+14 Agility",
+      "+24 Stamina",
+      "Equip:",
+      "Increased Defense +7."
+    ]
+  },
+  {
+    "id": 19426,
+    "name": "Orb of the Darkmoon",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_16",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+11 Stamina",
+      "+8 Spirit",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 22."
+    ]
+  },
+  {
+    "id": 19491,
+    "name": "Amulet of the Darkmoon",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_14",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+19 Agility",
+      "+10 Stamina",
+      "+10 Strength",
+      "Requires Level 60"
+    ]
+  },
+  {
+    "id": 19534,
+    "name": "Scout's Medallion",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_14",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+16 Agility",
+      "+12 Stamina",
+      "Requires Level 60"
+    ]
+  },
+  {
+    "id": 19535,
+    "name": "Scout's Medallion",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_14",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+12 Agility",
+      "+8 Stamina",
+      "Requires Level 48"
+    ]
+  },
+  {
+    "id": 19536,
+    "name": "Scout's Medallion",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_14",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+11 Agility",
+      "+7 Stamina",
+      "Requires Level 38"
+    ]
+  },
+  {
+    "id": 19537,
+    "name": "Scout's Medallion",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_14",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+8 Agility",
+      "+5 Stamina",
+      "Requires Level 28"
+    ]
+  },
+  {
+    "id": 19538,
+    "name": "Sentinel's Medallion",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_13",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+16 Agility",
+      "+12 Stamina",
+      "Requires Level 60"
+    ]
+  },
+  {
+    "id": 19539,
+    "name": "Sentinel's Medallion",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_13",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+12 Agility",
+      "+8 Stamina",
+      "Requires Level 48"
+    ]
+  },
+  {
+    "id": 19540,
+    "name": "Sentinel's Medallion",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_13",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+11 Agility",
+      "+7 Stamina",
+      "Requires Level 38"
+    ]
+  },
+  {
+    "id": 19541,
+    "name": "Sentinel's Medallion",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_13",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+8 Agility",
+      "+5 Stamina",
+      "Requires Level 28"
+    ]
+  },
+  {
+    "id": 19574,
+    "name": "Strength of Mugamba",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_23",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+10 Stamina",
+      "+7 Strength",
+      "Classes: Warrior",
+      "Equip:",
+      "Increased Defense +4."
+    ]
+  },
+  {
+    "id": 19575,
+    "name": "Strength of Mugamba",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_24",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+6 Agility",
+      "+7 Strength",
+      "+10 Stamina",
+      "Classes: Warrior",
+      "Equip:",
+      "Increased Defense +4."
+    ]
+  },
+  {
+    "id": 19576,
+    "name": "Strength of Mugamba",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_25",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+8 Agility",
+      "+8 Strength",
+      "+13 Stamina",
+      "Classes: Warrior",
+      "Equip:",
+      "Increased Defense +5."
+    ]
+  },
+  {
+    "id": 19577,
+    "name": "Rage of Mugamba",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_26",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+8 Agility",
+      "+8 Strength",
+      "+13 Stamina",
+      "Classes: Warrior",
+      "Equip:",
+      "Increased Defense +6.",
+      "Equip:",
+      "Increases your chance to block attacks with a shield by 2%.",
+      "Equip:",
+      "Reduces the cost of your Hamstring ability by 20 rage points.",
+      "Vindicator's Battlegear",
+      "(0/5)",
+      "Gri'lek's Charm of Might",
+      "Rage of Mugamba",
+      "Zandalar Vindicator's Armguards",
+      "Zandalar Vindicator's Belt",
+      "Zandalar Vindicator's Breastplate",
+      "(2) Set:",
+      "Increases your chance to block attacks with a shield by 2%.",
+      "(3) Set:",
+      "Decreases the cooldown of Intimidating Shout by 15000 sec.",
+      "(5) Set:",
+      "Decrease the rage cost of Whirlwind by 30."
+    ]
+  },
+  {
+    "id": 19579,
+    "name": "Heathen's Brand",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_23",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+8 Strength",
+      "+7 Intellect",
+      "+8 Stamina",
+      "Classes: Paladin"
+    ]
+  },
+  {
+    "id": 19585,
+    "name": "Heathen's Brand",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_24",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+8 Strength",
+      "+6 Intellect",
+      "+7 Agility",
+      "+8 Stamina",
+      "Classes: Paladin"
+    ]
+  },
+  {
+    "id": 19586,
+    "name": "Heathen's Brand",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_25",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+10 Strength",
+      "+6 Intellect",
+      "+9 Agility",
+      "+10 Stamina",
+      "Classes: Paladin"
+    ]
+  },
+  {
+    "id": 19588,
+    "name": "Hero's Brand",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_26",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+10 Strength",
+      "+6 Intellect",
+      "+9 Agility",
+      "+10 Stamina",
+      "Classes: Paladin",
+      "Equip:",
+      "Increases the duration of Hammer of Justice by 500 sec.",
+      "Freethinker's Armor",
+      "(0/5)",
+      "Gri'lek's Charm of Valor",
+      "Hero's Brand",
+      "Zandalar Freethinker's Armguards",
+      "Zandalar Freethinker's Belt",
+      "Zandalar Freethinker's Breastplate",
+      "(2) Set:",
+      "Restores 4 mana per 5 sec.",
+      "(3) Set:",
+      "Inflicts 60 to 67 additional Holy damage on the target of a Paladin's Judgement.",
+      "(5) Set:",
+      "Increases the duration of all Blessings by 10%."
+    ]
+  },
+  {
+    "id": 19591,
+    "name": "The Eye of Zuldazar",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_23",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+7 Intellect",
+      "+10 Spirit",
+      "+6 Stamina",
+      "Classes: Priest"
+    ]
+  },
+  {
+    "id": 19592,
+    "name": "The Eye of Zuldazar",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_24",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+7 Intellect",
+      "+10 Spirit",
+      "+6 Stamina",
+      "Classes: Priest",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 13."
+    ]
+  },
+  {
+    "id": 19593,
+    "name": "The Eye of Zuldazar",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_25",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+8 Intellect",
+      "+13 Spirit",
+      "+8 Stamina",
+      "Classes: Priest",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 18."
+    ]
+  },
+  {
+    "id": 19594,
+    "name": "The All-Seeing Eye of Zuldazar",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_26",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+8 Intellect",
+      "+13 Spirit",
+      "+8 Stamina",
+      "Classes: Priest",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 18.",
+      "Equip:",
+      "Increases the amount of damage absorbed by Power Word: Shield by 35.",
+      "Confessor's Raiment",
+      "(0/5)",
+      "The All-Seeing Eye of Zuldazar",
+      "Hazza'rah's Charm of Healing",
+      "Zandalar Confessor's Wraps",
+      "Zandalar Confessor's Bindings",
+      "Zandalar Confessor's Mantle",
+      "(2) Set:",
+      "Increases healing done by spells and effects by up to 22.",
+      "(3) Set:",
+      "Increase the range of your Smite and Holy Fire spells by 5 yds.",
+      "(5) Set:",
+      "Reduces the casting time of your Mind Control spell by 500 sec."
+    ]
+  },
+  {
+    "id": 19598,
+    "name": "Pebble of Kajaro",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_23",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+10 Intellect",
+      "+7 Stamina",
+      "Classes: Mage",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 7."
+    ]
+  },
+  {
+    "id": 19599,
+    "name": "Pebble of Kajaro",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_24",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+10 Intellect",
+      "+6 Spirit",
+      "+7 Stamina",
+      "Classes: Mage",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 7."
+    ]
+  },
+  {
+    "id": 19600,
+    "name": "Pebble of Kajaro",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_25",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+13 Intellect",
+      "+8 Spirit",
+      "+8 Stamina",
+      "Classes: Mage",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 9."
+    ]
+  },
+  {
+    "id": 19601,
+    "name": "Jewel of Kajaro",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_26",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+13 Intellect",
+      "+8 Spirit",
+      "+8 Stamina",
+      "Classes: Mage",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 9.",
+      "Equip:",
+      "Reduces the cooldown of Counterspell by 2000 sec.",
+      "Illusionist's Attire",
+      "(0/5)",
+      "Jewel of Kajaro",
+      "Hazza'rah's Charm of Magic",
+      "Zandalar Illusionist's Wraps",
+      "Zandalar Illusionist's Mantle",
+      "Zandalar Illusionist's Robe",
+      "(2) Set:",
+      "Increases damage and healing done by magical spells and effects by up to 12.",
+      "(3) Set:",
+      "Decreases the mana cost of Arcane Intellect and Arcane Brilliance by 5%.",
+      "(5) Set:",
+      "Reduces the casting time of your Flamestrike spell by 500 sec."
+    ]
+  },
+  {
+    "id": 19602,
+    "name": "Kezan's Taint",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_23",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+10 Stamina",
+      "Classes: Warlock",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 12."
+    ]
+  },
+  {
+    "id": 19603,
+    "name": "Kezan's Taint",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_24",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+10 Stamina",
+      "+6 Intellect",
+      "Classes: Warlock",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 12."
+    ]
+  },
+  {
+    "id": 19604,
+    "name": "Kezan's Taint",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_25",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+13 Stamina",
+      "+8 Intellect",
+      "Classes: Warlock",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 14."
+    ]
+  },
+  {
+    "id": 19605,
+    "name": "Kezan's Unstoppable Taint",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_26",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+13 Stamina",
+      "+8 Intellect",
+      "Classes: Warlock",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 14.",
+      "Equip:",
+      "Increases the radius of Rain of Fire and Hellfire by 1 yard.",
+      "Demoniac's Threads",
+      "(0/5)",
+      "Kezan's Unstoppable Taint",
+      "Hazza'rah's Charm of Destruction",
+      "Zandalar Demoniac's Wraps",
+      "Zandalar Demoniac's Mantle",
+      "Zandalar Demoniac's Robe",
+      "(2) Set:",
+      "Increases damage and healing done by magical spells and effects by up to 12.",
+      "(3) Set:",
+      "Corruption now deals an amount of damage equal to 1.5 sec. of Corruption upon application.",
+      "(5) Set:",
+      "Decreases the cooldown of Soul Fire and Death Coil by 15%."
+    ]
+  },
+  {
+    "id": 19606,
+    "name": "Vision of Voodress",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_23",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+8 Intellect",
+      "+7 Strength",
+      "+8 Stamina",
+      "Classes: Shaman"
+    ]
+  },
+  {
+    "id": 19607,
+    "name": "Vision of Voodress",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_24",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+6 Agility",
+      "+8 Intellect",
+      "+7 Strength",
+      "+8 Stamina",
+      "Classes: Shaman"
+    ]
+  },
+  {
+    "id": 19608,
+    "name": "Vision of Voodress",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_25",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+6 Agility",
+      "+10 Intellect",
+      "+9 Strength",
+      "+10 Stamina",
+      "Classes: Shaman"
+    ]
+  },
+  {
+    "id": 19609,
+    "name": "Unmarred Vision of Voodress",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_26",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+6 Agility",
+      "+10 Intellect",
+      "+9 Strength",
+      "+10 Stamina",
+      "Classes: Shaman",
+      "Equip:",
+      "Decreases the mana cost of your Healing Stream and Mana Spring totems by 20.",
+      "Augur's Regalia",
+      "(0/5)",
+      "Unmarred Vision of Voodress",
+      "Wushoolay's Charm of Spirits",
+      "Zandalar Augur's Bracers",
+      "Zandalar Augur's Belt",
+      "Zandalar Augur's Hauberk",
+      "(2) Set:",
+      "Restores 4 mana per 5 sec.",
+      "(3) Set:",
+      "Improves the duration of your Frost Shock spell by 1000 sec.",
+      "(5) Set:",
+      "Increase the range of your Lightning Bolt spell by 5 yds."
+    ]
+  },
+  {
+    "id": 19610,
+    "name": "Enchanted South Seas Kelp",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_23",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+8 Intellect",
+      "+7 Spirit",
+      "+8 Stamina",
+      "Classes: Druid"
+    ]
+  },
+  {
+    "id": 19611,
+    "name": "Enchanted South Seas Kelp",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_24",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+11 Intellect",
+      "+8 Stamina",
+      "+7 Spirit",
+      "Classes: Druid"
+    ]
+  },
+  {
+    "id": 19612,
+    "name": "Enchanted South Seas Kelp",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_25",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+13 Intellect",
+      "+10 Stamina",
+      "+9 Spirit",
+      "Classes: Druid"
+    ]
+  },
+  {
+    "id": 19613,
+    "name": "Pristine Enchanted South Seas Kelp",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_26",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+13 Intellect",
+      "+10 Stamina",
+      "+9 Spirit",
+      "Classes: Druid",
+      "Equip:",
+      "Increases the critical hit chance of Wrath and Starfire by 2%.",
+      "Haruspex's Garb",
+      "(0/5)",
+      "Pristine Enchanted South Seas Kelp",
+      "Wushoolay's Charm of Nature",
+      "Zandalar Haruspex's Bracers",
+      "Zandalar Haruspex's Belt",
+      "Zandalar Haruspex's Tunic",
+      "(2) Set:",
+      "Restores 4 mana per 5 sec.",
+      "(3) Set:",
+      "Increases the duration of Faerie Fire by 5000 sec.",
+      "(5) Set:",
+      "Increases the critical hit chance of your Starfire spell 3%."
+    ]
+  },
+  {
+    "id": 19614,
+    "name": "Zandalarian Shadow Talisman",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_23",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+12 Agility",
+      "+7 Stamina",
+      "Classes: Rogue"
+    ]
+  },
+  {
+    "id": 19615,
+    "name": "Zandalarian Shadow Talisman",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_24",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+12 Agility",
+      "+6 Strength",
+      "+7 Stamina",
+      "Classes: Rogue"
+    ]
+  },
+  {
+    "id": 19616,
+    "name": "Zandalarian Shadow Talisman",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_25",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+15 Agility",
+      "+6 Strength",
+      "+9 Stamina",
+      "Classes: Rogue"
+    ]
+  },
+  {
+    "id": 19617,
+    "name": "Zandalarian Shadow Mastery Talisman",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_26",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+15 Agility",
+      "+6 Strength",
+      "+9 Stamina",
+      "Classes: Rogue",
+      "Equip:",
+      "Decreases the cooldown of Kick by 500 sec.",
+      "Madcap's Outfit",
+      "(0/5)",
+      "Zandalarian Shadow Mastery Talisman",
+      "Renataki's Charm of Trickery",
+      "Zandalar Madcap's Bracers",
+      "Zandalar Madcap's Mantle",
+      "Zandalar Madcap's Tunic",
+      "(2) Set:",
+      "+20 Attack Power.",
+      "(3) Set:",
+      "Decreases the cooldown of Blind by 20000 sec.",
+      "(5) Set:",
+      "Decrease the energy cost of Eviscerate and Rupture by 5."
+    ]
+  },
+  {
+    "id": 19618,
+    "name": "Maelstrom's Tendril",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_23",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+12 Agility",
+      "+7 Stamina",
+      "Classes: Hunter"
+    ]
+  },
+  {
+    "id": 19619,
+    "name": "Maelstrom's Tendril",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_24",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+12 Agility",
+      "+6 Intellect",
+      "+7 Stamina",
+      "Classes: Hunter"
+    ]
+  },
+  {
+    "id": 19620,
+    "name": "Maelstrom's Tendril",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_25",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+15 Agility",
+      "+6 Intellect",
+      "+9 Stamina",
+      "Classes: Hunter"
+    ]
+  },
+  {
+    "id": 19621,
+    "name": "Maelstrom's Wrath",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_26",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+15 Agility",
+      "+6 Intellect",
+      "+9 Stamina",
+      "Classes: Hunter",
+      "Equip:",
+      "Decreases the cooldown of Feign Death by 2000 sec.",
+      "Predator's Armor",
+      "(0/5)",
+      "Maelstrom's Wrath",
+      "Renataki's Charm of Beasts",
+      "Zandalar Predator's Bracers",
+      "Zandalar Predator's Belt",
+      "Zandalar Predator's Mantle",
+      "(2) Set:",
+      "+20 Attack Power.",
+      "(3) Set:",
+      "Decreases the cooldown of Concussive Shot and Wing Clip by 1000 sec.",
+      "(5) Set:",
+      "Reduces the time between periodic ticks and duration of Serpent Sting by 20%."
+    ]
+  },
+  {
+    "id": 19856,
+    "name": "The Eye of Hakkar",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_22",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to get a critical strike by 1%.",
+      "Equip:",
+      "+40 Attack Power."
+    ]
+  },
+  {
+    "id": 19871,
+    "name": "Talisman of Protection",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_21",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increased Defense +9.",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%."
+    ]
+  },
+  {
+    "id": 19876,
+    "name": "Soul Corrupter's Necklace",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_19",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+13 Intellect",
+      "+8 Spirit",
+      "+5 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to hit with spells by 1%.",
+      "Equip:",
+      "Increases your attack and casting speed by 1%."
+    ]
+  },
+  {
+    "id": 19885,
+    "name": "Jin'do's Evil Eye",
+    "quality": 4,
+    "icon": "INV_Jewelry_Ring_45",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+11 Intellect",
+      "+6 Spirit",
+      "+5 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 44."
+    ]
+  },
+  {
+    "id": 19923,
+    "name": "Jeklik's Opaline Talisman",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 22.",
+      "Equip:",
+      "Restores 3 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 20037,
+    "name": "Arcane Crystal Pendant",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Topaz_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Intellect",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 16.",
+      "\"Arcane crystals are best utilized for the purposes of a mage.\""
+    ]
+  },
+  {
+    "id": 20248,
+    "name": "90 Green Warrior Neck",
+    "quality": 2,
+    "icon": "INV_Jewelry_Amulet_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+15 Stamina",
+      "+16 Strength",
+      "Classes: Warrior",
+      "Requires Level 60"
+    ]
+  },
+  {
+    "id": 20288,
+    "name": "63 Green Warrior Neck",
+    "quality": 2,
+    "icon": "INV_Jewelry_Amulet_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Stamina",
+      "+10 Strength",
+      "Classes: Warrior",
+      "Requires Level 58"
+    ]
+  },
+  {
+    "id": 20305,
+    "name": "90 Green Rogue Neck",
+    "quality": 2,
+    "icon": "INV_Jewelry_Talisman_07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+11 Stamina",
+      "+18 Agility",
+      "Requires Level 60"
+    ]
+  },
+  {
+    "id": 20319,
+    "name": "63 Green Rogue Neck",
+    "quality": 2,
+    "icon": "INV_Jewelry_Talisman_07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+7 Stamina",
+      "+12 Agility",
+      "Requires Level 58"
+    ]
+  },
+  {
+    "id": 20345,
+    "name": "90 Green Frost Neck",
+    "quality": 2,
+    "icon": "INV_Jewelry_Talisman_08",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+16 Spirit",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage done by Frost spells and effects by up to 21."
+    ]
+  },
+  {
+    "id": 20358,
+    "name": "63 Green Frost Neck",
+    "quality": 2,
+    "icon": "INV_Jewelry_Talisman_08",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Spirit",
+      "Requires Level 58",
+      "Equip:",
+      "Increases damage done by Frost spells and effects by up to 14."
+    ]
+  },
+  {
+    "id": 20442,
+    "name": "Scout's Medallion",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_14",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+6 Agility",
+      "+2 Stamina",
+      "Requires Level 18"
+    ]
+  },
+  {
+    "id": 20444,
+    "name": "Sentinel's Medallion",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_13",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+6 Agility",
+      "+2 Stamina",
+      "Requires Level 18"
+    ]
+  },
+  {
+    "id": 20622,
+    "name": "Dragonheart Necklace",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_18",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+21 Stamina",
+      "+7 Intellect",
+      "+10 Strength",
+      "Requires Level 60",
+      "Equip:",
+      "+24 Attack Power."
+    ]
+  },
+  {
+    "id": 20645,
+    "name": "Nature's Whisper",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Stamina",
+      "+5 Intellect",
+      "+8 Nature Resistance"
+    ]
+  },
+  {
+    "id": 20649,
+    "name": "Sunprism Pendant",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_15",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+12 Agility",
+      "+7 Stamina"
+    ]
+  },
+  {
+    "id": 20685,
+    "name": "Wavefront Necklace",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_21",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Intellect",
+      "+5 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Restores 8 mana per 5 sec.",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 24."
+    ]
+  },
+  {
+    "id": 20695,
+    "name": "Abyssal War Beads",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_04",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+15 Stamina",
+      "Requires Level 58",
+      "Equip:",
+      "+20 Attack Power."
+    ]
+  },
+  {
+    "id": 21504,
+    "name": "Charm of the Shifting Sands",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_AhnQiraj_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+12 Intellect",
+      "+9 Stamina",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 25."
+    ]
+  },
+  {
+    "id": 21505,
+    "name": "Choker of the Shifting Sands",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_AhnQiraj_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+16 Stamina",
+      "Equip:",
+      "+42 Attack Power."
+    ]
+  },
+  {
+    "id": 21506,
+    "name": "Pendant of the Shifting Sands",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_AhnQiraj_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+21 Stamina",
+      "+14 Strength",
+      "Equip:",
+      "Increased Defense +4."
+    ]
+  },
+  {
+    "id": 21507,
+    "name": "Amulet of the Shifting Sands",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_AhnQiraj_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 46.",
+      "Equip:",
+      "Restores 6 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 21529,
+    "name": "Amulet of Shadow Shielding",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_17",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+18 Stamina",
+      "+7 Spirit",
+      "+20 Shadow Resistance"
+    ]
+  },
+  {
+    "id": 21531,
+    "name": "Drake Tooth Necklace",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_22",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+12 Intellect",
+      "+7 Stamina",
+      "+20 Nature Resistance",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 26."
+    ]
+  },
+  {
+    "id": 21608,
+    "name": "Amulet of Vek'nilash",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_AhnQiraj_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+5 Intellect",
+      "+9 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 27.",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 1%."
+    ]
+  },
+  {
+    "id": 21664,
+    "name": "Barbed Choker",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_AhnQiraj_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to get a critical strike by 1%.",
+      "Equip:",
+      "+44 Attack Power."
+    ]
+  },
+  {
+    "id": 21678,
+    "name": "Necklace of Purity",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_AhnQiraj_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+13 Intellect",
+      "+9 Stamina",
+      "+20 Nature Resistance",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 8."
+    ]
+  },
+  {
+    "id": 21690,
+    "name": "Angelista's Charm",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_20",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+14 Intellect",
+      "+13 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 31.",
+      "Equip:",
+      "Restores 6 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 21700,
+    "name": "Pendant of the Qiraji Guardian",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_AhnQiraj_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+17 Stamina",
+      "+12 Strength",
+      "+11 Agility",
+      "Requires Level 60",
+      "Equip:",
+      "Increased Defense +6."
+    ]
+  },
+  {
+    "id": 21702,
+    "name": "Amulet of Foul Warding",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_12",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+12 Stamina",
+      "+20 Nature Resistance",
+      "Requires Level 60",
+      "Equip:",
+      "+24 Attack Power."
+    ]
+  },
+  {
+    "id": 21712,
+    "name": "Amulet of the Fallen God",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_AhnQiraj_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+11 Stamina",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 57.",
+      "Equip:",
+      "Restores 6 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 21809,
+    "name": "Fury of the Forgotten Swarm",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_14",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Strength",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to get a critical strike by 1%.",
+      "Equip:",
+      "Improves your chance to hit by 1%."
+    ]
+  },
+  {
+    "id": 22149,
+    "name": "Beads of Ogre Mojo",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+7 Stamina",
+      "+12 Intellect",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 13."
+    ]
+  },
+  {
+    "id": 22150,
+    "name": "Beads of Ogre Might",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+7 Stamina",
+      "Equip:",
+      "+24 Attack Power.",
+      "Equip:",
+      "Improves your chance to hit by 1%."
+    ]
+  },
+  {
+    "id": 22327,
+    "name": "Amulet of the Redeemed",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_08",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+9 Intellect",
+      "+9 Stamina",
+      "+8 Spirit",
+      "Requires Level 58",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 15."
+    ]
+  },
+  {
+    "id": 22340,
+    "name": "Pendant of Celerity",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+15 Agility",
+      "Requires Level 58",
+      "Equip:",
+      "Improves your chance to hit by 1%."
+    ]
+  },
+  {
+    "id": 22403,
+    "name": "Diana's Pearl Necklace",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Stamina",
+      "+8 Intellect",
+      "Requires Level 56",
+      "Equip:",
+      "Improves your chance to hit with spells by 1%.",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 9."
+    ]
+  },
+  {
+    "id": 22657,
+    "name": "Amulet of the Dawn",
+    "quality": 4,
+    "icon": "INV_Jewelry_Amulet_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+11 Intellect",
+      "+11 Stamina",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 20."
+    ]
+  },
+  {
+    "id": 22659,
+    "name": "Medallion of the Dawn",
+    "quality": 4,
+    "icon": "INV_Jewelry_Amulet_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+12 Stamina",
+      "Equip:",
+      "+30 Attack Power.",
+      "Equip:",
+      "Improves your chance to get a critical strike by 1%."
+    ]
+  },
+  {
+    "id": 22732,
+    "name": "Mark of C'Thun",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_AhnQiraj_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+24 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increased Defense +10.",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%.",
+      "Equip:",
+      "Improves your chance to hit by 1%."
+    ]
+  },
+  {
+    "id": 22935,
+    "name": "Touch of Frost",
+    "quality": 4,
+    "icon": "INV_Jewelry_Amulet_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+20 Stamina",
+      "+24 Frost Resistance",
+      "Requires Level 60"
+    ]
+  },
+  {
+    "id": 22943,
+    "name": "Malice Stone Pendant",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_29Naxxramas",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Intellect",
+      "+9 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 28.",
+      "Equip:",
+      "Decreases the magical resistances of your spell targets by 13."
+    ]
+  },
+  {
+    "id": 22947,
+    "name": "Pendant of Forgotten Names",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_28Naxxramas",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+13 Spirit",
+      "+13 Intellect",
+      "Requires Level 60",
+      "Equip:",
+      "Allows 10% of your Mana regeneration to continue while casting."
+    ]
+  },
+  {
+    "id": 22981,
+    "name": "Gluth's Missing Collar",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_27Naxxramas",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+24 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your chance to block attacks with a shield by 3%.",
+      "Equip:",
+      "Increases the block value of your shield by 15."
+    ]
+  },
+  {
+    "id": 23023,
+    "name": "Sadist's Collar",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_29Naxxramas",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+24 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to get a critical strike by 1%.",
+      "Equip:",
+      "+20 Attack Power."
+    ]
+  },
+  {
+    "id": 23036,
+    "name": "Necklace of Necropsy",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_30Naxxramas",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Spirit",
+      "+11 Intellect",
+      "+10 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 53."
+    ]
+  },
+  {
+    "id": 23053,
+    "name": "Stormrage's Talisman of Seething",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_28Naxxramas",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+12 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to get a critical strike by 2%.",
+      "Equip:",
+      "+26 Attack Power."
+    ]
+  },
+  {
+    "id": 23057,
+    "name": "Gem of Trapped Innocents",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_29Naxxramas",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+9 Stamina",
+      "+7 Intellect",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 15.",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 2%."
+    ]
+  },
+  {
+    "id": 23058,
+    "name": "Life Channeling Necklace",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_30Naxxramas",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "Requires Level 60",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 70.",
+      "Equip:",
+      "Restores 6 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 23125,
+    "name": "Chains of the Lich",
+    "quality": 3,
+    "icon": "INV_Belt_18",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "Requires Level 55",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 22."
+    ]
+  },
+  {
+    "id": 23169,
+    "name": "Scorn's Icy Choker",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Intellect",
+      "+5 Stamina",
+      "Requires Level 30",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 7."
+    ]
+  },
+  {
+    "id": 33052,
+    "name": "Vanguard's Pendant",
+    "quality": 4,
+    "icon": "INV_Jewelry_Talisman_08",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+19 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 1%.",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 12."
+    ]
+  },
+  {
+    "id": 33053,
+    "name": "Vanguard's Choker",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_22",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+18 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to get a critical strike by 1%.",
+      "Equip:",
+      "+20 Attack Power."
+    ]
+  },
+  {
+    "id": 33054,
+    "name": "Vanguard's Amulet",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_15",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+18 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your attack and casting speed by 1%.",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 22."
+    ]
+  },
+  {
+    "id": 33143,
+    "name": "Draenethyst Necklace",
+    "quality": 3,
+    "icon": "inv_archaeology_70_highborne_inertleystonecharm",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+5 Agility",
+      "+5 Strength",
+      "+5 Intellect",
+      "+5 Spirit",
+      "+5 Stamina",
+      "Requires Level 55",
+      "Requires  - Honored",
+      "Equip:",
+      "+5 All Resistances."
+    ]
+  },
+  {
+    "id": 33176,
+    "name": "Choker of Pestilence",
+    "quality": 4,
+    "icon": "INV_amulet_of_pestilence",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+11 Intellect",
+      "Classes: Priest",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 2%.",
+      "Equip:",
+      "Increases damage done by Holy spells and effects by up to 29.",
+      "Attire of Pestilence",
+      "(0/6)",
+      "Crown of Pestilence",
+      "Epaulets of Pestilence",
+      "Vestments of Pestilence",
+      "Trousers of Pestilence",
+      "Slippers of Pestilence",
+      "Choker of Pestilence",
+      "(3) Set:",
+      "Casting Lightwell grants Light Infusion, giving Smite, Holy Fire, and Chastise a chance to increase your party's attack and casting speed by 5% for 8 sec. Lasts 30 sec.",
+      "(5) Set:",
+      "Casting Holy Fire on a target afflicted by your Shadow Word: Pain (Rank 8) converts it into Burning Zeal, dealing 852 Holy damage over 18 sec and increasing Holy damage taken by 2%."
+    ]
+  },
+  {
+    "id": 33183,
+    "name": "Horned Trophy Cord",
+    "quality": 3,
+    "icon": "BTNBlackPendant",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+6 Agility",
+      "+3 Strength",
+      "+5 Nature Resistance",
+      "Requires Level 24"
+    ]
+  },
+  {
+    "id": 33192,
+    "name": "Thornclad Wreath",
+    "quality": 2,
+    "icon": "INV_Misc_Herb_15",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+10 Stamina",
+      "Requires Level 56",
+      "Equip:",
+      "Increased Defense +3.",
+      "Equip:",
+      "When struck in combat inflicts 5 Nature damage to the attacker."
+    ]
+  },
+  {
+    "id": 33213,
+    "name": "Teeth Adorned Necklace",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_22",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "50 Armor",
+      "+9 Agility",
+      "+9 Strength",
+      "+11 Stamina",
+      "Requires Level 60"
+    ]
+  },
+  {
+    "id": 33216,
+    "name": "Rosary of Mending",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Stamina",
+      "+6 Intellect",
+      "Requires Level 60",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 29.",
+      "Equip:",
+      "Restores 2 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 33238,
+    "name": "Karrsh's Memento",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 24.",
+      "Equip:",
+      "Allows 4% of your Mana regeneration to continue while casting."
+    ]
+  },
+  {
+    "id": 33271,
+    "name": "Pendant of the Bountiful",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+12 Strength",
+      "+10 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your attack and casting speed by 1%.",
+      "Equip:",
+      "Increases your chance to trigger effects from equipped items by 5%."
+    ]
+  },
+  {
+    "id": 33302,
+    "name": "Forlorn Hope",
+    "quality": 4,
+    "icon": "BTNEnchantedNecklace",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Intellect",
+      "+8 Stamina",
+      "+2 Spirit",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your attack and casting speed by 2%.",
+      "Equip:",
+      "Increases damage done by Shadow spells and effects by up to 7."
+    ]
+  },
+  {
+    "id": 33307,
+    "name": "Choker of Endless Insomnia",
+    "quality": 4,
+    "icon": "INV_Jewelry_Ring_45",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+18 Stamina",
+      "+20 Shadow Resistance",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to hit with spells and attacks by 1%."
+    ]
+  },
+  {
+    "id": 33329,
+    "name": "Dreambark Amulet",
+    "quality": 4,
+    "icon": "BTNEmeraldNecklace",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "30 Armor",
+      "+15 Stamina",
+      "+14 Agility",
+      "Equip:",
+      "Improves your chance to hit by 1%.",
+      "Equip:",
+      "Increases your attack and casting speed by 1%."
+    ]
+  },
+  {
+    "id": 33341,
+    "name": "Pendant of Relentless Assault",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_43",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+9 Strength",
+      "+9 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your attack and casting speed by 1%.",
+      "Equip:",
+      "Improves your chance to hit by 1%."
+    ]
+  },
+  {
+    "id": 33350,
+    "name": "Choker of the Enlightened Advisor",
+    "quality": 2,
+    "icon": "INV_Jewelry_Amulet_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Stamina",
+      "+4 Intellect",
+      "+3 Spirit",
+      "Equip:",
+      "Increases damage done by Holy spells and effects by up to 16."
+    ]
+  },
+  {
+    "id": 33860,
+    "name": "Pendant of Reborn Vigor",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Stamina",
+      "+5 Nature Resistance",
+      "Equip:",
+      "Restores 3 health per 5 sec."
+    ]
+  },
+  {
+    "id": 33878,
+    "name": "Elunarian Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Intellect",
+      "Equip:",
+      "Increases your attack and casting speed by 1%."
+    ]
+  },
+  {
+    "id": 41061,
+    "name": "Frozen Rune of Naxxramas",
+    "quality": 3,
+    "icon": "INV_Misc_Rune_09",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+15 Frost Resistance",
+      "Requires Level 56",
+      "Equip:",
+      "Increases damage done by Frost spells and effects by up to 14."
+    ]
+  },
+  {
+    "id": 41312,
+    "name": "Pendant of Midnight",
+    "quality": 2,
+    "icon": "BTNBlackPendant",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+2 Intellect",
+      "+5 Shadow Resistance",
+      "Requires Level 22",
+      "Midnight Regalia",
+      "(0/2)",
+      "Ring of Midnight",
+      "Pendant of Midnight",
+      "(2) Set:",
+      "+10 Shadow Resistance."
+    ]
+  },
+  {
+    "id": 41324,
+    "name": "Mithril Blackstone Necklace",
+    "quality": 2,
+    "icon": "BTNEmptyAmulet",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "10 Armor",
+      "+7 Stamina",
+      "Requires Level 47",
+      "Equip:",
+      "Increased Defense +3."
+    ]
+  },
+  {
+    "id": 41330,
+    "name": "Pendant of Arcane Radiance",
+    "quality": 2,
+    "icon": "INV_Jewelry_Amulet_04",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+10 Arcane Resistance",
+      "Requires Level 54",
+      "Equip:",
+      "Increases damage done by Arcane spells and effects by up to 10."
+    ]
+  },
+  {
+    "id": 41340,
+    "name": "Shimmering Gold Necklace",
+    "quality": 2,
+    "icon": "INV_Belt_19",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 36",
+      "Equip:",
+      "+18 Attack Power.",
+      "Goldmaster's Jewelry",
+      "(0/3)",
+      "Elaborate Golden Bracelets",
+      "Shimmering Gold Necklace",
+      "Golden Jade Ring",
+      "(3) Set:",
+      "+12 ranged Attack Power."
+    ]
+  },
+  {
+    "id": 41427,
+    "name": "Testimony of Resolve",
+    "quality": 1,
+    "icon": "INV_Ore_Arcanite_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "\"Proof of your passage into Master Brightheart's patronage.\""
+    ]
+  },
+  {
+    "id": 41560,
+    "name": "Shalestone Amulet",
+    "quality": 3,
+    "icon": "inv_jewelry_necklace_20",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "50 Armor",
+      "+7 Nature Resistance",
+      "Requires Level 27",
+      "Equip:",
+      "Increased Defense +4."
+    ]
+  },
+  {
+    "id": 41572,
+    "name": "Gowlfang's Collar",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_22",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Spirit",
+      "+5 Agility",
+      "+5 Nature Resistance",
+      "Requires Level 25"
+    ]
+  },
+  {
+    "id": 41580,
+    "name": "Udor's Pendant",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+7 Spirit",
+      "+3 Intellect",
+      "+3 Strength",
+      "Requires Level 27"
+    ]
+  },
+  {
+    "id": 41798,
+    "name": "The Pendant of Uth'okk",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+9 Intellect",
+      "+8 Strength"
+    ]
+  },
+  {
+    "id": 41836,
+    "name": "Ancient Flame Pendant",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_15",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Spirit",
+      "+5 Fire Resistance"
+    ]
+  },
+  {
+    "id": 41980,
+    "name": "Slatebeard Amulet",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_12",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+5 Stamina",
+      "+5 Spirit",
+      "Equip:",
+      "+18 Attack Power."
+    ]
+  },
+  {
+    "id": 42195,
+    "name": "Ceremonial Furbolg Pendant",
+    "quality": 4,
+    "icon": "INV_Jewelry_Amulet_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Agility",
+      "+18 Stamina",
+      "Requires Level 60",
+      "Requires Goldsmith",
+      "Equip:",
+      "Increased Defense +8."
+    ]
+  },
+  {
+    "id": 42205,
+    "name": "Kodoheart Necklace",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_13",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+6 Intellect",
+      "+5 Stamina",
+      "Requires Level 25"
+    ]
+  },
+  {
+    "id": 42263,
+    "name": "Sagh's Pendant",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_14",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+5 Stamina",
+      "+5 Shadow Resistance"
+    ]
+  },
+  {
+    "id": 42341,
+    "name": "Dryadroot Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Spirit",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 13."
+    ]
+  },
+  {
+    "id": 42359,
+    "name": "Sharpshooter's Lucky Bullet",
+    "quality": 2,
+    "icon": "BTNEmptyAmulet",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+16 Spirit"
+    ]
+  },
+  {
+    "id": 42391,
+    "name": "Moonhoof Ceremonial Pendant",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_11",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+11 Agility",
+      "+4 Spirit",
+      "Equip:",
+      "Increases your attack and casting speed by 1%."
+    ]
+  },
+  {
+    "id": 47065,
+    "name": "Lionheart Amulet",
+    "quality": 4,
+    "icon": "INV_lionheart_choker",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+19 Intellect",
+      "+11 Spirit",
+      "Classes: Paladin",
+      "Requires Level 60",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 51.",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 1%.",
+      "Lionheart Armor",
+      "(0/6)",
+      "Lionheart Headpiece",
+      "Lionheart Spaulders",
+      "Lionheart Breastplate",
+      "Lionheart Legplates",
+      "Lionheart Boots",
+      "Lionheart Amulet",
+      "(3) Set:",
+      "Increases the amount healed by your Holy Shock by 192.",
+      "(5) Set:",
+      "Increases healing of your Holy Strike by 10%."
+    ]
+  },
+  {
+    "id": 47071,
+    "name": "Lionheart Pendant",
+    "quality": 4,
+    "icon": "INV_lionheart_choker",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+19 Agility",
+      "+18 Stamina",
+      "Classes: Paladin",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 27.",
+      "Equip:",
+      "Improves your chance to hit by 1%.",
+      "Equip:",
+      "Increased Defense +7.",
+      "Lionheart Battleplate",
+      "(0/6)",
+      "Lionheart Helmet",
+      "Lionheart Shoulderguards",
+      "Lionheart Chestguard",
+      "Lionheart Legguards",
+      "Lionheart Greaves",
+      "Lionheart Pendant",
+      "(3) Set:",
+      "Increases the block value of your shield by 67 and threat generated by Holy Shield by 40%.",
+      "(5) Set:",
+      "Reduces damage taken from all sources by 3%."
+    ]
+  },
+  {
+    "id": 47077,
+    "name": "Lionheart Choker",
+    "quality": 4,
+    "icon": "INV_lionheart_choker",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+21 Strength",
+      "+12 Agility",
+      "Classes: Paladin",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 28.",
+      "Equip:",
+      "Improves your chance to get a critical strike by 1%.",
+      "Lionheart Battlegear",
+      "(0/6)",
+      "Lionheart Crown",
+      "Lionheart Pauldrons",
+      "Lionheart Chestplate",
+      "Lionheart Leggings",
+      "Lionheart Sabatons",
+      "Lionheart Choker",
+      "(3) Set:",
+      "Your Holy Might increases your Strength by an additional 6%.",
+      "(5) Set:",
+      "Your melee attacks and abilities have a 8% chance to begin a Crusade, increasing the attack speed of your party members by 4% for 20 sec."
+    ]
+  },
+  {
+    "id": 47113,
+    "name": "Pendant of the Guardian",
+    "quality": 4,
+    "icon": "INV_amulet_of_the_guardian",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Intellect",
+      "Classes: Mage",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 18.",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 3%.",
+      "Regalia of the Guardian",
+      "(0/6)",
+      "Crown of the Guardian",
+      "Mantle of the Guardian",
+      "Robes of the Guardian",
+      "Leggings of the Guardian",
+      "Boots of the Guardian",
+      "Pendant of the Guardian",
+      "(3) Set:",
+      "Initial hits from Flamestrike, Cone of Cold, Frost Nova, Blast Wave, and Arcane Explosion have a chance to trigger a rewind effect. On rewind, Arcane spells deal 10% additional damage, and Frost and Fire spells deal 20% additional damage.",
+      "(5) Set:",
+      "Your spell critical strikes conjure a magical barrier that absorbs 350 damage. While the barrier holds, the damage you deal with magical spells and effects is increased by up to 42 and the threat you generate is reduced by 15%."
+    ]
+  },
+  {
+    "id": 47119,
+    "name": "Amulet of the Guardian",
+    "quality": 4,
+    "icon": "INV_amulet_of_the_guardian",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Intellect",
+      "Classes: Mage",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage done by Arcane spells and effects by up to 19.",
+      "Equip:",
+      "Increases your attack and casting speed by 3%.",
+      "Vestments of the Guardian",
+      "(0/6)",
+      "Circlet of the Guardian",
+      "Epaulets of the Guardian",
+      "Vestments of the Guardian",
+      "Trousers of the Guardian",
+      "Slippers of the Guardian",
+      "Amulet of the Guardian",
+      "(3) Set:",
+      "Increases the chance for Resonance Cascade to trigger by 5%.",
+      "(5) Set:",
+      "Reduce the mana cost of your spells by 100% for 6 sec after Presence of Mind is consumed."
+    ]
+  },
+  {
+    "id": 47185,
+    "name": "Choker of the Stormhowl",
+    "quality": 4,
+    "icon": "INV_choker_of_the_stormhowl",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+18 Strength",
+      "+16 Agility",
+      "Classes: Shaman",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to get a critical strike by 2%.",
+      "Stormhowl Battlegear",
+      "(0/6)",
+      "Stormhowl Crown",
+      "Stormhowl Pauldrons",
+      "Stormhowl Breastplate",
+      "Stormhowl Leggings",
+      "Stormhowl Sabatons",
+      "Choker of the Stormhowl",
+      "(3) Set:",
+      "Your melee attacks, Stormstrike and Lightning Strike have a 15% chance to trigger an empowered version of your active shield without expending a charge.",
+      "(5) Set:",
+      "Your normal melee swings have a 10% chance to grant you Stormwolf's Frenzy, increasing your attack speed by 10% and your Strength by 5% for 12 sec."
+    ]
+  },
+  {
+    "id": 47191,
+    "name": "Pendant of the Stormhowl",
+    "quality": 4,
+    "icon": "INV_choker_of_the_stormhowl",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Intellect",
+      "Classes: Shaman",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 28.",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 2%.",
+      "Equip:",
+      "Restores 6 mana per 5 sec.",
+      "Stormhowl Garb",
+      "(0/6)",
+      "Stormhowl Helmet",
+      "Stormhowl Epaulets",
+      "Stormhowl Raiments",
+      "Stormhowl Legplates",
+      "Stormhowl Greaves",
+      "Pendant of the Stormhowl",
+      "(3) Set:",
+      "Increase the mana-cost reduction of Clearcasting to 70%.",
+      "(5) Set:",
+      "Elemental Mastery infuses you with the Stormwolf's Cunning, increasing your casting speed by 10% for 12 sec. This effect is refreshed when you critically hit an enemy with a nature spell."
+    ]
+  },
+  {
+    "id": 47197,
+    "name": "Amulet of the Stormhowl",
+    "quality": 4,
+    "icon": "INV_choker_of_the_stormhowl",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Intellect",
+      "Classes: Shaman",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your attack and casting speed by 1%.",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 73.",
+      "Equip:",
+      "Restores 4 mana per 5 sec.",
+      "The Stormhowl",
+      "(0/6)",
+      "Stormhowl Headpiece",
+      "Stormhowl Spaulders",
+      "Stormhowl Tunic",
+      "Stormhowl Legguards",
+      "Stormhowl Boots",
+      "Amulet of the Stormhowl",
+      "(3) Set:",
+      "Increases the effectiveness of Healing Stream Totem and Mana Spring Totem by 20% and reduces their periodic timer by 15%.",
+      "(5) Set:",
+      "Increases the critical strike chance of your healing spells on targets affected by Healing Way by 3% per stack."
+    ]
+  },
+  {
+    "id": 47233,
+    "name": "Amulet of Pestilence",
+    "quality": 4,
+    "icon": "INV_amulet_of_pestilence",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+9 Intellect",
+      "+7 Spirit",
+      "Classes: Priest",
+      "Requires Level 60",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 73.",
+      "Equip:",
+      "Restores 7 mana per 5 sec.",
+      "Vestments of Pestilence",
+      "(0/6)",
+      "Crown of Pestilence",
+      "Mantle of Pestilence",
+      "Robes of Pestilence",
+      "Leggings of Pestilence",
+      "Boots of Pestilence",
+      "Amulet of Pestilence",
+      "(3) Set:",
+      "Each tick of your Renew spell has a 10% chance to refund 15% of its mana cost.",
+      "(5) Set:",
+      "Casting Flash Heal reduces the mana cost of Flash Heal by 3% for 8 sec. Stacks up to 5 times."
+    ]
+  },
+  {
+    "id": 47239,
+    "name": "Pendant of Pestilence",
+    "quality": 4,
+    "icon": "INV_amulet_of_pestilence",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+11 Intellect",
+      "Classes: Priest",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to hit with spells by 1%.",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 39.",
+      "Regalia of Pestilence",
+      "(0/6)",
+      "Coronet of Pestilence",
+      "Shoulderpads of Pestilence",
+      "Raiments of Pestilence",
+      "Pants of Pestilence",
+      "Sandals of Pestilence",
+      "Pendant of Pestilence",
+      "(3) Set:",
+      "Your Fade increases your Shadow damage done by 15% for 10 sec.",
+      "(5) Set:",
+      "Mind Flay and Mind Blast have a 20% chance to inject a deadly pestilence into the target, dealing 600 Shadow damage over 8 sec. Stacks up to 8001 times."
+    ]
+  },
+  {
+    "id": 47275,
+    "name": "Choker of the Brotherhood",
+    "quality": 4,
+    "icon": "INV_choker_of_the_brotherhood",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+15 Strength",
+      "+14 Agility",
+      "Classes: Warrior",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to get a critical strike by 2%.",
+      "Equip:",
+      "Your attacks ignore 50 of the target's armor.",
+      "Battlegear of the Brotherhood",
+      "(0/6)",
+      "Helmet of the Brotherhood",
+      "Shoulderguards of the Brotherhood",
+      "Chestguard of the Brotherhood",
+      "Legguards of the Brotherhood",
+      "Greaves of the Brotherhood",
+      "Choker of the Brotherhood",
+      "(3) Set:",
+      "Reduces the rage cost of Sunder Armor, Whirlwind and Heroic Strike by 50.",
+      "(5) Set:",
+      "Shield Wall, Recklessness and Retaliation inspire your group, granting unique benefits during their duration depending on the ability used."
+    ]
+  },
+  {
+    "id": 47311,
+    "name": "Nathrezim Amulet",
+    "quality": 4,
+    "icon": "INV_nathrezim_amulet",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Intellect",
+      "+9 Stamina",
+      "Classes: Warlock",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 18.",
+      "Equip:",
+      "Increases your attack and casting speed by 2%.",
+      "Equip:",
+      "Improves your chance to hit with spells by 1%.",
+      "Nathrezim Attire",
+      "(0/6)",
+      "Nathrezim Crown",
+      "Nathrezim Mantle",
+      "Nathrezim Raiments",
+      "Nathrezim Leggings",
+      "Nathrezim Boots",
+      "Nathrezim Amulet",
+      "(3) Set:",
+      "Increases the health drained by Siphon Life by 25%. In addition, you gain 25% of the health drained as mana and attempt to drain that mana directly from the target.",
+      "(5) Set:",
+      "Damage from your periodic spells and effects has a chance to grant Ruination, increasing your casting speed by 5% and your damage done by Shadow spells and effects by up to 45 for 8 sec."
+    ]
+  },
+  {
+    "id": 47317,
+    "name": "Nathrezim Pendant",
+    "quality": 4,
+    "icon": "INV_nathrezim_amulet",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+11 Intellect",
+      "+7 Stamina",
+      "Classes: Warlock",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 18.",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 1%.",
+      "Equip:",
+      "Improves your chance to hit with spells by 2%.",
+      "Nathrezim Raiment",
+      "(0/6)",
+      "Nathrezim Skullcap",
+      "Nathrezim Spaulders",
+      "Nathrezim Robes",
+      "Nathrezim Pants",
+      "Nathrezim Slippers",
+      "Nathrezim Pendant",
+      "(3) Set:",
+      "Increases the critical strike damage bonus of your Shadow Bolt and Searing Pain spells by 10% and the critical strike damage bonus of your controlled demon's attacks, abilities and spells by 10%.",
+      "(5) Set:",
+      "Dealing direct Shadow and Fire damage has a chance to coat the enemy in Felfire, dealing 45 Shadow and 45 Fire damage every second for 6 sec.  While burning, Shadow and Fire damage taken is increased by 3%."
+    ]
+  },
+  {
+    "id": 47323,
+    "name": "Ravenstalker Choker",
+    "quality": 4,
+    "icon": "INV_ravenstalker_choker",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+22 Agility",
+      "+6 Intellect",
+      "Classes: Hunter",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to get a critical strike by 2%.",
+      "Equip:",
+      "Restores 5 mana per 5 sec.",
+      "Ravenstalker Armor",
+      "(0/6)",
+      "Ravenstalker Headpiece",
+      "Ravenstalker Spaulders",
+      "Ravenstalker Tunic",
+      "Ravenstalker Legguards",
+      "Ravenstalker Boots",
+      "Ravenstalker Choker",
+      "(3) Set:",
+      "Reduces the cooldown of Multi-Shot and Carve by 1000 sec.",
+      "(5) Set:",
+      "Increases the attack speed provided by Swift Aspects by an additional 5%."
+    ]
+  },
+  {
+    "id": 47329,
+    "name": "Trickster Choker",
+    "quality": 4,
+    "icon": "INV_trickster_choker",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+20 Strength",
+      "+15 Agility",
+      "Classes: Rogue",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to hit by 2%.",
+      "Equip:",
+      "Improves your chance to get a critical strike by 1%.",
+      "Trickster Armor",
+      "(0/6)",
+      "Trickster Helmet",
+      "Trickster Pauldrons",
+      "Trickster Breastplate",
+      "Trickster Leggings",
+      "Trickster Sabatons",
+      "Trickster Choker",
+      "(3) Set:",
+      "Your opening moves have a 100% chance and your finishing moves have a 20% chance per combo point to increase your attack speed by 10% for 6 sec.",
+      "(5) Set:",
+      "Sinister Strike, Backstab, Noxious Assault, and Hemorrhage have a 20% chance to veil you in shadows, catching your enemy off guard.  The next ability you use to generate combo points restores 20 Energy and grants 1 additional combo point if used within 6 sec."
+    ]
+  },
+  {
+    "id": 47395,
+    "name": "Amulet of the Talon",
+    "quality": 4,
+    "icon": "INV_amulet_of_the_talon",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+15 Spirit",
+      "Classes: Druid",
+      "Requires Level 60",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 84.",
+      "Raiment of the Talon",
+      "(0/6)",
+      "Helm of the Talon",
+      "Spaulders of the Talon",
+      "Vestments of the Talon",
+      "Leggings of the Talon",
+      "Boots of the Talon",
+      "Amulet of the Talon",
+      "(3) Set:",
+      "Reduces the cooldown of Swiftmend by 3000 seconds.",
+      "(5) Set:",
+      "Your Swiftmend empowers the target, additionally healing them for 240 health each time they take direct damage, up to 5 times."
+    ]
+  },
+  {
+    "id": 47401,
+    "name": "Pendant of the Talon",
+    "quality": 4,
+    "icon": "INV_amulet_of_the_talon",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+11 Intellect",
+      "+6 Stamina",
+      "Classes: Druid",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 22.",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 2%.",
+      "Equip:",
+      "Decreases the magical resistances of your spell targets by 10.",
+      "Regalia of the Talon",
+      "(0/6)",
+      "Circlet of the Talon",
+      "Mantle of the Talon",
+      "Vest of the Talon",
+      "Trousers of the Talon",
+      "Slippers of the Talon",
+      "Pendant of the Talon",
+      "(3) Set:",
+      "Your Hurricane now cuts your enemies with razor sharp winds, dealing 50% of its total damage as Nature damage over 10 sec.",
+      "(5) Set:",
+      "Increases the bonuses provided by Balance of All Things by 50%."
+    ]
+  },
+  {
+    "id": 47407,
+    "name": "Choker of the Talon",
+    "quality": 4,
+    "icon": "INV_amulet_of_the_talon",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+20 Strength",
+      "+16 Agility",
+      "Classes: Druid",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to get a critical strike by 1%.",
+      "Equip:",
+      "Your attacks ignore 40 of the target's armor.",
+      "Harness of the Talon",
+      "(0/6)",
+      "Helmet of the Talon",
+      "Shoulderpads of the Talon",
+      "Raiments of the Talon",
+      "Pants of the Talon",
+      "Treads of the Talon",
+      "Choker of the Talon",
+      "(3) Set:",
+      "Damage from your Claw, Rake and Shred abilities has a 5% chance to increase your Attack Power by 100 for 10 sec.",
+      "(5) Set:",
+      "Spending combo points grants a stack of Primal Ferocity per combo point spent. Upon reaching 0 stacks, all stacks are consumed, increasing your Attack Power by 25% and granting 3 Energy each time you attack for 10 sec."
+    ]
+  },
+  {
+    "id": 48298,
+    "name": "Shadowtooth Memento",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "Equip:",
+      "Increases your attack and casting speed by 1%.",
+      "Equip:",
+      "+26 Attack Power.",
+      "\"An ode to a fallen tribe.\""
+    ]
+  },
+  {
+    "id": 50056,
+    "name": "City Protector's Medallion",
+    "quality": 3,
+    "icon": "INV_Misc_Rune_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+15 Stamina",
+      "Use:",
+      "Come to the aid of city you've sworn to protect.",
+      "\"Sends you to your capital city. You must become a City Protector to use this item.\""
+    ]
+  },
+  {
+    "id": 50440,
+    "name": "Cracked Scarlet Crusade Insignia",
+    "quality": null,
+    "icon": "INV_Jewelry_Necklace_15",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "\"Once a symbol of unyielding zeal, now shattered, but still bearing the mark of the Scarlet Crusade's fanatical devotion. \""
+    ]
+  },
+  {
+    "id": 50545,
+    "name": "Gemstone of Ysera",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Emerald_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+20 Nature Resistance",
+      "\"The power of Ysera flows within...\""
+    ]
+  },
+  {
+    "id": 51045,
+    "name": "Toxic Talisman",
+    "quality": 3,
+    "icon": "BTNEnchantedNecklace",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+9 Intellect",
+      "+10 Nature Resistance",
+      "Requires Level 54",
+      "Equip:",
+      "Increases damage done by Nature spells and effects by up to 16.",
+      "Equip:",
+      "Restores 2 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 51756,
+    "name": "Pendant of the Deep Woodlands",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Intellect",
+      "+6 Stamina",
+      "+6 Spirit",
+      "+5 Nature Resistance",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 6."
+    ]
+  },
+  {
+    "id": 51865,
+    "name": "Emblazoned Kodo Horn",
+    "quality": 2,
+    "icon": "INV_Misc_Horn_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Intellect",
+      "+5 Spirit"
+    ]
+  },
+  {
+    "id": 51896,
+    "name": "Pearled Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Intellect",
+      "+2 Spirit",
+      "Equip:",
+      "Restores 2 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 55004,
+    "name": "Shattered Burning Blade Medallion",
+    "quality": null,
+    "icon": "INV_Jewelry_Talisman_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "\"A broken medallion, now a reminder of victory over a great evil.\""
+    ]
+  },
+  {
+    "id": 55022,
+    "name": "Bishop Miranda's Rosary",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+7 Intellect",
+      "+6 Spirit",
+      "Requires Level 35",
+      "Requires Syndicate - Honored",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 13.",
+      "\"Clearly used. Belonged to a person of exceptional faith.\""
+    ]
+  },
+  {
+    "id": 55035,
+    "name": "Derelict Family Clan Totem",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Strength",
+      "+5 Agility",
+      "Requires Level 45",
+      "Requires Wildhammer Clan - Friendly",
+      "Equip:",
+      "Increased Axes +2.",
+      "\"It bears the emblem of a barely recognizable axe\""
+    ]
+  },
+  {
+    "id": 55065,
+    "name": "Smudge's Necklace of Good Fortune",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Stamina",
+      "+5 Strength",
+      "Requires Level 35",
+      "Requires Ravenholdt - Honored",
+      "Equip:",
+      "+14 Attack Power.",
+      "\"A feline silhouette can be felt on the surface.\""
+    ]
+  },
+  {
+    "id": 55077,
+    "name": "Carnelia's Sunset",
+    "quality": 4,
+    "icon": "INV_Jewelry_Amulet_05",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+8 Intellect",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage done by Shadow spells and effects by up to 21.",
+      "Equip:",
+      "Increases damage done by Fire spells and effects by up to 21.",
+      "\"Rumored to be an imitation of Lord Jorach's wedding gift to his late wife.\""
+    ]
+  },
+  {
+    "id": 55078,
+    "name": "Ley-attuned Choker",
+    "quality": 4,
+    "icon": "INV_Jewelry_Talisman_Mana",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+15 Stamina",
+      "+27 Arcane Resistance",
+      "Requires Level 60",
+      "Equip:",
+      "Restores 5 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 55097,
+    "name": "Choker of Chromatic Power",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_08",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+13 Strength",
+      "+13 Agility",
+      "+13 Intellect",
+      "+13 Stamina",
+      "+13 Spirit",
+      "+13 Fire Resistance",
+      "+13 Nature Resistance",
+      "+13 Frost Resistance",
+      "+13 Shadow Resistance",
+      "+13 Arcane Resistance",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 13."
+    ]
+  },
+  {
+    "id": 55112,
+    "name": "Pendant of Forgiven Mistakes",
+    "quality": 4,
+    "icon": "INV_Jewelry_Talisman_Health",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+21 Intellect",
+      "Requires Level 60",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 44.",
+      "Equip:",
+      "Restores 8 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 55132,
+    "name": "Pendant of Purified Demon's Blood",
+    "quality": 4,
+    "icon": "Spell_Shadow_LifeDrain",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+27 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increased Defense +11.",
+      "Equip:",
+      "Improves your chance to hit by 2%."
+    ]
+  },
+  {
+    "id": 55147,
+    "name": "Powerful Citrine Pendant",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_06",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+7 Spirit",
+      "+3 Intellect",
+      "Requires Level 33",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 8."
+    ]
+  },
+  {
+    "id": 55171,
+    "name": "Lavish Gemmed Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_08",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+2 Stamina",
+      "+2 Agility",
+      "+2 Spirit",
+      "Requires Level 16"
+    ]
+  },
+  {
+    "id": 55172,
+    "name": "Amberstone Pendant",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+2 Strength",
+      "+3 Stamina",
+      "Requires Level 16"
+    ]
+  },
+  {
+    "id": 55173,
+    "name": "Deepmist Choker",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_16",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+2 Intellect",
+      "+3 Stamina",
+      "Requires Level 16"
+    ]
+  },
+  {
+    "id": 55192,
+    "name": "Citrine Pendant",
+    "quality": 2,
+    "icon": "Ability_Ambush",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+5 Intellect",
+      "+5 Spirit",
+      "Requires Level 30"
+    ]
+  },
+  {
+    "id": 55193,
+    "name": "Stormy Necklace",
+    "quality": 2,
+    "icon": "INV_Misc_QuestionMark",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+3 Stamina",
+      "Requires Level 31",
+      "Equip:",
+      "Increases damage done by Nature spells and effects by up to 10."
+    ]
+  },
+  {
+    "id": 55194,
+    "name": "Nature Shard",
+    "quality": 2,
+    "icon": "INV_Misc_QuestionMark",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+8 Nature Resistance",
+      "Requires Level 32"
+    ]
+  },
+  {
+    "id": 55195,
+    "name": "Astral Amulet",
+    "quality": 2,
+    "icon": "BTNEnchantedNecklace",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+3 Spirit",
+      "+8 Intellect",
+      "Requires Level 35"
+    ]
+  },
+  {
+    "id": 55196,
+    "name": "Aquamarine Pendant",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_03",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+7 Stamina",
+      "+6 Strength",
+      "Requires Level 37",
+      "Aquamarine Jewelry",
+      "(0/2)",
+      "Dazzling Aquamarine Loop",
+      "Aquamarine Pendant",
+      "(2) Set:",
+      "+5 Strength."
+    ]
+  },
+  {
+    "id": 55197,
+    "name": "Starforge Amulet",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_07",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+4 Spirit",
+      "Requires Level 42",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 11."
+    ]
+  },
+  {
+    "id": 55198,
+    "name": "Moonlit Charm",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_11",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+6 Stamina",
+      "+6 Spirit",
+      "Requires Level 49",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 18."
+    ]
+  },
+  {
+    "id": 55199,
+    "name": "Prism Amulet",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_16",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+5 Intellect",
+      "Requires Level 51",
+      "Equip:",
+      "+22 Attack Power."
+    ]
+  },
+  {
+    "id": 55200,
+    "name": "Voidheart Charm",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_Banshee",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+6 Agility",
+      "+6 Intellect",
+      "Requires Level 54",
+      "Equip:",
+      "+22 ranged Attack Power."
+    ]
+  },
+  {
+    "id": 55201,
+    "name": "Enigma Pendant",
+    "quality": 2,
+    "icon": "INV_Misc_QuestionMark",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+6 Intellect",
+      "Requires Level 57",
+      "Equip:",
+      "Increases damage done by Shadow spells and effects by up to 17."
+    ]
+  },
+  {
+    "id": 55202,
+    "name": "Gemmed Citrine Pendant",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_06",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+5 Stamina",
+      "+6 Intellect",
+      "+5 Strength",
+      "Requires Level 30"
+    ]
+  },
+  {
+    "id": 55203,
+    "name": "Reinforced Aquamarine Pendant",
+    "quality": 3,
+    "icon": "INV_Misc_QuestionMark",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+6 Stamina",
+      "+6 Strength",
+      "+4 Spirit",
+      "Requires Level 38",
+      "Equip:",
+      "1% of damage dealt is returned as healing."
+    ]
+  },
+  {
+    "id": 55204,
+    "name": "Runebound Amulet",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_05",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+4 Stamina",
+      "+8 Fire Resistance",
+      "Requires Level 44",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 12."
+    ]
+  },
+  {
+    "id": 55205,
+    "name": "Sunburst Collar",
+    "quality": 3,
+    "icon": "INV_Misc_QuestionMark",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+6 Stamina",
+      "+5 Spirit",
+      "Requires Level 47",
+      "Equip:",
+      "Increases damage done by Fire spells and effects by up to 17."
+    ]
+  },
+  {
+    "id": 55206,
+    "name": "Onyx Locket",
+    "quality": 3,
+    "icon": "INV_Misc_QuestionMark",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+6 Stamina",
+      "+6 Spirit",
+      "Requires Level 53",
+      "Equip:",
+      "+14 Attack Power.",
+      "Equip:",
+      "Improves your chance to hit by 1%."
+    ]
+  },
+  {
+    "id": 55207,
+    "name": "Pure Uplifting Choker",
+    "quality": 3,
+    "icon": "INV_Misc_QuestionMark",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+11 Spirit",
+      "Requires Level 58",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 31."
+    ]
+  },
+  {
+    "id": 55208,
+    "name": "Choker Of The Judged",
+    "quality": 4,
+    "icon": "INV_Misc_QuestionMark",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+9 Strength",
+      "+9 Agility",
+      "+4 Intellect",
+      "Requires Level 42",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 11.",
+      "\"And by his conviction, he would be judged.\""
+    ]
+  },
+  {
+    "id": 55209,
+    "name": "Medallion Of The Lost",
+    "quality": 4,
+    "icon": "INV_Misc_QuestionMark",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+15 Stamina",
+      "+10 Strength",
+      "Requires Level 53",
+      "Equip:",
+      "Reduces damage taken from critical hits and damage over time effects by 3%.",
+      "\"The cracks on the topaz' surface reflect Kalimdor's primordial nature.\""
+    ]
+  },
+  {
+    "id": 55473,
+    "name": "Pendant of Scarlet Rage",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Strength",
+      "+5 Spirit",
+      "Durability 75 / 75",
+      "Requires Level 34"
+    ]
+  },
+  {
+    "id": 55481,
+    "name": "Draenethyst Pendant",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "Requires Level 58",
+      "Equip:",
+      "+14 Attack Power.",
+      "Equip:",
+      "Increased Defense +5.",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 16."
+    ]
+  },
+  {
+    "id": 55496,
+    "name": "Polychromatic Pearl Necklace",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_25",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+12 Stamina",
+      "+10 Intellect",
+      "Requires Level 60",
+      "Equip:",
+      "Restores 2 mana per 5 sec.",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 20."
+    ]
+  },
+  {
+    "id": 55507,
+    "name": "Choker of Terminal Arcanum",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_28",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+15 Agility",
+      "+10 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your attack and casting speed by 2%."
+    ]
+  },
+  {
+    "id": 56037,
+    "name": "Gleaming Chain",
+    "quality": 2,
+    "icon": "INV_Belt_32",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+3 Agility",
+      "+1 Spirit",
+      "Requires Level 14"
+    ]
+  },
+  {
+    "id": 56038,
+    "name": "Talisman of Stone",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_22",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "35 Armor",
+      "Requires Level 18",
+      "Equip:",
+      "Increased Defense +2."
+    ]
+  },
+  {
+    "id": 56039,
+    "name": "Medallion of Flame",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_15",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+6 Fire Resistance",
+      "Requires Level 20"
+    ]
+  },
+  {
+    "id": 56040,
+    "name": "Gleaming Silver Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_07",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+1 Spirit",
+      "Requires Level 25",
+      "Equip:",
+      "+10 Attack Power."
+    ]
+  },
+  {
+    "id": 56042,
+    "name": "Gem Encrusted Choker",
+    "quality": 2,
+    "icon": "INV_Jewelry_Amulet_05",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+8 Stamina",
+      "Requires Level 30"
+    ]
+  },
+  {
+    "id": 56043,
+    "name": "Goldcrest Amulet",
+    "quality": 2,
+    "icon": "INV_Jewelry_Amulet_03",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+4 Agility",
+      "+4 Strength",
+      "+5 Spirit",
+      "Requires Level 32"
+    ]
+  },
+  {
+    "id": 56049,
+    "name": "Alluring Citrine Choker",
+    "quality": 2,
+    "icon": "INV_Belt_27",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 38",
+      "Equip:",
+      "Restores 4 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 56054,
+    "name": "Delicate Mithril Amulet",
+    "quality": 2,
+    "icon": "INV_Jewelry_Talisman_10",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 34",
+      "Equip:",
+      "1% chance to stun a victim struck in combat for 1 sec."
+    ]
+  },
+  {
+    "id": 56063,
+    "name": "Talisman of Hinderance",
+    "quality": 4,
+    "icon": "INV_Jewelry_Amulet_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+12 Stamina",
+      "Requires Level 60",
+      "Requires Goldsmith",
+      "Equip:",
+      "+10 All Resistances.",
+      "Equip:",
+      "Reduces all spell damage taken by 5%."
+    ]
+  },
+  {
+    "id": 56072,
+    "name": "Pendant of Instability",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_06",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+-10 Strength",
+      "+-10 Intellect",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your attack and casting speed by 2%."
+    ]
+  },
+  {
+    "id": 56090,
+    "name": "Spellweaver Pendant",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_07",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+6 Strength",
+      "+6 Agility",
+      "+5 Stamina",
+      "+6 Intellect",
+      "Requires Level 51",
+      "Spellweaver's Accessories",
+      "(0/2)",
+      "Spellweaver Rod",
+      "Spellweaver Pendant",
+      "(2) Set:",
+      "+7 Spirit."
+    ]
+  },
+  {
+    "id": 58005,
+    "name": "Heart of a Cryptid",
+    "quality": 2,
+    "icon": "INV_Misc_Organ_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+-5 Spirit",
+      "Requires Level 34",
+      "Use:",
+      "Restores 280 to 361 health."
+    ]
+  },
+  {
+    "id": 58022,
+    "name": "SI:7 Honorary Medal",
+    "quality": 2,
+    "icon": "INV_Jewelry_Amulet_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Strength",
+      "+4 Stamina"
+    ]
+  },
+  {
+    "id": 58038,
+    "name": "Steeltooth",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+9 Intellect"
+    ]
+  },
+  {
+    "id": 58055,
+    "name": "Translucent Pearls",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_10",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 34",
+      "Equip:",
+      "Restores 3 mana per 5 sec.",
+      "Equip:",
+      "Restores 2 health per 5 sec."
+    ]
+  },
+  {
+    "id": 58064,
+    "name": "Harelyss' Whip",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+7 Stamina",
+      "+-3 Spirit",
+      "Equip:",
+      "+10 Attack Power."
+    ]
+  },
+  {
+    "id": 58078,
+    "name": "Choker of Insight",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "Equip:",
+      "Improves your chance to hit by 1%."
+    ]
+  },
+  {
+    "id": 58095,
+    "name": "Talisman of the Sandborn",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Strength",
+      "+6 Agility",
+      "Requires Level 43",
+      "Equip:",
+      "Restores 4 health per 5 sec."
+    ]
+  },
+  {
+    "id": 58096,
+    "name": "Soulgem of the Chained Wyrm",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+4 Strength",
+      "+4 Intellect",
+      "+4 Spirit",
+      "+6 Fire Resistance",
+      "Requires Level 29"
+    ]
+  },
+  {
+    "id": 58171,
+    "name": "Chief Bruiser Choker",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Stamina",
+      "Equip:",
+      "Increased Defense +3.",
+      "Equip:",
+      "Restores 4 health per 5 sec."
+    ]
+  },
+  {
+    "id": 58181,
+    "name": "Fungal Threads",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Stamina",
+      "+6 Spirit",
+      "Requires Level 33",
+      "Equip:",
+      "Restores 2 health per 5 sec."
+    ]
+  },
+  {
+    "id": 58221,
+    "name": "Flameseeker Necklace",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+14 Intellect",
+      "Requires Level 58",
+      "Requires Thorium Brotherhood - Revered",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 1%."
+    ]
+  },
+  {
+    "id": 58234,
+    "name": "Pendant of Ember Blood",
+    "quality": 4,
+    "icon": "INV_Jewelry_Talisman_Health",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "30 Armor",
+      "+6 Strength",
+      "+5 Agility",
+      "Equip:",
+      "+20 Attack Power.",
+      "\"Awarded for honorable deeds to the Red Dragonflight.\""
+    ]
+  },
+  {
+    "id": 58235,
+    "name": "Pendant of Ember Blessing",
+    "quality": 4,
+    "icon": "INV_Jewelry_Talisman_Health",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+5 Spirit",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 15.",
+      "\"Awarded for honorable deeds to the Red Dragonflight.\""
+    ]
+  },
+  {
+    "id": 58236,
+    "name": "Pendant of Ember Hatred",
+    "quality": 4,
+    "icon": "INV_Jewelry_Talisman_Health",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+7 Stamina",
+      "+6 Agility",
+      "Equip:",
+      "+22 ranged Attack Power.",
+      "\"Awarded for honorable deeds to the Red Dragonflight.\""
+    ]
+  },
+  {
+    "id": 60132,
+    "name": "Talisman of Kar'noom",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_30Naxxramas",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+7 Stamina",
+      "+4 Spirit",
+      "\"The ancient talisman of a long gone sage.\""
+    ]
+  },
+  {
+    "id": 60239,
+    "name": "Murloc Shell Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+16 Spirit",
+      "+5 Intellect"
+    ]
+  },
+  {
+    "id": 60300,
+    "name": "Maul'ogg Beads of Rage",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_19",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+13 Strength",
+      "+3 Stamina"
+    ]
+  },
+  {
+    "id": 60348,
+    "name": "Favor of Cruk'Zogg",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Strength",
+      "+6 Stamina",
+      "Equip:",
+      "Improves your chance to hit by 1%.",
+      "Equip:",
+      "Increased Defense +6."
+    ]
+  },
+  {
+    "id": 60412,
+    "name": "Blackteeth Necklace",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+12 Intellect",
+      "+8 Spirit",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 1%."
+    ]
+  },
+  {
+    "id": 60420,
+    "name": "Amulet of Warding",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_16",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "50 Armor",
+      "+13 Stamina",
+      "+2 Spirit",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%."
+    ]
+  },
+  {
+    "id": 60460,
+    "name": "Tusk of Gardon",
+    "quality": 3,
+    "icon": "INV_Misc_Bone_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+12 Strength",
+      "+15 Arcane Resistance"
+    ]
+  },
+  {
+    "id": 60463,
+    "name": "Arcane Charged Pendant",
+    "quality": 3,
+    "icon": "INV_Misc_Rune_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+12 Intellect",
+      "+15 Arcane Resistance"
+    ]
+  },
+  {
+    "id": 60497,
+    "name": "Pendant of Tyvadrius",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_08",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Intellect",
+      "+5 Spirit",
+      "Equip:",
+      "Restores 6 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 60518,
+    "name": "Broken Core Pendant",
+    "quality": 3,
+    "icon": "item_azereansphere",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Spirit",
+      "+6 Stamina",
+      "Equip:",
+      "Restores 2 mana per 5 sec.",
+      "\"An amulet made from the broken core of the Analyzer Construct.\""
+    ]
+  },
+  {
+    "id": 60525,
+    "name": "Creeper Fang Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+4 Agility",
+      "+4 Spirit",
+      "Equip:",
+      "Attack Power increased by 15 when fighting Beasts."
+    ]
+  },
+  {
+    "id": 60564,
+    "name": "Empowered Power Core",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Pearl_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "Requires Level 52",
+      "Equip:",
+      "Allows 5% of your Mana regeneration to continue while casting.",
+      "Equip:",
+      "Restores 5 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 60569,
+    "name": "Taskmaster's Tag",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "75 Armor",
+      "+11 Stamina",
+      "Requires Level 51",
+      "Equip:",
+      "Increased Defense +5."
+    ]
+  },
+  {
+    "id": 60639,
+    "name": "Holson's Amulet",
+    "quality": 2,
+    "icon": "INV_Jewelry_Amulet_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+4 Spirit",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%."
+    ]
+  },
+  {
+    "id": 60735,
+    "name": "Obsidian Gem Choker",
+    "quality": 3,
+    "icon": "BTNEmptyAmulet",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+7 Intellect",
+      "+7 Spirit",
+      "Equip:",
+      "Allows 5% of your Mana regeneration to continue while casting.",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 11."
+    ]
+  },
+  {
+    "id": 60759,
+    "name": "Southmoon Pendant",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_13",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+5 Stamina",
+      "+10 Fire Resistance",
+      "+10 Nature Resistance"
+    ]
+  },
+  {
+    "id": 60785,
+    "name": "Choker of Cauterization",
+    "quality": 4,
+    "icon": "INV_Jewelry_Amulet_05",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 39",
+      "Equip:",
+      "Increases damage done by Fire spells and effects by up to 16.",
+      "Equip:",
+      "Restores 8 health per 5 sec."
+    ]
+  },
+  {
+    "id": 60790,
+    "name": "Memento of the Lost",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+21 Spirit",
+      "Requires Level 60",
+      "Equip:",
+      "Allows 5% of your Mana regeneration to continue while casting.",
+      "Possessions of the Lost",
+      "(0/4)",
+      "Memento of the Lost",
+      "Remains of the Lost",
+      "Loop of the Lost",
+      "Tome of the Lost",
+      "(3) Set:",
+      "Gives a 4% chance when your harmful spells land to reawaken the Lost for 20 sec."
+    ]
+  },
+  {
+    "id": 60996,
+    "name": "Bixxle's Necklace of Control",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_08",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "Equip:",
+      "Increases your attack and casting speed by 1%.",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 1%."
+    ]
+  },
+  {
+    "id": 60997,
+    "name": "Bixxle's Necklace of Mastery",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_08",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "Equip:",
+      "Increases your attack and casting speed by 1%.",
+      "Equip:",
+      "Improves your chance to get a critical strike by 1%."
+    ]
+  },
+  {
+    "id": 61012,
+    "name": "Shard of Eternity",
+    "quality": 4,
+    "icon": "inv_archaeology_70_highborne_inertleystonecharm",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "30 Armor",
+      "+8 Agility",
+      "+8 Strength",
+      "+8 Intellect",
+      "+8 Stamina",
+      "+8 Spirit",
+      "Requires  - Exalted",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 8.",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 11.",
+      "Equip:",
+      "Increased Defense +5."
+    ]
+  },
+  {
+    "id": 61015,
+    "name": "Hollowbone Choker",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Intellect",
+      "+9 Spirit",
+      "Requires Level 60",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 26.",
+      "Equip:",
+      "Restores 3 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 61029,
+    "name": "Crocolisk Tooth Necklace",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_22",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Strength",
+      "+10 Intellect",
+      "Requires Level 60",
+      "Equip:",
+      "+24 Attack Power."
+    ]
+  },
+  {
+    "id": 61043,
+    "name": "Eye of the Abyss",
+    "quality": 4,
+    "icon": "Spell_Shadow_SoulGem",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+18 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage done by Shadow spells and effects by up to 13.",
+      "Equip:",
+      "When struck in combat has a chance of causing the attacker to flee in terror for 2 seconds."
+    ]
+  },
+  {
+    "id": 61082,
+    "name": "Coldhowl's Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+15 Stamina",
+      "+5 Frost Resistance",
+      "Use:",
+      "Increases frost resistance by 35.  Lasts 30 sec.",
+      "\"A memento of the Snow Yeti.\""
+    ]
+  },
+  {
+    "id": 61092,
+    "name": "The Golden Tel Co. Coin",
+    "quality": 2,
+    "icon": "Racial_Dwarf_FindTreasure",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%.",
+      "Equip:",
+      "Increases your attack and casting speed by 1%.",
+      "\"It's special, we promise.\""
+    ]
+  },
+  {
+    "id": 61155,
+    "name": "Primitive Bead Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+5 Intellect",
+      "+4 Spirit",
+      "\"Not quite to most tastes.\""
+    ]
+  },
+  {
+    "id": 61193,
+    "name": "Verdant Eye Necklace",
+    "quality": 4,
+    "icon": "BTNEnchantedNecklace",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 32.",
+      "Equip:",
+      "Allows 5% of your Mana regeneration to continue while casting."
+    ]
+  },
+  {
+    "id": 61270,
+    "name": "Pendant of Shadra's Chosen",
+    "quality": 4,
+    "icon": "BTNEmeraldNecklace",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+13 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage done by Nature spells and effects by up to 24."
+    ]
+  },
+  {
+    "id": 61302,
+    "name": "Wolfheart Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_13",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+5 Shadow Resistance",
+      "Requires Level 41",
+      "Equip:",
+      "1% of damage dealt is returned as healing."
+    ]
+  },
+  {
+    "id": 61312,
+    "name": "The Black Pendant",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_17",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+4 Intellect",
+      "Requires Level 43",
+      "Use:",
+      "Increases shadow resistance by 35.  Lasts 30 sec.",
+      "\"Swirling magics entice dark thoughts.\""
+    ]
+  },
+  {
+    "id": 61322,
+    "name": "Resurging Necklace",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_16",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "Requires Level 44",
+      "Equip:",
+      "Restores 5 mana per 5 sec.",
+      "Use:",
+      "Restores 550 to 651 mana."
+    ]
+  },
+  {
+    "id": 61343,
+    "name": "Fox Pendant",
+    "quality": 2,
+    "icon": "INV_Jewelry_Amulet_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+9 Agility",
+      "+4 Spirit"
+    ]
+  },
+  {
+    "id": 61410,
+    "name": "Favor of Enthos",
+    "quality": 2,
+    "icon": "INV_Misc_Gem_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+6 Intellect",
+      "+2 Stamina",
+      "Equip:",
+      "Increases damage done by Nature spells and effects by up to 16."
+    ]
+  },
+  {
+    "id": 61422,
+    "name": "Pure Bloodvial Pendant",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+9 Strength",
+      "+5 Stamina",
+      "+5 Intellect"
+    ]
+  },
+  {
+    "id": 61468,
+    "name": "Medallion of Silverlaine",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+11 Stamina",
+      "+4 Spirit"
+    ]
+  },
+  {
+    "id": 61507,
+    "name": "Pendant of Wilderness",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+5 Agility",
+      "+6 Spirit",
+      "Requires Level 32"
+    ]
+  },
+  {
+    "id": 61512,
+    "name": "Feralkin Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+4 Agility",
+      "Equip:",
+      "Increased Fist Weapons +4."
+    ]
+  },
+  {
+    "id": 61522,
+    "name": "Choker of the Emerald Lord",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+12 Nature Resistance",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to hit by 1%.",
+      "Equip:",
+      "Improves your chance to hit with spells by 1%.",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 28."
+    ]
+  },
+  {
+    "id": 61582,
+    "name": "Sharp Teeth Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_22",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 37",
+      "Equip:",
+      "Your attacks ignore 25 of the target's armor."
+    ]
+  },
+  {
+    "id": 61611,
+    "name": "Emerald Pendant",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+11 Nature Resistance",
+      "Requires Level 41"
+    ]
+  },
+  {
+    "id": 61662,
+    "name": "Stillward Amulet",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_12",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+3 Intellect",
+      "+3 Strength",
+      "+3 Agility",
+      "Equip:",
+      "1% of damage dealt is returned as healing.",
+      "Equip:",
+      "Increases your attack and casting speed by 1%."
+    ]
+  },
+  {
+    "id": 61687,
+    "name": "Noble's Pendant",
+    "quality": null,
+    "icon": "INV_Jewelry_Necklace_06",
+    "tooltip_lines_raw": [
+      "Neck",
+      "Requires Level 40",
+      "Equip:",
+      "Increases damage done by Shadow spells and effects by up to 4.",
+      "\"The magic is all but faded.\""
+    ]
+  },
+  {
+    "id": 61703,
+    "name": "Talisman of the Dreamshaper",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_13",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Intellect",
+      "+6 Stamina",
+      "+5 Nature Resistance",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 16."
+    ]
+  },
+  {
+    "id": 70003,
+    "name": "Hawkspear's Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+3 Agility",
+      "+4 Spirit",
+      "\"Assorted bones on a string.\""
+    ]
+  },
+  {
+    "id": 70225,
+    "name": "Necklace of Redemption",
+    "quality": 2,
+    "icon": "INV_Belt_18",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+2 Shadow Resistance",
+      "Equip:",
+      "Increases damage done by Holy spells and effects by up to 6."
+    ]
+  },
+  {
+    "id": 80719,
+    "name": "Pendant of the Deeps",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+3 Intellect",
+      "+2 Stamina",
+      "+3 Spirit",
+      "Requires Level 23"
+    ]
+  },
+  {
+    "id": 80765,
+    "name": "Blackteeth Necklace",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Intellect",
+      "+8 Spirit",
+      "Requires Level 58",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 1%."
+    ]
+  },
+  {
+    "id": 80786,
+    "name": "Pendant of Kindred Spirit",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_09",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+7 Agility",
+      "+7 Intellect",
+      "Classes: Hunter",
+      "Requires Level 38",
+      "Equip:",
+      "Increases your pet's maximum health by 3%."
+    ]
+  },
+  {
+    "id": 80787,
+    "name": "Pendant of Eternal Servitute",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_30Naxxramas",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+7 Intellect",
+      "+7 Stamina",
+      "Classes: Warlock",
+      "Requires Level 38",
+      "Equip:",
+      "Increases your pet's damage by 3%."
+    ]
+  },
+  {
+    "id": 80797,
+    "name": "Pendant of Troll Regeneration",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+7 Stamina",
+      "Requires Level 35",
+      "Requires Darkspear Trolls - Revered",
+      "Equip:",
+      "Restores 4 health per 5 sec."
+    ]
+  },
+  {
+    "id": 80824,
+    "name": "Narillasanz's Tooth",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_09",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+10 Intellect",
+      "Requires Level 42",
+      "Equip:",
+      "Increases damage done by Fire spells and effects by up to 14.",
+      "\"A fiery rune is etched on the tooth.\""
+    ]
+  },
+  {
+    "id": 80849,
+    "name": "Living Ember Pendant",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_02",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "+10 Intellect",
+      "Requires Level 56",
+      "Equip:",
+      "Increases damage done by Fire spells and effects by up to 20."
+    ]
+  },
+  {
+    "id": 80852,
+    "name": "Earthshard Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_06",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "50 Armor",
+      "+7 Strength",
+      "+7 Stamina",
+      "Requires Level 56",
+      "Equip:",
+      "Increased Defense +4."
+    ]
+  },
+  {
+    "id": 80853,
+    "name": "Thunderstruck Talisman",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_07",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 56",
+      "Equip:",
+      "Increases damage done by Nature spells and effects by up to 19.",
+      "Equip:",
+      "Restores 5 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 81016,
+    "name": "Bleeding Heart Talisman",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_15",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+-5 Stamina",
+      "Requires Level 56",
+      "Equip:",
+      "Restores 12 health per 5 sec."
+    ]
+  },
+  {
+    "id": 81031,
+    "name": "Bright Copper Necklace",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+3 Stamina",
+      "Requires Level 12"
+    ]
+  },
+  {
+    "id": 81263,
+    "name": "Lost Dark Iron Chain",
+    "quality": 4,
+    "icon": "INV_Belt_18",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "100 Armor",
+      "+16 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increased Defense +8.",
+      "\"The initials T.S. are etched on a chain link.\""
+    ]
+  },
+  {
+    "id": 81321,
+    "name": "Frix's Necklace",
+    "quality": 2,
+    "icon": "INV_Belt_18",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+12 Agility",
+      "+6 Spirit",
+      "+-5 Intellect",
+      "\"Has bad-luck written all over it.\""
+    ]
+  },
+  {
+    "id": 81374,
+    "name": "Trickster's Necklace",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_13",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+13 Intellect",
+      "+13 Agility",
+      "+5 Shadow Resistance",
+      "Requires Level 53",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 8.",
+      "\"Emanates a dark energy\""
+    ]
+  },
+  {
+    "id": 81416,
+    "name": "Valiant Medallion",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+5 Stamina",
+      "Equip:",
+      "+12 Attack Power."
+    ]
+  },
+  {
+    "id": 81417,
+    "name": "Ambient Talisman",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+5 Intellect",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 13."
+    ]
+  },
+  {
+    "id": 81418,
+    "name": "Magnificent Necklace",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+5 Intellect",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 7."
+    ]
+  },
+  {
+    "id": 81500,
+    "name": "Pendant of the Sunwell",
+    "quality": 3,
+    "icon": "item_azereansphere",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Intellect",
+      "+8 Stamina",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 16.",
+      "\"These necklaces are highly sought after since the destruction of the elven homeland.\""
+    ]
+  },
+  {
+    "id": 81501,
+    "name": "Amulet of Thas'alah",
+    "quality": 3,
+    "icon": "inv_misc_markoftheworldtree",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+14 Agility",
+      "+8 Stamina",
+      "Equip:",
+      "Improves your chance to hit by 1%.",
+      "\"A leaf from the Mother Tree is encased in the pendant, remaining healthy even now.\""
+    ]
+  },
+  {
+    "id": 81502,
+    "name": "Sun-Blessed Shard of Renewal",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Intellect",
+      "+8 Spirit",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 29.",
+      "Equip:",
+      "Restores 2 mana per 5 sec.",
+      "\"A shard of pure light with incredible healing capabilities.\""
+    ]
+  },
+  {
+    "id": 81503,
+    "name": "Thalassian Defender's Gorget",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_05",
+    "tooltip_lines_raw": [
+      "Neck",
+      "25 Armor",
+      "+5 Agility",
+      "+14 Stamina",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%.",
+      "\"Enchanted armor that was once given to protect the Children of the Sun against invaders.\""
+    ]
+  },
+  {
+    "id": 83203,
+    "name": "Lifeflow Necklace",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Neck",
+      "Requires Level 29",
+      "Equip:",
+      "Restores 6 health per 5 sec."
+    ]
+  },
+  {
+    "id": 83220,
+    "name": "Groveweald Tribal Necklace",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+5 Agility",
+      "+5 Strength",
+      "+5 Intellect",
+      "+5 Nature Resistance",
+      "Requires Level 34"
+    ]
+  },
+  {
+    "id": 83233,
+    "name": "Charm of Dark Domination",
+    "quality": 4,
+    "icon": "inv_archaeology_70_highborne_inertleystonecharm",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+12 Agility",
+      "+12 Intellect",
+      "+10 Shadow Resistance",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 11.",
+      "Equip:",
+      "Increases damage dealt by your pet by 3%."
+    ]
+  },
+  {
+    "id": 83234,
+    "name": "Voidclaw Choker",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_17",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Neck",
+      "+14 Strength",
+      "+10 Shadow Resistance",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to get a critical strike by 1%."
+    ]
+  },
+  {
+    "id": 83274,
+    "name": "Charmed Voodoo Collar",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_19",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+8 Intellect",
+      "+7 Spirit",
+      "Requires Level 50",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 22.",
+      "Equip:",
+      "Restores 3 mana per 5 sec.",
+      "\"Swirling in voodoo magics.\""
+    ]
+  },
+  {
+    "id": 83457,
+    "name": "Glacier Pendant",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+25 Frost Resistance",
+      "Requires Level 60"
+    ]
+  },
+  {
+    "id": 83458,
+    "name": "Wormheart",
+    "quality": 3,
+    "icon": "INV_Misc_Organ_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "50 Armor",
+      "+-20 Strength",
+      "+25 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Restores 7 health per 5 sec."
+    ]
+  },
+  {
+    "id": 83484,
+    "name": "Desert Wind Talisman",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_14",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Neck",
+      "+10 Agility",
+      "+15 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your attack and casting speed by 1%.",
+      "Equip:",
+      "Improves your chance to get a critical strike by 1%."
+    ]
+  },
+  {
+    "id": 76,
+    "name": "Plans: Refined Dwarven Necklace",
+    "quality": 3,
+    "icon": "INV_Misc_Note_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Use:",
+      "Teaches you how to craft a Refined Dwarven Necklace."
+    ]
+  },
+  {
+    "id": 77,
+    "name": "Plans: Ancient Dwarven Gemstone",
+    "quality": 3,
+    "icon": "INV_Misc_Note_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Use:",
+      "Teaches you how to craft a Refined Dwarven Necklace."
+    ]
+  },
+  {
+    "id": 70113,
+    "name": "Plans: Gleaming Silver Necklace",
+    "quality": 2,
+    "icon": "INV_Misc_Note_01",
+    "tooltip_lines_raw": [
+      "Use:",
+      "Teaches you how to craft a Gleaming Silver Necklace."
+    ]
+  },
+  {
+    "id": 70242,
+    "name": "Plans: Kodoheart Necklace",
+    "quality": 3,
+    "icon": "INV_Misc_Note_01",
+    "tooltip_lines_raw": [
+      "Use:",
+      "Teaches you how to craft a Kodoheart Necklace."
+    ]
+  }
+]

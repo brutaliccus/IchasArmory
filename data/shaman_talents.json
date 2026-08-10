@@ -1,0 +1,821 @@
+{
+  "class": "Shaman",
+  "source": "Turtle WoW",
+  "lastParsed": "2025-12-26T22:30:14.563Z",
+  "totalTalents": 49,
+  "trees": [
+    {
+      "name": "Elemental",
+      "talents": [
+        {
+          "id": 1,
+          "name": "Convection",
+          "icon": "spell_nature_wispsplode",
+          "ranks": 5,
+          "values": [
+            "2",
+            "4",
+            "6",
+            "8",
+            "10"
+          ],
+          "description": "Reduces the mana cost of your offensive Fire, Frost, and Nature spells by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 1,
+          "col": 2
+        },
+        {
+          "id": 2,
+          "name": "Concussion",
+          "icon": "spell_fire_fireball",
+          "ranks": 5,
+          "values": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "description": "Increases the damage done by your Fire, Frost, and Nature spells by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 1,
+          "col": 3
+        },
+        {
+          "id": 4,
+          "name": "Earth's Grasp",
+          "icon": "spell_nature_stoneclawtotem",
+          "ranks": 2,
+          "values": [
+            "25",
+            "50"
+          ],
+          "description": "Increases the health of your Stoneclaw Totem by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 2,
+          "col": 1
+        },
+        {
+          "id": 5,
+          "name": "Elemental Warding",
+          "icon": "spell_nature_elementalabsorption",
+          "ranks": 3,
+          "values": [
+            "4",
+            "7",
+            "10"
+          ],
+          "description": "Reduces damage taken from Fire, Frost and Nature effects by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 2,
+          "col": 2
+        },
+        {
+          "id": 6,
+          "name": "Elemental Devastation",
+          "icon": "spell_fire_elementaldevastation",
+          "ranks": 3,
+          "values": [
+            "1",
+            "2",
+            "3"
+          ],
+          "description": "Increases your chance to hit with spells and melee attacks by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 2,
+          "col": 3
+        },
+        {
+          "id": 8,
+          "name": "Elemental Focus",
+          "icon": "spell_shadow_manaburn",
+          "ranks": 1,
+          "values": [
+            "0.3",
+            "0.7",
+            "1"
+          ],
+          "description": "After landing a critical strike with a Fire, Frost, or Nature damage spell or melee attack, you enter a Clearcasting state.  The Clearcasting state reduces the mana cost of your next two damage spells or abilities by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 3,
+          "col": 1
+        },
+        {
+          "id": 9,
+          "name": "Reverberation",
+          "icon": "spell_frost_frostward",
+          "ranks": 3,
+          "values": [
+            "0.3",
+            "0.7",
+            "1"
+          ],
+          "description": "Reduces the cooldown of your Shock spells by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 3,
+          "col": 2
+        },
+        {
+          "id": 10,
+          "name": "Call of Thunder",
+          "icon": "spell_nature_callstorm",
+          "ranks": 5,
+          "values": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "6"
+          ],
+          "description": "Increases the critical strike chance of your Lightning Bolt and Chain Lightning spells by an additional ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 3,
+          "col": 3
+        },
+        {
+          "id": 11,
+          "name": "Improved Molten Blast",
+          "icon": "spell_fire_meteorstorm",
+          "ranks": 2,
+          "values": [
+            "30",
+            "60"
+          ],
+          "description": "Refreshing Flame Shock with Molten Blast deals damage equal to ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 3,
+          "col": 4
+        },
+        {
+          "id": 12,
+          "name": "Improved Fire Totems",
+          "icon": "spell_fire_sealoffire",
+          "ranks": 2,
+          "values": [
+            "1",
+            "2"
+          ],
+          "description": "Reduces the delay before your Fire Nova Totem activates by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 4,
+          "col": 1
+        },
+        {
+          "id": 13,
+          "name": "Call of Earth",
+          "icon": "earthshaker_slam_16",
+          "ranks": 2,
+          "values": [
+            "2/25",
+            "4/50"
+          ],
+          "description": "Increases the maximum charges of Earth Shield by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 4,
+          "col": 2
+        },
+        {
+          "id": 15,
+          "name": "Call of Flame",
+          "icon": "spell_fire_immolation",
+          "ranks": 3,
+          "values": [
+            "5",
+            "10",
+            "15"
+          ],
+          "description": "Increases the damage done by your Fire Totems and Fire spells by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 4,
+          "col": 4
+        },
+        {
+          "id": 16,
+          "name": "Storm Reach",
+          "icon": "spell_nature_stormreach",
+          "ranks": 2,
+          "values": [
+            "3",
+            "6"
+          ],
+          "description": "Increases the range of your Lightning Bolt and Chain Lightning spells by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 5,
+          "col": 1
+        },
+        {
+          "id": 17,
+          "name": "Elemental Mastery",
+          "icon": "spell_nature_wispheal",
+          "ranks": 1,
+          "values": [
+            "5",
+            "10"
+          ],
+          "description": "Increases your Fire, Frost, and Nature damage by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 5,
+          "col": 2
+        },
+        {
+          "id": 19,
+          "name": "Elemental Fury",
+          "icon": "spell_fire_volcano",
+          "ranks": 2,
+          "values": [
+            "5",
+            "10"
+          ],
+          "description": "Increases the damage done by your Fire and Nature spells by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 5,
+          "col": 4
+        },
+        {
+          "id": 22,
+          "name": "Lightning Mastery",
+          "icon": "spell_lightning_lightningbolt01",
+          "ranks": 5,
+          "values": [
+            "0.2",
+            "0.4",
+            "0.6",
+            "0.8",
+            "1"
+          ],
+          "description": "Reduces the cast time of your Lightning Bolt and Chain Lightning spells by ",
+          "requires": 10,
+          "reqRanks": 5,
+          "row": 6,
+          "col": 3
+        },
+        {
+          "id": 25,
+          "name": "Earthquake",
+          "icon": "spell_nature_earthquake",
+          "ranks": 1,
+          "values": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "description": "Breaks the earth beneath the target, dealing ",
+          "requires": 17,
+          "reqRanks": 1,
+          "row": 7,
+          "col": 2
+        }
+      ]
+    },
+    {
+      "name": "Enhancement",
+      "talents": [
+        {
+          "id": 1,
+          "name": "Ancestral Knowledge",
+          "icon": "spell_shadow_grimward",
+          "ranks": 5,
+          "values": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "description": "Increases the total value of all your stats by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 1,
+          "col": 2
+        },
+        {
+          "id": 2,
+          "name": "Shield Specialization",
+          "icon": "inv_shield_06",
+          "ranks": 5,
+          "values": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "description": "Increases your chance to block attacks with a shield by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 1,
+          "col": 3
+        },
+        {
+          "id": 4,
+          "name": "Totemic Alignment",
+          "icon": "spell_nature_agitatingtotem",
+          "ranks": 2,
+          "values": [
+            "45",
+            "90"
+          ],
+          "description": "Improves your chance to get a critical strike with your weapon attacks by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 2,
+          "col": 1
+        },
+        {
+          "id": 5,
+          "name": "Thundering Strikes",
+          "icon": "ability_thunderbolt",
+          "ranks": 5,
+          "values": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "description": "Improves your chance to get a critical strike with your weapon attacks by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 2,
+          "col": 2
+        },
+        {
+          "id": 6,
+          "name": "Stable Shields",
+          "icon": "spell_nature_lightningshield",
+          "ranks": 3,
+          "values": [
+            "2",
+            "4",
+            "6"
+          ],
+          "description": "Increases the number of charges of your shield spells by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 2,
+          "col": 3
+        },
+        {
+          "id": 7,
+          "name": "Improved Ghost Wolf",
+          "icon": "spell_nature_spiritwolf",
+          "ranks": 2,
+          "values": [
+            "1",
+            "2"
+          ],
+          "description": "Reduces the cast time of your Ghost Wolf spell by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 2,
+          "col": 4
+        },
+        {
+          "id": 8,
+          "name": "Calming Winds",
+          "icon": "spell_nature_tranquility",
+          "ranks": 3,
+          "values": [
+            "8",
+            "16",
+            "25"
+          ],
+          "description": "Reduces threat generated by your physical attacks, weapon imbue effects, and your Lightning Strike and Stormstrike abilities by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 3,
+          "col": 1
+        },
+        {
+          "id": 10,
+          "name": "Lightning Strike",
+          "icon": "spell_nature_thunderclap",
+          "ranks": 1,
+          "values": [
+            "5",
+            "10",
+            "15"
+          ],
+          "description": "Instantly strikes your target, causing ",
+          "requires": 6,
+          "reqRanks": 3,
+          "row": 3,
+          "col": 3
+        },
+        {
+          "id": 11,
+          "name": "Ancestral Guardian",
+          "icon": "spell_nature_ancestralguardian",
+          "ranks": 3,
+          "values": [
+            "5",
+            "10",
+            "15"
+          ],
+          "description": "Increases your armor value from items by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 3,
+          "col": 4
+        },
+        {
+          "id": 13,
+          "name": "Flurry",
+          "icon": "ability_ghoulfrenzy",
+          "ranks": 5,
+          "values": [
+            "8",
+            "11",
+            "14",
+            "17",
+            "20"
+          ],
+          "description": "Increases your attack speed by ",
+          "requires": 5,
+          "reqRanks": 5,
+          "row": 4,
+          "col": 2
+        },
+        {
+          "id": 14,
+          "name": "Spirit Armor",
+          "icon": "spell_nature_spiritarmor",
+          "ranks": 2,
+          "values": [
+            "15",
+            "30"
+          ],
+          "description": "Increases the armor gained from shields by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 4,
+          "col": 3
+        },
+        {
+          "id": 16,
+          "name": "Enhancing Totems",
+          "icon": "spell_nature_earthbindtotem",
+          "ranks": 2,
+          "values": [
+            "12",
+            "25"
+          ],
+          "description": "Increases the effect of your Strength of Earth and Grace of Air Totems by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 5,
+          "col": 1
+        },
+        {
+          "id": 17,
+          "name": "Elemental Weapons",
+          "icon": "spell_fire_flametounge",
+          "ranks": 3,
+          "values": [
+            "10",
+            "20",
+            "30"
+          ],
+          "description": "Imbuing your weapon gives you a special benefit based on the imbue.\\r\\\n\\r\\\nFlametongue: Increases the damage done by your Fire Totems and spells by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 5,
+          "col": 2
+        },
+        {
+          "id": 18,
+          "name": "Stormstrike",
+          "icon": "ability_shaman_stormstrike",
+          "ranks": 1,
+          "values": [
+            "2",
+            "4",
+            "6",
+            "8",
+            "10"
+          ],
+          "description": "Gives you an extra attack for ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 5,
+          "col": 3
+        },
+        {
+          "id": 22,
+          "name": "Element's Grace",
+          "icon": "spell_fire_enchantweapon",
+          "ranks": 5,
+          "values": [
+            "2",
+            "4",
+            "6",
+            "8",
+            "10"
+          ],
+          "description": "Increases the damage you deal with all weapons, Stormstrike and Lightning Strike abilities by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 6,
+          "col": 3
+        },
+        {
+          "id": 25,
+          "name": "Bloodlust",
+          "icon": "spell_nature_bloodlust",
+          "ranks": 1,
+          "values": [
+            "15",
+            "0.3",
+            "45",
+            "0.6",
+            "75"
+          ],
+          "description": "Fly into a frenzy, increasing your attack speed by ",
+          "requires": 17,
+          "reqRanks": 3,
+          "row": 7,
+          "col": 2
+        }
+      ]
+    },
+    {
+      "name": "Restoration",
+      "talents": [
+        {
+          "id": 1,
+          "name": "Improved Healing Wave",
+          "icon": "spell_nature_magicimmunity",
+          "ranks": 5,
+          "values": [
+            "15",
+            "0.3",
+            "45",
+            "0.6",
+            "75"
+          ],
+          "description": "Reduces the casting time of your Healing Wave spell by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 1,
+          "col": 2
+        },
+        {
+          "id": 2,
+          "name": "Tidal Focus",
+          "icon": "spell_frost_manarecharge",
+          "ranks": 5,
+          "values": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "description": "Reduces the Mana cost of your healing spells by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 1,
+          "col": 3
+        },
+        {
+          "id": 4,
+          "name": "Improved Reincarnation",
+          "icon": "spell_nature_reincarnation",
+          "ranks": 2,
+          "values": [
+            "10",
+            "20"
+          ],
+          "description": "Reduces the cooldown of your Reincarnation spell by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 2,
+          "col": 1
+        },
+        {
+          "id": 5,
+          "name": "Ancestral Healing",
+          "icon": "spell_nature_undyingstrength",
+          "ranks": 3,
+          "values": [
+            "8",
+            "16",
+            "25"
+          ],
+          "description": "Increases your target's armor value by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 2,
+          "col": 2
+        },
+        {
+          "id": 6,
+          "name": "Tidal Mastery",
+          "icon": "spell_nature_tranquility",
+          "ranks": 5,
+          "values": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ],
+          "description": "Increases the critical effect chance of your healing and lightning spells by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 2,
+          "col": 3
+        },
+        {
+          "id": 8,
+          "name": "Healing Way",
+          "icon": "spell_nature_healingway",
+          "ranks": 3,
+          "values": [
+            "33",
+            "66",
+            "100"
+          ],
+          "description": "Your Healing Wave and Lesser Healing Wave spells each have a ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 3,
+          "col": 1
+        },
+        {
+          "id": 9,
+          "name": "Healing Focus",
+          "icon": "spell_nature_regenerate",
+          "ranks": 2,
+          "values": [
+            "35",
+            "70"
+          ],
+          "description": "Gives you a ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 3,
+          "col": 2
+        },
+        {
+          "id": 10,
+          "name": "Totemic Mastery",
+          "icon": "spell_nature_nullward",
+          "ranks": 1,
+          "values": [
+            "5",
+            "10",
+            "15"
+          ],
+          "description": "Increases the duration of your helpful totems by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 3,
+          "col": 3
+        },
+        {
+          "id": 11,
+          "name": "Nature's Grace",
+          "icon": "spell_nature_healingtouch",
+          "ranks": 3,
+          "values": [
+            "5",
+            "10",
+            "15"
+          ],
+          "description": "Reduces the threat generated by your Nature spells by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 3,
+          "col": 4
+        },
+        {
+          "id": 13,
+          "name": "Restorative Totems",
+          "icon": "spell_nature_manaregentotem",
+          "ranks": 5,
+          "values": [
+            "10",
+            "20",
+            "30",
+            "40",
+            "50"
+          ],
+          "description": "Reduces mana cost of your Mana Spring Totem by ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 4,
+          "col": 2
+        },
+        {
+          "id": 14,
+          "name": "Improved Water Shield",
+          "icon": "ability_shaman_watershield",
+          "ranks": 3,
+          "values": [
+            "3",
+            "6",
+            "9"
+          ],
+          "description": "While your Water Shield is active, you restore ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 4,
+          "col": 3
+        },
+        {
+          "id": 16,
+          "name": "Tidal Surge",
+          "icon": "spell_arcane_manatap",
+          "ranks": 2,
+          "values": [
+            "15",
+            "30"
+          ],
+          "description": "After healing a target affected by your Healing Way effect, you have a ",
+          "requires": 8,
+          "reqRanks": 3,
+          "row": 5,
+          "col": 4
+        },
+        {
+          "id": 18,
+          "name": "Ancestral Swiftness",
+          "icon": "spell_nature_ravenform",
+          "ranks": 1,
+          "values": [
+            "25",
+            "50"
+          ],
+          "description": "When activated, your next Nature spell with a casting time less than 10 sec becomes an instant cast spell. Affected damaging spells have ",
+          "requires": null,
+          "reqRanks": null,
+          "row": 5,
+          "col": 3
+        },
+        {
+          "id": 19,
+          "name": "Undertow",
+          "icon": "spell_shaman_tidalwaves",
+          "ranks": 2,
+          "values": [
+            "25",
+            "50"
+          ],
+          "description": "Your Healing Wave and Lesser Healing Wave spells have a ",
+          "requires": 14,
+          "reqRanks": 3,
+          "row": 5,
+          "col": 1
+        },
+        {
+          "id": 21,
+          "name": "Improved Chain Heal",
+          "icon": "spell_nature_healingwavegreater",
+          "ranks": 5,
+          "values": [
+            "0.2",
+            "0.4",
+            "0.6",
+            "0.8",
+            "1"
+          ],
+          "description": "Reduces the cast time of your Chain Heal spell by ",
+          "requires": 13,
+          "reqRanks": 5,
+          "row": 6,
+          "col": 2
+        },
+        {
+          "id": 25,
+          "name": "Spirit Link",
+          "icon": "spell_shaman_spiritlink",
+          "ranks": 1,
+          "values": [],
+          "description": "Links the spirit of an ally to that of other group members within 35 yards. When the target takes damage, ",
+          "requires": 21,
+          "reqRanks": 5,
+          "row": 7,
+          "col": 2
+        }
+      ]
+    }
+  ]
+}

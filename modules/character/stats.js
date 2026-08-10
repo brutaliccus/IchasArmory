@@ -1,0 +1,871 @@
+// modules/stats.js - Centralized stat definitions and mappings
+// Single source of truth for all stat-related constants and utilities
+
+// Template for default stat values
+export const STAT_TEMPLATE = {
+    stamina: 0,
+    agility: 0,
+    strength: 0,
+    intellect: 0,
+    spirit: 0,
+    defense: 0,
+    armor: 0,
+    health: 0,
+    mana: 0,
+    dodge: 0,
+    parry: 0,
+    blockChance: 0,
+    blockValue: 0,
+    attackPower: 0,
+    druidAP: 0,
+    crit: 0,
+    hit: 0,
+    haste: 0,
+    spellCrit: 0,
+    spellHit: 0,
+    spellPen: 0,
+    healing: 0,
+    dmgAndHealing: 0,
+    fireDamage: 0,
+    frostDamage: 0,
+    natureDamage: 0,
+    shadowDamage: 0,
+    arcaneDamage: 0,
+    holyDamage: 0,
+    fireResist: 0,
+    natureResist: 0,
+    frostResist: 0,
+    shadowResist: 0,
+    arcaneResist: 0,
+    allStats: 0,
+    allResist: 0,
+    vampirism: 0,
+    critDmgReduction: 0,
+    armorPen: 0,
+    weaponSkill: 0,
+    weaponSkillByType: {}, // Hidden per-weapon-type bonuses (e.g., {'Axe': 5, 'Two-handed Axes': 6})
+    weaponDamageMin: 0,
+    weaponDamageMax: 0,
+    weaponSpeed: 0,
+    rangedAttackPower: 0,
+    fortune: 0,       // % multiplicative bonus to item-based proc trigger chances
+    /** Bonus melee AP when fighting X (tooltip: "Increases attack power when fighting …" / "+AP when fighting …") */
+    apVsUndead: 0,
+    apVsBeast: 0,
+    apVsDemon: 0,
+    apVsElemental: 0,
+    apVsDragonkin: 0,
+    apVsHumanoid: 0,
+    apVsGiant: 0,
+    apVsAberration: 0,
+    apVsMechanical: 0,
+    apVsCritter: 0,
+    apVsTotem: 0,
+    /** Bonus spell dmg/heal vs creature type (e.g. Mark of the Champion: damage to Undead/Demons by magical spells and effects). */
+    dmgHealingVsUndead: 0,
+    dmgHealingVsBeast: 0,
+    dmgHealingVsDemon: 0,
+    dmgHealingVsElemental: 0,
+    dmgHealingVsDragonkin: 0,
+    dmgHealingVsHumanoid: 0,
+    dmgHealingVsGiant: 0,
+    dmgHealingVsAberration: 0,
+    dmgHealingVsMechanical: 0,
+    dmgHealingVsCritter: 0,
+    dmgHealingVsTotem: 0
+};
+
+/** Keys on STAT_TEMPLATE used for gear/enchant "AP vs creature type" (aggregation + UI). */
+export const AP_VS_GEAR_STAT_KEYS = Object.keys(STAT_TEMPLATE).filter(k => k.startsWith('apVs'));
+
+/** Keys on STAT_TEMPLATE for spell damage/healing vs creature type (gear + UI). */
+export const DMG_HEALING_VS_GEAR_STAT_KEYS = Object.keys(STAT_TEMPLATE).filter(k => k.startsWith('dmgHealingVs'));
+
+/** Boss / target `faction` tag (normalized) → STAT_TEMPLATE apVs* key */
+export const FACTION_TAG_TO_AP_VS_KEY = {
+    undead: 'apVsUndead',
+    beast: 'apVsBeast',
+    beasts: 'apVsBeast',
+    demon: 'apVsDemon',
+    demons: 'apVsDemon',
+    elemental: 'apVsElemental',
+    elementals: 'apVsElemental',
+    dragonkin: 'apVsDragonkin',
+    humanoid: 'apVsHumanoid',
+    humanoids: 'apVsHumanoid',
+    giant: 'apVsGiant',
+    giants: 'apVsGiant',
+    aberration: 'apVsAberration',
+    aberrations: 'apVsAberration',
+    mechanical: 'apVsMechanical',
+    critter: 'apVsCritter',
+    critters: 'apVsCritter',
+    totem: 'apVsTotem',
+    totems: 'apVsTotem'
+};
+
+/** Boss / target `faction` tag → STAT_TEMPLATE dmgHealingVs* key (parallel to AP vs type). */
+export const FACTION_TAG_TO_DMG_HEALING_VS_KEY = Object.fromEntries(
+    Object.entries(FACTION_TAG_TO_AP_VS_KEY).map(([tag, k]) => [tag, k.replace(/^apVs/, 'dmgHealingVs')])
+);
+
+/** Preferred order for Advanced Melee "AP vs …" rows (only non-zero rows are shown). */
+export const AP_VS_DISPLAY_ORDER = [
+    'apVsUndead', 'apVsBeast', 'apVsDemon', 'apVsElemental', 'apVsDragonkin', 'apVsHumanoid',
+    'apVsGiant', 'apVsAberration', 'apVsMechanical', 'apVsCritter', 'apVsTotem'
+];
+
+/** Preferred order for "SP vs …" rows (only non-zero rows are shown). */
+export const DMG_HEALING_VS_DISPLAY_ORDER = AP_VS_DISPLAY_ORDER.map(k => k.replace(/^apVs/, 'dmgHealingVs'));
+
+/**
+ * Map tooltip creature label (e.g. "Undead", "Beasts", "Elementals") to STAT_TEMPLATE key.
+ * @returns {string|null}
+ */
+export function mapCreatureLabelToApVsStatKey(rawLabel) {
+    let s = String(rawLabel || '').trim().replace(/\.$/, '').toLowerCase();
+    s = s.replace(/^the\s+/, '');
+    const table = {
+        undead: 'apVsUndead',
+        beast: 'apVsBeast',
+        beasts: 'apVsBeast',
+        demon: 'apVsDemon',
+        demons: 'apVsDemon',
+        elemental: 'apVsElemental',
+        elementals: 'apVsElemental',
+        dragonkin: 'apVsDragonkin',
+        humanoid: 'apVsHumanoid',
+        humanoids: 'apVsHumanoid',
+        giant: 'apVsGiant',
+        giants: 'apVsGiant',
+        aberration: 'apVsAberration',
+        aberrations: 'apVsAberration',
+        mechanical: 'apVsMechanical',
+        critter: 'apVsCritter',
+        critters: 'apVsCritter',
+        totem: 'apVsTotem',
+        totems: 'apVsTotem'
+    };
+    return table[s] || null;
+}
+
+/**
+ * Map creature label to dmgHealingVs* key (spell damage/healing vs type).
+ * @returns {string|null}
+ */
+export function mapCreatureLabelToDmgHealingVsStatKey(rawLabel) {
+    const apKey = mapCreatureLabelToApVsStatKey(rawLabel);
+    return apKey ? apKey.replace(/^apVs/, 'dmgHealingVs') : null;
+}
+
+/**
+ * UI label for an apVs* stat key, e.g. apVsUndead → "AP vs Undead"
+ * @param {string} statKey
+ * @returns {string}
+ */
+export function getApVsRowLabel(statKey) {
+    if (!statKey || typeof statKey !== 'string' || !statKey.startsWith('apVs')) return statKey || '';
+    const tail = statKey.slice(4);
+    if (!tail) return statKey;
+    const spaced = tail.replace(/([a-z])([A-Z])/g, '$1 $2');
+    return `AP vs ${spaced}`;
+}
+
+/**
+ * UI label for dmgHealingVs* keys, e.g. dmgHealingVsUndead → "SP vs Undead"
+ * @param {string} statKey
+ * @returns {string}
+ */
+export function getDmgHealingVsRowLabel(statKey) {
+    if (!statKey || typeof statKey !== 'string' || !statKey.startsWith('dmgHealingVs')) return statKey || '';
+    const tail = statKey.slice('dmgHealingVs'.length);
+    if (!tail) return statKey;
+    const spaced = tail.replace(/([a-z])([A-Z])/g, '$1 $2');
+    return `SP vs ${spaced}`;
+}
+
+// Mapping from short stat names to full stat keys
+export const KEY_MAP = {
+    sta: 'stamina',
+    agi: 'agility',
+    str: 'strength',
+    int: 'intellect',
+    spi: 'spirit',
+    def: 'defense',
+    ap: 'attackPower',
+    block: 'blockChance',
+    fireresist: 'fireResist',
+    natureresist: 'natureResist',
+    frostresist: 'frostResist',
+    shadowresist: 'shadowResist',
+    arcaneresist: 'arcaneResist',
+    allresist: 'allResist',
+    rap: 'rangedAttackPower',
+    rangedattackpower: 'rangedAttackPower',
+    hitpercent: 'hit',
+    hitPercent: 'hit',
+    // Support both "Resist" and "Resistance" naming
+    fireResistance: 'fireResist',
+    natureResistance: 'natureResist',
+    frostResistance: 'frostResist',
+    shadowResistance: 'shadowResist',
+    arcaneResistance: 'arcaneResist'
+};
+
+// Smart stat aliases for filtering
+// NOTE: Keep aliases precise - resistance types should NOT cross-match
+export const STAT_ALIASES = {
+    'stamina': ['+ stamina'],
+    'agility': ['+ agility'],
+    'strength': ['+ strength'],
+    'intellect': ['+ intellect'],
+    'spirit': ['+ spirit'],
+    'defense': ['defense rating', '+ defense'],
+    'armor': ['armour'],
+    'attack power': ['+ attack power', 'attack power by'],
+    'spell power': ['damage and healing', 'spell damage and healing', '+ damage and healing'],
+    'spell damage': ['damage and healing', 'spell damage and healing'],
+    'healing power': ['healing done', '+ healing', 'healing spells'],
+    'critical strike': ['critical strike rating', 'crit rating', '+ critical strike'],
+    'hit': ['hit rating', '+ hit'],
+    // Turtle gear uses "attack and casting speed" / "% haste" etc.; keep in sync with STAT_PATTERNS.haste
+    'haste': [
+        'haste rating',
+        '+ haste',
+        'attack and casting speed',
+        'casting speed',
+        'attack speed',
+        '% melee haste',
+        'melee haste',
+        '% haste'
+    ],
+    'spell penetration': [
+        'spell penetration',
+        'spell pen',
+        '+ spell penetration',
+        'decreases the magical resistance',
+        'magical resistances of your spell targets'
+    ],
+    'dodge': ['dodge rating', '+ dodge'],
+    'parry': ['parry rating', '+ parry'],
+    'block': ['block rating', '+ block', 'chance to block'],
+    'block value': ['+ block value', 'block value of'],
+    'mp5': ['mana per 5', 'mp5'],
+    'fire resistance': ['+ fire resistance'],
+    'nature resistance': ['+ nature resistance'],
+    'frost resistance': ['+ frost resistance'],
+    'shadow resistance': ['+ shadow resistance'],
+    'arcane resistance': ['+ arcane resistance']
+};
+
+// Slot mapping for item categorization
+export const SLOT_TEXT_MAP = {
+    'head': 'head',
+    'neck': 'neck',
+    'shoulder': 'shoulder',
+    'back': 'back',
+    'chest': 'chest',
+    'shirt': null,
+    'tabard': null,
+    'wrist': 'wrist',
+    'hands': 'hands',
+    'waist': 'waist',
+    'legs': 'legs',
+    'feet': 'feet',
+    'finger': ['ring1', 'ring2'],
+    'trinket': ['trinket1', 'trinket2'],
+    'main hand': 'mainhand',
+    'one-hand': ['mainhand', 'offhand'],
+    'two-hand': 'mainhand',
+    'off hand': 'offhand',
+    'held in off-hand': 'offhand',
+    'shield': 'offhand',
+    'axe': ['mainhand', 'offhand'],
+    'sword': ['mainhand', 'offhand'],
+    'mace': ['mainhand', 'offhand'],
+    'dagger': ['mainhand', 'offhand'],
+    'fist weapon': ['mainhand', 'offhand'],
+    'polearm': 'mainhand',
+    'staff': 'mainhand',
+    'bow': 'ranged',
+    'crossbow': 'ranged',
+    'gun': 'ranged',
+    'thrown': 'ranged',
+    'wand': 'ranged',
+    'relic': 'ranged',
+    'idol': 'ranged',
+    'libram': 'ranged',
+    'totem': 'ranged',
+};
+
+// Regex patterns for parsing stats from tooltips
+export const STAT_PATTERNS = {
+    // Primary stats - match anywhere in line (Equip: lines are merged before matching)
+    sta: /([+-]?\d+)\s+Stamina/i,
+    agi: /([+-]?\d+)\s+Agility/i,
+    str: /([+-]?\d+)\s+Strength/i,
+    int: /([+-]?\d+)\s+Intellect/i,
+    spi: /([+-]?\d+)\s+Spirit/i,
+    health: /^([+-]?\d+)\s+Health$/,
+    armor: /^([+-]?\d+)\s+Armor/,
+    blockValue: /^([+-]?\d+)\s+Block$/,
+    def: /Equip:.*?Defense.*?\+(\d+)/,
+    // Exclude "when fighting" lines — those are apVsUndead / apVsBeast / apVsDemon
+    attackPower: /(?:Equip:.*?Attack Power by (\d+)(?! in Cat)|Equip:.*?\+(\d+)\s+Attack Power(?! in Cat)|^\+(\d+)\s+Attack Power(?! in Cat)(?!\s+when))/,
+    healing: /Equip:.*?healing done.*?by up to (\d+)/,
+    dmgAndHealing: /Equip:.*?damage and healing done.*?by up to (\d+)/,
+    fireDamage: /Equip:.*?damage done by Fire spells and effects.*?by up to (\d+)/i,
+    frostDamage: /Equip:.*?damage done by Frost spells and effects.*?by up to (\d+)/i,
+    natureDamage: /Equip:.*?damage done by Nature spells and effects.*?by up to (\d+)/i,
+    shadowDamage: /Equip:.*?damage done by Shadow spells and effects.*?by up to (\d+)/i,
+    arcaneDamage: /Equip:.*?damage done by Arcane spells and effects.*?by up to (\d+)/i,
+    // Melee crit (matches "critical strike" without "spells" - applies to melee crit)
+    crit: /(?:Equip:.*?critical strike(?!\s+with spells)(?:\s+with attacks)? by |Improves your chance to get a critical strike(?!\s+with spells)(?:\s+with attacks)? by )(\d+)%/i,
+    // Melee hit (matches "chance to hit" without "spells" - applies to melee hit)
+    hit: /(?:Equip:.*?chance to hit(?!\s+with spells)(?:\s+with attacks)? by |Improves your chance to hit(?!\s+with spells)(?:\s+with attacks)? by )(\d+)%/i,
+    haste: /Equip:.*?(?:(?:Increases|Improves)(?:(?!reduce|target'?s?\s).)*?(?:attack|casting)\s+speed.*?by\s+(\d+)%|haste.*?(\d+)%|(?:increases|adds)\s+(\d+)%\s+haste|(\d+)%\s+(?:melee\s+)?haste)/i,
+    // Spell-specific crit (matches "critical strike with spells" - applies only to spellCrit)
+    spellCrit: /(?:Equip:.*?critical strike with spells(?!\s+and attacks) by |Improves your chance to (?:hit and get a )?critical strike with spells(?!\s+and attacks) by )(\d+)%/i,
+    // Spell-specific hit (matches "hit with spells" - applies only to spellHit)
+    spellHit: /(?:Equip:.*?hit with spells(?!\s+and attacks) by |Improves your chance to hit(?!\s+and get a critical strike)(?:\s+with)? spells(?!\s+and attacks) by )(\d+)%/i,
+    // Vanilla/Turtle: "Equip: Decreases the magical resistance(s) of your spell targets by X."
+    // Also: "Equip: ... spell penetration ... N", green "+N Spell Penetration" lines
+    spellPen: /(?:Equip:.*?(?:[Dd]ecreases the magical resistances? of your spell targets by (\d+)|spell penetration.*?(\d+))|^\+(\d+)\s+Spell Penetration)/i,
+    dodge: /Equip:.*?chance to dodge an attack by (\d+)%/,
+    parry: /Equip:.*?chance to parry an attack by (\d+)%/,
+    blockChance: /(?:Equip:.*?chance to block.*?by (\d+)%|Increases your chance to block attacks with a shield by (\d+)%)/,
+    blockValueEquip: /(?:Equip:.*?\+(\d+)\s+Block Value|Equip:.*?block value.*?by (\d+))/,
+    druidAP: /\+(\d+)\s+Attack Power in Cat, Bear, Dire Bear, and Moonkin forms only/,
+    weaponDamage: /^(\d+)\s*-\s*(\d+)\s+Damage/,
+    weaponSpeed: /^Speed (\d+\.?\d*)/,
+    rangedAttackPower: /(?:Equip:.*?ranged attack power.*?(\d+)|(?:\+(\d+)\s+Ranged Attack Power))/i,
+    allStats: /(?:([+-]?\d+) to all stats|All Stats.*?([+-]?\d+))/i,
+    fireResist: /([+-]?\d+)\s+Fire Resistance\.?/i,
+    natureResist: /([+-]?\d+)\s+Nature Resistance\.?/i,
+    frostResist: /([+-]?\d+)\s+Frost Resistance\.?/i,
+    shadowResist: /([+-]?\d+)\s+Shadow Resistance\.?/i,
+    arcaneResist: /([+-]?\d+)\s+Arcane Resistance\.?/i,
+    allResist: /([+-]?\d+)\s+(?:to )?All Resistances\.?/i,
+    vampirism: /(?:Equip:.*?vampirism.*?(\d+)%|^\+(\d+)%\s+Vampirism)/i,
+    critDmgReduction: /(?:Equip:.*?reduces.*?critical strike damage.*?(\d+)%|Reduces.*?critical.*?damage.*?(\d+)%)/i,
+    armorPen: /(?:Equip:.*?(?:armor penetration.*?(\d+)|attacks ignore (\d+) of.*?armor)|^\+(\d+)\s+Armor Penetration)/i,
+    // Generic weapon skill (not weapon-type-specific) - very rare
+    weaponSkill: /Equip:.*?Increased Weapon Skill \+(\d+)/i,
+    // Fortune: "Use/Equip: Increases your chance to trigger effects from equipped items by X%"
+    fortune: /(?:Use|Equip):\s*Increases? your chance to trigger effects from equipped items by (\d+)%/i
+};
+
+// Weapon skill by type pattern: "Increased {WeaponType} +X"
+export const WEAPON_SKILL_BY_TYPE_PATTERN = /Increased (Two[- ]handed )?(?:Axes|Swords|Maces|Daggers|Fist Weapons|Polearms|Staves|Bows|Crossbows|Guns|Thrown) \+(\d+)/i;
+
+// Spell Strike: "Adds X {school} damage to your weapon/melee attack(s)."
+// Matches both "weapon attacks" and "melee attacks" (e.g. "Adds 3 Lightning damage to your melee attacks.").
+// Each match is a separate damage source. Use parseSpellStrikeFromText or parseSpellStrikeSourcesFromItem.
+export const SPELL_STRIKE_PATTERN = /Adds\s+(\d+)\s+(\w+)\s+damage\s+to\s+your\s+(?:weapon|melee)\s+attacks?/gi;
+
+/**
+ * Parse all "Adds X {school} damage to your weapon/melee attack(s)" matches from text.
+ * @param {string} text - Tooltip or description text
+ * @returns {Array<{value: number, school: string}>}
+ */
+export function parseSpellStrikeFromText(text) {
+    if (!text || typeof text !== 'string') return [];
+    const out = [];
+    const re = new RegExp(SPELL_STRIKE_PATTERN.source, 'gi');
+    let m;
+    while ((m = re.exec(text)) !== null) {
+        const value = parseInt(m[1], 10);
+        const school = (m[2] || '').charAt(0).toUpperCase() + (m[2] || '').slice(1).toLowerCase();
+        if (!isNaN(value)) out.push({ value, school });
+    }
+    return out;
+}
+
+/**
+ * Parse spell strike sources from an item's tooltip. Each "Adds X Y damage to your weapon/melee attack(s)" is one source.
+ * @param {Object} item - Item with tooltip_lines_raw
+ * @returns {Array<{value: number, school: string}>}
+ */
+export function parseSpellStrikeSourcesFromItem(item) {
+    if (!item || !item.tooltip_lines_raw) return [];
+    const lines = item.tooltip_lines_raw;
+    const out = [];
+    for (let i = 0; i < lines.length; i++) {
+        let line = lines[i];
+        if (line.match(/^\(\d+\)\s*Set:/i) || (i > 0 && lines[i - 1].match(/^\(\d+\)\s*Set:/i))) continue;
+        if (line.trim().toLowerCase() === 'equip:' && i + 1 < lines.length && !lines[i + 1].match(/^\(\d+\)\s*Set:/i)) {
+            line = `Equip: ${lines[i + 1]}`;
+            i++;
+        }
+        out.push(...parseSpellStrikeFromText(line));
+    }
+    return out;
+}
+
+/**
+ * Get all search terms for a stat (including aliases)
+ * @param {string} searchTerm - The search term entered by user
+ * @returns {Array<string>} Array of search terms including aliases
+ */
+export function getStatSearchTerms(searchTerm) {
+    const terms = [searchTerm];
+    if (STAT_ALIASES[searchTerm]) {
+        terms.push(...STAT_ALIASES[searchTerm]);
+    }
+    return terms;
+}
+
+/**
+ * Create a new stat object with default values
+ * @returns {Object} Stat object with all stats set to 0
+ */
+export function createEmptyStats() {
+    return { ...STAT_TEMPLATE };
+}
+
+/**
+ * Flat attack-power bonus from gear that applies vs the current DPS target creature type.
+ * @param {object} totals - Calculator output (includes apVs* from gear)
+ * @param {string} [factionTag] - Normalized tag from boss JSON `faction` (e.g. undead, beast, demon)
+ * @returns {number}
+ */
+export function getAttackPowerBonusVsCreatureType(totals, factionTag) {
+    if (!totals || typeof totals !== 'object') return 0;
+    const f = String(factionTag == null ? '' : factionTag).trim().toLowerCase().replace(/\s+/g, '_');
+    const key = FACTION_TAG_TO_AP_VS_KEY[f];
+    if (!key) return 0;
+    return Number(totals[key]) || 0;
+}
+
+/**
+ * Flat spell damage/healing bonus from gear vs the current DPS target creature type
+ * (e.g. Mark of the Champion vs Undead/Demon).
+ * @param {object} totals - Calculator output (includes dmgHealingVs* from gear)
+ * @param {string} [factionTag] - Normalized tag from boss JSON `faction`
+ * @returns {number}
+ */
+export function getSpellDamageHealingBonusVsCreatureType(totals, factionTag) {
+    if (!totals || typeof totals !== 'object') return 0;
+    const f = String(factionTag == null ? '' : factionTag).trim().toLowerCase().replace(/\s+/g, '_');
+    const key = FACTION_TAG_TO_DMG_HEALING_VS_KEY[f];
+    if (!key) return 0;
+    return Number(totals[key]) || 0;
+}
+
+/**
+ * Apply one AP value to one or more creature labels ("Undead and Demons" → two stats).
+ * @returns {boolean} true if at least one label mapped
+ */
+function applyApVsBonusToCreatureLabels(rawLabel, value, stats) {
+    if (Number.isNaN(value) || value <= 0) return false;
+    const parts = String(rawLabel || '')
+        .split(/\s+and\s+/i)
+        .map(p => p.trim().replace(/\.$/, ''))
+        .filter(Boolean);
+    if (parts.length === 0) return false;
+    let any = false;
+    for (const part of parts) {
+        const key = mapCreatureLabelToApVsStatKey(part);
+        if (key) {
+            stats[key] = (stats[key] || 0) + value;
+            any = true;
+        }
+    }
+    return any;
+}
+
+/**
+ * Parse one tooltip line for "+AP when fighting …" / "Increases attack power when fighting …".
+ * Supports multiple types in one clause (e.g. "Undead and Demons") and text after the clause
+ * (e.g. "…Demons. It also allows…") — do not anchor to end of line.
+ * @returns {boolean} true if line was consumed (caller should `continue`)
+ */
+function tryParseBonusApVsLine(line, stats) {
+    // "Increases attack power when fighting Undead and Demons by 150" — greedy label so "by" binds to the number
+    const inc = line.match(/Increases\s+attack\s+power\s+when\s+fighting\s+(.+?)\s+by\s+(\d+)/i);
+    if (inc) {
+        const value = parseInt(inc[2], 10);
+        if (!applyApVsBonusToCreatureLabels(inc[1], value, stats)) return false;
+        return true;
+    }
+    // "+150 Attack Power when fighting Undead and Demons. It also …" — stop at first sentence end
+    let plus = line.match(/\+(\d+)\s+Attack\s+Power\s+when\s+fighting\s+(.+?)\./i);
+    if (!plus) {
+        plus = line.match(/\+(\d+)\s+Attack\s+Power\s+when\s+fighting\s+(.+?)$/i);
+    }
+    if (plus) {
+        const value = parseInt(plus[1], 10);
+        if (!applyApVsBonusToCreatureLabels(plus[2], value, stats)) return false;
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Apply one spell dmg/heal vs type value to creature labels ("Undead and Demons" → two stats).
+ * @returns {boolean} true if at least one label mapped
+ */
+function applyDmgHealingVsBonusToCreatureLabels(rawLabel, value, stats) {
+    if (Number.isNaN(value) || value <= 0) return false;
+    const parts = String(rawLabel || '')
+        .split(/\s+and\s+/i)
+        .map(p => p.trim().replace(/\.$/, ''))
+        .filter(Boolean);
+    if (parts.length === 0) return false;
+    let any = false;
+    for (const part of parts) {
+        const key = mapCreatureLabelToDmgHealingVsStatKey(part);
+        if (key) {
+            stats[key] = (stats[key] || 0) + value;
+            any = true;
+        }
+    }
+    return any;
+}
+
+/**
+ * Parse tooltip lines for spell damage vs creature type:
+ * - Mark of the Champion: "Increases damage done to Undead and Demons by magical spells and effects by up to 85"
+ * - "Increases spell damage and healing when fighting … by N"
+ * - "+N Spell Damage and Healing when fighting …"
+ * @returns {boolean} true if line was consumed
+ */
+function tryParseBonusDmgHealingVsLine(line, stats) {
+    // Mark of the Champion / similar — text may continue after the number ("It also allows…")
+    let moc = line.match(
+        /Increases\s+damage\s+done\s+to\s+(.+?)\s+by\s+magical\s+spells\s+and\s+effects\s+by\s+up\s+to\s+(\d+)/i
+    );
+    if (moc) {
+        const value = parseInt(moc[2], 10);
+        if (!applyDmgHealingVsBonusToCreatureLabels(moc[1], value, stats)) return false;
+        return true;
+    }
+    moc = line.match(
+        /Increases\s+damage\s+done\s+to\s+(.+?)\s+by\s+magical\s+spells\s+and\s+effects\s+by\s+(\d+)/i
+    );
+    if (moc) {
+        const value = parseInt(moc[2], 10);
+        if (!applyDmgHealingVsBonusToCreatureLabels(moc[1], value, stats)) return false;
+        return true;
+    }
+    const inc = line.match(/Increases\s+spell\s+damage\s+and\s+healing\s+when\s+fighting\s+(.+?)\s+by\s+(\d+)/i);
+    if (inc) {
+        const value = parseInt(inc[2], 10);
+        if (!applyDmgHealingVsBonusToCreatureLabels(inc[1], value, stats)) return false;
+        return true;
+    }
+    const inc2 = line.match(/Increases\s+damage\s+and\s+healing\s+when\s+fighting\s+(.+?)\s+by\s+(\d+)/i);
+    if (inc2) {
+        const value = parseInt(inc2[2], 10);
+        if (!applyDmgHealingVsBonusToCreatureLabels(inc2[1], value, stats)) return false;
+        return true;
+    }
+    let plus = line.match(/\+(\d+)\s+Spell\s+Damage\s+and\s+Healing\s+when\s+fighting\s+(.+?)\./i);
+    if (!plus) {
+        plus = line.match(/\+(\d+)\s+Spell\s+Damage\s+and\s+Healing\s+when\s+fighting\s+(.+?)$/i);
+    }
+    if (plus) {
+        const value = parseInt(plus[1], 10);
+        if (!applyDmgHealingVsBonusToCreatureLabels(plus[2], value, stats)) return false;
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Parse stats from an item's tooltip lines
+ * @param {Object} item - Item object with tooltip_lines_raw
+ * @returns {Object} Parsed stats
+ */
+export function parseStatsFromTooltip(item) {
+    const stats = {};
+    if (!item.tooltip_lines_raw) return stats;
+
+    const lines = item.tooltip_lines_raw;
+
+    for (let i = 0; i < lines.length; i++) {
+        let line = lines[i];
+        
+        // Skip set name lines (e.g., "Stormcaller's Battlegear (1/8)" or just "(1/8)")
+        // Also skip the line before if it's just a set name without count
+        if (line.match(/\([\d]+\/[\d]+\)$/)) {
+            continue;
+        }
+        
+        // Skip set bonus lines - they should NOT be parsed as item stats
+        // Set bonuses are handled separately by the setBonuses module
+        // Format: "(X) Set:" followed by description line (e.g., "+15 Stamina")
+        if (line.match(/^\(\d+\)\s*Set:/i)) {
+            // Skip this line AND the next line (which contains the stat description)
+            i++; // Increment to skip the next line
+            continue;
+        }
+        
+        // Skip lines that immediately follow a "(X) Set:" line (these are the set bonus stat descriptions)
+        if (i > 0 && lines[i - 1].match(/^\(\d+\)\s*Set:/i)) {
+            continue;
+        }
+
+        // Fix negative stats display (e.g., "+-25" should be "-25")
+        line = line.replace(/\+-/g, '-');
+
+        // Handle split "Equip:" lines
+        if (line.trim().toLowerCase() === 'equip:' && i + 1 < lines.length) {
+            // Check if next line is not a set bonus
+            if (!lines[i + 1].match(/^\(\d+\)\s*Set:/i)) {
+                line = `Equip: ${lines[i + 1]}`;
+                i++;
+            }
+        }
+
+        // Handle split "Use:" lines (e.g. Flask of Petrified Gold has "Use:" on its own line)
+        if (line.trim().toLowerCase() === 'use:' && i + 1 < lines.length) {
+            line = `Use: ${lines[i + 1]}`;
+            i++;
+        }
+
+        // Bonus melee AP vs creature type (after Equip:/Use: merge; before generic +Attack Power patterns)
+        if (tryParseBonusApVsLine(line, stats)) {
+            continue;
+        }
+
+        // Spell damage/healing vs creature type (e.g. Mark of the Champion)
+        if (tryParseBonusDmgHealingVsLine(line, stats)) {
+            continue;
+        }
+
+        // Handle hybrid stat descriptions first (before individual patterns)
+        // "Improves your chance to hit and get a critical strike with spells by X%"
+        const spellHitAndCritMatch = line.match(/(?:Equip:.*?|Improves your chance to )hit and get a critical strike with spells(?: and attacks)? by (\d+)%/i);
+        if (spellHitAndCritMatch) {
+            const value = parseInt(spellHitAndCritMatch[1], 10);
+            if (!isNaN(value)) {
+                stats.spellHit = (stats.spellHit || 0) + value;
+                stats.spellCrit = (stats.spellCrit || 0) + value;
+            }
+        }
+        
+        // "Improves your chance to get a critical strike with spells and attacks by X%"
+        const spellAndAttackCritMatch = line.match(/(?:Equip:.*?|Improves your chance to get a )critical strike with spells and attacks by (\d+)%/i);
+        if (spellAndAttackCritMatch) {
+            const value = parseInt(spellAndAttackCritMatch[1], 10);
+            if (!isNaN(value)) {
+                stats.spellCrit = (stats.spellCrit || 0) + value;
+                stats.crit = (stats.crit || 0) + value;
+            }
+        }
+        
+        // "Improves your chance to hit with spells and attacks by X%"
+        const spellAndAttackHitMatch = line.match(/(?:Equip:.*?|Improves your chance to )hit with spells and attacks by (\d+)%/i);
+        if (spellAndAttackHitMatch) {
+            const value = parseInt(spellAndAttackHitMatch[1], 10);
+            if (!isNaN(value)) {
+                stats.spellHit = (stats.spellHit || 0) + value;
+                stats.hit = (stats.hit || 0) + value;
+            }
+        }
+
+        // Parse weapon skill by type (e.g., "Increased Axes +5", "Increased Two-handed Maces +6")
+        const weaponSkillByTypeMatch = line.match(WEAPON_SKILL_BY_TYPE_PATTERN);
+        if (weaponSkillByTypeMatch) {
+            const fullMatch = weaponSkillByTypeMatch[0]; // e.g., "Increased Two-handed Axes +6"
+            const twoHandedPrefix = weaponSkillByTypeMatch[1] || ''; // "Two-handed " or empty
+            const weaponTypeRaw = fullMatch.match(/(?:Axes|Swords|Maces|Daggers|Fist Weapons|Polearms|Staves|Bows|Crossbows|Guns|Thrown)/i)[0];
+            const skillValue = parseInt(weaponSkillByTypeMatch[2], 10);
+
+            if (!isNaN(skillValue)) {
+                // Build the weapon type key (e.g., "Axe", "Two-handed Axe")
+                // Normalize plural to singular
+                let weaponType = weaponTypeRaw.replace(/Axes/i, 'Axe')
+                    .replace(/Swords/i, 'Sword')
+                    .replace(/Maces/i, 'Mace')
+                    .replace(/Daggers/i, 'Dagger')
+                    .replace(/Fist Weapons/i, 'Fist Weapon')
+                    .replace(/Polearms/i, 'Polearm')
+                    .replace(/Staves/i, 'Staff')
+                    .replace(/Bows/i, 'Bow')
+                    .replace(/Crossbows/i, 'Crossbow')
+                    .replace(/Guns/i, 'Gun');
+
+                // Add "Two-handed " prefix if present
+                if (twoHandedPrefix.trim()) {
+                    weaponType = 'Two-handed ' + weaponType;
+                }
+
+                // Initialize weaponSkillByType object if needed
+                if (!stats.weaponSkillByType) {
+                    stats.weaponSkillByType = {};
+                }
+
+                // Add to the weapon type
+                stats.weaponSkillByType[weaponType] = (stats.weaponSkillByType[weaponType] || 0) + skillValue;
+            }
+        }
+
+        // Test each pattern (skip if already handled by hybrid patterns above)
+        for (const key in STAT_PATTERNS) {
+            // Skip if this stat was already set by a hybrid pattern
+            if (key === 'spellHit' && stats.spellHit !== undefined && (spellHitAndCritMatch || spellAndAttackHitMatch)) continue;
+            if (key === 'spellCrit' && stats.spellCrit !== undefined && (spellHitAndCritMatch || spellAndAttackCritMatch)) continue;
+            if (key === 'crit' && stats.crit !== undefined && spellAndAttackCritMatch) continue;
+            if (key === 'hit' && stats.hit !== undefined && spellAndAttackHitMatch) continue;
+
+            // Skip haste from conditional on-kill / slay proc lines (e.g. Elementium Reaper — not modeled as passive haste)
+            if (key === 'haste' &&
+                /\bkill(?:ing|ed|s)?\b|\bslay\b|when\s+you\s+kill|enemy\s+dies|after\s+killing|decapitat/i.test(line)) {
+                continue;
+            }
+
+            const match = line.match(STAT_PATTERNS[key]);
+            if (match) {
+                // Handle weapon damage specially (has two capture groups: min and max)
+                if (key === 'weaponDamage') {
+                    const minDmg = parseInt(match[1], 10);
+                    const maxDmg = parseInt(match[2], 10);
+                    if (!isNaN(minDmg) && !isNaN(maxDmg)) {
+                        stats.weaponDamageMin = minDmg;
+                        stats.weaponDamageMax = maxDmg;
+                    }
+                } else {
+                    // Use parseFloat for weapon speed to preserve decimals
+                    const value = (key === 'weaponSpeed')
+                        ? parseFloat(match[1] || match[2] || match[3] || match[4])
+                        : parseInt(match[1] || match[2] || match[3] || match[4], 10);
+
+                    if (!isNaN(value)) {
+                        const statKey = key === 'blockValueEquip' ? 'blockValue' : key;
+                        stats[statKey] = (stats[statKey] || 0) + value;
+                    }
+                }
+            }
+        }
+
+        // Detect slot from tooltip
+        if (!stats.Slot) {
+            const potentialSlot = line.trim();
+            if (Object.keys(SLOT_TEXT_MAP).includes(potentialSlot.toLowerCase())) {
+                stats.Slot = potentialSlot;
+            }
+        }
+    }
+
+    return stats;
+}
+
+// Enchant filtering helpers
+export function getItemType(item) {
+    if (!item || !item.tooltip_lines_raw) return null;
+
+    // Check the FIRST few lines which contain the item slot/type info
+    // This avoids false positives from stat descriptions or set bonuses
+    const relevantLines = item.tooltip_lines_raw.slice(0, 5).map(line => line.toLowerCase());
+    const relevantText = relevantLines.join('\n');
+
+    console.log('getItemType for', item.name, ':', { relevantLines, relevantText });
+
+    // Check in priority order: shield first, then ranged, then 2H, then 1H
+    // For ranged: class is "Ranged" (like "Two-Hand" for melee), type is Bow/Crossbow/Gun
+    if (relevantText.includes('shield')) {
+        console.log('-> Detected as shield');
+        return 'shield';
+    }
+    if (relevantText.includes('ranged') || relevantText.includes('bow') || relevantText.includes('crossbow') || relevantText.includes('gun')) {
+        console.log('-> Detected as ranged');
+        return 'ranged';
+    }
+    if (relevantText.includes('two-hand')) {
+        console.log('-> Detected as 2h');
+        return '2h';
+    }
+    if (relevantText.includes('one-hand') || relevantText.includes('main hand')) {
+        console.log('-> Detected as 1h');
+        return '1h';
+    }
+    // Check for generic "Off Hand" last (weapons that can go in offhand but aren't shields)
+    if (relevantText.includes('off hand')) {
+        console.log('-> Detected as 1h (off hand weapon)');
+        return '1h';
+    }
+
+    console.log('-> No type detected, relevantText:', relevantText);
+    return null;
+}
+
+export function filterEnchantsByItemType(enchants, itemType, slotId = null, item = null) {
+    if (!enchants) return enchants;
+
+    // If no item equipped but we have a slot, filter based on slot capabilities
+    if (!itemType && slotId) {
+        if (slotId === 'offhand') {
+            // Offhand can have shields or 1H weapons, but NOT 2H weapons
+            return enchants.filter(enchant => {
+                if (enchant.name === 'None') return true;
+                const name = enchant.name.toLowerCase();
+                // Exclude 2H weapon enchants from offhand
+                if (name.includes('enchant 2h weapon')) return false;
+                return true;
+            });
+        } else if (slotId === 'mainhand') {
+            // Mainhand can have 1H or 2H weapons
+            return enchants.filter(enchant => {
+                if (enchant.name === 'None') return true;
+                const name = enchant.name.toLowerCase();
+                // Exclude shield enchants from mainhand
+                if (name.includes('enchant shield')) return false;
+                return true;
+            });
+        }
+    }
+
+    // If no item type at all, return all enchants
+    if (!itemType) return enchants;
+
+    return enchants.filter(enchant => {
+        // Always include "None" option
+        if (enchant.name === 'None') return true;
+
+        const name = enchant.name.toLowerCase();
+
+        // Iron Counterweight special handling - only for 2H swords, maces, axes, and polearms (not staves)
+        if (name.includes('iron counterweight')) {
+            if (itemType !== '2h') return false;
+
+            // Check weapon subtype if available
+            if (item && item.weaponType) {
+                const weaponType = item.weaponType;
+                // Exclude Staff explicitly
+                if (weaponType === 'Staff') return false;
+                const allowedTypes = ['Two-Hand Sword', 'Two-Hand Mace', 'Two-Hand Axe', 'Polearm'];
+                return allowedTypes.includes(weaponType);
+            }
+
+            // If no weaponType info, check tooltip for staff (exclude staves)
+            if (item && item.tooltip_lines_raw) {
+                const tooltipText = item.tooltip_lines_raw.join(' ').toLowerCase();
+                if (tooltipText.includes('staff')) return false;
+            }
+
+            return true; // Allow for other 2H weapons if we can't determine type
+        }
+
+        if (itemType === 'shield') {
+            // Only show shield enchants for shields
+            return name.includes('enchant shield');
+        } else if (itemType === '2h') {
+            // 2H weapons can use both "Enchant 2H Weapon" and regular "Enchant Weapon"
+            return (name.includes('enchant 2h weapon') || name.includes('enchant weapon'))
+                   && !name.includes('enchant shield');
+        } else if (itemType === '1h') {
+            // 1H weapons can only use regular "Enchant Weapon" (not 2H-specific, not shield)
+            // Check for 2H exclusion FIRST since "Enchant 2H Weapon" contains "Enchant Weapon"
+            if (name.includes('enchant 2h weapon')) return false;
+            if (name.includes('enchant shield')) return false;
+            return name.includes('enchant weapon');
+        } else if (itemType === 'ranged') {
+            // Ranged (bow/crossbow/gun): enchants for this slot are scopes only — allow all
+            return true;
+        }
+
+        return true;
+    });
+}

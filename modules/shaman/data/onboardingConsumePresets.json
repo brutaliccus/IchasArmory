@@ -1,0 +1,1599 @@
+{
+  "Tank - Physhance": {
+    "budget": [
+      {
+        "id": "rockbiter"
+      },
+      {
+        "id": "lightningshield"
+      },
+      {
+        "id": "mastery_axes"
+      },
+      {
+        "id": "mastery_hammers"
+      },
+      {
+        "id": "mastery_daggers"
+      },
+      {
+        "id": "mastery_fist"
+      },
+      {
+        "id": "mastery_staves"
+      },
+      {
+        "id": "motw",
+        "improved": true
+      },
+      {
+        "id": "fortitude",
+        "improved": true
+      },
+      {
+        "id": "strengthOfEarthTotem",
+        "improved": true
+      },
+      {
+        "id": "arcaneBrilliance"
+      },
+      {
+        "id": "bok"
+      },
+      {
+        "id": "blessingOfMight",
+        "improved": true
+      },
+      {
+        "id": "demoralizing_shout",
+        "improved": true
+      },
+      {
+        "id": "sunderArmor"
+      },
+      {
+        "id": "faerieFire"
+      },
+      {
+        "id": "curseOfRecklessness"
+      },
+      {
+        "id": "fortitudeElixir"
+      },
+      {
+        "id": "rumsey"
+      },
+      {
+        "id": "zanza"
+      }
+    ],
+    "standard": [
+      {
+        "id": "rockbiter"
+      },
+      {
+        "id": "lightningshield"
+      },
+      {
+        "id": "mastery_axes"
+      },
+      {
+        "id": "mastery_hammers"
+      },
+      {
+        "id": "mastery_daggers"
+      },
+      {
+        "id": "mastery_fist"
+      },
+      {
+        "id": "mastery_staves"
+      },
+      {
+        "id": "motw",
+        "improved": true
+      },
+      {
+        "id": "fortitude",
+        "improved": true
+      },
+      {
+        "id": "strengthOfEarthTotem",
+        "improved": true
+      },
+      {
+        "id": "arcaneBrilliance"
+      },
+      {
+        "id": "bok"
+      },
+      {
+        "id": "ancestralHealing"
+      },
+      {
+        "id": "battleShout",
+        "improved": true
+      },
+      {
+        "id": "blessingOfMight",
+        "improved": true
+      },
+      {
+        "id": "leaderOfThePack"
+      },
+      {
+        "id": "emeraldBlessing"
+      },
+      {
+        "id": "thunderfury_debuff"
+      },
+      {
+        "id": "demoralizing_shout",
+        "improved": true
+      },
+      {
+        "id": "curseOfTheElements"
+      },
+      {
+        "id": "curseOfShadows"
+      },
+      {
+        "id": "exposeArmor",
+        "improved": true
+      },
+      {
+        "id": "faerieFire"
+      },
+      {
+        "id": "curseOfRecklessness"
+      },
+      {
+        "id": "titans"
+      },
+      {
+        "id": "greater_firepower"
+      },
+      {
+        "id": "greater_nature_power"
+      },
+      {
+        "id": "fortitudeElixir"
+      },
+      {
+        "id": "defense"
+      },
+      {
+        "id": "emerald_mongoose"
+      },
+      {
+        "id": "arcane_giant"
+      },
+      {
+        "id": "hardened_mushroom"
+      },
+      {
+        "id": "rumsey"
+      },
+      {
+        "id": "zanza"
+      }
+    ],
+    "max": [
+      {
+        "id": "rockbiter"
+      },
+      {
+        "id": "lightningshield"
+      },
+      {
+        "id": "stoneclawTotem"
+      },
+      {
+        "id": "mastery_axes"
+      },
+      {
+        "id": "mastery_hammers"
+      },
+      {
+        "id": "mastery_daggers"
+      },
+      {
+        "id": "mastery_fist"
+      },
+      {
+        "id": "mastery_staves"
+      },
+      {
+        "id": "motw",
+        "improved": true
+      },
+      {
+        "id": "fortitude",
+        "improved": true
+      },
+      {
+        "id": "graceOfAir",
+        "improved": true
+      },
+      {
+        "id": "strengthOfEarthTotem",
+        "improved": true
+      },
+      {
+        "id": "arcaneBrilliance"
+      },
+      {
+        "id": "bok"
+      },
+      {
+        "id": "ancestralHealing"
+      },
+      {
+        "id": "battleShout",
+        "improved": true
+      },
+      {
+        "id": "blessingOfMight",
+        "improved": true
+      },
+      {
+        "id": "leaderOfThePack"
+      },
+      {
+        "id": "emeraldBlessing"
+      },
+      {
+        "id": "thunderfury_debuff"
+      },
+      {
+        "id": "demoralizing_shout",
+        "improved": true
+      },
+      {
+        "id": "curseOfTheElements"
+      },
+      {
+        "id": "curseOfShadows"
+      },
+      {
+        "id": "exposeArmor",
+        "improved": true
+      },
+      {
+        "id": "fireVulnerability"
+      },
+      {
+        "id": "nightfall"
+      },
+      {
+        "id": "hemorrhage",
+        "improved": true
+      },
+      {
+        "id": "corrosiveSpit"
+      },
+      {
+        "id": "faerieFire"
+      },
+      {
+        "id": "curseOfRecklessness"
+      },
+      {
+        "id": "annihilator"
+      },
+      {
+        "id": "titans"
+      },
+      {
+        "id": "greater_firepower"
+      },
+      {
+        "id": "greater_nature_power"
+      },
+      {
+        "id": "fortitudeElixir"
+      },
+      {
+        "id": "defense"
+      },
+      {
+        "id": "emerald_mongoose"
+      },
+      {
+        "id": "arcane_giant"
+      },
+      {
+        "id": "dreamwater"
+      },
+      {
+        "id": "juju_flurry"
+      },
+      {
+        "id": "roids"
+      },
+      {
+        "id": "hardened_mushroom"
+      },
+      {
+        "id": "rumsey"
+      },
+      {
+        "id": "zanza"
+      },
+      {
+        "id": "potion_of_quickness"
+      }
+    ]
+  },
+  "Tank - Spellhance": {
+    "budget": [
+      {
+        "id": "rockbiter"
+      },
+      {
+        "id": "lightningshield"
+      },
+      {
+        "id": "mastery_axes"
+      },
+      {
+        "id": "mastery_hammers"
+      },
+      {
+        "id": "mastery_daggers"
+      },
+      {
+        "id": "mastery_fist"
+      },
+      {
+        "id": "mastery_staves"
+      },
+      {
+        "id": "motw",
+        "improved": true
+      },
+      {
+        "id": "fortitude",
+        "improved": true
+      },
+      {
+        "id": "strengthOfEarthTotem",
+        "improved": true
+      },
+      {
+        "id": "arcaneBrilliance"
+      },
+      {
+        "id": "bok"
+      },
+      {
+        "id": "blessingOfMight",
+        "improved": true
+      },
+      {
+        "id": "demoralizing_shout",
+        "improved": true
+      },
+      {
+        "id": "sunderArmor"
+      },
+      {
+        "id": "faerieFire"
+      },
+      {
+        "id": "curseOfRecklessness"
+      },
+      {
+        "id": "fortitudeElixir"
+      },
+      {
+        "id": "rumsey"
+      },
+      {
+        "id": "zanza"
+      }
+    ],
+    "standard": [
+      {
+        "id": "rockbiter"
+      },
+      {
+        "id": "lightningshield"
+      },
+      {
+        "id": "mastery_axes"
+      },
+      {
+        "id": "mastery_hammers"
+      },
+      {
+        "id": "mastery_daggers"
+      },
+      {
+        "id": "mastery_fist"
+      },
+      {
+        "id": "mastery_staves"
+      },
+      {
+        "id": "motw",
+        "improved": true
+      },
+      {
+        "id": "fortitude",
+        "improved": true
+      },
+      {
+        "id": "strengthOfEarthTotem",
+        "improved": true
+      },
+      {
+        "id": "arcaneBrilliance"
+      },
+      {
+        "id": "bok"
+      },
+      {
+        "id": "ancestralHealing"
+      },
+      {
+        "id": "battleShout",
+        "improved": true
+      },
+      {
+        "id": "blessingOfMight",
+        "improved": true
+      },
+      {
+        "id": "leaderOfThePack"
+      },
+      {
+        "id": "emeraldBlessing"
+      },
+      {
+        "id": "thunderfury_debuff"
+      },
+      {
+        "id": "demoralizing_shout",
+        "improved": true
+      },
+      {
+        "id": "curseOfTheElements"
+      },
+      {
+        "id": "curseOfShadows"
+      },
+      {
+        "id": "exposeArmor",
+        "improved": true
+      },
+      {
+        "id": "faerieFire"
+      },
+      {
+        "id": "curseOfRecklessness"
+      },
+      {
+        "id": "titans"
+      },
+      {
+        "id": "greater_firepower"
+      },
+      {
+        "id": "greater_nature_power"
+      },
+      {
+        "id": "fortitudeElixir"
+      },
+      {
+        "id": "defense"
+      },
+      {
+        "id": "emerald_mongoose"
+      },
+      {
+        "id": "arcane_giant"
+      },
+      {
+        "id": "hardened_mushroom"
+      },
+      {
+        "id": "rumsey"
+      },
+      {
+        "id": "zanza"
+      }
+    ],
+    "max": [
+      {
+        "id": "rockbiter"
+      },
+      {
+        "id": "lightningshield"
+      },
+      {
+        "id": "stoneclawTotem"
+      },
+      {
+        "id": "mastery_axes"
+      },
+      {
+        "id": "mastery_hammers"
+      },
+      {
+        "id": "mastery_daggers"
+      },
+      {
+        "id": "mastery_fist"
+      },
+      {
+        "id": "mastery_staves"
+      },
+      {
+        "id": "motw",
+        "improved": true
+      },
+      {
+        "id": "fortitude",
+        "improved": true
+      },
+      {
+        "id": "graceOfAir",
+        "improved": true
+      },
+      {
+        "id": "strengthOfEarthTotem",
+        "improved": true
+      },
+      {
+        "id": "arcaneBrilliance"
+      },
+      {
+        "id": "bok"
+      },
+      {
+        "id": "ancestralHealing"
+      },
+      {
+        "id": "battleShout",
+        "improved": true
+      },
+      {
+        "id": "blessingOfMight",
+        "improved": true
+      },
+      {
+        "id": "leaderOfThePack"
+      },
+      {
+        "id": "emeraldBlessing"
+      },
+      {
+        "id": "thunderfury_debuff"
+      },
+      {
+        "id": "demoralizing_shout",
+        "improved": true
+      },
+      {
+        "id": "curseOfTheElements"
+      },
+      {
+        "id": "curseOfShadows"
+      },
+      {
+        "id": "exposeArmor",
+        "improved": true
+      },
+      {
+        "id": "fireVulnerability"
+      },
+      {
+        "id": "nightfall"
+      },
+      {
+        "id": "hemorrhage",
+        "improved": true
+      },
+      {
+        "id": "corrosiveSpit"
+      },
+      {
+        "id": "faerieFire"
+      },
+      {
+        "id": "curseOfRecklessness"
+      },
+      {
+        "id": "annihilator"
+      },
+      {
+        "id": "titans"
+      },
+      {
+        "id": "greater_firepower"
+      },
+      {
+        "id": "greater_nature_power"
+      },
+      {
+        "id": "fortitudeElixir"
+      },
+      {
+        "id": "defense"
+      },
+      {
+        "id": "emerald_mongoose"
+      },
+      {
+        "id": "arcane_giant"
+      },
+      {
+        "id": "dreamwater"
+      },
+      {
+        "id": "juju_flurry"
+      },
+      {
+        "id": "roids"
+      },
+      {
+        "id": "hardened_mushroom"
+      },
+      {
+        "id": "rumsey"
+      },
+      {
+        "id": "zanza"
+      },
+      {
+        "id": "potion_of_quickness"
+      }
+    ]
+  },
+  "DPS - Spellhance": {
+    "budget": [
+      {
+        "id": "flametongue"
+      },
+      {
+        "id": "lightningshield"
+      },
+      {
+        "id": "mastery_axes"
+      },
+      {
+        "id": "mastery_hammers"
+      },
+      {
+        "id": "motw",
+        "improved": true
+      },
+      {
+        "id": "fortitude",
+        "improved": true
+      },
+      {
+        "id": "graceOfAir",
+        "improved": true
+      },
+      {
+        "id": "strengthOfEarthTotem",
+        "improved": true
+      },
+      {
+        "id": "arcaneBrilliance"
+      },
+      {
+        "id": "bok"
+      },
+      {
+        "id": "battleShout",
+        "improved": true
+      },
+      {
+        "id": "blessingOfMight",
+        "improved": true
+      },
+      {
+        "id": "leaderOfThePack"
+      },
+      {
+        "id": "emeraldBlessing"
+      },
+      {
+        "id": "greaterBlessingOfSalvation"
+      },
+      {
+        "id": "thunderfury_debuff"
+      },
+      {
+        "id": "curseOfTheElements"
+      },
+      {
+        "id": "curseOfShadows"
+      },
+      {
+        "id": "exposeArmor",
+        "improved": true
+      },
+      {
+        "id": "fireVulnerability"
+      },
+      {
+        "id": "nightfall"
+      },
+      {
+        "id": "faerieFire"
+      },
+      {
+        "id": "curseOfRecklessness"
+      },
+      {
+        "id": "greater_firepower"
+      },
+      {
+        "id": "greater_nature_power"
+      },
+      {
+        "id": "emerald_mongoose"
+      },
+      {
+        "id": "arcane_giant"
+      },
+      {
+        "id": "roids"
+      }
+    ],
+    "standard": [
+      {
+        "id": "flametongue"
+      },
+      {
+        "id": "lightningshield"
+      },
+      {
+        "id": "mastery_axes"
+      },
+      {
+        "id": "mastery_hammers"
+      },
+      {
+        "id": "motw",
+        "improved": true
+      },
+      {
+        "id": "fortitude",
+        "improved": true
+      },
+      {
+        "id": "graceOfAir",
+        "improved": true
+      },
+      {
+        "id": "strengthOfEarthTotem",
+        "improved": true
+      },
+      {
+        "id": "arcaneBrilliance"
+      },
+      {
+        "id": "bok"
+      },
+      {
+        "id": "battleShout",
+        "improved": true
+      },
+      {
+        "id": "blessingOfMight",
+        "improved": true
+      },
+      {
+        "id": "leaderOfThePack"
+      },
+      {
+        "id": "emeraldBlessing"
+      },
+      {
+        "id": "greaterBlessingOfSalvation"
+      },
+      {
+        "id": "thunderfury_debuff"
+      },
+      {
+        "id": "curseOfTheElements"
+      },
+      {
+        "id": "curseOfShadows"
+      },
+      {
+        "id": "exposeArmor",
+        "improved": true
+      },
+      {
+        "id": "fireVulnerability"
+      },
+      {
+        "id": "nightfall"
+      },
+      {
+        "id": "faerieFire"
+      },
+      {
+        "id": "curseOfRecklessness"
+      },
+      {
+        "id": "supreme_power"
+      },
+      {
+        "id": "greater_firepower"
+      },
+      {
+        "id": "greater_nature_power"
+      },
+      {
+        "id": "emerald_mongoose"
+      },
+      {
+        "id": "arcane_giant"
+      },
+      {
+        "id": "dreamwater"
+      },
+      {
+        "id": "roids"
+      },
+      {
+        "id": "telabim_delight"
+      },
+      {
+        "id": "rumsey"
+      },
+      {
+        "id": "zanza"
+      }
+    ],
+    "max": [
+      {
+        "id": "flametongue"
+      },
+      {
+        "id": "lightningshield"
+      },
+      {
+        "id": "mastery_axes"
+      },
+      {
+        "id": "mastery_hammers"
+      },
+      {
+        "id": "motw",
+        "improved": true
+      },
+      {
+        "id": "fortitude",
+        "improved": true
+      },
+      {
+        "id": "graceOfAir",
+        "improved": true
+      },
+      {
+        "id": "strengthOfEarthTotem",
+        "improved": true
+      },
+      {
+        "id": "arcaneBrilliance"
+      },
+      {
+        "id": "bok"
+      },
+      {
+        "id": "battleShout",
+        "improved": true
+      },
+      {
+        "id": "blessingOfMight",
+        "improved": true
+      },
+      {
+        "id": "leaderOfThePack"
+      },
+      {
+        "id": "emeraldBlessing"
+      },
+      {
+        "id": "greaterBlessingOfSalvation"
+      },
+      {
+        "id": "thunderfury_debuff"
+      },
+      {
+        "id": "curseOfTheElements"
+      },
+      {
+        "id": "curseOfShadows"
+      },
+      {
+        "id": "exposeArmor",
+        "improved": true
+      },
+      {
+        "id": "fireVulnerability"
+      },
+      {
+        "id": "nightfall"
+      },
+      {
+        "id": "faerieFire"
+      },
+      {
+        "id": "curseOfRecklessness"
+      },
+      {
+        "id": "supreme_power"
+      },
+      {
+        "id": "greater_firepower"
+      },
+      {
+        "id": "greater_nature_power"
+      },
+      {
+        "id": "fortitudeElixir"
+      },
+      {
+        "id": "emerald_mongoose"
+      },
+      {
+        "id": "arcane_giant"
+      },
+      {
+        "id": "dreamwater"
+      },
+      {
+        "id": "juju_flurry"
+      },
+      {
+        "id": "roids"
+      },
+      {
+        "id": "telabim_delight"
+      },
+      {
+        "id": "Merlot"
+      },
+      {
+        "id": "zanza"
+      },
+      {
+        "id": "potion_of_quickness"
+      }
+    ]
+  },
+  "DPS - Physhance": {
+    "budget": [
+      {
+        "id": "windfury"
+      },
+      {
+        "id": "lightningshield"
+      },
+      {
+        "id": "mastery_axes"
+      },
+      {
+        "id": "mastery_hammers"
+      },
+      {
+        "id": "motw",
+        "improved": true
+      },
+      {
+        "id": "fortitude",
+        "improved": true
+      },
+      {
+        "id": "graceOfAir",
+        "improved": true
+      },
+      {
+        "id": "strengthOfEarthTotem",
+        "improved": true
+      },
+      {
+        "id": "arcaneBrilliance"
+      },
+      {
+        "id": "bok"
+      },
+      {
+        "id": "battleShout",
+        "improved": true
+      },
+      {
+        "id": "blessingOfMight",
+        "improved": true
+      },
+      {
+        "id": "leaderOfThePack"
+      },
+      {
+        "id": "emeraldBlessing"
+      },
+      {
+        "id": "greaterBlessingOfSalvation"
+      },
+      {
+        "id": "thunderfury_debuff"
+      },
+      {
+        "id": "curseOfTheElements"
+      },
+      {
+        "id": "curseOfShadows"
+      },
+      {
+        "id": "exposeArmor",
+        "improved": true
+      },
+      {
+        "id": "fireVulnerability"
+      },
+      {
+        "id": "nightfall"
+      },
+      {
+        "id": "faerieFire"
+      },
+      {
+        "id": "curseOfRecklessness"
+      },
+      {
+        "id": "mongoose"
+      },
+      {
+        "id": "giants"
+      },
+      {
+        "id": "roids"
+      }
+    ],
+    "standard": [
+      {
+        "id": "windfury"
+      },
+      {
+        "id": "lightningshield"
+      },
+      {
+        "id": "mastery_axes"
+      },
+      {
+        "id": "mastery_hammers"
+      },
+      {
+        "id": "motw",
+        "improved": true
+      },
+      {
+        "id": "fortitude",
+        "improved": true
+      },
+      {
+        "id": "graceOfAir",
+        "improved": true
+      },
+      {
+        "id": "strengthOfEarthTotem",
+        "improved": true
+      },
+      {
+        "id": "arcaneBrilliance"
+      },
+      {
+        "id": "bok"
+      },
+      {
+        "id": "battleShout",
+        "improved": true
+      },
+      {
+        "id": "blessingOfMight",
+        "improved": true
+      },
+      {
+        "id": "leaderOfThePack"
+      },
+      {
+        "id": "emeraldBlessing"
+      },
+      {
+        "id": "greaterBlessingOfSalvation"
+      },
+      {
+        "id": "thunderfury_debuff"
+      },
+      {
+        "id": "curseOfTheElements"
+      },
+      {
+        "id": "curseOfShadows"
+      },
+      {
+        "id": "exposeArmor",
+        "improved": true
+      },
+      {
+        "id": "fireVulnerability"
+      },
+      {
+        "id": "nightfall"
+      },
+      {
+        "id": "faerieFire"
+      },
+      {
+        "id": "curseOfRecklessness"
+      },
+      {
+        "id": "greater_firepower"
+      },
+      {
+        "id": "greater_nature_power"
+      },
+      {
+        "id": "emerald_mongoose"
+      },
+      {
+        "id": "arcane_giant"
+      },
+      {
+        "id": "dreamwater"
+      },
+      {
+        "id": "roids"
+      },
+      {
+        "id": "smoked_desert_dumplings"
+      },
+      {
+        "id": "rumsey"
+      },
+      {
+        "id": "zanza"
+      }
+    ],
+    "max": [
+      {
+        "id": "windfury"
+      },
+      {
+        "id": "lightningshield"
+      },
+      {
+        "id": "mastery_axes"
+      },
+      {
+        "id": "mastery_hammers"
+      },
+      {
+        "id": "motw",
+        "improved": true
+      },
+      {
+        "id": "fortitude",
+        "improved": true
+      },
+      {
+        "id": "graceOfAir",
+        "improved": true
+      },
+      {
+        "id": "strengthOfEarthTotem",
+        "improved": true
+      },
+      {
+        "id": "arcaneBrilliance"
+      },
+      {
+        "id": "bok"
+      },
+      {
+        "id": "battleShout",
+        "improved": true
+      },
+      {
+        "id": "blessingOfMight",
+        "improved": true
+      },
+      {
+        "id": "leaderOfThePack"
+      },
+      {
+        "id": "emeraldBlessing"
+      },
+      {
+        "id": "greaterBlessingOfSalvation"
+      },
+      {
+        "id": "thunderfury_debuff"
+      },
+      {
+        "id": "curseOfTheElements"
+      },
+      {
+        "id": "curseOfShadows"
+      },
+      {
+        "id": "exposeArmor",
+        "improved": true
+      },
+      {
+        "id": "fireVulnerability"
+      },
+      {
+        "id": "nightfall"
+      },
+      {
+        "id": "faerieFire"
+      },
+      {
+        "id": "curseOfRecklessness"
+      },
+      {
+        "id": "supreme_power"
+      },
+      {
+        "id": "greater_firepower"
+      },
+      {
+        "id": "greater_nature_power"
+      },
+      {
+        "id": "fortitudeElixir"
+      },
+      {
+        "id": "emerald_mongoose"
+      },
+      {
+        "id": "arcane_giant"
+      },
+      {
+        "id": "dreamwater"
+      },
+      {
+        "id": "juju_flurry"
+      },
+      {
+        "id": "roids"
+      },
+      {
+        "id": "smoked_desert_dumplings"
+      },
+      {
+        "id": "Merlot"
+      },
+      {
+        "id": "zanza"
+      },
+      {
+        "id": "potion_of_quickness"
+      }
+    ]
+  },
+  "Elemental": {
+    "budget": [
+      {
+        "id": "watershield"
+      },
+      {
+        "id": "mastery_axes"
+      },
+      {
+        "id": "mastery_hammers"
+      },
+      {
+        "id": "motw",
+        "improved": true
+      },
+      {
+        "id": "fortitude",
+        "improved": true
+      },
+      {
+        "id": "graceOfAir",
+        "improved": true
+      },
+      {
+        "id": "strengthOfEarthTotem",
+        "improved": true
+      },
+      {
+        "id": "arcaneBrilliance"
+      },
+      {
+        "id": "bok"
+      },
+      {
+        "id": "battleShout",
+        "improved": true
+      },
+      {
+        "id": "blessingOfMight",
+        "improved": true
+      },
+      {
+        "id": "leaderOfThePack"
+      },
+      {
+        "id": "emeraldBlessing"
+      },
+      {
+        "id": "greaterBlessingOfSalvation"
+      },
+      {
+        "id": "thunderfury_debuff"
+      },
+      {
+        "id": "curseOfTheElements"
+      },
+      {
+        "id": "curseOfShadows"
+      },
+      {
+        "id": "exposeArmor",
+        "improved": true
+      },
+      {
+        "id": "fireVulnerability"
+      },
+      {
+        "id": "nightfall"
+      },
+      {
+        "id": "faerieFire"
+      },
+      {
+        "id": "curseOfRecklessness"
+      },
+      {
+        "id": "greater_arcane"
+      },
+      {
+        "id": "greater_firepower"
+      },
+      {
+        "id": "greater_nature_power"
+      },
+      {
+        "id": "dreamshard"
+      },
+      {
+        "id": "brilliant_wizard_oil"
+      }
+    ],
+    "standard": [
+      {
+        "id": "watershield"
+      },
+      {
+        "id": "mastery_axes"
+      },
+      {
+        "id": "mastery_hammers"
+      },
+      {
+        "id": "motw",
+        "improved": true
+      },
+      {
+        "id": "fortitude",
+        "improved": true
+      },
+      {
+        "id": "graceOfAir",
+        "improved": true
+      },
+      {
+        "id": "strengthOfEarthTotem",
+        "improved": true
+      },
+      {
+        "id": "arcaneBrilliance"
+      },
+      {
+        "id": "bok"
+      },
+      {
+        "id": "battleShout",
+        "improved": true
+      },
+      {
+        "id": "blessingOfMight",
+        "improved": true
+      },
+      {
+        "id": "leaderOfThePack"
+      },
+      {
+        "id": "emeraldBlessing"
+      },
+      {
+        "id": "greaterBlessingOfSalvation"
+      },
+      {
+        "id": "thunderfury_debuff"
+      },
+      {
+        "id": "curseOfTheElements"
+      },
+      {
+        "id": "curseOfShadows"
+      },
+      {
+        "id": "exposeArmor",
+        "improved": true
+      },
+      {
+        "id": "fireVulnerability"
+      },
+      {
+        "id": "nightfall"
+      },
+      {
+        "id": "faerieFire"
+      },
+      {
+        "id": "curseOfRecklessness"
+      },
+      {
+        "id": "supreme_power"
+      },
+      {
+        "id": "greater_arcane"
+      },
+      {
+        "id": "greater_firepower"
+      },
+      {
+        "id": "greater_nature_power"
+      },
+      {
+        "id": "dreamshard"
+      },
+      {
+        "id": "cerebral_cortex"
+      },
+      {
+        "id": "telabim_delight"
+      },
+      {
+        "id": "dreamtonic"
+      },
+      {
+        "id": "zanza"
+      },
+      {
+        "id": "brilliant_wizard_oil"
+      }
+    ],
+    "max": [
+      {
+        "id": "watershield"
+      },
+      {
+        "id": "mastery_axes"
+      },
+      {
+        "id": "mastery_hammers"
+      },
+      {
+        "id": "motw",
+        "improved": true
+      },
+      {
+        "id": "fortitude",
+        "improved": true
+      },
+      {
+        "id": "graceOfAir",
+        "improved": true
+      },
+      {
+        "id": "strengthOfEarthTotem",
+        "improved": true
+      },
+      {
+        "id": "arcaneBrilliance"
+      },
+      {
+        "id": "bok"
+      },
+      {
+        "id": "battleShout",
+        "improved": true
+      },
+      {
+        "id": "blessingOfMight",
+        "improved": true
+      },
+      {
+        "id": "leaderOfThePack"
+      },
+      {
+        "id": "emeraldBlessing"
+      },
+      {
+        "id": "greaterBlessingOfSalvation"
+      },
+      {
+        "id": "thunderfury_debuff"
+      },
+      {
+        "id": "curseOfTheElements"
+      },
+      {
+        "id": "curseOfShadows"
+      },
+      {
+        "id": "exposeArmor",
+        "improved": true
+      },
+      {
+        "id": "fireVulnerability"
+      },
+      {
+        "id": "nightfall"
+      },
+      {
+        "id": "faerieFire"
+      },
+      {
+        "id": "curseOfRecklessness"
+      },
+      {
+        "id": "supreme_power"
+      },
+      {
+        "id": "greater_firepower"
+      },
+      {
+        "id": "greater_nature_power"
+      },
+      {
+        "id": "fortitudeElixir"
+      },
+      {
+        "id": "emerald_mongoose"
+      },
+      {
+        "id": "arcane_giant"
+      },
+      {
+        "id": "dreamwater"
+      },
+      {
+        "id": "juju_flurry"
+      },
+      {
+        "id": "cerebral_cortex"
+      },
+      {
+        "id": "telabim_delight"
+      },
+      {
+        "id": "merlot_blue"
+      },
+      {
+        "id": "zanza"
+      },
+      {
+        "id": "potion_of_quickness"
+      },
+      {
+        "id": "brilliant_wizard_oil"
+      }
+    ]
+  }
+}

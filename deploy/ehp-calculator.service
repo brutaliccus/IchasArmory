@@ -1,0 +1,16 @@
+[Unit]
+Description=ICHA EHP Calculator (HTTP + Armory Proxy)
+After=network.target
+
+[Service]
+Type=simple
+User=pihole
+WorkingDirectory=/opt/stacks/IchaCalc
+ExecStart=/opt/stacks/IchaCalc/.env/bin/python3 /opt/stacks/IchaCalc/server.py
+Restart=always
+RestartSec=10
+KillMode=mixed
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=multi-user.target

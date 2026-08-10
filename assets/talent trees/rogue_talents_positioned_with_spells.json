@@ -1,0 +1,2545 @@
+{
+  "class": "Rogue",
+  "source": "Turtle WoW",
+  "parsedAt": "2025-12-28T23:37:57.997Z",
+  "positionedAt": "2026-01-17T13:40:49.147Z",
+  "totalTalents": 56,
+  "spellMatchingStats": {
+    "totalTalentsWithSpells": 56,
+    "autoMatched": 56,
+    "manuallyConfigured": 0,
+    "spellMatchesFileUsed": true
+  },
+  "trees": [
+    {
+      "name": "Assassination",
+      "talents": [
+        {
+          "id": 0,
+          "treeIndex": 0,
+          "icon": "ability_rogue_eviscerate",
+          "ranks": 3,
+          "name": "Improved Eviscerate",
+          "description": [
+            "Improved EviscerateInstantIncreases the damage done by your Eviscerate ability by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 0,
+                "values": [
+                  "5",
+                  "10",
+                  "15"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 1,
+          "spellIds": {
+            "rank1": 14162,
+            "rank2": 14163,
+            "rank3": 14164
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14162,
+              "description": "Improved EviscerateRank 1InstantIncreases the damage done by your Eviscerate ability by 5%."
+            },
+            "rank2": {
+              "spellId": 14163,
+              "description": "Improved EviscerateRank 2InstantIncreases the damage done by your Eviscerate ability by 10%."
+            },
+            "rank3": {
+              "spellId": 14164,
+              "description": "Improved EviscerateRank 3InstantIncreases the damage done by your Eviscerate ability by 15%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 1,
+          "treeIndex": 0,
+          "icon": "ability_fiegndead",
+          "ranks": 2,
+          "name": "Remorseless Attacks",
+          "description": [
+            "Remorseless AttacksInstantAfter killing an opponent that yields experience or honor, gives you a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 1,
+                "values": [
+                  "20",
+                  "40"
+                ]
+              }
+            ],
+            "% increased critical strike chance on your next Combo Point generating ability. Lasts 40 sec."
+          ],
+          "row": 1,
+          "col": 2,
+          "spellIds": {
+            "rank1": 14144,
+            "rank2": 14148
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14144,
+              "description": "Remorseless AttacksRank 1InstantAfter killing an opponent that yields experience or honor, gives you a 20% increased critical strike chance on your next Combo Point generating ability.  Lasts 40 sec."
+            },
+            "rank2": {
+              "spellId": 14148,
+              "description": "Remorseless AttacksRank 2InstantAfter killing an opponent that yields experience or honor, gives you a 40% increased critical strike chance on your next Combo Point generating ability.  Lasts 40 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 2,
+          "treeIndex": 0,
+          "icon": "ability_racial_bloodrage",
+          "ranks": 5,
+          "name": "Malice",
+          "description": [
+            "MaliceInstantIncreases your critical strike chance by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 2,
+                "values": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 3,
+          "spellIds": {
+            "rank1": 14138,
+            "rank2": 14139,
+            "rank3": 14140,
+            "rank4": 14141,
+            "rank5": 14142
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14138,
+              "description": "MaliceRank 1InstantIncreases your critical strike chance by 1%."
+            },
+            "rank2": {
+              "spellId": 14139,
+              "description": "MaliceRank 2InstantIncreases your critical strike chance by 2%."
+            },
+            "rank3": {
+              "spellId": 14140,
+              "description": "MaliceRank 3InstantIncreases your critical strike chance by 3%."
+            },
+            "rank4": {
+              "spellId": 14141,
+              "description": "MaliceRank 4InstantIncreases your critical strike chance by 4%."
+            },
+            "rank5": {
+              "spellId": 14142,
+              "description": "MaliceRank 5InstantIncreases your critical strike chance by 5%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 4,
+          "treeIndex": 0,
+          "icon": "ability_druid_disembowel",
+          "ranks": 3,
+          "name": "Ruthlessness",
+          "description": [
+            "RuthlessnessInstantGives your finishing moves a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 4,
+                "values": [
+                  "33",
+                  "66",
+                  "100"
+                ]
+              }
+            ],
+            "% chance to add a combo point to your target."
+          ],
+          "row": 2,
+          "col": 1,
+          "spellIds": {
+            "rank1": 14156,
+            "rank2": 14160,
+            "rank3": 14161
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14156,
+              "description": "RuthlessnessRank 1InstantGives your finishing moves a 33% chance to add a combo point to your target."
+            },
+            "rank2": {
+              "spellId": 14160,
+              "description": "RuthlessnessRank 2InstantGives your finishing moves a 66% chance to add a combo point to your target."
+            },
+            "rank3": {
+              "spellId": 14161,
+              "description": "RuthlessnessRank 3InstantGives your finishing moves a 100% chance to add a combo point to your target."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 5,
+          "treeIndex": 0,
+          "icon": "spell_shadow_deathscream",
+          "ranks": 2,
+          "name": "Murder",
+          "description": [
+            "MurderInstantIncreases all damage caused against Humanoid, Giant, Beast and Dragonkin targets by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 5,
+                "values": [
+                  "1",
+                  "2"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 2,
+          "spellIds": {
+            "rank1": 14158,
+            "rank2": 14159
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14158,
+              "description": "MurderRank 1InstantIncreases all damage caused against Humanoid, Giant, Beast and Dragonkin targets by 1%."
+            },
+            "rank2": {
+              "spellId": 14159,
+              "description": "MurderRank 2InstantIncreases all damage caused against Humanoid, Giant, Beast and Dragonkin targets by 2%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 7,
+          "treeIndex": 0,
+          "icon": "ability_rogue_slicedice",
+          "ranks": 3,
+          "name": "Improved Blade Tactics",
+          "description": [
+            "Improved Blade TacticsInstantIncreases the duration of your Slice and Dice and Flourish abilities by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 7,
+                "values": [
+                  "15",
+                  "30",
+                  "45"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 4,
+          "spellIds": {
+            "rank1": 14165,
+            "rank2": 14166,
+            "rank3": 14167
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14165,
+              "description": "Improved Blade TacticsRank 1InstantIncreases the duration of your Slice and Dice and Flourish abilities by 15%."
+            },
+            "rank2": {
+              "spellId": 14166,
+              "description": "Improved Blade TacticsRank 2InstantIncreases the duration of your Slice and Dice and Flourish abilities by 30%."
+            },
+            "rank3": {
+              "spellId": 14167,
+              "description": "Improved Blade TacticsRank 3InstantIncreases the duration of your Slice and Dice and Flourish abilities by 45%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 8,
+          "treeIndex": 0,
+          "icon": "ability_warrior_decisivestrike",
+          "ranks": 1,
+          "name": "Relentless Strikes",
+          "description": "Relentless StrikesInstantYour finishing moves have a 20% chance per combo point to restore 20 energy and increase the damage of your finishing moves by 5% for 30 sec. Stacks up to 30001 times.",
+          "row": 3,
+          "col": 1,
+          "spellIds": {
+            "rank1": 14179
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14179,
+              "description": "Relentless StrikesInstantYour finishing moves have a 20% chance per combo point to restore 20 energy and increase the damage of your finishing moves by 5% for 30 sec.  Stacks up to 30001 times."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 9,
+          "treeIndex": 0,
+          "icon": "inv_throwingknife_01",
+          "ranks": 2,
+          "name": "Throwing Weapon Specialization",
+          "description": [
+            "Throwing Weapon SpecializationInstantIncreases the range of Throw and Deadly Throw by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 9,
+                "values": [
+                  "3",
+                  "6"
+                ]
+              }
+            ],
+            " yards and gives your Deadly Throw a ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 9,
+                "values": [
+                  "50",
+                  "100"
+                ]
+              }
+            ],
+            "% chance to apply your off-hand weapon poison."
+          ],
+          "row": 3,
+          "col": 2,
+          "spellIds": {
+            "rank1": 13710,
+            "rank2": 13859
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 13710,
+              "description": "Throwing Weapon SpecializationRank 1InstantIncreases the range of Throw and Deadly Throw by 3 yards and gives your Deadly Throw a 50% chance to apply your off-hand weapon poison."
+            },
+            "rank2": {
+              "spellId": 13859,
+              "description": "Throwing Weapon SpecializationRank 2InstantIncreases the range of Throw and Deadly Throw by 6 yards and gives your Deadly Throw a 100% chance to apply your off-hand weapon poison."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 10,
+          "treeIndex": 0,
+          "icon": "ability_criticalstrike",
+          "ranks": 5,
+          "name": "Lethality",
+          "description": [
+            "LethalityInstantIncreases the critical strike damage bonus of your combo point generating abilities by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 10,
+                "values": [
+                  "6",
+                  "12",
+                  "18",
+                  "24",
+                  "30"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 3,
+          "col": 3,
+          "requires": 2,
+          "reqRanks": 5,
+          "spellIds": {
+            "rank1": 14128,
+            "rank2": 14132,
+            "rank3": 14135,
+            "rank4": 14136,
+            "rank5": 14137
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14128,
+              "description": "LethalityRank 1InstantIncreases the critical strike damage bonus of your combo point generating abilities by 6%."
+            },
+            "rank2": {
+              "spellId": 14132,
+              "description": "LethalityRank 2InstantIncreases the critical strike damage bonus of your combo point generating abilities by 12%."
+            },
+            "rank3": {
+              "spellId": 14135,
+              "description": "LethalityRank 3InstantIncreases the critical strike damage bonus of your combo point generating abilities by 18%."
+            },
+            "rank4": {
+              "spellId": 14136,
+              "description": "LethalityRank 4InstantIncreases the critical strike damage bonus of your combo point generating abilities by 24%."
+            },
+            "rank5": {
+              "spellId": 14137,
+              "description": "LethalityRank 5InstantIncreases the critical strike damage bonus of your combo point generating abilities by 30%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 12,
+          "treeIndex": 0,
+          "icon": "inv_misc_bone_09",
+          "ranks": 3,
+          "name": "Taste for Blood",
+          "description": [
+            "Taste for BloodInstantIncreases the duration of your Rupture by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 12,
+                "values": [
+                  "2000",
+                  "4000",
+                  "6000"
+                ]
+              }
+            ],
+            " sec. Each time you use Rupture, your physical damage is increased by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 12,
+                "values": [
+                  "1",
+                  "2",
+                  "3"
+                ]
+              }
+            ],
+            "% per combo point for its full duration, regardless of successful application."
+          ],
+          "row": 4,
+          "col": 1,
+          "spellIds": {
+            "rank1": 14174,
+            "rank2": 14175,
+            "rank3": 14176
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14174,
+              "description": "Taste for BloodRank 1InstantIncreases the duration of your Rupture by 2000 sec. Each time you use Rupture, your physical damage is increased by 1% per combo point for its full duration, regardless of successful application."
+            },
+            "rank2": {
+              "spellId": 14175,
+              "description": "Taste for BloodRank 2InstantIncreases the duration of your Rupture by 4000 sec. Each time you use Rupture, your physical damage is increased by 2% per combo point for its full duration, regardless of successful application."
+            },
+            "rank3": {
+              "spellId": 14176,
+              "description": "Taste for BloodRank 3InstantIncreases the duration of your Rupture by 6000 sec. Each time you use Rupture, your physical damage is increased by 3% per combo point for its full duration, regardless of successful application."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 13,
+          "treeIndex": 0,
+          "icon": "ability_rogue_feigndeath",
+          "ranks": 3,
+          "name": "Vile Poisons",
+          "description": [
+            "Vile PoisonsInstantIncreases the damage dealt by your poisons by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 13,
+                "values": [
+                  "10",
+                  "20",
+                  "30"
+                ]
+              }
+            ],
+            "% and gives your poisons an additional ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 13,
+                "values": [
+                  "14",
+                  "27",
+                  "40"
+                ]
+              }
+            ],
+            "% chance to resist dispel effects."
+          ],
+          "row": 4,
+          "col": 2,
+          "spellIds": {
+            "rank1": 16513,
+            "rank2": 16514,
+            "rank3": 16515
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 16513,
+              "description": "Vile PoisonsRank 1InstantIncreases the damage dealt by your poisons by 10% and gives your poisons an additional 14% chance to resist dispel effects."
+            },
+            "rank2": {
+              "spellId": 16514,
+              "description": "Vile PoisonsRank 2InstantIncreases the damage dealt by your poisons by 20% and gives your poisons an additional 27% chance to resist dispel effects."
+            },
+            "rank3": {
+              "spellId": 16515,
+              "description": "Vile PoisonsRank 3InstantIncreases the damage dealt by your poisons by 30% and gives your poisons an additional 40% chance to resist dispel effects."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 14,
+          "treeIndex": 0,
+          "icon": "ability_poisons",
+          "ranks": 3,
+          "name": "Improved Poisons",
+          "description": [
+            "Improved PoisonsInstantIncreases the chance to apply poisons to your target by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 14,
+                "values": [
+                  "3",
+                  "6",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 3,
+          "spellIds": {
+            "rank1": 14113,
+            "rank2": 14114,
+            "rank3": 14115
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14113,
+              "description": "Improved PoisonsRank 1InstantIncreases the chance to apply poisons to your target by 3%."
+            },
+            "rank2": {
+              "spellId": 14114,
+              "description": "Improved PoisonsRank 2InstantIncreases the chance to apply poisons to your target by 6%."
+            },
+            "rank3": {
+              "spellId": 14115,
+              "description": "Improved PoisonsRank 3InstantIncreases the chance to apply poisons to your target by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 16,
+          "treeIndex": 0,
+          "icon": "ability_creature_poison_06",
+          "ranks": 3,
+          "name": "Efficient Poisons",
+          "description": [
+            "Efficient PoisonsInstantReduces the chance your poisons will be resisted by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 16,
+                "values": [
+                  "4",
+                  "8",
+                  "12"
+                ]
+              }
+            ],
+            "% and gives your poison applications a ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 16,
+                "values": [
+                  "15",
+                  "30",
+                  "45"
+                ]
+              }
+            ],
+            "% chance to not consume a charge."
+          ],
+          "row": 5,
+          "col": 1,
+          "spellIds": {
+            "rank1": 52518,
+            "rank2": 52519,
+            "rank3": 52520
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 52518,
+              "description": "Efficient PoisonsRank 1InstantReduces the chance your poisons will be resisted by 4% and gives your poison applications a 15% chance to not consume a charge."
+            },
+            "rank2": {
+              "spellId": 52519,
+              "description": "Efficient PoisonsRank 2InstantReduces the chance your poisons will be resisted by 8% and gives your poison applications a 30% chance to not consume a charge."
+            },
+            "rank3": {
+              "spellId": 52520,
+              "description": "Efficient PoisonsRank 3InstantReduces the chance your poisons will be resisted by 12% and gives your poison applications a 45% chance to not consume a charge."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 17,
+          "treeIndex": 0,
+          "icon": "inv_sword_31",
+          "ranks": 1,
+          "name": "Envenom",
+          "description": "Envenom20 mana100 yd rangeInstantFinishing move that increases the effectiveness and the chance to apply poisons to your target by 30%. Lasts longer per combo point:\\n 1 point : 12 seconds\\n 2 points: 16 seconds\\n 3 points: 20 seconds\\n 4 points: 24 seconds\\n 5 points: 28 seconds",
+          "row": 5,
+          "col": 2,
+          "spellIds": {
+            "rank1": 52531
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 52531,
+              "description": "Envenom20 mana100 yd rangeInstantFinishing move that increases the effectiveness and the chance to apply poisons to your target by 30%.  Lasts longer per combo point:\\n   1 point  : 12 seconds\\n   2 points: 16 seconds\\n   3 points: 20 seconds\\n   4 points: 24 seconds\\n   5 points: 28 seconds"
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 18,
+          "treeIndex": 0,
+          "icon": "spell_ice_lament",
+          "ranks": 1,
+          "name": "Cold Blood",
+          "description": "Cold BloodInstant180 sec cooldownWhen activated, increases the critical strike chance of your next Sinister Strike, Backstab, Ambush, Noxious Assault, or Eviscerate by 100%.",
+          "row": 5,
+          "col": 3,
+          "spellIds": {
+            "rank1": 14177
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14177,
+              "description": "Cold BloodInstant180 sec cooldownWhen activated, increases the critical strike chance of your next Sinister Strike, Backstab, Ambush, Noxious Assault, or Eviscerate by 100%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 20,
+          "treeIndex": 0,
+          "icon": "spell_nature_earthbindtotem",
+          "ranks": 2,
+          "name": "Vigor",
+          "description": [
+            "VigorInstantIncreases your maximum Energy by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 20,
+                "values": [
+                  "5.",
+                  "10."
+                ]
+              }
+            ],
+            " Each time you apply poison to your target, you have a ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 20,
+                "values": [
+                  "50",
+                  "100"
+                ]
+              }
+            ],
+            "% chance to gain 2 Energy."
+          ],
+          "row": 6,
+          "col": 1,
+          "spellIds": {
+            "rank1": 14983,
+            "rank2": 52527
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14983,
+              "description": "VigorRank 1InstantIncreases your maximum Energy by 5.  Each time you apply poison to your target, you have a 50% chance to gain 2 Energy."
+            },
+            "rank2": {
+              "spellId": 52527,
+              "description": "VigorRank 2InstantIncreases your maximum Energy by 10.  Each time you apply poison to your target, you have a 100% chance to gain 2 Energy."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 22,
+          "treeIndex": 0,
+          "icon": "spell_shadow_chilltouch",
+          "ranks": 5,
+          "name": "Seal Fate",
+          "description": [
+            "Seal FateInstantYour critical strikes from abilities that add combo points have a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 22,
+                "values": [
+                  "20",
+                  "40",
+                  "60",
+                  "80",
+                  "100"
+                ]
+              }
+            ],
+            "% chance to add an additional combo point."
+          ],
+          "row": 6,
+          "col": 3,
+          "spellIds": {
+            "rank1": 14186,
+            "rank2": 14190,
+            "rank3": 14193,
+            "rank4": 14194,
+            "rank5": 14195
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14186,
+              "description": "Seal FateRank 1InstantYour critical strikes from abilities that add combo points have a 20% chance to add an additional combo point."
+            },
+            "rank2": {
+              "spellId": 14190,
+              "description": "Seal FateRank 2InstantYour critical strikes from abilities that add combo points have a 40% chance to add an additional combo point."
+            },
+            "rank3": {
+              "spellId": 14193,
+              "description": "Seal FateRank 3InstantYour critical strikes from abilities that add combo points have a 60% chance to add an additional combo point."
+            },
+            "rank4": {
+              "spellId": 14194,
+              "description": "Seal FateRank 4InstantYour critical strikes from abilities that add combo points have a 80% chance to add an additional combo point."
+            },
+            "rank5": {
+              "spellId": 14195,
+              "description": "Seal FateRank 5InstantYour critical strikes from abilities that add combo points have a 100% chance to add an additional combo point."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 25,
+          "treeIndex": 0,
+          "icon": "spell_double_dose_3",
+          "ranks": 1,
+          "name": "Noxious Assault",
+          "description": "Noxious Assault mana5 yd rangeInstantStrikes with both weapons, dealing 30 damage plus 35% of your Attack Power and applies poisons from both weapons. Awards 1 combo point.",
+          "row": 7,
+          "col": 2,
+          "requires": 17,
+          "reqRanks": 1,
+          "spellIds": {
+            "rank1": 52714
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 52714,
+              "description": "Noxious AssaultRank 145 mana5 yd rangeInstantStrikes with both weapons, dealing 30 damage plus 35% of your Attack Power and applies poisons from both weapons. Awards 1 combo point."
+            }
+          },
+          "spellMatchMethod": "auto"
+        }
+      ]
+    },
+    {
+      "name": "Combat",
+      "talents": [
+        {
+          "id": 1,
+          "treeIndex": 1,
+          "icon": "ability_warrior_warcry",
+          "ranks": 5,
+          "name": "Opportunity",
+          "description": [
+            "OpportunityInstantIncreases the damage dealt when striking from behind with your Backstab, Garrote, or Ambush abilities by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 1,
+                "values": [
+                  "4",
+                  "8",
+                  "12",
+                  "16",
+                  "20"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 2,
+          "spellIds": {
+            "rank1": 14057,
+            "rank2": 14072,
+            "rank3": 14073,
+            "rank4": 14074,
+            "rank5": 14075
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14057,
+              "description": "OpportunityRank 1InstantIncreases the damage dealt when striking from behind with your Backstab, Garrote, or Ambush abilities by 4%."
+            },
+            "rank2": {
+              "spellId": 14072,
+              "description": "OpportunityRank 2InstantIncreases the damage dealt when striking from behind with your Backstab, Garrote, or Ambush abilities by 8%."
+            },
+            "rank3": {
+              "spellId": 14073,
+              "description": "OpportunityRank 3InstantIncreases the damage dealt when striking from behind with your Backstab, Garrote, or Ambush abilities by 12%."
+            },
+            "rank4": {
+              "spellId": 14074,
+              "description": "OpportunityRank 4InstantIncreases the damage dealt when striking from behind with your Backstab, Garrote, or Ambush abilities by 16%."
+            },
+            "rank5": {
+              "spellId": 14075,
+              "description": "OpportunityRank 5InstantIncreases the damage dealt when striking from behind with your Backstab, Garrote, or Ambush abilities by 20%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 2,
+          "treeIndex": 1,
+          "icon": "spell_nature_invisibilty",
+          "ranks": 5,
+          "name": "Lightning Reflexes",
+          "description": [
+            "Lightning ReflexesInstantIncreases your Dodge chance by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 2,
+                "values": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 3,
+          "spellIds": {
+            "rank1": 13712,
+            "rank2": 13788,
+            "rank3": 13789,
+            "rank4": 13790,
+            "rank5": 13791
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 13712,
+              "description": "Lightning ReflexesRank 1InstantIncreases your Dodge chance by 1%."
+            },
+            "rank2": {
+              "spellId": 13788,
+              "description": "Lightning ReflexesRank 2InstantIncreases your Dodge chance by 2%."
+            },
+            "rank3": {
+              "spellId": 13789,
+              "description": "Lightning ReflexesRank 3InstantIncreases your Dodge chance by 3%."
+            },
+            "rank4": {
+              "spellId": 13790,
+              "description": "Lightning ReflexesRank 4InstantIncreases your Dodge chance by 4%."
+            },
+            "rank5": {
+              "spellId": 13791,
+              "description": "Lightning ReflexesRank 5InstantIncreases your Dodge chance by 5%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 4,
+          "treeIndex": 1,
+          "icon": "ability_parry",
+          "ranks": 5,
+          "name": "Deflection",
+          "description": [
+            "DeflectionInstantIncreases your Parry chance by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 4,
+                "values": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 1,
+          "spellIds": {
+            "rank1": 13713,
+            "rank2": 13853,
+            "rank3": 13854,
+            "rank4": 13855,
+            "rank5": 13856
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 13713,
+              "description": "DeflectionRank 1InstantIncreases your Parry chance by 1%."
+            },
+            "rank2": {
+              "spellId": 13853,
+              "description": "DeflectionRank 2InstantIncreases your Parry chance by 2%."
+            },
+            "rank3": {
+              "spellId": 13854,
+              "description": "DeflectionRank 3InstantIncreases your Parry chance by 3%."
+            },
+            "rank4": {
+              "spellId": 13855,
+              "description": "DeflectionRank 4InstantIncreases your Parry chance by 4%."
+            },
+            "rank5": {
+              "spellId": 13856,
+              "description": "DeflectionRank 5InstantIncreases your Parry chance by 5%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 5,
+          "treeIndex": 1,
+          "icon": "ability_backstab",
+          "ranks": 3,
+          "name": "Improved Backstab",
+          "description": [
+            "Improved BackstabInstantIncreases the critical strike chance of your Backstab ability by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 5,
+                "values": [
+                  "10",
+                  "20",
+                  "30"
+                ]
+              }
+            ],
+            "% and gives your Backstab a ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 1,
+                "talent": 5,
+                "values": [
+                  "15",
+                  "30",
+                  "45"
+                ]
+              }
+            ],
+            "% chance to award an additional combo point."
+          ],
+          "row": 2,
+          "col": 2,
+          "spellIds": {
+            "rank1": 13733,
+            "rank2": 13865,
+            "rank3": 13866
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 13733,
+              "description": "Improved BackstabRank 1InstantIncreases the critical strike chance of your Backstab ability by 10% and gives your Backstab a 15% chance to award an additional combo point."
+            },
+            "rank2": {
+              "spellId": 13865,
+              "description": "Improved BackstabRank 2InstantIncreases the critical strike chance of your Backstab ability by 20% and gives your Backstab a 30% chance to award an additional combo point."
+            },
+            "rank3": {
+              "spellId": 13866,
+              "description": "Improved BackstabRank 3InstantIncreases the critical strike chance of your Backstab ability by 30% and gives your Backstab a 45% chance to award an additional combo point."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 6,
+          "treeIndex": 1,
+          "icon": "ability_marksmanship",
+          "ranks": 5,
+          "name": "Precision",
+          "description": [
+            "PrecisionInstantIncreases your chance to hit with melee weapons by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 6,
+                "values": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 3,
+          "spellIds": {
+            "rank1": 13705,
+            "rank2": 13832,
+            "rank3": 13843,
+            "rank4": 13844,
+            "rank5": 13845
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 13705,
+              "description": "PrecisionRank 1InstantIncreases your chance to hit with melee weapons by 1%."
+            },
+            "rank2": {
+              "spellId": 13832,
+              "description": "PrecisionRank 2InstantIncreases your chance to hit with melee weapons by 2%."
+            },
+            "rank3": {
+              "spellId": 13843,
+              "description": "PrecisionRank 3InstantIncreases your chance to hit with melee weapons by 3%."
+            },
+            "rank4": {
+              "spellId": 13844,
+              "description": "PrecisionRank 4InstantIncreases your chance to hit with melee weapons by 4%."
+            },
+            "rank5": {
+              "spellId": 13845,
+              "description": "PrecisionRank 5InstantIncreases your chance to hit with melee weapons by 5%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 8,
+          "treeIndex": 1,
+          "icon": "ability_warrior_challange",
+          "ranks": 1,
+          "name": "Riposte",
+          "description": "Riposte10 mana5 yd rangeInstant6 sec cooldownA strike that becomes active after parrying an opponent's attack. This attack deals 150% weapon damage and disarms the target for 6 sec.",
+          "row": 3,
+          "col": 1,
+          "requires": 4,
+          "reqRanks": 5,
+          "spellIds": {
+            "rank1": 14251
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14251,
+              "description": "Riposte10 mana5 yd rangeInstant6 sec cooldownA strike that becomes active after parrying an opponent's attack.  This attack deals 150% weapon damage and disarms the target for 6 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 9,
+          "treeIndex": 1,
+          "icon": "ability_rogue_sprint",
+          "ranks": 2,
+          "name": "Improved Sprint",
+          "description": [
+            "Improved SprintInstantGives a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 9,
+                "values": [
+                  "50",
+                  "100"
+                ]
+              }
+            ],
+            "% chance to remove all movement impairing effects when you activate your Sprint ability."
+          ],
+          "row": 3,
+          "col": 2,
+          "spellIds": {
+            "rank1": 13743,
+            "rank2": 13875
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 13743,
+              "description": "Improved SprintRank 1InstantGives a 50% chance to remove all movement impairing effects when you activate your Sprint ability."
+            },
+            "rank2": {
+              "spellId": 13875,
+              "description": "Improved SprintRank 2InstantGives a 100% chance to remove all movement impairing effects when you activate your Sprint ability."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 11,
+          "treeIndex": 1,
+          "icon": "spell_nature_mirrorimage",
+          "ranks": 3,
+          "name": "Setup",
+          "description": [
+            "SetupInstantGives you a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 11,
+                "values": [
+                  "15",
+                  "30",
+                  "45"
+                ]
+              }
+            ],
+            "% chance to add a combo point to your target after dodging their attack or fully resisting one of their spells."
+          ],
+          "row": 3,
+          "col": 4,
+          "spellIds": {
+            "rank1": 13983,
+            "rank2": 14070,
+            "rank3": 14071
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 13983,
+              "description": "SetupRank 1InstantGives you a 15% chance to add a combo point to your target after dodging their attack or fully resisting one of their spells."
+            },
+            "rank2": {
+              "spellId": 14070,
+              "description": "SetupRank 2InstantGives you a 30% chance to add a combo point to your target after dodging their attack or fully resisting one of their spells."
+            },
+            "rank3": {
+              "spellId": 14071,
+              "description": "SetupRank 3InstantGives you a 45% chance to add a combo point to your target after dodging their attack or fully resisting one of their spells."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 12,
+          "treeIndex": 1,
+          "icon": "ability_kick",
+          "ranks": 2,
+          "name": "Improved Kick",
+          "description": [
+            "Improved KickInstantGives your Kick ability a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 12,
+                "values": [
+                  "50",
+                  "100"
+                ]
+              }
+            ],
+            "% chance to silence the target for 2 sec."
+          ],
+          "row": 4,
+          "col": 1,
+          "spellIds": {
+            "rank1": 13754,
+            "rank2": 13867
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 13754,
+              "description": "Improved KickRank 1InstantGives your Kick ability a 50% chance to silence the target for 2 sec."
+            },
+            "rank2": {
+              "spellId": 13867,
+              "description": "Improved KickRank 2InstantGives your Kick ability a 100% chance to silence the target for 2 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 13,
+          "treeIndex": 1,
+          "icon": "inv_mace_01",
+          "ranks": 5,
+          "name": "Concussive Blows",
+          "description": [
+            "Concussive BlowsInstantGives you a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 13,
+                "values": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "6"
+                ]
+              }
+            ],
+            "% chance to stun your target for 3 sec with a mace."
+          ],
+          "row": 4,
+          "col": 2,
+          "spellIds": {
+            "rank1": 13709,
+            "rank2": 13800,
+            "rank3": 13801,
+            "rank4": 13802,
+            "rank5": 13803
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 13709,
+              "description": "Concussive BlowsRank 1InstantGives you a 1% chance to stun your target for 3 sec with a mace."
+            },
+            "rank2": {
+              "spellId": 13800,
+              "description": "Concussive BlowsRank 2InstantGives you a 2% chance to stun your target for 3 sec with a mace."
+            },
+            "rank3": {
+              "spellId": 13801,
+              "description": "Concussive BlowsRank 3InstantGives you a 3% chance to stun your target for 3 sec with a mace."
+            },
+            "rank4": {
+              "spellId": 13802,
+              "description": "Concussive BlowsRank 4InstantGives you a 4% chance to stun your target for 3 sec with a mace."
+            },
+            "rank5": {
+              "spellId": 13803,
+              "description": "Concussive BlowsRank 5InstantGives you a 6% chance to stun your target for 3 sec with a mace."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 14,
+          "treeIndex": 1,
+          "icon": "ability_dualwield",
+          "ranks": 5,
+          "name": "Dual Wield Specialization",
+          "description": [
+            "Dual Wield SpecializationInstantIncreases the damage done by your offhand weapon by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 14,
+                "values": [
+                  "10",
+                  "20",
+                  "30",
+                  "40",
+                  "50"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 3,
+          "requires": 6,
+          "reqRanks": 5,
+          "spellIds": {
+            "rank1": 13715,
+            "rank2": 13848,
+            "rank3": 13849,
+            "rank4": 13851,
+            "rank5": 13852
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 13715,
+              "description": "Dual Wield SpecializationRank 1InstantIncreases the damage done by your offhand weapon by 10%."
+            },
+            "rank2": {
+              "spellId": 13848,
+              "description": "Dual Wield SpecializationRank 2InstantIncreases the damage done by your offhand weapon by 20%."
+            },
+            "rank3": {
+              "spellId": 13849,
+              "description": "Dual Wield SpecializationRank 3InstantIncreases the damage done by your offhand weapon by 30%."
+            },
+            "rank4": {
+              "spellId": 13851,
+              "description": "Dual Wield SpecializationRank 4InstantIncreases the damage done by your offhand weapon by 40%."
+            },
+            "rank5": {
+              "spellId": 13852,
+              "description": "Dual Wield SpecializationRank 5InstantIncreases the damage done by your offhand weapon by 50%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 16,
+          "treeIndex": 1,
+          "icon": "inv_weapon_shortblade_05",
+          "ranks": 2,
+          "name": "Close Quarters Combat",
+          "description": [
+            "Close Quarters CombatInstantIncreases your chance to get a critical strike with Maces, Daggers and Fist Weapons by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 16,
+                "values": [
+                  "2",
+                  "5"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 5,
+          "col": 1,
+          "spellIds": {
+            "rank1": 13706,
+            "rank2": 13804
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 13706,
+              "description": "Close Quarters CombatRank 1InstantIncreases your chance to get a critical strike with Maces, Daggers and Fist Weapons by 2%."
+            },
+            "rank2": {
+              "spellId": 13804,
+              "description": "Close Quarters CombatRank 2InstantIncreases your chance to get a critical strike with Maces, Daggers and Fist Weapons by 5%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 17,
+          "treeIndex": 1,
+          "icon": "ability_rogue_surpriseattack",
+          "ranks": 1,
+          "name": "Surprise Attack",
+          "description": "Surprise Attack10 mana5 yd rangeInstantA surprise strike that deals 25% of your Attack Power as damage.\\nOnly useable after the target dodges and cannot be blocked, dodged or parried by the target. Awards 1 combo point.",
+          "row": 5,
+          "col": 2,
+          "spellIds": {
+            "rank1": 52511
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 52511,
+              "description": "Surprise Attack10 mana5 yd rangeInstantA surprise strike that deals 25% of your Attack Power as damage.\\nOnly useable after the target dodges and cannot be blocked, dodged or parried by the target.  Awards 1 combo point."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 18,
+          "treeIndex": 1,
+          "icon": "inv_sword_27",
+          "ranks": 2,
+          "name": "Hack and Slash",
+          "description": "Hack and SlashInstantGives you a 5% chance to get an extra attack on the same target after dealing damage with your Axe or Sword.",
+          "row": 5,
+          "col": 3,
+          "spellIds": {
+            "rank1": 13960,
+            "rank2": 13961
+          },
+          "rankDescriptions": {
+            "rank2": {
+              "spellId": 13961,
+              "description": "Hack and SlashRank 2InstantGives you a 5% chance to get an extra attack on the same target after dealing damage with your Axe or Sword."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 19,
+          "treeIndex": 1,
+          "icon": "spell_holy_blessingofstrength",
+          "ranks": 2,
+          "name": "Weapon Expertise",
+          "description": [
+            "Weapon ExpertiseInstantIncreases your skill with Axe, Dagger, Fist, Mace and Sword weapons by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 19,
+                "values": [
+                  "3.",
+                  "5."
+                ]
+              }
+            ]
+          ],
+          "row": 5,
+          "col": 4,
+          "spellIds": {
+            "rank1": 30919,
+            "rank2": 30920
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 30919,
+              "description": "Weapon ExpertiseRank 1InstantIncreases your skill with Axe, Dagger, Fist, Mace and Sword weapons by 3."
+            },
+            "rank2": {
+              "spellId": 30920,
+              "description": "Weapon ExpertiseRank 2InstantIncreases your skill with Axe, Dagger, Fist, Mace and Sword weapons by 5."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 21,
+          "treeIndex": 1,
+          "icon": "ability_warrior_weaponmastery",
+          "ranks": 2,
+          "name": "Blade Rush",
+          "description": [
+            "Blade RushInstantIncreases your melee attack speed by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 21,
+                "values": [
+                  "2",
+                  "5"
+                ]
+              }
+            ],
+            "% and reduces the time between your Energy regeneration ticks by an amount equal to your Agility."
+          ],
+          "row": 6,
+          "col": 2,
+          "requires": 17,
+          "reqRanks": 1,
+          "spellIds": {
+            "rank1": 52507,
+            "rank2": 52508
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 52507,
+              "description": "Blade RushRank 1InstantIncreases your melee attack speed by 2% and reduces the time between your Energy regeneration ticks by an amount equal to your Agility."
+            },
+            "rank2": {
+              "spellId": 52508,
+              "description": "Blade RushRank 2InstantIncreases your melee attack speed by 5% and reduces the time between your Energy regeneration ticks by an amount equal to your Agility. More effective than Blade Rush (Rank 1)."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 22,
+          "treeIndex": 1,
+          "icon": "ability_racial_avatar",
+          "ranks": 3,
+          "name": "Aggression",
+          "description": [
+            "AggressionInstantIncreases the damage of your Sinister Strike, Eviscerate, Riposte and Surprise Attack abilities by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 22,
+                "values": [
+                  "3",
+                  "6",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 6,
+          "col": 3,
+          "spellIds": {
+            "rank1": 18427,
+            "rank2": 18428,
+            "rank3": 18429
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18427,
+              "description": "AggressionRank 1InstantIncreases the damage of your Sinister Strike, Eviscerate, Riposte and Surprise Attack abilities by 3%."
+            },
+            "rank2": {
+              "spellId": 18428,
+              "description": "AggressionRank 2InstantIncreases the damage of your Sinister Strike, Eviscerate, Riposte and Surprise Attack abilities by 6%."
+            },
+            "rank3": {
+              "spellId": 18429,
+              "description": "AggressionRank 3InstantIncreases the damage of your Sinister Strike, Eviscerate, Riposte and Surprise Attack abilities by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 25,
+          "treeIndex": 1,
+          "icon": "spell_shadow_shadowworddominate",
+          "ranks": 1,
+          "name": "Adrenaline Rush",
+          "description": "Adrenaline RushInstant180 sec cooldownIncreases your Energy regeneration rate by 100% for 15 sec.",
+          "row": 7,
+          "col": 2,
+          "spellIds": {
+            "rank1": 13750
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 13750,
+              "description": "Adrenaline RushInstant180 sec cooldownIncreases your Energy regeneration rate by 100% for 15 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        }
+      ]
+    },
+    {
+      "name": "Subtlety",
+      "talents": [
+        {
+          "id": 1,
+          "treeIndex": 2,
+          "icon": "ability_stealth",
+          "ranks": 5,
+          "name": "Camouflage",
+          "description": [
+            "CamouflageInstantIncreases your speed while stealthed by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 1,
+                "values": [
+                  "3",
+                  "6",
+                  "9",
+                  "12",
+                  "15"
+                ]
+              }
+            ],
+            "% and reduces the cooldown of your Stealth ability by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 1,
+                "values": [
+                  "1000",
+                  "2000",
+                  "3000",
+                  "4000",
+                  "5000"
+                ]
+              }
+            ],
+            " sec. In addition, reduces the chance enemies have to detect you while in Stealth mode."
+          ],
+          "row": 1,
+          "col": 2,
+          "spellIds": {
+            "rank1": 13975,
+            "rank2": 14062,
+            "rank3": 14063,
+            "rank4": 14064,
+            "rank5": 14065
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 13975,
+              "description": "CamouflageRank 1InstantIncreases your speed while stealthed by 3% and reduces the cooldown of your Stealth ability by 1000 sec. In addition, reduces the chance enemies have to detect you while in Stealth mode."
+            },
+            "rank2": {
+              "spellId": 14062,
+              "description": "CamouflageRank 2InstantIncreases your speed while stealthed by 6% and reduces the cooldown of your Stealth ability by 2000 sec. In addition, reduces the chance enemies have to detect you while in Stealth mode. More effective than Camouflage (Rank 1)."
+            },
+            "rank3": {
+              "spellId": 14063,
+              "description": "CamouflageRank 3InstantIncreases your speed while stealthed by 9% and reduces the cooldown of your Stealth ability by 3000 sec. In addition, reduces the chance enemies have to detect you while in Stealth mode. More effective than Camouflage (Rank 2)."
+            },
+            "rank4": {
+              "spellId": 14064,
+              "description": "CamouflageRank 4InstantIncreases your speed while stealthed by 12% and reduces the cooldown of your Stealth ability by 4000 sec. In addition, reduces the chance enemies have to detect you while in Stealth mode. More effective than Camouflage (Rank 3)."
+            },
+            "rank5": {
+              "spellId": 14065,
+              "description": "CamouflageRank 5InstantIncreases your speed while stealthed by 15% and reduces the cooldown of your Stealth ability by 5000 sec. In addition, reduces the chance enemies have to detect you while in Stealth mode. More effective than Camouflage (Rank 4)."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 2,
+          "treeIndex": 2,
+          "icon": "ability_warrior_riposte",
+          "ranks": 2,
+          "name": "Improved Expose Armor",
+          "description": [
+            "Improved Expose ArmorInstantIncreases the armor reduced by your Expose Armor ability by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 2,
+                "values": [
+                  "25",
+                  "50"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 3,
+          "spellIds": {
+            "rank1": 14168,
+            "rank2": 14169
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14168,
+              "description": "Improved Expose ArmorRank 1InstantIncreases the armor reduced by your Expose Armor ability by 25%."
+            },
+            "rank2": {
+              "spellId": 14169,
+              "description": "Improved Expose ArmorRank 2InstantIncreases the armor reduced by your Expose Armor ability by 50%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 3,
+          "treeIndex": 2,
+          "icon": "ability_gouge",
+          "ranks": 3,
+          "name": "Improved Gouge",
+          "description": [
+            "Improved GougeInstantIncreases the effect duration of your Gouge ability by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 3,
+                "values": [
+                  "500",
+                  "1000",
+                  "1500"
+                ]
+              }
+            ],
+            " sec."
+          ],
+          "row": 1,
+          "col": 4,
+          "spellIds": {
+            "rank1": 13741,
+            "rank2": 13793,
+            "rank3": 13792
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 13741,
+              "description": "Improved GougeRank 1InstantIncreases the effect duration of your Gouge ability by 500 sec."
+            },
+            "rank2": {
+              "spellId": 13793,
+              "description": "Improved GougeRank 2InstantIncreases the effect duration of your Gouge ability by 1000 sec."
+            },
+            "rank3": {
+              "spellId": 13792,
+              "description": "Improved GougeRank 3InstantIncreases the effect duration of your Gouge ability by 1500 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 4,
+          "treeIndex": 2,
+          "icon": "ability_rogue_ambush",
+          "ranks": 3,
+          "name": "Improved Ambush",
+          "description": [
+            "Improved AmbushInstantIncreases the critical strike chance of your Ambush ability by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 4,
+                "values": [
+                  "15",
+                  "30",
+                  "45"
+                ]
+              }
+            ],
+            "%. Your Ambush will refund ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 4,
+                "values": [
+                  "5",
+                  "10",
+                  "15"
+                ]
+              }
+            ],
+            " Energy if it does not result in a critical strike."
+          ],
+          "row": 2,
+          "col": 1,
+          "spellIds": {
+            "rank1": 14079,
+            "rank2": 14080,
+            "rank3": 14081
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14079,
+              "description": "Improved AmbushRank 1InstantIncreases the critical strike chance of your Ambush ability by 15%.  Your Ambush will refund 5 Energy if it does not result in a critical strike."
+            },
+            "rank2": {
+              "spellId": 14080,
+              "description": "Improved AmbushRank 2InstantIncreases the critical strike chance of your Ambush ability by 30%.  Your Ambush will refund 10 Energy if it does not result in a critical strike."
+            },
+            "rank3": {
+              "spellId": 14081,
+              "description": "Improved AmbushRank 3InstantIncreases the critical strike chance of your Ambush ability by 45%.  Your Ambush will refund 15 Energy if it does not result in a critical strike."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 5,
+          "treeIndex": 2,
+          "icon": "spell_magic_lesserinvisibilty",
+          "ranks": 2,
+          "name": "Elusiveness",
+          "description": [
+            "ElusivenessInstantReduces the cooldown of your Vanish and Blind abilities by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 5,
+                "values": [
+                  "45000",
+                  "90000"
+                ]
+              }
+            ],
+            " sec."
+          ],
+          "row": 2,
+          "col": 2,
+          "spellIds": {
+            "rank1": 13981,
+            "rank2": 14066
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 13981,
+              "description": "ElusivenessRank 1InstantReduces the cooldown of your Vanish and Blind abilities by 45000 sec."
+            },
+            "rank2": {
+              "spellId": 14066,
+              "description": "ElusivenessRank 2InstantReduces the cooldown of your Vanish and Blind abilities by 90000 min."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 6,
+          "treeIndex": 2,
+          "icon": "inv_sword_17",
+          "ranks": 3,
+          "name": "Serrated Blades",
+          "description": [
+            "Serrated BladesInstantCauses your attacks to ignore ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 6,
+                "values": [
+                  "1.67",
+                  "3.34",
+                  "5"
+                ]
+              }
+            ],
+            " of your target's Armor per level and increases the damage dealt by your Rupture and Garrote abilities by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 6,
+                "values": [
+                  "10",
+                  "20",
+                  "30"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 3,
+          "spellIds": {
+            "rank1": 14171,
+            "rank2": 14172,
+            "rank3": 14173
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14171,
+              "description": "Serrated BladesRank 1InstantCauses your attacks to ignore 1.67 of your target's Armor per level and increases the damage dealt by your Rupture and Garrote abilities by 10%."
+            },
+            "rank2": {
+              "spellId": 14172,
+              "description": "Serrated BladesRank 2InstantCauses your attacks to ignore 3.34 of your target's Armor per level and increases the damage dealt by your Rupture and Garrote abilities by 20%."
+            },
+            "rank3": {
+              "spellId": 14173,
+              "description": "Serrated BladesRank 3InstantCauses your attacks to ignore 5 of your target's Armor per level and increases the damage dealt by your Rupture and Garrote abilities by 30%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 8,
+          "treeIndex": 2,
+          "icon": "spell_shadow_fumble",
+          "ranks": 3,
+          "name": "Initiative",
+          "description": [
+            "InitiativeInstantGives you a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 8,
+                "values": [
+                  "33",
+                  "66",
+                  "100"
+                ]
+              }
+            ],
+            "% chance to add an additional combo point to your target when using your Ambush, Garrote, or Cheap Shot ability."
+          ],
+          "row": 3,
+          "col": 1,
+          "spellIds": {
+            "rank1": 13976,
+            "rank2": 13979,
+            "rank3": 13980
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 13976,
+              "description": "InitiativeRank 1InstantGives you a 33% chance to add an additional combo point to your target when using your Ambush, Garrote, or Cheap Shot ability."
+            },
+            "rank2": {
+              "spellId": 13979,
+              "description": "InitiativeRank 2InstantGives you a 66% chance to add an additional combo point to your target when using your Ambush, Garrote, or Cheap Shot ability."
+            },
+            "rank3": {
+              "spellId": 13980,
+              "description": "InitiativeRank 3InstantGives you a 100% chance to add an additional combo point to your target when using your Ambush, Garrote, or Cheap Shot ability."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 9,
+          "treeIndex": 2,
+          "icon": "inv_sword_02",
+          "ranks": 3,
+          "name": "Improved Ghostly Strike",
+          "description": [
+            "Improved Ghostly StrikeInstantYour Ghostly Strike increases your movement speed by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 9,
+                "values": [
+                  "5",
+                  "10",
+                  "15"
+                ]
+              }
+            ],
+            "% and increases your party members' movement speed by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 9,
+                "values": [
+                  "2",
+                  "4",
+                  "6"
+                ]
+              }
+            ],
+            "% within 0 yards for 5 sec. In addition, reduces the Energy cost of your Ghostly Strike by ",
+            [
+              "$",
+              "$L22",
+              "3",
+              {
+                "tree": 2,
+                "talent": 9,
+                "values": [
+                  "3.",
+                  "6.",
+                  "10."
+                ]
+              }
+            ]
+          ],
+          "row": 3,
+          "col": 2,
+          "spellIds": {
+            "rank1": 51970,
+            "rank2": 51971,
+            "rank3": 51972
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51970,
+              "description": "Improved Ghostly StrikeRank 1InstantYour Ghostly Strike increases your movement speed by 5% and increases your party members' movement speed by 2% within 0 yards for 5 sec. In addition, reduces the Energy cost of your Ghostly Strike by 3."
+            },
+            "rank2": {
+              "spellId": 51971,
+              "description": "Improved Ghostly StrikeRank 2InstantYour Ghostly Strike increases your movement speed by 10% and increases your party members' movement speed by 4% within 0 yards for 5 sec. In addition, reduces the Energy cost of your Ghostly Strike by 6."
+            },
+            "rank3": {
+              "spellId": 51972,
+              "description": "Improved Ghostly StrikeRank 3InstantYour Ghostly Strike increases your movement speed by 15% and increases your party members' movement speed by 6% within 0 yards for 5 sec. In addition, reduces the Energy cost of your Ghostly Strike by 10."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 10,
+          "treeIndex": 2,
+          "icon": "spell_smoke_bomb_5",
+          "ranks": 1,
+          "name": "Smoke Bomb",
+          "description": "Creates a cloud of thick smoke in \",\"8\",\" yards around you for \",\"8 sec\",\". All targets inside the smoke have a \",\"20\",\"% reduced chance of being hit by attacks and spells for the duration.",
+          "row": 3,
+          "col": 3,
+          "spellIds": {
+            "rank1": 51969
+          },
+          "rankDescriptions": null,
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 11,
+          "treeIndex": 2,
+          "icon": "spell_shadow_lifedrain",
+          "ranks": 1,
+          "name": "Hemorrhage",
+          "description": "Hemorrhage40 mana5 yd rangeInstantAn instant strike that deals 110% weapon damage and causes the target to hemorrhage, increasing any Physical damage dealt to the target by 2%. Lasts 50 charges or 15 sec. Awards 1 combo point.",
+          "row": 3,
+          "col": 4,
+          "spellIds": {
+            "rank1": 16511
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 16511,
+              "description": "Hemorrhage40 mana5 yd rangeInstantAn instant strike that deals 110% weapon damage and causes the target to hemorrhage, increasing any Physical damage dealt to the target by 2%.  Lasts 50 charges or 15 sec.  Awards 1 combo point."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 12,
+          "treeIndex": 2,
+          "icon": "spell_cloaked_in_shadows_2",
+          "ranks": 2,
+          "name": "Cloaked in Shadows",
+          "description": [
+            "Cloaked in ShadowsInstantWhenever you Vanish, you and nearby party members within 20 yards are cloaked in shadows, gaining a barrier that absorbs up to ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 12,
+                "values": [
+                  "6",
+                  "12"
+                ]
+              }
+            ],
+            "% of your maximum health for 20 sec."
+          ],
+          "row": 4,
+          "col": 1,
+          "spellIds": {
+            "rank1": 52707,
+            "rank2": 52709
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 52707,
+              "description": "Cloaked in ShadowsRank 1InstantWhenever you Vanish, you and nearby party members within 20 yards are cloaked in shadows, gaining a barrier that absorbs up to 6% of your maximum health for 20 sec."
+            },
+            "rank2": {
+              "spellId": 52709,
+              "description": "Cloaked in ShadowsRank 2InstantWhenever you Vanish, you and nearby party members within 20 yards are cloaked in shadows, gaining a barrier that absorbs up to 12% of your maximum health for 20 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 13,
+          "treeIndex": 2,
+          "icon": "ability_sap",
+          "ranks": 2,
+          "name": "Blackjack",
+          "description": [
+            "BlackjackInstantYour Sap and Blind abilities reduce the target's damage dealt by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 13,
+                "values": [
+                  "5",
+                  "10"
+                ]
+              }
+            ],
+            "% for 8 sec when their effect ends or fails to apply. In addition, you have a ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 13,
+                "values": [
+                  "50",
+                  "100"
+                ]
+              }
+            ],
+            "% chance to return to stealth after using your Sap ability."
+          ],
+          "row": 4,
+          "col": 2,
+          "spellIds": {
+            "rank1": 14076,
+            "rank2": 14094
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14076,
+              "description": "BlackjackRank 1InstantYour Sap and Blind abilities reduce the target's damage dealt by 5% for 8 sec when their effect ends or fails to apply. In addition, you have a 50% chance to return to stealth after using your Sap ability."
+            },
+            "rank2": {
+              "spellId": 14094,
+              "description": "BlackjackRank 2InstantYour Sap and Blind abilities reduce the target's damage dealt by 10% for 8 sec when their effect ends or fails to apply. In addition, you have a 100% chance to return to stealth after using your Sap ability."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 14,
+          "treeIndex": 2,
+          "icon": "ability_rogue_shadowstep",
+          "ranks": 3,
+          "name": "Blinding Haze",
+          "description": [
+            "Blinding HazeInstantReduces the Energy cost of your Distract by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 14,
+                "values": [
+                  "5.",
+                  "10.",
+                  "15."
+                ]
+              }
+            ],
+            " In addition, targets hit by your Distract have their chance to hit reduced by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 14,
+                "values": [
+                  "2",
+                  "4",
+                  "6"
+                ]
+              }
+            ],
+            "% for 6 sec. This effect is guaranteed to be applied."
+          ],
+          "row": 4,
+          "col": 3,
+          "spellIds": {
+            "rank1": 51680,
+            "rank2": 51681,
+            "rank3": 51682
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51680,
+              "description": "Blinding HazeRank 1InstantReduces the Energy cost of your Distract by 5. In addition, targets hit by your Distract have their chance to hit reduced by 2% for 6 sec. This effect is guaranteed to be applied."
+            },
+            "rank2": {
+              "spellId": 51681,
+              "description": "Blinding HazeRank 2InstantReduces the Energy cost of your Distract by 10. In addition, targets hit by your Distract have their chance to hit reduced by 4% for 6 sec. This effect is guaranteed to be applied."
+            },
+            "rank3": {
+              "spellId": 51682,
+              "description": "Blinding HazeRank 3InstantReduces the Energy cost of your Distract by 15. In addition, targets hit by your Distract have their chance to hit reduced by 6% for 6 sec. This effect is guaranteed to be applied."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 16,
+          "treeIndex": 2,
+          "icon": "spell_shadow_summonsuccubus",
+          "ranks": 2,
+          "name": "Dirty Deeds",
+          "description": [
+            "Dirty DeedsInstantReduces the Energy cost of your Cheap Shot and Garrote abilities by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 16,
+                "values": [
+                  "10.",
+                  "20."
+                ]
+              }
+            ]
+          ],
+          "row": 5,
+          "col": 1,
+          "spellIds": {
+            "rank1": 14082,
+            "rank2": 14083
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14082,
+              "description": "Dirty DeedsRank 1InstantReduces the Energy cost of your Cheap Shot and Garrote abilities by 10."
+            },
+            "rank2": {
+              "spellId": 14083,
+              "description": "Dirty DeedsRank 2InstantReduces the Energy cost of your Cheap Shot and Garrote abilities by 20."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 17,
+          "treeIndex": 2,
+          "icon": "spell_shadow_antishadow",
+          "ranks": 1,
+          "name": "Preparation",
+          "description": "PreparationInstant420 sec cooldownWhen activated, this ability immediately finishes the cooldown on your other Rogue abilities.",
+          "row": 5,
+          "col": 2,
+          "spellIds": {
+            "rank1": 14185
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14185,
+              "description": "PreparationInstant420 sec cooldownWhen activated, this ability immediately finishes the cooldown on your other Rogue abilities."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 18,
+          "treeIndex": 2,
+          "icon": "spell_shadow_of_death_3b",
+          "ranks": 1,
+          "name": "Shadow of Death",
+          "description": "Shadow of Death30 mana5 yd rangeInstant60 sec cooldownA finishing move that etches a sigil onto the target for 6 sec. The sigil accumulates damage equal to a percentage of all damage the target takes during its duration, up to a percentage of your Attack Power. When the maximum capacity is reached or the sigil expires, the stored damage is unleashed as Physical damage. Both values increase with each combo point:\\n 1 point : 10% of damage accumulated, up to 50% of Attack Power\\n 2 points: 20% of damage accumulated, up to 100% of Attack Power\\n 3 points: 30% of damage accumulated, up to 150% of Attack Power\\n 4 points: 40% of damage accumulated, up to 200% of Attack Power\\n 5 points: 50% of damage accumulated, up to 250% of Attack Power",
+          "row": 5,
+          "col": 3,
+          "spellIds": {
+            "rank1": 52710
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 52710,
+              "description": "Shadow of Death30 mana5 yd rangeInstant60 sec cooldownA finishing move that etches a sigil onto the target for 6 sec. The sigil accumulates damage equal to a percentage of all damage the target takes during its duration, up to a percentage of your Attack Power. When the maximum capacity is reached or the sigil expires, the stored damage is unleashed as Physical damage. Both values increase with each combo point:\\n   1 point : 10% of damage accumulated, up to 50% of Attack Power\\n   2 points: 20% of damage accumulated, up to 100% of Attack Power\\n   3 points: 30% of damage accumulated, up to 150% of Attack Power\\n   4 points: 40% of damage accumulated, up to 200% of Attack Power\\n   5 points: 50% of damage accumulated, up to 250% of Attack Power"
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 19,
+          "treeIndex": 2,
+          "icon": "spell_shadow_bloodboil",
+          "ranks": 2,
+          "name": "Bloody Mess",
+          "description": "Bloody MessInstantReduces the Energy cost of your Hemorrhage by 5 and increases the Physical damage dealt bonus of your Hemorrhage by 100%.",
+          "row": 5,
+          "col": 4,
+          "requires": 11,
+          "reqRanks": 1,
+          "spellIds": {
+            "rank1": 51974,
+            "rank2": 51975
+          },
+          "rankDescriptions": {
+            "rank2": {
+              "spellId": 51975,
+              "description": "Bloody MessRank 2InstantReduces the Energy cost of your Hemorrhage by 5 and increases the Physical damage dealt bonus of your Hemorrhage by 100%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 20,
+          "treeIndex": 2,
+          "icon": "inv_throwingknife_05",
+          "ranks": 2,
+          "name": "Honor Among Thieves",
+          "description": [
+            "Honor Among ThievesInstantPhysical critical strikes by you or party members within 20 yards grant you ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 20,
+                "values": [
+                  "2",
+                  "5"
+                ]
+              }
+            ],
+            " Energy."
+          ],
+          "row": 6,
+          "col": 1,
+          "spellIds": {
+            "rank1": 52512,
+            "rank2": 52514
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 52512,
+              "description": "Honor Among ThievesRank 1InstantPhysical critical strikes by you or party members within 20 yards grant you 2 Energy."
+            },
+            "rank2": {
+              "spellId": 52514,
+              "description": "Honor Among ThievesRank 2InstantPhysical critical strikes by you or party members within 20 yards grant you 5 Energy."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 22,
+          "treeIndex": 2,
+          "icon": "inv_misc_key_03",
+          "ranks": 5,
+          "name": "Tricks of the Trade",
+          "description": [
+            "Tricks of the TradeInstantYour opening moves have a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 22,
+                "values": [
+                  "20",
+                  "40",
+                  "60",
+                  "80",
+                  "100"
+                ]
+              }
+            ],
+            "% chance and your finishing moves have a ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 22,
+                "values": [
+                  "4",
+                  "8",
+                  "12",
+                  "16",
+                  "20"
+                ]
+              }
+            ],
+            "% chance per combo point to increase your party members' critical strike chance by 2% for 12 sec. This effect stacks up to 12001 times."
+          ],
+          "row": 6,
+          "col": 3,
+          "spellIds": {
+            "rank1": 52541,
+            "rank2": 52542,
+            "rank3": 52543,
+            "rank4": 52544,
+            "rank5": 52545
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 52541,
+              "description": "Tricks of the TradeRank 1InstantYour opening moves have a 20% chance and your finishing moves have a 4% chance per combo point to increase your party members' critical strike chance by 2% for 12 sec. This effect stacks up to 12001 times."
+            },
+            "rank2": {
+              "spellId": 52542,
+              "description": "Tricks of the TradeRank 2InstantYour opening moves have a 40% chance and your finishing moves have a 8% chance per combo point to increase your party members' critical strike chance by 2% for 12 sec. This effect stacks up to 12001 times."
+            },
+            "rank3": {
+              "spellId": 52543,
+              "description": "Tricks of the TradeRank 3InstantYour opening moves have a 60% chance and your finishing moves have a 12% chance per combo point to increase your party members' critical strike chance by 2% for 12 sec. This effect stacks up to 12001 times."
+            },
+            "rank4": {
+              "spellId": 52544,
+              "description": "Tricks of the TradeRank 4InstantYour opening moves have a 80% chance and your finishing moves have a 16% chance per combo point to increase your party members' critical strike chance by 2% for 12 sec. This effect stacks up to 12001 times."
+            },
+            "rank5": {
+              "spellId": 52545,
+              "description": "Tricks of the TradeRank 5InstantYour opening moves have a 100% chance and your finishing moves have a 20% chance per combo point to increase your party members' critical strike chance by 2% for 12 sec. This effect stacks up to 12001 times."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 25,
+          "treeIndex": 2,
+          "icon": "ability_creature_cursed_02",
+          "ranks": 1,
+          "name": "Mark for Death",
+          "description": "Mark for Death40 mana5 yd rangeInstant180 sec cooldownA marking strike that deals 135% weapon damage and reveals the targetâ€™s vulnerabilities, increasing your party members' Attack Power by 30% and damage done by magical spells and effects up to 18% of your melee Attack Power for 8 sec. Cannot be blocked, dodged or parried by the target. Awards 2 combo points.",
+          "row": 7,
+          "col": 2,
+          "requires": 17,
+          "reqRanks": 1,
+          "spellIds": {
+            "rank1": 52538
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 52538,
+              "description": "Mark for Death40 mana5 yd rangeInstant180 sec cooldownA marking strike that deals 135% weapon damage and reveals the targetâ€™s vulnerabilities, increasing your party members' Attack Power by 30% and damage done by magical spells and effects up to 18% of your melee Attack Power for 8 sec. Cannot be blocked, dodged or parried by the target. Awards 2 combo points."
+            }
+          },
+          "spellMatchMethod": "auto"
+        }
+      ]
+    }
+  ]
+}

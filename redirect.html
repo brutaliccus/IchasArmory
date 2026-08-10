@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ichabaddie's Armory — We've Moved!</title>
+    <meta http-equiv="refresh" content="5;url=https://ichasarmory.quest">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #151518;
+            color: #d8d8dc;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 520px;
+            padding: 40px 30px;
+            background: #1c1c20;
+            border: 1px solid #35353d;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            color: #ffd700;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .new-domain {
+            display: inline-block;
+            padding: 12px 32px;
+            background: linear-gradient(135deg, #4CAF50, #2e7d32);
+            color: #fff;
+            font-size: 18px;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: transform 0.15s, box-shadow 0.15s;
+            letter-spacing: 0.3px;
+        }
+        .new-domain:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(76, 175, 80, 0.4);
+        }
+
+        .countdown {
+            margin-top: 24px;
+            color: #888;
+            font-size: 13px;
+        }
+        .countdown span {
+            color: #ffd700;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .progress-bar {
+            margin: 16px auto 0;
+            width: 200px;
+            height: 4px;
+            background: #35353d;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .progress-bar .fill {
+            height: 100%;
+            background: #ffd700;
+            border-radius: 2px;
+            animation: shrink 5s linear forwards;
+        }
+        @keyframes shrink {
+            from { width: 100%; }
+            to   { width: 0%; }
+        }
+
+        .note {
+            margin-top: 20px;
+            color: #666;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">⚡</div>
+        <h1>We've Moved!</h1>
+        <p class="subtitle">Ichabaddie's Armory has a new home</p>
+
+        <a href="https://ichasarmory.quest" class="new-domain">ichasarmory.quest</a>
+
+        <p class="countdown">Redirecting in <span id="seconds">5</span> seconds&hellip;</p>
+        <div class="progress-bar"><div class="fill"></div></div>
+
+        <p class="note">
+            Please update your bookmarks.<br>
+            All builds and profiles have been migrated.
+        </p>
+    </div>
+
+    <script>
+        let remaining = 5;
+        const el = document.getElementById('seconds');
+        const interval = setInterval(() => {
+            remaining--;
+            if (remaining <= 0) {
+                clearInterval(interval);
+                window.location.href = 'https://ichasarmory.quest';
+            } else {
+                el.textContent = remaining;
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

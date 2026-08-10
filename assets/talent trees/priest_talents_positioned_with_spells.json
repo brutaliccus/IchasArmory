@@ -1,0 +1,2302 @@
+{
+  "class": "Priest",
+  "source": "Turtle WoW",
+  "parsedAt": "2025-12-28T23:37:58.005Z",
+  "positionedAt": "2026-01-17T13:38:59.183Z",
+  "totalTalents": 51,
+  "spellMatchingStats": {
+    "totalTalentsWithSpells": 51,
+    "autoMatched": 51,
+    "manuallyConfigured": 0,
+    "spellMatchesFileUsed": true
+  },
+  "trees": [
+    {
+      "name": "Discipline",
+      "talents": [
+        {
+          "id": 0,
+          "treeIndex": 0,
+          "icon": "inv_wand_01",
+          "ranks": 2,
+          "name": "Wand Specialization",
+          "description": [
+            "Wand SpecializationInstantIncreases your damage and chance to hit with Wands and Bows by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 0,
+                "values": [
+                  "13",
+                  "25"
+                ]
+              }
+            ],
+            "% and ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 0,
+                "values": [
+                  "5",
+                  "10"
+                ]
+              }
+            ],
+            "%, respectively. Successful Wand and Bow attacks have a chance to restore 0 mana."
+          ],
+          "row": 1,
+          "col": 1,
+          "spellIds": {
+            "rank1": 14524,
+            "rank2": 14525
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14524,
+              "description": "Wand SpecializationRank 1InstantIncreases your damage and chance to hit with Wands and Bows by 13% and 5%, respectively.  Successful Wand and Bow attacks have a chance to restore 0 mana."
+            },
+            "rank2": {
+              "spellId": 14525,
+              "description": "Wand SpecializationRank 2InstantIncreases your damage and chance to hit with Wands and Bows by 25% and 10%, respectively.  Successful Wand and Bow attacks have a chance to restore 0 mana.\\nHigher chance to trigger than Wand Specialization (Rank 1)."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 1,
+          "treeIndex": 0,
+          "icon": "spell_holy_retribution",
+          "ranks": 3,
+          "name": "Piercing Light",
+          "description": [
+            "Piercing LightInstantReduces the chance for enemies to resist your Holy and Discipline spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 1,
+                "values": [
+                  "2",
+                  "4",
+                  "6"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 2,
+          "spellIds": {
+            "rank1": 51462,
+            "rank2": 51463,
+            "rank3": 51464
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51462,
+              "description": "Piercing LightRank 1InstantReduces the chance for enemies to resist your Holy and Discipline spells by 2%."
+            },
+            "rank2": {
+              "spellId": 51463,
+              "description": "Piercing LightRank 2InstantReduces the chance for enemies to resist your Holy and Discipline spells by 4%."
+            },
+            "rank3": {
+              "spellId": 51464,
+              "description": "Piercing LightRank 3InstantReduces the chance for enemies to resist your Holy and Discipline spells by 6%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 2,
+          "treeIndex": 0,
+          "icon": "ability_hibernation",
+          "ranks": 5,
+          "name": "Mental Agility",
+          "description": [
+            "Mental AgilityInstantReduces the mana cost of your instant cast spells and offensive Holy and Discipline spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 2,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 3,
+          "spellIds": {
+            "rank1": 14520,
+            "rank2": 14780,
+            "rank3": 14781,
+            "rank4": 14782,
+            "rank5": 14783
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14520,
+              "description": "Mental AgilityRank 1InstantReduces the mana cost of your instant cast spells and offensive Holy and Discipline spells by 2%."
+            },
+            "rank2": {
+              "spellId": 14780,
+              "description": "Mental AgilityRank 2InstantReduces the mana cost of your instant cast spells and offensive Holy and Discipline spells by 4%."
+            },
+            "rank3": {
+              "spellId": 14781,
+              "description": "Mental AgilityRank 3InstantReduces the mana cost of your instant cast spells and offensive Holy and Discipline spells by 6%."
+            },
+            "rank4": {
+              "spellId": 14782,
+              "description": "Mental AgilityRank 4InstantReduces the mana cost of your instant cast spells and offensive Holy and Discipline spells by 8%."
+            },
+            "rank5": {
+              "spellId": 14783,
+              "description": "Mental AgilityRank 5InstantReduces the mana cost of your instant cast spells and offensive Holy and Discipline spells by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 4,
+          "treeIndex": 0,
+          "icon": "spell_nature_manaregentotem",
+          "ranks": 5,
+          "name": "Silent Resolve",
+          "description": [
+            "Silent ResolveInstantReduces the threat generated by your spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 4,
+                "values": [
+                  "4",
+                  "8",
+                  "12",
+                  "16",
+                  "20"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 1,
+          "spellIds": {
+            "rank1": 14523,
+            "rank2": 14784,
+            "rank3": 14785,
+            "rank4": 14786,
+            "rank5": 14787
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14523,
+              "description": "Silent ResolveRank 1InstantReduces the threat generated by your spells by 4%."
+            },
+            "rank2": {
+              "spellId": 14784,
+              "description": "Silent ResolveRank 2InstantReduces the threat generated by your spells by 8%."
+            },
+            "rank3": {
+              "spellId": 14785,
+              "description": "Silent ResolveRank 3InstantReduces the threat generated by your spells by 12%."
+            },
+            "rank4": {
+              "spellId": 14786,
+              "description": "Silent ResolveRank 4InstantReduces the threat generated by your spells by 16%."
+            },
+            "rank5": {
+              "spellId": 14787,
+              "description": "Silent ResolveRank 5InstantReduces the threat generated by your spells by 20%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 5,
+          "treeIndex": 0,
+          "icon": "spell_magic_magearmor",
+          "ranks": 5,
+          "name": "Unbreakable Will",
+          "description": [
+            "Unbreakable WillInstantIncreases your chance to resist Stun, Fear, and Silence effects by an additional ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 5,
+                "values": [
+                  "3",
+                  "6",
+                  "9",
+                  "12",
+                  "15"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 2,
+          "spellIds": {
+            "rank1": 14522,
+            "rank2": 14788,
+            "rank3": 14789,
+            "rank4": 14790,
+            "rank5": 14791
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14522,
+              "description": "Unbreakable WillRank 1InstantIncreases your chance to resist Stun, Fear, and Silence effects by an additional 3%."
+            },
+            "rank2": {
+              "spellId": 14788,
+              "description": "Unbreakable WillRank 2InstantIncreases your chance to resist Stun, Fear, and Silence effects by an additional 6%."
+            },
+            "rank3": {
+              "spellId": 14789,
+              "description": "Unbreakable WillRank 3InstantIncreases your chance to resist Stun, Fear, and Silence effects by an additional 9%."
+            },
+            "rank4": {
+              "spellId": 14790,
+              "description": "Unbreakable WillRank 4InstantIncreases your chance to resist Stun, Fear, and Silence effects by an additional 12%."
+            },
+            "rank5": {
+              "spellId": 14791,
+              "description": "Unbreakable WillRank 5InstantIncreases your chance to resist Stun, Fear, and Silence effects by an additional 15%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 6,
+          "treeIndex": 0,
+          "icon": "spell_holy_restoration",
+          "ranks": 2,
+          "name": "Blessed Concentration",
+          "description": [
+            "Blessed ConcentrationInstantGives you a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 6,
+                "values": [
+                  "50",
+                  "100"
+                ]
+              }
+            ],
+            "% chance to gain the Focused Casting effect that lasts for 6 sec after being the victim of a melee or ranged critical strike. The Focused Casting effect prevents you from losing casting time when taking damage and increases resistance to Interrupt effects by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 6,
+                "values": [
+                  "10",
+                  "20"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 3,
+          "spellIds": {
+            "rank1": 14531,
+            "rank2": 14774
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14531,
+              "description": "Blessed ConcentrationRank 1InstantGives you a 50% chance to gain the Focused Casting effect that lasts for 6 sec after being the victim of a melee or ranged critical strike.  The Focused Casting effect prevents you from losing casting time when taking damage and increases resistance to Interrupt effects by 10%."
+            },
+            "rank2": {
+              "spellId": 14774,
+              "description": "Blessed ConcentrationRank 2InstantGives you a 100% chance to gain the Focused Casting effect that lasts for 6 sec after being the victim of a melee or ranged critical strike.  The Focused Casting effect prevents you from losing casting time when taking damage and increases resistance to Interrupt effects by 20%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 7,
+          "treeIndex": 0,
+          "icon": "spell_holy_wordfortitude",
+          "ranks": 2,
+          "name": "Improved Power Word: Fortitude",
+          "description": [
+            "Improved Power Word: FortitudeInstantIncreases the effect of your Power Word: Fortitude and Prayer of Fortitude spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 7,
+                "values": [
+                  "15",
+                  "30"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 4,
+          "spellIds": {
+            "rank1": 14749,
+            "rank2": 14767
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14749,
+              "description": "Improved Power Word: FortitudeRank 1InstantIncreases the effect of your Power Word: Fortitude and Prayer of Fortitude spells by 15%."
+            },
+            "rank2": {
+              "spellId": 14767,
+              "description": "Improved Power Word: FortitudeRank 2InstantIncreases the effect of your Power Word: Fortitude and Prayer of Fortitude spells by 30%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 8,
+          "treeIndex": 0,
+          "icon": "spell_holy_innerfire",
+          "ranks": 2,
+          "name": "Improved Inner Fire",
+          "description": [
+            "Improved Inner FireInstantIncreases the effects of your Inner Fire spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 8,
+                "values": [
+                  "15",
+                  "30"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 3,
+          "col": 1,
+          "spellIds": {
+            "rank1": 14747,
+            "rank2": 14770
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14747,
+              "description": "Improved Inner FireRank 1InstantIncreases the effects of your Inner Fire spell by 15%."
+            },
+            "rank2": {
+              "spellId": 14770,
+              "description": "Improved Inner FireRank 2InstantIncreases the effects of your Inner Fire spell by 30%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 9,
+          "treeIndex": 0,
+          "icon": "spell_frost_windwalkon",
+          "ranks": 1,
+          "name": "Inner Focus",
+          "description": "Inner FocusInstant180 sec cooldownWhen activated, reduces the Mana cost of your next spell by 100% and increases its critical effect chance by 25% if it is capable of a critical effect.",
+          "row": 3,
+          "col": 2,
+          "spellIds": {
+            "rank1": 14751
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14751,
+              "description": "Inner FocusInstant180 sec cooldownWhen activated, reduces the Mana cost of your next spell by 100% and increases its critical effect chance by 25% if it is capable of a critical effect."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 10,
+          "treeIndex": 0,
+          "icon": "spell_holy_powerwordshield",
+          "ranks": 3,
+          "name": "Improved Power Word: Shield",
+          "description": [
+            "Improved Power Word: ShieldInstantIncreases the damage absorbed by your Power Word: Shield by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 10,
+                "values": [
+                  "5",
+                  "10",
+                  "15"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 3,
+          "col": 3,
+          "spellIds": {
+            "rank1": 14748,
+            "rank2": 14768,
+            "rank3": 14769
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14748,
+              "description": "Improved Power Word: ShieldRank 1InstantIncreases the damage absorbed by your Power Word: Shield by 5%."
+            },
+            "rank2": {
+              "spellId": 14768,
+              "description": "Improved Power Word: ShieldRank 2InstantIncreases the damage absorbed by your Power Word: Shield by 10%."
+            },
+            "rank3": {
+              "spellId": 14769,
+              "description": "Improved Power Word: ShieldRank 3InstantIncreases the damage absorbed by your Power Word: Shield by 15%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 11,
+          "treeIndex": 0,
+          "icon": "spell_nature_sleep",
+          "ranks": 3,
+          "name": "Meditation",
+          "description": [
+            "MeditationInstantAllows ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 11,
+                "values": [
+                  "5",
+                  "10",
+                  "15"
+                ]
+              }
+            ],
+            "% of your Mana regeneration to continue while casting."
+          ],
+          "row": 3,
+          "col": 4,
+          "spellIds": {
+            "rank1": 14521,
+            "rank2": 14776,
+            "rank3": 14777
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14521,
+              "description": "MeditationRank 1InstantAllows 5% of your Mana regeneration to continue while casting."
+            },
+            "rank2": {
+              "spellId": 14776,
+              "description": "MeditationRank 2InstantAllows 10% of your Mana regeneration to continue while casting."
+            },
+            "rank3": {
+              "spellId": 14777,
+              "description": "MeditationRank 3InstantAllows 15% of your Mana regeneration to continue while casting."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 12,
+          "treeIndex": 0,
+          "icon": "spell_holy_searinglightpriest",
+          "ranks": 3,
+          "name": "Searing Light",
+          "description": [
+            "Searing LightInstantYour damaging Holy and Discipline spell critical strikes have a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 12,
+                "values": [
+                  "33",
+                  "66",
+                  "100"
+                ]
+              }
+            ],
+            "% chance to cause your next Smite spell to be instant cast and cost 50% less mana. Lasts 10 sec."
+          ],
+          "row": 4,
+          "col": 1,
+          "spellIds": {
+            "rank1": 51466,
+            "rank2": 51467,
+            "rank3": 51468
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51466,
+              "description": "Searing LightRank 1InstantYour damaging Holy and Discipline spell critical strikes have a 33% chance to cause your next Smite spell to be instant cast and cost 50% less mana.  Lasts 10 sec."
+            },
+            "rank2": {
+              "spellId": 51467,
+              "description": "Searing LightRank 2InstantYour damaging Holy and Discipline spell critical strikes have a 66% chance to cause your next Smite spell to be instant cast and cost 50% less mana.  Lasts 10 sec."
+            },
+            "rank3": {
+              "spellId": 51468,
+              "description": "Searing LightRank 3InstantYour damaging Holy and Discipline spell critical strikes have a 100% chance to cause your next Smite spell to be instant cast and cost 50% less mana.  Lasts 10 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 13,
+          "treeIndex": 0,
+          "icon": "spell_holy_searinglight",
+          "ranks": 2,
+          "name": "Purifying Flames",
+          "description": [
+            "Purifying FlamesInstantYour Holy Fire has a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 13,
+                "values": [
+                  "50",
+                  "100"
+                ]
+              }
+            ],
+            "% chance to increase your Holy damage by 12% for 10 sec."
+          ],
+          "row": 4,
+          "col": 2,
+          "spellIds": {
+            "rank1": 51470,
+            "rank2": 51471
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51470,
+              "description": "Purifying FlamesRank 1InstantYour Holy Fire has a 50% chance to increase your Holy damage by 12% for 10 sec."
+            },
+            "rank2": {
+              "spellId": 51471,
+              "description": "Purifying FlamesRank 2InstantYour Holy Fire has a 100% chance to increase your Holy damage by 12% for 10 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 16,
+          "treeIndex": 0,
+          "icon": "spell_nature_enchantarmor",
+          "ranks": 3,
+          "name": "Mental Strength",
+          "description": [
+            "Mental StrengthInstantIncreases your total Intellect by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 16,
+                "values": [
+                  "3",
+                  "6",
+                  "10"
+                ]
+              }
+            ],
+            "% and your spell casting speed by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 16,
+                "values": [
+                  "1",
+                  "2",
+                  "3"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 5,
+          "col": 1,
+          "spellIds": {
+            "rank1": 18551,
+            "rank2": 18552,
+            "rank3": 18553
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18551,
+              "description": "Mental StrengthRank 1InstantIncreases your total Intellect by 3% and your spell casting speed by 1%."
+            },
+            "rank2": {
+              "spellId": 18552,
+              "description": "Mental StrengthRank 2InstantIncreases your total Intellect by 6% and your spell casting speed by 2%."
+            },
+            "rank3": {
+              "spellId": 18553,
+              "description": "Mental StrengthRank 3InstantIncreases your total Intellect by 10% and your spell casting speed by 3%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 17,
+          "treeIndex": 0,
+          "icon": "btnholyscriptures",
+          "ranks": 1,
+          "name": "Enlighten",
+          "description": "Enlighten10% of base mana30 yd rangeInstant60 sec cooldownBring a party member under your tutelage for 1800 sec. Whenever you cast a Discipline or Holy spell, you have a 10% chance with helpful spells, or 15% chance with harmful spells, to burn them for 4% of their total health as Holy damage and increase both your and their spell damage and healing by 10% for 8 sec. If cast on yourself, the spell damage and healing bonus is increased to 15%. Only one party member can be under your tutelage at a time.",
+          "row": 5,
+          "col": 2,
+          "spellIds": {
+            "rank1": 51476
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51476,
+              "description": "Enlighten10% of base mana30 yd rangeInstant60 sec cooldownBring a party member under your tutelage for 1800 sec. Whenever you cast a Discipline or Holy spell, you have a 10% chance with helpful spells, or 15% chance with harmful spells, to burn them for 4% of their total health as Holy damage and increase both your and their spell damage and healing by 10% for 8 sec.  If cast on yourself, the spell damage and healing bonus is increased to 15%.  Only one party member can be under your tutelage at a time."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 18,
+          "treeIndex": 0,
+          "icon": "spell_holy_blessingofprotection",
+          "ranks": 1,
+          "name": "Resurgent Shield",
+          "description": "Resurgent ShieldInstantWhen your Power Word: Shield is broken, 25% of its base mana cost is refunded and increases damage and healing done by Holy spells and effects by up to 10% of the shield's total absorption amount for 8 sec.",
+          "row": 5,
+          "col": 3,
+          "requires": 10,
+          "reqRanks": 3,
+          "spellIds": {
+            "rank1": 45560
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 45560,
+              "description": "Resurgent ShieldInstantWhen your Power Word: Shield is broken, 25% of its base mana cost is refunded and increases damage and healing done by Holy spells and effects by up to 10% of the shield's total absorption amount for 8 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 22,
+          "treeIndex": 0,
+          "icon": "spell_nature_slowingtotem",
+          "ranks": 5,
+          "name": "Force of Will",
+          "description": [
+            "Force of WillInstantIncreases your spell damage and the critical strike chance of your offensive spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 0,
+                "talent": 22,
+                "values": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            ],
+            "% and the amount of damage absorbed by your Power Word: Shield by ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 0,
+                "talent": 22,
+                "values": [
+                  "4",
+                  "8",
+                  "12",
+                  "16",
+                  "20"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 6,
+          "col": 3,
+          "spellIds": {
+            "rank1": 18544,
+            "rank2": 18547,
+            "rank3": 18548,
+            "rank4": 18549,
+            "rank5": 18550
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18544,
+              "description": "Force of WillRank 1InstantIncreases your spell damage and the critical strike chance of your offensive spells by 1% and the amount of damage absorbed by your Power Word: Shield by 4%."
+            },
+            "rank2": {
+              "spellId": 18547,
+              "description": "Force of WillRank 2InstantIncreases your spell damage and the critical strike chance of your offensive spells by 2% and the amount of damage absorbed by your Power Word: Shield by 8%."
+            },
+            "rank3": {
+              "spellId": 18548,
+              "description": "Force of WillRank 3InstantIncreases your spell damage and the critical strike chance of your offensive spells by 3% and the amount of damage absorbed by your Power Word: Shield by 12%."
+            },
+            "rank4": {
+              "spellId": 18549,
+              "description": "Force of WillRank 4InstantIncreases your spell damage and the critical strike chance of your offensive spells by 4% and the amount of damage absorbed by your Power Word: Shield by 16%."
+            },
+            "rank5": {
+              "spellId": 18550,
+              "description": "Force of WillRank 5InstantIncreases your spell damage and the critical strike chance of your offensive spells by 5% and the amount of damage absorbed by your Power Word: Shield by 20%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 25,
+          "treeIndex": 0,
+          "icon": "spell_holy_unyieldingfaith",
+          "ranks": 1,
+          "name": "Chastise",
+          "description": "Chastise% of base mana25 yd rangeInstantChastise the target, causing 139 to 161 Holy damage. If the target is an enemy, they are disoriented for up to 2 sec or until they take damage. If the target is an ally, their attack and casting speed is increased by 13% for 8 sec, increased to 12 sec if the damage results in a critical strike. Cannot be used on allies with less than 80% health or below level 35.",
+          "row": 7,
+          "col": 2,
+          "requires": 17,
+          "reqRanks": 1,
+          "spellIds": {
+            "rank1": 51478
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51478,
+              "description": "ChastiseRank 16% of base mana25 yd rangeInstantChastise the target, causing 139 to 161 Holy damage.  If the target is an enemy, they are disoriented for up to 2 sec or until they take damage.  If the target is an ally, their attack and casting speed is increased by 13% for 8 sec, increased to 12 sec if the damage results in a critical strike.  Cannot be used on allies with less than 80% health or below level 35."
+            }
+          },
+          "spellMatchMethod": "auto"
+        }
+      ]
+    },
+    {
+      "name": "Holy",
+      "talents": [
+        {
+          "id": 0,
+          "treeIndex": 1,
+          "icon": "spell_holy_renew",
+          "ranks": 3,
+          "name": "Improved Renew",
+          "description": [
+            "Improved RenewInstantIncreases the amount healed by your Renew spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 0,
+                "values": [
+                  "5",
+                  "10",
+                  "15"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 1,
+          "spellIds": {
+            "rank1": 14908,
+            "rank2": 15020,
+            "rank3": 17191
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14908,
+              "description": "Improved RenewRank 1InstantIncreases the amount healed by your Renew spell by 5%."
+            },
+            "rank2": {
+              "spellId": 15020,
+              "description": "Improved RenewRank 2InstantIncreases the amount healed by your Renew spell by 10%."
+            },
+            "rank3": {
+              "spellId": 17191,
+              "description": "Improved RenewRank 3InstantIncreases the amount healed by your Renew spell by 15%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 1,
+          "treeIndex": 1,
+          "icon": "spell_holy_healingfocus",
+          "ranks": 2,
+          "name": "Holy Focus",
+          "description": [
+            "Holy FocusInstantGives you a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 1,
+                "values": [
+                  "35",
+                  "70"
+                ]
+              }
+            ],
+            "% chance to avoid interruption caused by damage while casting any Holy spell."
+          ],
+          "row": 1,
+          "col": 2,
+          "spellIds": {
+            "rank1": 14913,
+            "rank2": 15012
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14913,
+              "description": "Holy FocusRank 1InstantGives you a 35% chance to avoid interruption caused by damage while casting any Holy spell."
+            },
+            "rank2": {
+              "spellId": 15012,
+              "description": "Holy FocusRank 2InstantGives you a 70% chance to avoid interruption caused by damage while casting any Holy spell."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 2,
+          "treeIndex": 1,
+          "icon": "spell_holy_sealofsalvation",
+          "ranks": 5,
+          "name": "Divinity",
+          "description": [
+            "DivinityInstantIncreases the critical effect chance of your Holy and Discipline spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 2,
+                "values": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 1,
+          "col": 3,
+          "spellIds": {
+            "rank1": 14889,
+            "rank2": 15008,
+            "rank3": 15009,
+            "rank4": 15010,
+            "rank5": 15011
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14889,
+              "description": "DivinityRank 1InstantIncreases the critical effect chance of your Holy and Discipline spells by 1%."
+            },
+            "rank2": {
+              "spellId": 15008,
+              "description": "DivinityRank 2InstantIncreases the critical effect chance of your Holy and Discipline spells by 2%."
+            },
+            "rank3": {
+              "spellId": 15009,
+              "description": "DivinityRank 3InstantIncreases the critical effect chance of your Holy and Discipline spells by 3%."
+            },
+            "rank4": {
+              "spellId": 15010,
+              "description": "DivinityRank 4InstantIncreases the critical effect chance of your Holy and Discipline spells by 4%."
+            },
+            "rank5": {
+              "spellId": 15011,
+              "description": "DivinityRank 5InstantIncreases the critical effect chance of your Holy and Discipline spells by 5%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 5,
+          "treeIndex": 1,
+          "icon": "spell_holy_sealofwrath",
+          "ranks": 5,
+          "name": "Divine Fury",
+          "description": [
+            "Divine FuryInstantReduces the casting time of your Smite, Holy Fire, Heal and Greater Heal spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 5,
+                "values": [
+                  "100",
+                  "200",
+                  "300",
+                  "400",
+                  "500"
+                ]
+              }
+            ],
+            " sec."
+          ],
+          "row": 2,
+          "col": 2,
+          "spellIds": {
+            "rank1": 18530,
+            "rank2": 18531,
+            "rank3": 18533,
+            "rank4": 18534,
+            "rank5": 18535
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 18530,
+              "description": "Divine FuryRank 1InstantReduces the casting time of your Smite, Holy Fire, Heal and Greater Heal spells by 100 sec."
+            },
+            "rank2": {
+              "spellId": 18531,
+              "description": "Divine FuryRank 2InstantReduces the casting time of your Smite, Holy Fire, Heal and Greater Heal spells by 200 sec."
+            },
+            "rank3": {
+              "spellId": 18533,
+              "description": "Divine FuryRank 3InstantReduces the casting time of your Smite, Holy Fire, Heal and Greater Heal spells by 300 sec."
+            },
+            "rank4": {
+              "spellId": 18534,
+              "description": "Divine FuryRank 4InstantReduces the casting time of your Smite, Holy Fire, Heal and Greater Heal spells by 400 sec."
+            },
+            "rank5": {
+              "spellId": 18535,
+              "description": "Divine FuryRank 5InstantReduces the casting time of your Smite, Holy Fire, Heal and Greater Heal spells by 500 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 6,
+          "treeIndex": 1,
+          "icon": "spell_holy_spellwarding",
+          "ranks": 3,
+          "name": "Spell Warding",
+          "description": [
+            "Spell WardingInstantReduces all spell damage taken by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 6,
+                "values": [
+                  "3",
+                  "6",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 3,
+          "spellIds": {
+            "rank1": 27900,
+            "rank2": 27901,
+            "rank3": 27902
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 27900,
+              "description": "Spell WardingRank 1InstantReduces all spell damage taken by 3%."
+            },
+            "rank2": {
+              "spellId": 27901,
+              "description": "Spell WardingRank 2InstantReduces all spell damage taken by 6%."
+            },
+            "rank3": {
+              "spellId": 27902,
+              "description": "Spell WardingRank 3InstantReduces all spell damage taken by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 7,
+          "treeIndex": 1,
+          "icon": "spell_holy_purify",
+          "ranks": 2,
+          "name": "Holy Reach",
+          "description": [
+            "Holy ReachInstantIncreases the range of your Smite, Holy Fire and Chastise spells and the radius of your Prayer of Healing and Holy Nova spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 7,
+                "values": [
+                  "10",
+                  "20"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 4,
+          "spellIds": {
+            "rank1": 27789,
+            "rank2": 27790
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 27789,
+              "description": "Holy ReachRank 1InstantIncreases the range of your Smite, Holy Fire and Chastise spells and the radius of your Prayer of Healing and Holy Nova spells by 10%."
+            },
+            "rank2": {
+              "spellId": 27790,
+              "description": "Holy ReachRank 2InstantIncreases the range of your Smite, Holy Fire and Chastise spells and the radius of your Prayer of Healing and Holy Nova spells by 20%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 9,
+          "treeIndex": 1,
+          "icon": "spell_holy_blessedrecovery",
+          "ranks": 3,
+          "name": "Blessed Recovery",
+          "description": [
+            "Blessed RecoveryInstantAfter being struck by a melee or ranged critical hit, heal ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 9,
+                "values": [
+                  "8",
+                  "16",
+                  "25"
+                ]
+              }
+            ],
+            "% of the damage taken over 6 sec."
+          ],
+          "row": 3,
+          "col": 2,
+          "spellIds": {
+            "rank1": 27811,
+            "rank2": 27815,
+            "rank3": 27816
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 27811,
+              "description": "Blessed RecoveryRank 1InstantAfter being struck by a melee or ranged critical hit, heal 8% of the damage taken over 6 sec."
+            },
+            "rank2": {
+              "spellId": 27815,
+              "description": "Blessed RecoveryRank 2InstantAfter being struck by a melee or ranged critical hit, heal 16% of the damage taken over 6 sec."
+            },
+            "rank3": {
+              "spellId": 27816,
+              "description": "Blessed RecoveryRank 3InstantAfter being struck by a melee or ranged critical hit, heal 25% of the damage taken over 6 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 10,
+          "treeIndex": 1,
+          "icon": "spell_holy_layonhands",
+          "ranks": 3,
+          "name": "Inspiration",
+          "description": [
+            "InspirationInstantIncreases your target's armor by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 10,
+                "values": [
+                  "8",
+                  "16",
+                  "25"
+                ]
+              }
+            ],
+            "% for 15 sec after getting a critical effect from your Flash Heal, Heal, Greater Heal, or Prayer of Healing spell."
+          ],
+          "row": 3,
+          "col": 3,
+          "spellIds": {
+            "rank1": 14892,
+            "rank2": 15362,
+            "rank3": 15363
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14892,
+              "description": "InspirationRank 1InstantIncreases your target's armor by 8% for 15 sec after getting a critical effect from your Flash Heal, Heal, Greater Heal, or Prayer of Healing spell."
+            },
+            "rank2": {
+              "spellId": 15362,
+              "description": "InspirationRank 2InstantIncreases your target's armor by 16% for 15 sec after getting a critical effect from your Flash Heal, Heal, Greater Heal, or Prayer of Healing spell."
+            },
+            "rank3": {
+              "spellId": 15363,
+              "description": "InspirationRank 3InstantIncreases your target's armor by 25% for 15 sec after getting a critical effect from your Flash Heal, Heal, Greater Heal, or Prayer of Healing spell."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 11,
+          "treeIndex": 1,
+          "icon": "spell_holy_holynova",
+          "ranks": 1,
+          "name": "Holy Nova",
+          "description": "Holy Nova manaInstantCauses an explosion of holy light around the caster, causing 26 to 31 Holy damage to all enemy targets within 10 yards and healing all party members within 10 yards for 52 to 61. Using this spell while in Shadowform damages you instead of healing you. These effects cause reduced threat.",
+          "row": 3,
+          "col": 4,
+          "spellIds": {
+            "rank1": 15237
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 15237,
+              "description": "Holy NovaRank 1155 manaInstantCauses an explosion of holy light around the caster, causing 26 to 31 Holy damage to all enemy targets within 10 yards and healing all party members within 10 yards for 52 to 61. Using this spell while in Shadowform damages you instead of healing you. These effects cause reduced threat."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 12,
+          "treeIndex": 1,
+          "icon": "spell_holy_resurrection",
+          "ranks": 2,
+          "name": "Swift Recovery",
+          "description": [
+            "Swift RecoveryInstantThe amount healed by your healing spells is increased by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 12,
+                "values": [
+                  "3",
+                  "6"
+                ]
+              }
+            ],
+            "% if the target is affected by Renew."
+          ],
+          "row": 4,
+          "col": 1,
+          "requires": 0,
+          "reqRanks": 3,
+          "spellIds": {
+            "rank1": 51484,
+            "rank2": 51485
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51484,
+              "description": "Swift RecoveryRank 1InstantThe amount healed by your healing spells is increased by 3% if the target is affected by Renew."
+            },
+            "rank2": {
+              "spellId": 51485,
+              "description": "Swift RecoveryRank 2InstantThe amount healed by your healing spells is increased by 6% if the target is affected by Renew."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 13,
+          "treeIndex": 1,
+          "icon": "spell_holy_heal02",
+          "ranks": 3,
+          "name": "Improved Healing",
+          "description": [
+            "Improved HealingInstantReduces the Mana cost of your Lesser Heal, Heal, Greater Heal and Prayer of Healing spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 13,
+                "values": [
+                  "5",
+                  "10",
+                  "15"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 2,
+          "spellIds": {
+            "rank1": 14912,
+            "rank2": 15013,
+            "rank3": 15014
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14912,
+              "description": "Improved HealingRank 1InstantReduces the Mana cost of your Lesser Heal, Heal, Greater Heal and Prayer of Healing spells by 5%."
+            },
+            "rank2": {
+              "spellId": 15013,
+              "description": "Improved HealingRank 2InstantReduces the Mana cost of your Lesser Heal, Heal, Greater Heal and Prayer of Healing spells by 10%."
+            },
+            "rank3": {
+              "spellId": 15014,
+              "description": "Improved HealingRank 3InstantReduces the Mana cost of your Lesser Heal, Heal, Greater Heal and Prayer of Healing spells by 15%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 14,
+          "treeIndex": 1,
+          "icon": "spell_holy_spiritualguidence",
+          "ranks": 5,
+          "name": "Spiritual Guidance",
+          "description": [
+            "Spiritual GuidanceInstantIncreases spell damage and healing by up to ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 14,
+                "values": [
+                  "5",
+                  "10",
+                  "15",
+                  "20",
+                  "25"
+                ]
+              }
+            ],
+            "% of your total Spirit."
+          ],
+          "row": 4,
+          "col": 3,
+          "spellIds": {
+            "rank1": 14901,
+            "rank2": 15028,
+            "rank3": 15029,
+            "rank4": 15030,
+            "rank5": 15031
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14901,
+              "description": "Spiritual GuidanceRank 1InstantIncreases spell damage and healing by up to 5% of your total Spirit."
+            },
+            "rank2": {
+              "spellId": 15028,
+              "description": "Spiritual GuidanceRank 2InstantIncreases spell damage and healing by up to 10% of your total Spirit."
+            },
+            "rank3": {
+              "spellId": 15029,
+              "description": "Spiritual GuidanceRank 3InstantIncreases spell damage and healing by up to 15% of your total Spirit."
+            },
+            "rank4": {
+              "spellId": 15030,
+              "description": "Spiritual GuidanceRank 4InstantIncreases spell damage and healing by up to 20% of your total Spirit."
+            },
+            "rank5": {
+              "spellId": 15031,
+              "description": "Spiritual GuidanceRank 5InstantIncreases spell damage and healing by up to 25% of your total Spirit."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 17,
+          "treeIndex": 1,
+          "icon": "inv_enchant_essenceeternallarge",
+          "ranks": 1,
+          "name": "Spirit of Redemption",
+          "description": "Increases total Spirit by \",\"5\",\"%.  Upon death, the priest becomes the Spirit of Redemption for \",\"10 sec\",\".  The Spirit of Redemption cannot move, attack, be attacked or targeted by any spells or effects.  While in this form the priest can cast any healing spell free of cost.  When the effect ends, the priest dies.",
+          "row": 5,
+          "col": 2,
+          "spellIds": {
+            "rank1": 20711
+          },
+          "rankDescriptions": null,
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 18,
+          "treeIndex": 1,
+          "icon": "spell_holy_summonlightwell",
+          "ranks": 3,
+          "name": "Reservoir of Light",
+          "description": [
+            "Reservoir of LightInstantIncreases the amount of charges on your Lightwell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 18,
+                "values": [
+                  "1.",
+                  "3.",
+                  "5."
+                ]
+              }
+            ]
+          ],
+          "row": 5,
+          "col": 3,
+          "spellIds": {
+            "rank1": 51486,
+            "rank2": 51487,
+            "rank3": 51488
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 51486,
+              "description": "Reservoir of LightRank 1InstantIncreases the amount of charges on your Lightwell by 1."
+            },
+            "rank2": {
+              "spellId": 51487,
+              "description": "Reservoir of LightRank 2InstantIncreases the amount of charges on your Lightwell by 3."
+            },
+            "rank3": {
+              "spellId": 51488,
+              "description": "Reservoir of LightRank 3InstantIncreases the amount of charges on your Lightwell by 5."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 22,
+          "treeIndex": 1,
+          "icon": "spell_nature_moonglow",
+          "ranks": 5,
+          "name": "Spiritual Healing",
+          "description": [
+            "Spiritual HealingInstantIncreases the amount healed by your healing spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 1,
+                "talent": 22,
+                "values": [
+                  "6",
+                  "12",
+                  "18",
+                  "24",
+                  "30"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 6,
+          "col": 3,
+          "spellIds": {
+            "rank1": 14898,
+            "rank2": 15349,
+            "rank3": 15354,
+            "rank4": 15355,
+            "rank5": 15356
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14898,
+              "description": "Spiritual HealingRank 1InstantIncreases the amount healed by your healing spells by 6%."
+            },
+            "rank2": {
+              "spellId": 15349,
+              "description": "Spiritual HealingRank 2InstantIncreases the amount healed by your healing spells by 12%."
+            },
+            "rank3": {
+              "spellId": 15354,
+              "description": "Spiritual HealingRank 3InstantIncreases the amount healed by your healing spells by 18%."
+            },
+            "rank4": {
+              "spellId": 15355,
+              "description": "Spiritual HealingRank 4InstantIncreases the amount healed by your healing spells by 24%."
+            },
+            "rank5": {
+              "spellId": 15356,
+              "description": "Spiritual HealingRank 5InstantIncreases the amount healed by your healing spells by 30%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 25,
+          "treeIndex": 1,
+          "icon": "spell_holy_proclaimchampion_02",
+          "ranks": 1,
+          "name": "Proclaim Champion",
+          "description": "Proclaim Champion250 mana40 yd range10 sec cast600 sec cooldownProclaims a friendly target as your Champion for 7200 sec, reducing all damage taken by 5% and increasing all resistances by 0. Allows the use of various Champion spells on that target. In addition, you gain Mana equal to 2% of the damage taken by your Champion. Only one Champion can be proclaimed at a time.",
+          "row": 7,
+          "col": 2,
+          "requires": 17,
+          "reqRanks": 1,
+          "spellIds": {
+            "rank1": 45562
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 45562,
+              "description": "Proclaim Champion250 mana40 yd range10 sec cast600 sec cooldownProclaims a friendly target as your Champion for 7200 sec, reducing all damage taken by 5% and increasing all resistances by 0. Allows the use of various Champion spells on that target. In addition, you gain Mana equal to 2% of the damage taken by your Champion. Only one Champion can be proclaimed at a time."
+            }
+          },
+          "spellMatchMethod": "auto"
+        }
+      ]
+    },
+    {
+      "name": "Shadow",
+      "talents": [
+        {
+          "id": 1,
+          "treeIndex": 2,
+          "icon": "spell_shadow_requiem",
+          "ranks": 5,
+          "name": "Spirit Tap",
+          "description": [
+            "Spirit TapInstantGives you a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 1,
+                "values": [
+                  "20",
+                  "40",
+                  "60",
+                  "80",
+                  "100"
+                ]
+              }
+            ],
+            "% chance to gain a 100% bonus to your Spirit after killing a target that yields experience. For the duration, your Mana will regenerate at a 50% rate while casting. Lasts 15 sec."
+          ],
+          "row": 1,
+          "col": 2,
+          "spellIds": {
+            "rank1": 15270,
+            "rank2": 15335,
+            "rank3": 15336,
+            "rank4": 15337,
+            "rank5": 15338
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 15270,
+              "description": "Spirit TapRank 1InstantGives you a 20% chance to gain a 100% bonus to your Spirit after killing a target that yields experience.  For the duration, your Mana will regenerate at a 50% rate while casting.  Lasts 15 sec."
+            },
+            "rank2": {
+              "spellId": 15335,
+              "description": "Spirit TapRank 2InstantGives you a 40% chance to gain a 100% bonus to your Spirit after killing a target that yields experience.  For the duration, your Mana will regenerate at a 50% rate while casting.  Lasts 15 sec."
+            },
+            "rank3": {
+              "spellId": 15336,
+              "description": "Spirit TapRank 3InstantGives you a 60% chance to gain a 100% bonus to your Spirit after killing a target that yields experience.  For the duration, your Mana will regenerate at a 50% rate while casting.  Lasts 15 sec."
+            },
+            "rank4": {
+              "spellId": 15337,
+              "description": "Spirit TapRank 4InstantGives you a 80% chance to gain a 100% bonus to your Spirit after killing a target that yields experience.  For the duration, your Mana will regenerate at a 50% rate while casting.  Lasts 15 sec."
+            },
+            "rank5": {
+              "spellId": 15338,
+              "description": "Spirit TapRank 5InstantGives you a 100% chance to gain a 100% bonus to your Spirit after killing a target that yields experience.  For the duration, your Mana will regenerate at a 50% rate while casting.  Lasts 15 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 2,
+          "treeIndex": 2,
+          "icon": "spell_shadow_gathershadows",
+          "ranks": 5,
+          "name": "Blackout",
+          "description": [
+            "BlackoutInstantGives your Shadow damage spells a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 2,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "% chance to stun the target for 2 sec."
+          ],
+          "row": 1,
+          "col": 3,
+          "spellIds": {
+            "rank1": 15268,
+            "rank2": 15323,
+            "rank3": 15324,
+            "rank4": 15325,
+            "rank5": 15326
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 15268,
+              "description": "BlackoutRank 1InstantGives your Shadow damage spells a 2% chance to stun the target for 2 sec."
+            },
+            "rank2": {
+              "spellId": 15323,
+              "description": "BlackoutRank 2InstantGives your Shadow damage spells a 4% chance to stun the target for 2 sec."
+            },
+            "rank3": {
+              "spellId": 15324,
+              "description": "BlackoutRank 3InstantGives your Shadow damage spells a 6% chance to stun the target for 2 sec."
+            },
+            "rank4": {
+              "spellId": 15325,
+              "description": "BlackoutRank 4InstantGives your Shadow damage spells a 8% chance to stun the target for 2 sec."
+            },
+            "rank5": {
+              "spellId": 15326,
+              "description": "BlackoutRank 5InstantGives your Shadow damage spells a 10% chance to stun the target for 2 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 4,
+          "treeIndex": 2,
+          "icon": "spell_shadow_shadowward",
+          "ranks": 3,
+          "name": "Shadow Affinity",
+          "description": [
+            "Shadow AffinityInstantReduces the threat generated by your Shadow spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 4,
+                "values": [
+                  "8",
+                  "16",
+                  "25"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 1,
+          "spellIds": {
+            "rank1": 15318,
+            "rank2": 15272,
+            "rank3": 15320
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 15318,
+              "description": "Shadow AffinityRank 1InstantReduces the threat generated by your Shadow spells by 8%."
+            },
+            "rank2": {
+              "spellId": 15272,
+              "description": "Shadow AffinityRank 2InstantReduces the threat generated by your Shadow spells by 16%."
+            },
+            "rank3": {
+              "spellId": 15320,
+              "description": "Shadow AffinityRank 3InstantReduces the threat generated by your Shadow spells by 25%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 5,
+          "treeIndex": 2,
+          "icon": "spell_shadow_shadowwordpain",
+          "ranks": 2,
+          "name": "Improved Shadow Word: Pain",
+          "description": [
+            "Improved Shadow Word: PainInstantIncreases the duration of your Shadow Word: Pain spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 5,
+                "values": [
+                  "3000",
+                  "6000"
+                ]
+              }
+            ],
+            " sec."
+          ],
+          "row": 2,
+          "col": 2,
+          "spellIds": {
+            "rank1": 15275,
+            "rank2": 15317
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 15275,
+              "description": "Improved Shadow Word: PainRank 1InstantIncreases the duration of your Shadow Word: Pain spell by 3000 sec."
+            },
+            "rank2": {
+              "spellId": 15317,
+              "description": "Improved Shadow Word: PainRank 2InstantIncreases the duration of your Shadow Word: Pain spell by 6000 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 6,
+          "treeIndex": 2,
+          "icon": "spell_shadow_burningspirit",
+          "ranks": 5,
+          "name": "Shadow Focus",
+          "description": [
+            "Shadow FocusInstantReduces your target's chance to resist your Shadow spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 6,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 2,
+          "col": 3,
+          "spellIds": {
+            "rank1": 15260,
+            "rank2": 15327,
+            "rank3": 15328,
+            "rank4": 15329,
+            "rank5": 15330
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 15260,
+              "description": "Shadow FocusRank 1InstantReduces your target's chance to resist your Shadow spells by 2%."
+            },
+            "rank2": {
+              "spellId": 15327,
+              "description": "Shadow FocusRank 2InstantReduces your target's chance to resist your Shadow spells by 4%."
+            },
+            "rank3": {
+              "spellId": 15328,
+              "description": "Shadow FocusRank 3InstantReduces your target's chance to resist your Shadow spells by 6%."
+            },
+            "rank4": {
+              "spellId": 15329,
+              "description": "Shadow FocusRank 4InstantReduces your target's chance to resist your Shadow spells by 8%."
+            },
+            "rank5": {
+              "spellId": 15330,
+              "description": "Shadow FocusRank 5InstantReduces your target's chance to resist your Shadow spells by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 8,
+          "treeIndex": 2,
+          "icon": "spell_shadow_psychicscream",
+          "ranks": 2,
+          "name": "Improved Psychic Scream",
+          "description": [
+            "Improved Psychic ScreamInstantReduces the cooldown of your Psychic Scream spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 8,
+                "values": [
+                  "2000",
+                  "4000"
+                ]
+              }
+            ],
+            " sec."
+          ],
+          "row": 3,
+          "col": 1,
+          "spellIds": {
+            "rank1": 15392,
+            "rank2": 15448
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 15392,
+              "description": "Improved Psychic ScreamRank 1InstantReduces the cooldown of your Psychic Scream spell by 2000 sec."
+            },
+            "rank2": {
+              "spellId": 15448,
+              "description": "Improved Psychic ScreamRank 2InstantReduces the cooldown of your Psychic Scream spell by 4000 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 9,
+          "treeIndex": 2,
+          "icon": "spell_shadow_unholyfrenzy",
+          "ranks": 5,
+          "name": "Improved Mind Blast",
+          "description": [
+            "Improved Mind BlastInstantReduces the cooldown of your Mind Blast spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 9,
+                "values": [
+                  "500",
+                  "1000",
+                  "1500",
+                  "2000",
+                  "2500"
+                ]
+              }
+            ],
+            " sec."
+          ],
+          "row": 3,
+          "col": 2,
+          "spellIds": {
+            "rank1": 15273,
+            "rank2": 15312,
+            "rank3": 15313,
+            "rank4": 15314,
+            "rank5": 15316
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 15273,
+              "description": "Improved Mind BlastRank 1InstantReduces the cooldown of your Mind Blast spell by 500 sec."
+            },
+            "rank2": {
+              "spellId": 15312,
+              "description": "Improved Mind BlastRank 2InstantReduces the cooldown of your Mind Blast spell by 1000 sec."
+            },
+            "rank3": {
+              "spellId": 15313,
+              "description": "Improved Mind BlastRank 3InstantReduces the cooldown of your Mind Blast spell by 1500 sec."
+            },
+            "rank4": {
+              "spellId": 15314,
+              "description": "Improved Mind BlastRank 4InstantReduces the cooldown of your Mind Blast spell by 2000 sec."
+            },
+            "rank5": {
+              "spellId": 15316,
+              "description": "Improved Mind BlastRank 5InstantReduces the cooldown of your Mind Blast spell by 2500 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 10,
+          "treeIndex": 2,
+          "icon": "spell_shadow_siphonmana",
+          "ranks": 1,
+          "name": "Mind Flay",
+          "description": "Mind Flay mana20 yd rangeChanneledAssault the target's mind with Shadow energy, causing 75 Shadow damage over 3 sec and slowing their movement speed by 50%.",
+          "row": 3,
+          "col": 3,
+          "spellIds": {
+            "rank1": 15407
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 15407,
+              "description": "Mind FlayRank 145 mana20 yd rangeChanneledAssault the target's mind with Shadow energy, causing 75 Shadow damage over 3 sec and slowing their movement speed by 50%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 11,
+          "treeIndex": 2,
+          "icon": "spell_shadow_manaburn",
+          "ranks": 2,
+          "name": "Improved Mana Burn",
+          "row": 3,
+          "col": 4,
+          "spellIds": {
+            "rank1": 14750,
+            "rank2": 14772
+          },
+          "description": [
+            "Improved Mana BurnInstantReduces the casting time of your Mana Burn spell by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 11,
+                "values": [
+                  "0.25",
+                  "500"
+                ]
+              }
+            ],
+            " secs."
+          ],
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 14750,
+              "description": "Improved Mana BurnRank 1InstantReduces the casting time of your Mana Burn spell by 0.25 secs."
+            },
+            "rank2": {
+              "spellId": 14772,
+              "description": "Improved Mana BurnRank 2InstantReduces the casting time of your Mana Burn spell by 500 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 13,
+          "treeIndex": 2,
+          "icon": "spell_magic_lesserinvisibilty",
+          "ranks": 2,
+          "name": "Improved Fade",
+          "description": [
+            "Improved FadeInstantDecreases the cooldown of your Fade ability by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 13,
+                "values": [
+                  "3000",
+                  "6000"
+                ]
+              }
+            ],
+            " sec."
+          ],
+          "row": 4,
+          "col": 2,
+          "spellIds": {
+            "rank1": 15274,
+            "rank2": 15311
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 15274,
+              "description": "Improved FadeRank 1InstantDecreases the cooldown of your Fade ability by 3000 sec."
+            },
+            "rank2": {
+              "spellId": 15311,
+              "description": "Improved FadeRank 2InstantDecreases the cooldown of your Fade ability by 6000 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 14,
+          "treeIndex": 2,
+          "icon": "spell_shadow_chilltouch",
+          "ranks": 3,
+          "name": "Shadow Reach",
+          "description": [
+            "Shadow ReachInstantIncreases the range of your Shadow damage spells by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 14,
+                "values": [
+                  "6",
+                  "13",
+                  "20"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 4,
+          "col": 3,
+          "spellIds": {
+            "rank1": 17322,
+            "rank2": 17323,
+            "rank3": 17325
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 17322,
+              "description": "Shadow ReachRank 1InstantIncreases the range of your Shadow damage spells by 6%."
+            },
+            "rank2": {
+              "spellId": 17323,
+              "description": "Shadow ReachRank 2InstantIncreases the range of your Shadow damage spells by 13%."
+            },
+            "rank3": {
+              "spellId": 17325,
+              "description": "Shadow ReachRank 3InstantIncreases the range of your Shadow damage spells by 20%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 15,
+          "treeIndex": 2,
+          "icon": "spell_shadow_blackplague",
+          "ranks": 5,
+          "name": "Shadow Weaving",
+          "description": [
+            "Shadow WeavingInstantYour Shadow damage spells have a ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 15,
+                "values": [
+                  "20",
+                  "40",
+                  "60",
+                  "80",
+                  "100"
+                ]
+              }
+            ],
+            "% chance to cause your target to be vulnerable to Shadow damage. This vulnerability increases the Shadow damage dealt to your target by 3% and lasts 15 sec. Stacks up to 15001 times."
+          ],
+          "row": 4,
+          "col": 4,
+          "spellIds": {
+            "rank1": 15257,
+            "rank2": 15331,
+            "rank3": 15332,
+            "rank4": 15333,
+            "rank5": 15334
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 15257,
+              "description": "Shadow WeavingRank 1InstantYour Shadow damage spells have a 20% chance to cause your target to be vulnerable to Shadow damage.  This vulnerability increases the Shadow damage dealt to your target by 3% and lasts 15 sec.  Stacks up to 15001 times."
+            },
+            "rank2": {
+              "spellId": 15331,
+              "description": "Shadow WeavingRank 2InstantYour Shadow damage spells have a 40% chance to cause your target to be vulnerable to Shadow damage.  This vulnerability increases the Shadow damage dealt to your target by 3% and lasts 15 sec.  Stacks up to 15001 times."
+            },
+            "rank3": {
+              "spellId": 15332,
+              "description": "Shadow WeavingRank 3InstantYour Shadow damage spells have a 60% chance to cause your target to be vulnerable to Shadow damage.  This vulnerability increases the Shadow damage dealt to your target by 3% and lasts 15 sec.  Stacks up to 15001 times."
+            },
+            "rank4": {
+              "spellId": 15333,
+              "description": "Shadow WeavingRank 4InstantYour Shadow damage spells have a 80% chance to cause your target to be vulnerable to Shadow damage.  This vulnerability increases the Shadow damage dealt to your target by 3% and lasts 15 sec.  Stacks up to 15001 times."
+            },
+            "rank5": {
+              "spellId": 15334,
+              "description": "Shadow WeavingRank 5InstantYour Shadow damage spells have a 100% chance to cause your target to be vulnerable to Shadow damage.  This vulnerability increases the Shadow damage dealt to your target by 3% and lasts 15 sec.  Stacks up to 15001 times."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 16,
+          "treeIndex": 2,
+          "icon": "spell_shadow_impphaseshift",
+          "ranks": 1,
+          "name": "Silence",
+          "description": "Silence225 mana20 yd rangeInstant45 sec cooldownSilences the target, preventing them from casting spells for 5 sec.",
+          "row": 5,
+          "col": 1,
+          "requires": 8,
+          "reqRanks": 2,
+          "spellIds": {
+            "rank1": 15487
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 15487,
+              "description": "Silence225 mana20 yd rangeInstant45 sec cooldownSilences the target, preventing them from casting spells for 5 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 17,
+          "treeIndex": 2,
+          "icon": "spell_shadow_unsummonbuilding",
+          "ranks": 1,
+          "name": "Vampiric Embrace",
+          "description": "Vampiric Embrace40 mana30 yd rangeInstant10 sec cooldownAfflicts your target with Shadow energy that causes all party members to be healed for 20% of any Shadow spell damage you deal for 60 sec.",
+          "row": 5,
+          "col": 2,
+          "spellIds": {
+            "rank1": 15286
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 15286,
+              "description": "Vampiric Embrace40 mana30 yd rangeInstant10 sec cooldownAfflicts your target with Shadow energy that causes all party members to be healed for 20% of any Shadow spell damage you deal for 60 sec."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 18,
+          "treeIndex": 2,
+          "icon": "spell_shadow_improvedvampiricembrace",
+          "ranks": 2,
+          "name": "Vampiric Touch",
+          "description": [
+            "Vampiric TouchInstantIncreases the percentage healed by Vampiric Embrace by an additional ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 18,
+                "values": [
+                  "2",
+                  "5"
+                ]
+              }
+            ],
+            "% and your Vampiric Embrace now causes all party members to also gain mana equal to ",
+            [
+              "$",
+              "$L22",
+              "2",
+              {
+                "tree": 2,
+                "talent": 18,
+                "values": [
+                  "1",
+                  "2"
+                ]
+              }
+            ],
+            "% of any Shadow spell damage you deal."
+          ],
+          "row": 5,
+          "col": 3,
+          "requires": 17,
+          "reqRanks": 1,
+          "spellIds": {
+            "rank1": 45557,
+            "rank2": 45558
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 45557,
+              "description": "Vampiric TouchRank 1InstantIncreases the percentage healed by Vampiric Embrace by an additional 2% and your Vampiric Embrace now causes all party members to also gain mana equal to 1% of any Shadow spell damage you deal."
+            },
+            "rank2": {
+              "spellId": 45558,
+              "description": "Vampiric TouchRank 2InstantIncreases the percentage healed by Vampiric Embrace by an additional 5% and your Vampiric Embrace now causes all party members to also gain mana equal to 2% of any Shadow spell damage you deal."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 22,
+          "treeIndex": 2,
+          "icon": "spell_shadow_twilight",
+          "ranks": 5,
+          "name": "Darkness",
+          "description": [
+            "DarknessInstantIncreases your Shadow spell damage by ",
+            [
+              "$",
+              "$L22",
+              "1",
+              {
+                "tree": 2,
+                "talent": 22,
+                "values": [
+                  "2",
+                  "4",
+                  "6",
+                  "8",
+                  "10"
+                ]
+              }
+            ],
+            "%."
+          ],
+          "row": 6,
+          "col": 3,
+          "spellIds": {
+            "rank1": 15259,
+            "rank2": 15307,
+            "rank3": 15308,
+            "rank4": 15309,
+            "rank5": 15310
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 15259,
+              "description": "DarknessRank 1InstantIncreases your Shadow spell damage by 2%."
+            },
+            "rank2": {
+              "spellId": 15307,
+              "description": "DarknessRank 2InstantIncreases your Shadow spell damage by 4%."
+            },
+            "rank3": {
+              "spellId": 15308,
+              "description": "DarknessRank 3InstantIncreases your Shadow spell damage by 6%."
+            },
+            "rank4": {
+              "spellId": 15309,
+              "description": "DarknessRank 4InstantIncreases your Shadow spell damage by 8%."
+            },
+            "rank5": {
+              "spellId": 15310,
+              "description": "DarknessRank 5InstantIncreases your Shadow spell damage by 10%."
+            }
+          },
+          "spellMatchMethod": "auto"
+        },
+        {
+          "id": 25,
+          "treeIndex": 2,
+          "icon": "spell_shadow_shadowform",
+          "ranks": 1,
+          "name": "Shadowform",
+          "description": "Shadowform40% of base manaInstantAssume a Shadowform, increasing your Shadow damage by 15% and reducing Physical damage done to you by 15%. However, you may not cast Holy spells with the exception of Holy Nova while in this form.",
+          "row": 7,
+          "col": 2,
+          "requires": 17,
+          "reqRanks": 1,
+          "spellIds": {
+            "rank1": 15473
+          },
+          "rankDescriptions": {
+            "rank1": {
+              "spellId": 15473,
+              "description": "Shadowform40% of base manaInstantAssume a Shadowform, increasing your Shadow damage by 15% and reducing Physical damage done to you by 15%.  However, you may not cast Holy spells with the exception of Holy Nova while in this form."
+            }
+          },
+          "spellMatchMethod": "auto"
+        }
+      ]
+    }
+  ]
+}

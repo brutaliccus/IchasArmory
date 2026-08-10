@@ -1,0 +1,6283 @@
+[
+  {
+    "id": 744,
+    "name": "Thunderbrew's Boot Flask",
+    "quality": 2,
+    "icon": "INV_Drink_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Deals 50 Fire damage every 1 sec for 5 sec to all enemies in front of you. Gets you quite drunk too!"
+    ]
+  },
+  {
+    "id": 833,
+    "name": "Lifestone",
+    "quality": 4,
+    "icon": "INV_Ore_TrueSilver_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "Requires Level 51",
+      "Use:",
+      "Restores 300 to 701 health.",
+      "Equip:",
+      "Restores 15 health per 5 sec."
+    ]
+  },
+  {
+    "id": 1187,
+    "name": "Spiked Collar",
+    "quality": 2,
+    "icon": "INV_Helmet_07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 20",
+      "Use:",
+      "Summons a guardian felhunter that will protect you for 3600 sec."
+    ]
+  },
+  {
+    "id": 1404,
+    "name": "Tidal Charm",
+    "quality": 2,
+    "icon": "INV_Misc_Rune_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 36",
+      "Use:",
+      "Stuns target for 3 sec."
+    ]
+  },
+  {
+    "id": 1490,
+    "name": "Guardian Talisman",
+    "quality": 2,
+    "icon": "INV_Jewelry_Talisman_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Equip:",
+      "Have a 2% chance when struck in combat of increasing armor by 350 for 15 sec."
+    ]
+  },
+  {
+    "id": 1713,
+    "name": "Ankh of Life",
+    "quality": 3,
+    "icon": "Spell_Holy_PrayerOfHealing02",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "Requires Level 40",
+      "Use:",
+      "Heal your target for 135 to 166."
+    ]
+  },
+  {
+    "id": 2802,
+    "name": "Blazing Emblem",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "+15 Fire Resistance",
+      "Requires Level 38",
+      "Use:",
+      "Increases Fire resistance by 50 and reduces all Fire damage taken by up to 25 for 15 sec."
+    ]
+  },
+  {
+    "id": 2820,
+    "name": "Nifty Stopwatch",
+    "quality": 2,
+    "icon": "INV_Misc_PocketWatch_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Increases run speed by 40% for 10 sec."
+    ]
+  },
+  {
+    "id": 2919,
+    "name": "Relic of the Ancients",
+    "quality": 1,
+    "icon": "INV_Jewelry_Talisman_05",
+    "tooltip_lines_raw": [
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 25"
+    ]
+  },
+  {
+    "id": 2920,
+    "name": "Sacred Relic",
+    "quality": 1,
+    "icon": "INV_Misc_Candle_01",
+    "tooltip_lines_raw": [
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 5"
+    ]
+  },
+  {
+    "id": 2921,
+    "name": "Blessed Relic",
+    "quality": 1,
+    "icon": "INV_Misc_Rune_01",
+    "tooltip_lines_raw": [
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 10"
+    ]
+  },
+  {
+    "id": 2922,
+    "name": "Spirit Relic",
+    "quality": 1,
+    "icon": "INV_Misc_Orb_01",
+    "tooltip_lines_raw": [
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 15"
+    ]
+  },
+  {
+    "id": 2923,
+    "name": "Relic of Righteousness",
+    "quality": 1,
+    "icon": "INV_Jewelry_Talisman_01",
+    "tooltip_lines_raw": [
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 20"
+    ]
+  },
+  {
+    "id": 3002,
+    "name": "Relic Horn of Justice",
+    "quality": 1,
+    "icon": "INV_Misc_Horn_03",
+    "tooltip_lines_raw": [
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 25"
+    ]
+  },
+  {
+    "id": 3003,
+    "name": "Relic of the Eye",
+    "quality": 1,
+    "icon": "INV_Misc_Eye_01",
+    "tooltip_lines_raw": [
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 5"
+    ]
+  },
+  {
+    "id": 3004,
+    "name": "Relic of the Dead",
+    "quality": 1,
+    "icon": "INV_Misc_Urn_01",
+    "tooltip_lines_raw": [
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 10"
+    ]
+  },
+  {
+    "id": 3005,
+    "name": "Relic of Truth",
+    "quality": 1,
+    "icon": "INV_Jewelry_Talisman_02",
+    "tooltip_lines_raw": [
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 15"
+    ]
+  },
+  {
+    "id": 3006,
+    "name": "Holy Relic Shard",
+    "quality": 1,
+    "icon": "INV_Misc_Gem_Diamond_02",
+    "tooltip_lines_raw": [
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 20"
+    ]
+  },
+  {
+    "id": 3456,
+    "name": "Dog Whistle",
+    "quality": 3,
+    "icon": "Ability_Hunter_BeastCall",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 25",
+      "Use:",
+      "Summons a tracking hound that will protect you for 600 sec."
+    ]
+  },
+  {
+    "id": 3788,
+    "name": "Soul Crystal Relic",
+    "quality": 1,
+    "icon": "INV_Misc_Gem_Crystal_01",
+    "tooltip_lines_raw": [
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 35"
+    ]
+  },
+  {
+    "id": 3789,
+    "name": "Relic Stone of Piety",
+    "quality": 1,
+    "icon": "INV_Misc_Orb_03",
+    "tooltip_lines_raw": [
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 30"
+    ]
+  },
+  {
+    "id": 3790,
+    "name": "Consecrated Relic Parchment",
+    "quality": 1,
+    "icon": "INV_Scroll_02",
+    "tooltip_lines_raw": [
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 30"
+    ]
+  },
+  {
+    "id": 3791,
+    "name": "Relic of the Light",
+    "quality": 1,
+    "icon": "INV_Misc_Lantern_01",
+    "tooltip_lines_raw": [
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 35"
+    ]
+  },
+  {
+    "id": 4030,
+    "name": "Holy Relic Water",
+    "quality": 1,
+    "icon": "INV_Potion_01",
+    "tooltip_lines_raw": [
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 40"
+    ]
+  },
+  {
+    "id": 4031,
+    "name": "Hallowed Relic Charm",
+    "quality": 1,
+    "icon": "INV_Jewelry_Talisman_06",
+    "tooltip_lines_raw": [
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 40"
+    ]
+  },
+  {
+    "id": 4032,
+    "name": "Radiant Relic Hammer",
+    "quality": 1,
+    "icon": "INV_Hammer_02",
+    "tooltip_lines_raw": [
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 45"
+    ]
+  },
+  {
+    "id": 4033,
+    "name": "Dawn's Glow",
+    "quality": 1,
+    "icon": "INV_Misc_Gem_Opal_01",
+    "tooltip_lines_raw": [
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 45"
+    ]
+  },
+  {
+    "id": 4130,
+    "name": "Smotts' Compass",
+    "quality": 2,
+    "icon": "INV_Misc_PocketWatch_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%."
+    ]
+  },
+  {
+    "id": 4381,
+    "name": "Minor Recombobulator",
+    "quality": 2,
+    "icon": "INV_Gizmo_07",
+    "tooltip_lines_raw": [
+      "Trinket",
+      "Requires Engineering (140)",
+      "Use:",
+      "Dispels Polymorph effects on a friendly target.  Also restores 150 to 251 health and mana."
+    ]
+  },
+  {
+    "id": 4396,
+    "name": "Mechanical Dragonling",
+    "quality": 1,
+    "icon": "INV_Misc_Head_Dragon_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "Requires Level 30",
+      "Requires Engineering (200)",
+      "Use:",
+      "Activates your Mechanical Dragonling to fight for you for 60 sec.  It requires an hour to cool down before it can be used again."
+    ]
+  },
+  {
+    "id": 4397,
+    "name": "Gnomish Cloaking Device",
+    "quality": 1,
+    "icon": "INV_Gizmo_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "Requires Engineering (200)",
+      "Use:",
+      "Gives invisibility for 10 sec.  It can only be used every 60 minutes."
+    ]
+  },
+  {
+    "id": 5079,
+    "name": "Cold Basilisk Eye",
+    "quality": 2,
+    "icon": "INV_Misc_Eye_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "Requires Level 35",
+      "Use:",
+      "Increases time between target's attacks by 5% for 15 sec."
+    ]
+  },
+  {
+    "id": 5218,
+    "name": "Cleansed Timberling Heart",
+    "quality": 2,
+    "icon": "INV_Misc_Organ_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Use:",
+      "Summons a Timberling to protect you for 1200 sec."
+    ]
+  },
+  {
+    "id": 5332,
+    "name": "Glowing Cat Figurine",
+    "quality": 2,
+    "icon": "INV_Misc_Head_Tiger_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 20",
+      "Use:",
+      "Summons a Ghost Saber to fight for you for 600 sec."
+    ]
+  },
+  {
+    "id": 7148,
+    "name": "Goblin Jumper Cables",
+    "quality": 1,
+    "icon": "INV_Misc_EngGizmos_10",
+    "tooltip_lines_raw": [
+      "Trinket",
+      "Requires Engineering (165)",
+      "Use:",
+      "Jumper Cables will sometimes be able to shock a dead player back to life.  Cannot be used when in combat."
+    ]
+  },
+  {
+    "id": 7506,
+    "name": "Gnomish Universal Remote",
+    "quality": 2,
+    "icon": "INV_Misc_PocketWatch_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "Requires Engineering (125)",
+      "Use:",
+      "Allows control of a mechanical target for a short time.  It may not always work and may just root the machine or make it very very angry.  Gnomish engineering at its finest."
+    ]
+  },
+  {
+    "id": 7734,
+    "name": "Six Demon Bag",
+    "quality": 3,
+    "icon": "INV_Misc_Bag_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "Requires Level 46",
+      "Use:",
+      "Blasts enemies in front of you with the power of wind, fire, all that kind of thing!"
+    ]
+  },
+  {
+    "id": 10455,
+    "name": "Chained Essence of Eranikus",
+    "quality": 2,
+    "icon": "INV_Stone_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Poisons all enemies in an 8 yard radius around the caster.  Victims of the poison suffer 50 Nature damage every 5 sec for 45 sec."
+    ]
+  },
+  {
+    "id": 10576,
+    "name": "Mithril Mechanical Dragonling",
+    "quality": 1,
+    "icon": "INV_Misc_Head_Dragon_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "Requires Level 40",
+      "Requires Engineering (250)",
+      "Use:",
+      "Activates your Mithril Mechanical Dragonling to fight for you for 60 sec.  It requires an hour to cool down before it can be used again."
+    ]
+  },
+  {
+    "id": 10577,
+    "name": "Goblin Mortar",
+    "quality": 1,
+    "icon": "INV_Musket_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "Requires Engineering (205)",
+      "Use:",
+      "Inflicts 383 to 518 Fire damage and stuns the targets in a 5 yard radius for 3 sec."
+    ]
+  },
+  {
+    "id": 10587,
+    "name": "Goblin Bomb Dispenser",
+    "quality": 1,
+    "icon": "INV_Gizmo_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Engineering (230)",
+      "Use:",
+      "Creates a mobile bomb that charges the nearest enemy and explodes for 315 to 386 fire damage."
+    ]
+  },
+  {
+    "id": 10645,
+    "name": "Gnomish Death Ray",
+    "quality": 1,
+    "icon": "INV_Gizmo_08",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "The devices charges over time using your life force and then directs a burst of energy at your opponent.",
+      "\"Death or Serious Injury may result from use of this device.\""
+    ]
+  },
+  {
+    "id": 10659,
+    "name": "Shard of Afrasa",
+    "quality": 2,
+    "icon": "INV_Misc_Gem_Diamond_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Equip:",
+      "Restores 5 mana per 5 sec.",
+      "Equip:",
+      "Restores 5 health per 5 sec."
+    ]
+  },
+  {
+    "id": 10716,
+    "name": "Gnomish Shrink Ray",
+    "quality": 1,
+    "icon": "INV_Gizmo_09",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "Requires Engineering (205)",
+      "Use:",
+      "Shrinks the target reducing their attack power by 250.  Thats what it usually does anyway....."
+    ]
+  },
+  {
+    "id": 10720,
+    "name": "Gnomish Net-o-Matic Projector",
+    "quality": 1,
+    "icon": "INV_Misc_Net_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "Requires Engineering (210)",
+      "Use:",
+      "Captures the target in a net for 10 sec.  The net has a lot of hooks however and sometimes gets caught in the user's clothing when fired......"
+    ]
+  },
+  {
+    "id": 10723,
+    "name": "Gnomish Ham Radio",
+    "quality": 1,
+    "icon": "Spell_Holy_Dizzy",
+    "tooltip_lines_raw": [
+      "Trinket"
+    ]
+  },
+  {
+    "id": 10725,
+    "name": "Gnomish Battle Chicken",
+    "quality": 1,
+    "icon": "Spell_Magic_PolymorphChicken",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Engineering (230)",
+      "Use:",
+      "Creates a Battle Chicken that will fight for you for 90 sec or until it is destroyed."
+    ]
+  },
+  {
+    "id": 10727,
+    "name": "Goblin Dragon Gun",
+    "quality": 1,
+    "icon": "Spell_Fire_FlameBolt",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Deals 61 to 70 fire damage for 10 sec to all targets in a cone in front of the engineer using the weapon.   That is unless it explodes....."
+    ]
+  },
+  {
+    "id": 10779,
+    "name": "Demon's Blood",
+    "quality": 2,
+    "icon": "Spell_Shadow_LifeDrain",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Equip:",
+      "Increases Defense by 3, Shadow resistance by 10 and your normal health regeneration by 3."
+    ]
+  },
+  {
+    "id": 11122,
+    "name": "Carrot on a Stick",
+    "quality": 2,
+    "icon": "INV_Misc_Food_54",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Equip:",
+      "Increases mount speed by 3%."
+    ]
+  },
+  {
+    "id": 11302,
+    "name": "Uther's Strength",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_06",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "Requires Level 47",
+      "Equip:",
+      "Has a 2% chance when struck in combat of protecting you with a holy shield."
+    ]
+  },
+  {
+    "id": 11810,
+    "name": "Force of Will",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 55",
+      "Equip:",
+      "When struck in combat has a 1% chance of reducing all melee damage taken by 25 for 10 sec.",
+      "Equip:",
+      "Increased Defense +7."
+    ]
+  },
+  {
+    "id": 11811,
+    "name": "Smoking Heart of the Mountain",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Bloodstone_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "150 Armor",
+      "+7 Fire Resistance",
+      "+7 Nature Resistance",
+      "+7 Frost Resistance",
+      "+7 Shadow Resistance",
+      "Requires Level 50"
+    ]
+  },
+  {
+    "id": 11815,
+    "name": "Hand of Justice",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 53",
+      "Equip:",
+      "2% chance on melee hit to gain 1 extra attack.",
+      "Equip:",
+      "+20 Attack Power."
+    ]
+  },
+  {
+    "id": 11819,
+    "name": "Second Wind",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 54",
+      "Use:",
+      "Restores 30 mana every 1 sec for 10 sec.",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 22."
+    ]
+  },
+  {
+    "id": 11832,
+    "name": "Burst of Knowledge",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 53",
+      "Use:",
+      "Reduces mana cost of all spells by 100 for 10 sec.",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 12."
+    ]
+  },
+  {
+    "id": 11905,
+    "name": "Linken's Boomerang",
+    "quality": 2,
+    "icon": "INV_Weapon_ShortBlade_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Flings a magical boomerang towards target enemy dealing 113 to 188 damage and has a chance to stun or disarm them."
+    ]
+  },
+  {
+    "id": 12065,
+    "name": "Ward of the Elements",
+    "quality": 2,
+    "icon": "INV_Jewelry_Talisman_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+8 Fire Resistance",
+      "+8 Nature Resistance",
+      "+8 Frost Resistance",
+      "+8 Shadow Resistance",
+      "+8 Arcane Resistance"
+    ]
+  },
+  {
+    "id": 12805,
+    "name": "Orb of Fire",
+    "quality": 2,
+    "icon": "INV_Misc_Orb_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Equip:",
+      "Grants a chance on striking the enemy for 50 to 71 Fire damage."
+    ]
+  },
+  {
+    "id": 12846,
+    "name": "Argent Dawn Commission",
+    "quality": 1,
+    "icon": "INV_Jewelry_Talisman_07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "\"Equipping this badge is an indication of service to the Argent Dawn.\""
+    ]
+  },
+  {
+    "id": 12930,
+    "name": "Briarwood Reed",
+    "quality": 3,
+    "icon": "INV_Misc_Root_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 55",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 29."
+    ]
+  },
+  {
+    "id": 13164,
+    "name": "Heart of the Scale",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Bloodstone_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 56",
+      "Use:",
+      "Increases Fire Resistance by 20 and deals 20 Fire damage to anyone who strikes you with a melee attack for 300 sec."
+    ]
+  },
+  {
+    "id": 13171,
+    "name": "Smokey's Lighter",
+    "quality": 2,
+    "icon": "Spell_Fire_SearingTotem",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Deals 125 Fire damage to all targets in a cone in front of the caster."
+    ]
+  },
+  {
+    "id": 13209,
+    "name": "Seal of the Dawn",
+    "quality": 3,
+    "icon": "INV_Misc_ArmorKit_18",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Equip:",
+      "+81 Attack Power when fighting Undead.  It also allows the acquisition of Scourgestones on behalf of the Argent Dawn."
+    ]
+  },
+  {
+    "id": 13213,
+    "name": "Smolderweb's Eye",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Pearl_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 55",
+      "Use:",
+      "Poisons target for 20 Nature damage every 2 sec for 20 sec."
+    ]
+  },
+  {
+    "id": 13379,
+    "name": "Piccolo of the Flaming Fire",
+    "quality": 3,
+    "icon": "INV_Misc_Flute_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 53",
+      "Use:",
+      "Causes nearby players to dance."
+    ]
+  },
+  {
+    "id": 13382,
+    "name": "Cannonball Runner",
+    "quality": 3,
+    "icon": "INV_Misc_Bomb_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 56",
+      "Use:",
+      "Summons a cannon that will fire at enemies in front of it that are attacking you."
+    ]
+  },
+  {
+    "id": 13503,
+    "name": "Alchemists' Stone",
+    "quality": 4,
+    "icon": "INV_Misc_Orb_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Alchemy (300)",
+      "Equip:",
+      "Increases the effects that healing and mana potions have on the wearer by 33%.",
+      "Equip:",
+      "Restores 9 health per 5 sec."
+    ]
+  },
+  {
+    "id": 13515,
+    "name": "Ramstein's Lightning Bolts",
+    "quality": 3,
+    "icon": "INV_Misc_Gear_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 55",
+      "Use:",
+      "Harness the power of lightning to strike down all enemies around you for 200 Nature damage."
+    ]
+  },
+  {
+    "id": 13544,
+    "name": "Spectral Essence",
+    "quality": 2,
+    "icon": "INV_Misc_Orb_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "\"Allows communication with the deceased of Caer Darrow.\""
+    ]
+  },
+  {
+    "id": 13965,
+    "name": "Blackhand's Breadth",
+    "quality": 3,
+    "icon": "INV_Misc_ArmorKit_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Equip:",
+      "Improves your chance to get a critical strike by 2%."
+    ]
+  },
+  {
+    "id": 13966,
+    "name": "Mark of Tyranny",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "180 Armor",
+      "+10 Arcane Resistance",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%."
+    ]
+  },
+  {
+    "id": 13968,
+    "name": "Eye of the Beast",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_08",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 2%."
+    ]
+  },
+  {
+    "id": 14022,
+    "name": "Barov Peasant Caller",
+    "quality": 3,
+    "icon": "INV_Misc_Bell_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Calls forth 3 servants of the House Barov that will fight, cook, and clean for you."
+    ]
+  },
+  {
+    "id": 14023,
+    "name": "Barov Peasant Caller",
+    "quality": 3,
+    "icon": "INV_Misc_Bell_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Calls forth 3 servants of the House Barov that will fight, cook, and clean for you."
+    ]
+  },
+  {
+    "id": 14557,
+    "name": "The Lion Horn of Stormwind",
+    "quality": 4,
+    "icon": "INV_Misc_Horn_03",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "Requires Level 58",
+      "Equip:",
+      "When struck in combat, gives a chance to increase all party members' attack and casting speed by 5% for 30 sec."
+    ]
+  },
+  {
+    "id": 15778,
+    "name": "Mechanical Yeti",
+    "quality": 2,
+    "icon": "Ability_Hunter_Pet_Gorilla",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Summons a mechanical yeti that will protect you for 600 sec."
+    ]
+  },
+  {
+    "id": 15867,
+    "name": "Prismcharm",
+    "quality": 2,
+    "icon": "INV_Misc_Gem_Variety_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Increases all resistances by 20 for 30 sec."
+    ]
+  },
+  {
+    "id": 15873,
+    "name": "Ragged John's Neverending Cup",
+    "quality": 3,
+    "icon": "INV_Drink_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Increases Stamina by 10 and reduces physical damage taken by 5 for 600 sec. However, lowers Strength and Agility by 5 and increases magical damage taken by up to 20."
+    ]
+  },
+  {
+    "id": 16022,
+    "name": "Arcanite Dragonling",
+    "quality": 3,
+    "icon": "INV_Misc_Head_Dragon_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "Requires Level 50",
+      "Requires Engineering (300)",
+      "Use:",
+      "Activates your Arcanite Dragonling to fight for you for 60 sec.  It requires an hour to cool down before it can be used again."
+    ]
+  },
+  {
+    "id": 17064,
+    "name": "Shard of the Scale",
+    "quality": 4,
+    "icon": "INV_Misc_MonsterScales_15",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+16 Intellect",
+      "Requires Level 60",
+      "Equip:",
+      "Restores 16 mana per 5 sec.",
+      "Shard of the Gods",
+      "(0/2)",
+      "Shard of the Flame",
+      "Shard of the Scale",
+      "(2) Set:",
+      "+10 All Resistances.",
+      "(2) Set:",
+      "Restores 8 mana per 5 sec.",
+      "(2) Set:",
+      "Restores 8 health per 5 sec."
+    ]
+  },
+  {
+    "id": 17082,
+    "name": "Shard of the Flame",
+    "quality": 4,
+    "icon": "INV_Misc_Orb_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+16 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Restores 16 health per 5 sec.",
+      "Shard of the Gods",
+      "(0/2)",
+      "Shard of the Flame",
+      "Shard of the Scale",
+      "(2) Set:",
+      "+10 All Resistances.",
+      "(2) Set:",
+      "Restores 8 mana per 5 sec.",
+      "(2) Set:",
+      "Restores 8 health per 5 sec."
+    ]
+  },
+  {
+    "id": 17690,
+    "name": "Frostwolf Insignia Rank 1",
+    "quality": 2,
+    "icon": "INV_Jewelry_FrostwolfTrinket_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+5 Frost Resistance",
+      "Use:",
+      "Returns you to the sanctuary of Frostwolf Keep."
+    ]
+  },
+  {
+    "id": 17691,
+    "name": "Stormpike Insignia Rank 1",
+    "quality": 2,
+    "icon": "INV_Jewelry_StormPikeTrinket_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+5 Frost Resistance",
+      "Use:",
+      "Returns you to the sanctuary of Dun Baldar."
+    ]
+  },
+  {
+    "id": 17744,
+    "name": "Heart of Noxxion",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Pearl_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+10 Nature Resistance",
+      "Requires Level 46",
+      "Use:",
+      "Removes 1 poison effect."
+    ]
+  },
+  {
+    "id": 17759,
+    "name": "Mark of Resolution",
+    "quality": 2,
+    "icon": "INV_Jewelry_Talisman_07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Absorbs 350 to 651 physical damage.  Lasts 10 sec.",
+      "Equip:",
+      "Increases your chance to resist Stun and Fear effects by 1%."
+    ]
+  },
+  {
+    "id": 17774,
+    "name": "Mark of the Chosen",
+    "quality": 2,
+    "icon": "INV_Jewelry_Talisman_08",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Equip:",
+      "Has a 2% chance when struck in combat of increasing all stats by 25 for 60 sec."
+    ]
+  },
+  {
+    "id": 17900,
+    "name": "Stormpike Insignia Rank 2",
+    "quality": 2,
+    "icon": "INV_Jewelry_StormPikeTrinket_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+5 Frost Resistance",
+      "Equip:",
+      "Restores 2 health per 5 sec.",
+      "Use:",
+      "Returns you to the sanctuary of Dun Baldar."
+    ]
+  },
+  {
+    "id": 17901,
+    "name": "Stormpike Insignia Rank 3",
+    "quality": 2,
+    "icon": "INV_Jewelry_StormPikeTrinket_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+5 Frost Resistance",
+      "Equip:",
+      "Restores 2 health per 5 sec.",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%.",
+      "Use:",
+      "Returns you to the sanctuary of Dun Baldar."
+    ]
+  },
+  {
+    "id": 17902,
+    "name": "Stormpike Insignia Rank 4",
+    "quality": 3,
+    "icon": "INV_Jewelry_StormPikeTrinket_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+8 Frost Resistance",
+      "Equip:",
+      "Restores 5 health per 5 sec.",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%.",
+      "Use:",
+      "Returns you to the sanctuary of Dun Baldar."
+    ]
+  },
+  {
+    "id": 17903,
+    "name": "Stormpike Insignia Rank 5",
+    "quality": 3,
+    "icon": "INV_Jewelry_StormPikeTrinket_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Frost Resistance",
+      "Equip:",
+      "Restores 7 health per 5 sec.",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%.",
+      "Use:",
+      "Returns you to the sanctuary of Dun Baldar."
+    ]
+  },
+  {
+    "id": 17904,
+    "name": "Stormpike Insignia Rank 6",
+    "quality": 4,
+    "icon": "INV_Jewelry_StormPikeTrinket_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Frost Resistance",
+      "Equip:",
+      "Restores 8 health per 5 sec.",
+      "Equip:",
+      "Increases your chance to dodge an attack by 2%.",
+      "Use:",
+      "Returns you to the sanctuary of Dun Baldar.",
+      "\"The Eye of Command\""
+    ]
+  },
+  {
+    "id": 17905,
+    "name": "Frostwolf Insignia Rank 2",
+    "quality": 2,
+    "icon": "INV_Jewelry_FrostwolfTrinket_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+5 Frost Resistance",
+      "Equip:",
+      "Restores 2 health per 5 sec.",
+      "Use:",
+      "Returns you to the sanctuary of Frostwolf Keep."
+    ]
+  },
+  {
+    "id": 17906,
+    "name": "Frostwolf Insignia Rank 3",
+    "quality": 2,
+    "icon": "INV_Jewelry_FrostwolfTrinket_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+5 Frost Resistance",
+      "Equip:",
+      "Restores 2 health per 5 sec.",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%.",
+      "Use:",
+      "Returns you to the sanctuary of Frostwolf Keep."
+    ]
+  },
+  {
+    "id": 17907,
+    "name": "Frostwolf Insignia Rank 4",
+    "quality": 3,
+    "icon": "INV_Jewelry_FrostwolfTrinket_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+8 Frost Resistance",
+      "Equip:",
+      "Restores 5 health per 5 sec.",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%.",
+      "Use:",
+      "Returns you to the sanctuary of Frostwolf Keep."
+    ]
+  },
+  {
+    "id": 17908,
+    "name": "Frostwolf Insignia Rank 5",
+    "quality": 3,
+    "icon": "INV_Jewelry_FrostwolfTrinket_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Frost Resistance",
+      "Equip:",
+      "Restores 7 health per 5 sec.",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%.",
+      "Use:",
+      "Returns you to the sanctuary of Frostwolf Keep."
+    ]
+  },
+  {
+    "id": 17909,
+    "name": "Frostwolf Insignia Rank 6",
+    "quality": 4,
+    "icon": "INV_Jewelry_FrostwolfTrinket_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Frost Resistance",
+      "Equip:",
+      "Restores 8 health per 5 sec.",
+      "Equip:",
+      "Increases your chance to dodge an attack by 2%.",
+      "Use:",
+      "Returns you to the sanctuary of Frostwolf Keep.",
+      "\"The Eye of Command\""
+    ]
+  },
+  {
+    "id": 18354,
+    "name": "Pimgib's Collar",
+    "quality": 3,
+    "icon": "INV_Jewelry_Amulet_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Warlock",
+      "Requires Level 55",
+      "Equip:",
+      "Increases the damage of your Imp's Firebolt spell by 8."
+    ]
+  },
+  {
+    "id": 18355,
+    "name": "Ferra's Collar",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Hunter",
+      "Requires Level 55",
+      "Equip:",
+      "Increases damage dealt by your pet by 4%."
+    ]
+  },
+  {
+    "id": 18370,
+    "name": "Vigilance Charm",
+    "quality": 3,
+    "icon": "INV_Misc_StoneTablet_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 57",
+      "Equip:",
+      "Increases your chance to dodge an attack by 2%."
+    ]
+  },
+  {
+    "id": 18371,
+    "name": "Mindtap Talisman",
+    "quality": 3,
+    "icon": "INV_Battery_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 56",
+      "Equip:",
+      "Restores 11 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 18406,
+    "name": "Onyxia Blood Talisman",
+    "quality": 4,
+    "icon": "Spell_Shadow_LifeDrain",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+15 Fire Resistance",
+      "Equip:",
+      "Increases your chance to parry an attack by 2%.",
+      "Equip:",
+      "Increased Defense +7.",
+      "Equip:",
+      "Restores 7 health per 5 sec."
+    ]
+  },
+  {
+    "id": 18438,
+    "name": "Sergeant's Mark",
+    "quality": 3,
+    "icon": "INV_Shield_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 35",
+      "Use:",
+      "Removes one Fear, Polymorph, or Sleep effect."
+    ]
+  },
+  {
+    "id": 18465,
+    "name": "Royal Seal of Eldre'Thalas",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Fire Resistance",
+      "Classes: Rogue",
+      "Equip:",
+      "Improves your chance to hit by 2%.",
+      "\"Blessed by the Shen'dralar Ancients.\""
+    ]
+  },
+  {
+    "id": 18466,
+    "name": "Royal Seal of Eldre'Thalas",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Fire Resistance",
+      "Classes: Warrior",
+      "Equip:",
+      "Increased Defense +8.",
+      "Equip:",
+      "+30 Attack Power.",
+      "\"Blessed by the Shen'dralar Ancients.\""
+    ]
+  },
+  {
+    "id": 18467,
+    "name": "Royal Seal of Eldre'Thalas",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Fire Resistance",
+      "Classes: Warlock",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 23.",
+      "\"Blessed by the Shen'dralar Ancients.\""
+    ]
+  },
+  {
+    "id": 18468,
+    "name": "Royal Seal of Eldre'Thalas",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Fire Resistance",
+      "Classes: Mage",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 23.",
+      "\"Blessed by the Shen'dralar Ancients.\""
+    ]
+  },
+  {
+    "id": 18469,
+    "name": "Royal Seal of Eldre'Thalas",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Fire Resistance",
+      "Classes: Priest",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 18.",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 15.",
+      "Equip:",
+      "Restores 4 mana per 5 sec.",
+      "\"Blessed by the Shen'dralar Ancients.\""
+    ]
+  },
+  {
+    "id": 18470,
+    "name": "Royal Seal of Eldre'Thalas",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Fire Resistance",
+      "Classes: Druid",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 23.",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 22.",
+      "\"Blessed by the Shen'dralar Ancients.\""
+    ]
+  },
+  {
+    "id": 18471,
+    "name": "Royal Seal of Eldre'Thalas",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Fire Resistance",
+      "Classes: Shaman",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 23.",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 22.",
+      "\"Blessed by the Shen'dralar Ancients.\""
+    ]
+  },
+  {
+    "id": 18472,
+    "name": "Royal Seal of Eldre'Thalas",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Fire Resistance",
+      "Classes: Paladin",
+      "Equip:",
+      "Increased Defense +8.",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 18.",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 15.",
+      "\"Blessed by the Shen'dralar Ancients.\""
+    ]
+  },
+  {
+    "id": 18473,
+    "name": "Royal Seal of Eldre'Thalas",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Fire Resistance",
+      "Classes: Hunter",
+      "Equip:",
+      "+38 Attack Power.",
+      "Equip:",
+      "+10 ranged Attack Power.",
+      "\"Blessed by the Shen'dralar Ancients.\""
+    ]
+  },
+  {
+    "id": 18537,
+    "name": "Counterattack Lodestone",
+    "quality": 3,
+    "icon": "INV_Stone_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 58",
+      "Equip:",
+      "Increases your chance to parry an attack by 1%.",
+      "Equip:",
+      "+34 Attack Power."
+    ]
+  },
+  {
+    "id": 18587,
+    "name": "Goblin Jumper Cables XL",
+    "quality": 1,
+    "icon": "INV_Misc_EngGizmos_11",
+    "tooltip_lines_raw": [
+      "Trinket",
+      "Requires Engineering (265)",
+      "Use:",
+      "Jumper Cables will sometimes be able to shock a dead player back to life.  Cannot be used when in combat."
+    ]
+  },
+  {
+    "id": 18634,
+    "name": "Gyrofreeze Ice Reflector",
+    "quality": 3,
+    "icon": "INV_Misc_EngGizmos_02",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "+15 Frost Resistance",
+      "Requires Level 47",
+      "Requires Engineering (260)",
+      "Use:",
+      "Reflects Frost spells back at their caster for 5 sec."
+    ]
+  },
+  {
+    "id": 18637,
+    "name": "Major Recombobulator",
+    "quality": 2,
+    "icon": "INV_Misc_EngGizmos_09",
+    "tooltip_lines_raw": [
+      "Trinket",
+      "Requires Engineering (275)",
+      "Use:",
+      "Dispels Polymorph effects on a friendly target.  Also restores 375 to 626 health and mana."
+    ]
+  },
+  {
+    "id": 18638,
+    "name": "Hyper-Radiant Flame Reflector",
+    "quality": 3,
+    "icon": "INV_Misc_EngGizmos_04",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "+18 Fire Resistance",
+      "Requires Level 53",
+      "Requires Engineering (290)",
+      "Use:",
+      "Reflects Fire spells back at their caster for 5 sec."
+    ]
+  },
+  {
+    "id": 18639,
+    "name": "Ultra-Flash Shadow Reflector",
+    "quality": 3,
+    "icon": "INV_Misc_EngGizmos_16",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "+20 Shadow Resistance",
+      "Requires Level 55",
+      "Requires Engineering (300)",
+      "Use:",
+      "Reflects Shadow spells back at their caster for 5 sec."
+    ]
+  },
+  {
+    "id": 18646,
+    "name": "The Eye of Divinity",
+    "quality": 4,
+    "icon": "Spell_Holy_MindSooth",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 60",
+      "\"You can see movement when you peer into the Eye.\""
+    ]
+  },
+  {
+    "id": 18665,
+    "name": "The Eye of Shadow",
+    "quality": 4,
+    "icon": "Spell_Shadow_UnholyFrenzy",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "\"Seething darkness engulfs the eye.\""
+    ]
+  },
+  {
+    "id": 18815,
+    "name": "Essence of the Pure Flame",
+    "quality": 4,
+    "icon": "Spell_Fire_Fire",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "When struck in combat inflicts 13 Fire damage to the attacker."
+    ]
+  },
+  {
+    "id": 18820,
+    "name": "Talisman of Ephemeral Power",
+    "quality": 4,
+    "icon": "INV_Misc_StoneTablet_11",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Use:",
+      "Increases damage and healing done by magical spells and effects by up to 175 for 15 sec."
+    ]
+  },
+  {
+    "id": 18834,
+    "name": "Insignia of the Horde",
+    "quality": 3,
+    "icon": "INV_Jewelry_TrinketPVP_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Warrior",
+      "Use:",
+      "Dispels all types of crowd control effects."
+    ]
+  },
+  {
+    "id": 18845,
+    "name": "Insignia of the Horde",
+    "quality": 3,
+    "icon": "INV_Jewelry_TrinketPVP_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Shaman",
+      "Use:",
+      "Dispels all types of crowd control effects."
+    ]
+  },
+  {
+    "id": 18846,
+    "name": "Insignia of the Horde",
+    "quality": 3,
+    "icon": "INV_Jewelry_TrinketPVP_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Hunter",
+      "Use:",
+      "Dispels all types of crowd control effects."
+    ]
+  },
+  {
+    "id": 18849,
+    "name": "Insignia of the Horde",
+    "quality": 3,
+    "icon": "INV_Jewelry_TrinketPVP_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Rogue",
+      "Use:",
+      "Dispels all types of crowd control effects."
+    ]
+  },
+  {
+    "id": 18850,
+    "name": "Insignia of the Horde",
+    "quality": 3,
+    "icon": "INV_Jewelry_TrinketPVP_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Mage",
+      "Use:",
+      "Dispels all types of crowd control effects."
+    ]
+  },
+  {
+    "id": 18851,
+    "name": "Insignia of the Horde",
+    "quality": 3,
+    "icon": "INV_Jewelry_TrinketPVP_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Use:",
+      "Dispels all types of crowd control effects."
+    ]
+  },
+  {
+    "id": 18852,
+    "name": "Insignia of the Horde",
+    "quality": 3,
+    "icon": "INV_Jewelry_TrinketPVP_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Warlock",
+      "Use:",
+      "Dispels all types of crowd control effects."
+    ]
+  },
+  {
+    "id": 18853,
+    "name": "Insignia of the Horde",
+    "quality": 3,
+    "icon": "INV_Jewelry_TrinketPVP_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Druid",
+      "Use:",
+      "Dispels all types of crowd control effects."
+    ]
+  },
+  {
+    "id": 18854,
+    "name": "Insignia of the Alliance",
+    "quality": 3,
+    "icon": "INV_Jewelry_TrinketPVP_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Warrior",
+      "Use:",
+      "Dispels all types of crowd control effects."
+    ]
+  },
+  {
+    "id": 18856,
+    "name": "Insignia of the Alliance",
+    "quality": 3,
+    "icon": "INV_Jewelry_TrinketPVP_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Hunter",
+      "Use:",
+      "Dispels all types of crowd control effects."
+    ]
+  },
+  {
+    "id": 18857,
+    "name": "Insignia of the Alliance",
+    "quality": 3,
+    "icon": "INV_Jewelry_TrinketPVP_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Rogue",
+      "Use:",
+      "Dispels all types of crowd control effects."
+    ]
+  },
+  {
+    "id": 18858,
+    "name": "Insignia of the Alliance",
+    "quality": 3,
+    "icon": "INV_Jewelry_TrinketPVP_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Warlock",
+      "Use:",
+      "Dispels all types of crowd control effects."
+    ]
+  },
+  {
+    "id": 18859,
+    "name": "Insignia of the Alliance",
+    "quality": 3,
+    "icon": "INV_Jewelry_TrinketPVP_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Mage",
+      "Use:",
+      "Dispels all types of crowd control effects."
+    ]
+  },
+  {
+    "id": 18862,
+    "name": "Insignia of the Alliance",
+    "quality": 3,
+    "icon": "INV_Jewelry_TrinketPVP_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Use:",
+      "Dispels all types of crowd control effects."
+    ]
+  },
+  {
+    "id": 18863,
+    "name": "Insignia of the Alliance",
+    "quality": 3,
+    "icon": "INV_Jewelry_TrinketPVP_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Druid",
+      "Use:",
+      "Dispels all types of crowd control effects."
+    ]
+  },
+  {
+    "id": 18864,
+    "name": "Insignia of the Alliance",
+    "quality": 3,
+    "icon": "INV_Jewelry_TrinketPVP_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Paladin",
+      "Use:",
+      "Dispels all types of crowd control effects."
+    ]
+  },
+  {
+    "id": 18951,
+    "name": "Evonice's Landin' Pilla",
+    "quality": 2,
+    "icon": "INV_Misc_ArmorKit_18",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Equip:",
+      "While equipped, the wearer suffers less damage from falls."
+    ]
+  },
+  {
+    "id": 18984,
+    "name": "Dimensional Ripper - Everlook",
+    "quality": 2,
+    "icon": "INV_Misc_EngGizmos_07",
+    "tooltip_lines_raw": [
+      "Soulbound",
+      "Trinket",
+      "Requires Engineering (260)",
+      "Requires Goblin Engineer",
+      "Use:",
+      "Rips the dimensional walls asunder and transports you to Everlook in Winterspring.   There are technical problems that sometimes occur, but that's what Goblin Engineering is all about!"
+    ]
+  },
+  {
+    "id": 18986,
+    "name": "Ultrasafe Transporter: Gadgetzan",
+    "quality": 2,
+    "icon": "INV_Misc_EngGizmos_12",
+    "tooltip_lines_raw": [
+      "Soulbound",
+      "Trinket",
+      "Requires Engineering (260)",
+      "Requires Gnomish Engineer",
+      "Use:",
+      "Safely transport yourself to Gadgetzan in Tanaris!    Emphasis on Safe!   Yup, nothing bad could ever happen while using this device!"
+    ]
+  },
+  {
+    "id": 19024,
+    "name": "Arena Grand Master",
+    "quality": 3,
+    "icon": "INV_Misc_ArmorKit_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%.",
+      "Use:",
+      "Absorbs 750 to 1251 damage.  Lasts 20 sec."
+    ]
+  },
+  {
+    "id": 19120,
+    "name": "Rune of the Guard Captain",
+    "quality": 2,
+    "icon": "INV_Misc_Rune_07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Equip:",
+      "Improves your chance to hit with spells and attacks by 1%."
+    ]
+  },
+  {
+    "id": 19141,
+    "name": "Luffa",
+    "quality": 2,
+    "icon": "INV_Fabric_Wool_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Removes one Bleed effect."
+    ]
+  },
+  {
+    "id": 19287,
+    "name": "Darkmoon Card: Heroism",
+    "quality": 4,
+    "icon": "INV_Misc_Ticket_Tarot_Heroism_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Sometimes heals bearer of 120 to 181 damage when damaging an enemy in melee."
+    ]
+  },
+  {
+    "id": 19288,
+    "name": "Darkmoon Card: Blue Dragon",
+    "quality": 4,
+    "icon": "INV_Misc_Ticket_Tarot_BlueDragon_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "2% chance on successful spellcast to allow 100% of your Mana regeneration to continue while casting for 15 sec."
+    ]
+  },
+  {
+    "id": 19289,
+    "name": "Darkmoon Card: Maelstrom",
+    "quality": 4,
+    "icon": "INV_Misc_Ticket_Tarot_Maelstrom_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Chance to strike your melee target with lightning for 200 to 301 Nature damage."
+    ]
+  },
+  {
+    "id": 19290,
+    "name": "Darkmoon Card: Twisting Nether",
+    "quality": 4,
+    "icon": "INV_Misc_Ticket_Tarot_TwistingNether_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Gives the wearer a 10% chance of being able to resurrect with 20% health and mana."
+    ]
+  },
+  {
+    "id": 19336,
+    "name": "Arcane Infused Gem",
+    "quality": 4,
+    "icon": "Spell_Nature_WispSplode",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Hunter",
+      "Requires Level 60",
+      "Use:",
+      "Infuses you with Arcane energy, causing your next 3 Arcane Shots, Mongoose Bites or Raptor Strikes within 20 sec to detonate at the target. The Arcane Detonation deals 185 to 216 damage to enemies within 8 yards of the target."
+    ]
+  },
+  {
+    "id": 19337,
+    "name": "The Black Book",
+    "quality": 4,
+    "icon": "INV_Misc_Book_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Warlock",
+      "Requires Level 60",
+      "Use:",
+      "Empowers your pet, increasing all damage it deals by 50% and its armor by 50% for 30 sec."
+    ]
+  },
+  {
+    "id": 19339,
+    "name": "Mind Quickening Gem",
+    "quality": 4,
+    "icon": "Spell_Nature_WispHeal",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Mage",
+      "Requires Level 60",
+      "Use:",
+      "Quickens the mind, increasing the Mage's casting speed by 33% for 20 sec."
+    ]
+  },
+  {
+    "id": 19340,
+    "name": "Rune of Metamorphosis",
+    "quality": 4,
+    "icon": "INV_Misc_Rune_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Druid",
+      "Requires Level 60",
+      "Use:",
+      "Decreases the mana cost of all Druid shapeshifting forms by 100% for 20 sec."
+    ]
+  },
+  {
+    "id": 19341,
+    "name": "Lifegiving Gem",
+    "quality": 4,
+    "icon": "INV_Misc_Gem_Pearl_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Warrior",
+      "Requires Level 60",
+      "Use:",
+      "Heals yourself for 15% of your maximum health, and increases your maximum health by 15% for 20 sec."
+    ]
+  },
+  {
+    "id": 19342,
+    "name": "Venomous Totem",
+    "quality": 4,
+    "icon": "INV_Misc_Idol_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Rogue",
+      "Requires Level 60",
+      "Use:",
+      "Increases the chance to apply Rogue poisons to your target by 30% for 20 sec."
+    ]
+  },
+  {
+    "id": 19343,
+    "name": "Scrolls of Blinding Light",
+    "quality": 4,
+    "icon": "INV_Scroll_08",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Paladin",
+      "Requires Level 60",
+      "Use:",
+      "Energizes a Paladin with light, increasing melee attack speed by 25% and spell casting speed by 33% for 20 sec."
+    ]
+  },
+  {
+    "id": 19344,
+    "name": "Natural Alignment Crystal",
+    "quality": 4,
+    "icon": "INV_Misc_Gem_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Shaman",
+      "Requires Level 60",
+      "Use:",
+      "Aligns the Shaman with nature, increasing spell damage by 20%, improving heal effects by 20%, and increasing mana cost of spells by 20% for 20 sec."
+    ]
+  },
+  {
+    "id": 19345,
+    "name": "Aegis of Preservation",
+    "quality": 4,
+    "icon": "Spell_Holy_BlessingOfProtection",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 60",
+      "Use:",
+      "Increases your target's armor by 800, and heals 150 damage every time the targets takes ranged or melee damage and expends a charge. Lasts 5 charges or 20 sec."
+    ]
+  },
+  {
+    "id": 19379,
+    "name": "Neltharion's Tear",
+    "quality": 4,
+    "icon": "INV_Stone_15",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 44.",
+      "Equip:",
+      "Improves your chance to hit with spells by 2%.",
+      "\"A silver liquid flows within the impenetrable ebony shell. The item feels pure. It radiates an essence of extreme power.\""
+    ]
+  },
+  {
+    "id": 19395,
+    "name": "Rejuvenating Gem",
+    "quality": 4,
+    "icon": "INV_Misc_Gem_Topaz_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 66.",
+      "Equip:",
+      "Restores 10 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 19406,
+    "name": "Drake Fang Talisman",
+    "quality": 4,
+    "icon": "INV_Misc_Bone_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "+56 Attack Power.",
+      "Equip:",
+      "Improves your chance to hit by 2%.",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%."
+    ]
+  },
+  {
+    "id": 19431,
+    "name": "Styleen's Impeding Scarab",
+    "quality": 4,
+    "icon": "INV_Misc_ArmorKit_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your chance to block attacks with a shield by 5%.",
+      "Equip:",
+      "Increases the block value of your shield by 24.",
+      "Equip:",
+      "Increased Defense +13."
+    ]
+  },
+  {
+    "id": 19812,
+    "name": "Rune of the Dawn",
+    "quality": 3,
+    "icon": "inv_misc_rune_01_yellow",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Equip:",
+      "Increases damage done to Undead by magical spells and effects by up to 48.  It also allows the acquisition of Scourgestones on behalf of the Argent Dawn."
+    ]
+  },
+  {
+    "id": 19930,
+    "name": "Mar'li's Eye",
+    "quality": 3,
+    "icon": "INV_ZulGurubTrinket",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 60",
+      "Use:",
+      "Restores 60 mana every 5 sec for 30 sec."
+    ]
+  },
+  {
+    "id": 19947,
+    "name": "Nat Pagle's Broken Reel",
+    "quality": 3,
+    "icon": "INV_Gizmo_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Use:",
+      "Increases the chance to hit with spells by 10% for 15 sec.",
+      "\"The inscription reads: Fer really long castin'.\""
+    ]
+  },
+  {
+    "id": 19948,
+    "name": "Zandalarian Hero Badge",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_13",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Use:",
+      "Increases your armor by 2000 and defense skill by 30 for 20 sec. Every time you take melee or ranged damage, this bonus is reduced by 200 armor and 3 defense."
+    ]
+  },
+  {
+    "id": 19949,
+    "name": "Zandalarian Hero Medallion",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_13",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Use:",
+      "Increases your melee and ranged damage by 40 for 20 sec. Every time you hit a target, this bonus is reduced by 2."
+    ]
+  },
+  {
+    "id": 19950,
+    "name": "Zandalarian Hero Charm",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_13",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Use:",
+      "Increases your spell damage by up to 204 and your healing by up to 408 for 20 sec. Every time you cast a spell, the bonus is reduced by 17 spell damage and 34 healing."
+    ]
+  },
+  {
+    "id": 19951,
+    "name": "Gri'lek's Charm of Might",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_19",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Warrior",
+      "Requires Level 60",
+      "Use:",
+      "Instantly increases your rage by 300.",
+      "Vindicator's Battlegear",
+      "(0/5)",
+      "Gri'lek's Charm of Might",
+      "Rage of Mugamba",
+      "Zandalar Vindicator's Armguards",
+      "Zandalar Vindicator's Belt",
+      "Zandalar Vindicator's Breastplate",
+      "(2) Set:",
+      "Increases your chance to block attacks with a shield by 2%.",
+      "(3) Set:",
+      "Decreases the cooldown of Intimidating Shout by 15000 sec.",
+      "(5) Set:",
+      "Decrease the rage cost of Whirlwind by 30."
+    ]
+  },
+  {
+    "id": 19952,
+    "name": "Gri'lek's Charm of Valor",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_19",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Paladin",
+      "Requires Level 60",
+      "Use:",
+      "Increases the critical hit chance of Holy spells by 10% for 15 sec.",
+      "Freethinker's Armor",
+      "(0/5)",
+      "Gri'lek's Charm of Valor",
+      "Hero's Brand",
+      "Zandalar Freethinker's Armguards",
+      "Zandalar Freethinker's Belt",
+      "Zandalar Freethinker's Breastplate",
+      "(2) Set:",
+      "Restores 4 mana per 5 sec.",
+      "(3) Set:",
+      "Inflicts 60 to 67 additional Holy damage on the target of a Paladin's Judgement.",
+      "(5) Set:",
+      "Increases the duration of all Blessings by 10%."
+    ]
+  },
+  {
+    "id": 19953,
+    "name": "Renataki's Charm of Beasts",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_19",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Hunter",
+      "Requires Level 60",
+      "Use:",
+      "Instantly clears the cooldowns of Aimed Shot, Multi-Shot, Volley, Arcane Shot and Carve.",
+      "Predator's Armor",
+      "(0/5)",
+      "Maelstrom's Wrath",
+      "Renataki's Charm of Beasts",
+      "Zandalar Predator's Bracers",
+      "Zandalar Predator's Belt",
+      "Zandalar Predator's Mantle",
+      "(2) Set:",
+      "+20 Attack Power.",
+      "(3) Set:",
+      "Decreases the cooldown of Concussive Shot and Wing Clip by 1000 sec.",
+      "(5) Set:",
+      "Reduces the time between periodic ticks and duration of Serpent Sting by 20%."
+    ]
+  },
+  {
+    "id": 19954,
+    "name": "Renataki's Charm of Trickery",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_19",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Rogue",
+      "Requires Level 60",
+      "Use:",
+      "Instantly increases your energy by 60.",
+      "Madcap's Outfit",
+      "(0/5)",
+      "Zandalarian Shadow Mastery Talisman",
+      "Renataki's Charm of Trickery",
+      "Zandalar Madcap's Bracers",
+      "Zandalar Madcap's Mantle",
+      "Zandalar Madcap's Tunic",
+      "(2) Set:",
+      "+20 Attack Power.",
+      "(3) Set:",
+      "Decreases the cooldown of Blind by 20000 sec.",
+      "(5) Set:",
+      "Decrease the energy cost of Eviscerate and Rupture by 5."
+    ]
+  },
+  {
+    "id": 19955,
+    "name": "Wushoolay's Charm of Nature",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_19",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Druid",
+      "Requires Level 60",
+      "Use:",
+      "Reduces the casting time of your Healing Touch spells by 40%, and reduces the mana cost of your healing spells by 5% for 15 sec.",
+      "Haruspex's Garb",
+      "(0/5)",
+      "Pristine Enchanted South Seas Kelp",
+      "Wushoolay's Charm of Nature",
+      "Zandalar Haruspex's Bracers",
+      "Zandalar Haruspex's Belt",
+      "Zandalar Haruspex's Tunic",
+      "(2) Set:",
+      "Restores 4 mana per 5 sec.",
+      "(3) Set:",
+      "Increases the duration of Faerie Fire by 5000 sec.",
+      "(5) Set:",
+      "Increases the critical hit chance of your Starfire spell 3%."
+    ]
+  },
+  {
+    "id": 19956,
+    "name": "Wushoolay's Charm of Spirits",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_19",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Shaman",
+      "Requires Level 60",
+      "Use:",
+      "Increases the effectiveness of your Earth Shield, Water Shield and Lightning Shield spells by 25% for 20 sec.",
+      "Augur's Regalia",
+      "(0/5)",
+      "Unmarred Vision of Voodress",
+      "Wushoolay's Charm of Spirits",
+      "Zandalar Augur's Bracers",
+      "Zandalar Augur's Belt",
+      "Zandalar Augur's Hauberk",
+      "(2) Set:",
+      "Restores 4 mana per 5 sec.",
+      "(3) Set:",
+      "Improves the duration of your Frost Shock spell by 1000 sec.",
+      "(5) Set:",
+      "Increase the range of your Lightning Bolt spell by 5 yds."
+    ]
+  },
+  {
+    "id": 19957,
+    "name": "Hazza'rah's Charm of Destruction",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_19",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Warlock",
+      "Requires Level 60",
+      "Use:",
+      "Increases the critical hit chance of your Destruction spells by 10% for 20 sec.",
+      "Demoniac's Threads",
+      "(0/5)",
+      "Kezan's Unstoppable Taint",
+      "Hazza'rah's Charm of Destruction",
+      "Zandalar Demoniac's Wraps",
+      "Zandalar Demoniac's Mantle",
+      "Zandalar Demoniac's Robe",
+      "(2) Set:",
+      "Increases damage and healing done by magical spells and effects by up to 12.",
+      "(3) Set:",
+      "Corruption now deals an amount of damage equal to 1.5 sec. of Corruption upon application.",
+      "(5) Set:",
+      "Decreases the cooldown of Soul Fire and Death Coil by 15%."
+    ]
+  },
+  {
+    "id": 19958,
+    "name": "Hazza'rah's Charm of Healing",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_19",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Priest",
+      "Requires Level 60",
+      "Use:",
+      "Reduces the casting time of your Greater Heal spells by 40%, and reduces the mana cost of your healing spells by 5% for 15 sec.",
+      "Confessor's Raiment",
+      "(0/5)",
+      "The All-Seeing Eye of Zuldazar",
+      "Hazza'rah's Charm of Healing",
+      "Zandalar Confessor's Wraps",
+      "Zandalar Confessor's Bindings",
+      "Zandalar Confessor's Mantle",
+      "(2) Set:",
+      "Increases healing done by spells and effects by up to 22.",
+      "(3) Set:",
+      "Increase the range of your Smite and Holy Fire spells by 5 yds.",
+      "(5) Set:",
+      "Reduces the casting time of your Mind Control spell by 500 sec."
+    ]
+  },
+  {
+    "id": 19959,
+    "name": "Hazza'rah's Charm of Magic",
+    "quality": 4,
+    "icon": "INV_Jewelry_Necklace_19",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Mage",
+      "Requires Level 60",
+      "Use:",
+      "Increases the critical hit chance of your Arcane spells by 5%, and increases the critical hit damage of your Arcane spells by 50% for 20 sec.",
+      "Illusionist's Attire",
+      "(0/5)",
+      "Jewel of Kajaro",
+      "Hazza'rah's Charm of Magic",
+      "Zandalar Illusionist's Wraps",
+      "Zandalar Illusionist's Mantle",
+      "Zandalar Illusionist's Robe",
+      "(2) Set:",
+      "Increases damage and healing done by magical spells and effects by up to 12.",
+      "(3) Set:",
+      "Decreases the mana cost of Arcane Intellect and Arcane Brilliance by 5%.",
+      "(5) Set:",
+      "Reduces the casting time of your Flamestrike spell by 500 sec."
+    ]
+  },
+  {
+    "id": 19979,
+    "name": "Hook of the Master Angler",
+    "quality": 3,
+    "icon": "Trade_Fishing",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Turns you into a fish giving water breath and increasing your movement speed, but attacking or casting while in this form breaks the effect.  Does not work out of water or at the water's surface."
+    ]
+  },
+  {
+    "id": 19990,
+    "name": "Blessed Prayer Beads",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_11",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Increases healing done by spells and effects by up to 190 for 20 sec.",
+      "\"A friend in need is a friend without beads.\""
+    ]
+  },
+  {
+    "id": 19991,
+    "name": "Devilsaur Eye",
+    "quality": 3,
+    "icon": "INV_Misc_Eye_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Increases your attack power by 150 and your chance to hit by 2%.  Effect lasts for 20 sec."
+    ]
+  },
+  {
+    "id": 19992,
+    "name": "Devilsaur Tooth",
+    "quality": 3,
+    "icon": "INV_Misc_Bone_07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Your pet's next attack is guaranteed to critically strike if that attack is capable of striking critically."
+    ]
+  },
+  {
+    "id": 20036,
+    "name": "Fire Ruby",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Bloodstone_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Restores 1 to 501 mana and increases the damage of your next Fire spell by up to 100.  Effect lasts for 60 sec.",
+      "\"Unpredictability leads to both victory and death.\""
+    ]
+  },
+  {
+    "id": 20071,
+    "name": "Talisman of Arathor",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+6 Stamina",
+      "Requires Level 60",
+      "Requires The League of Arathor - Friendly",
+      "Use:",
+      "Absorbs 495 to 606 physical damage.  Lasts 15 sec."
+    ]
+  },
+  {
+    "id": 20072,
+    "name": "Defiler's Talisman",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+6 Stamina",
+      "Requires Level 60",
+      "Requires The Defilers - Friendly",
+      "Use:",
+      "Absorbs 495 to 606 physical damage.  Lasts 15 sec."
+    ]
+  },
+  {
+    "id": 20130,
+    "name": "Diamond Flask",
+    "quality": 3,
+    "icon": "INV_Drink_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Restores 9 health every 5 sec and increases your Strength by 50.  Lasts 60 sec.",
+      "\"Served on the rocks.\""
+    ]
+  },
+  {
+    "id": 20503,
+    "name": "Enamored Water Spirit",
+    "quality": 3,
+    "icon": "INV_Wand_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Summons a Mana Spring Totem with 5 health at the feet of the caster for 24 sec that restores 27 mana every 2 seconds to group members within 30 yards."
+    ]
+  },
+  {
+    "id": 20512,
+    "name": "Sanctified Orb",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Pearl_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Increases your critical strike chance with spells and melee attacks by 5%.  Lasts 25 sec."
+    ]
+  },
+  {
+    "id": 20525,
+    "name": "Earthen Sigil",
+    "quality": 3,
+    "icon": "Spell_Nature_NullWard",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Restores 400 mana over 10 sec."
+    ]
+  },
+  {
+    "id": 20534,
+    "name": "Abyss Shard",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Casts your Summon Voidwalker spell with no mana or Soul Shard requirements.",
+      "\"Dark rituals are trapped in dark gems.\""
+    ]
+  },
+  {
+    "id": 20636,
+    "name": "Hibernation Crystal",
+    "quality": 4,
+    "icon": "INV_Misc_Gem_Stone_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Use:",
+      "Increases healing done by magical spells and effects by up to 350 for 15 sec."
+    ]
+  },
+  {
+    "id": 21115,
+    "name": "Defiler's Talisman",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 48",
+      "Requires The Defilers - Friendly",
+      "Use:",
+      "Absorbs 392 to 479 physical damage.  Lasts 15 sec."
+    ]
+  },
+  {
+    "id": 21116,
+    "name": "Defiler's Talisman",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 38",
+      "Requires The Defilers - Friendly",
+      "Use:",
+      "Absorbs 310 to 379 physical damage.  Lasts 15 sec."
+    ]
+  },
+  {
+    "id": 21117,
+    "name": "Talisman of Arathor",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 48",
+      "Requires The League of Arathor - Friendly",
+      "Use:",
+      "Absorbs 392 to 479 physical damage.  Lasts 15 sec."
+    ]
+  },
+  {
+    "id": 21118,
+    "name": "Talisman of Arathor",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 38",
+      "Requires The League of Arathor - Friendly",
+      "Use:",
+      "Absorbs 310 to 379 physical damage.  Lasts 15 sec."
+    ]
+  },
+  {
+    "id": 21119,
+    "name": "Talisman of Arathor",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 28",
+      "Requires The League of Arathor - Friendly",
+      "Use:",
+      "Absorbs 248 to 303 physical damage.  Lasts 15 sec."
+    ]
+  },
+  {
+    "id": 21120,
+    "name": "Defiler's Talisman",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 28",
+      "Requires The Defilers - Friendly",
+      "Use:",
+      "Absorbs 248 to 303 physical damage.  Lasts 15 sec."
+    ]
+  },
+  {
+    "id": 21180,
+    "name": "Earthstrike",
+    "quality": 4,
+    "icon": "Spell_Nature_AbolishMagic",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Use:",
+      "Increases your melee and ranged attack power by 280.  Effect lasts for 20 sec."
+    ]
+  },
+  {
+    "id": 21181,
+    "name": "Grace of Earth",
+    "quality": 3,
+    "icon": "INV_Misc_Herb_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Use:",
+      "Reduces your threat to enemy targets within 30 yards, making them less likely to attack you."
+    ]
+  },
+  {
+    "id": 21325,
+    "name": "Mechanical Greench",
+    "quality": 2,
+    "icon": "Ability_Hunter_Pet_Gorilla",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Summons a mechanical Greench that will protect you for 600 sec."
+    ]
+  },
+  {
+    "id": 21326,
+    "name": "Defender of the Timbermaw",
+    "quality": 4,
+    "icon": "INV_Misc_Horn_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Timbermaw Hold - Exalted",
+      "Use:",
+      "Calls forth a Timbermaw Ancestor to fight at your side and heal you for 40 sec."
+    ]
+  },
+  {
+    "id": 21473,
+    "name": "Eye of Moam",
+    "quality": 3,
+    "icon": "INV_Misc_Eye_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Decreases the magical resistances of your spell targets by 20.",
+      "Use:",
+      "Increases damage done by magical spells and effects by up to 50, and decreases the magical resistances of your spell targets by 100 for 30 sec."
+    ]
+  },
+  {
+    "id": 21488,
+    "name": "Fetish of Chitinous Spikes",
+    "quality": 3,
+    "icon": "INV_Misc_AhnQirajTrinket_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Use:",
+      "Spikes sprout from you causing 25 Nature damage to attackers when hit.  Lasts 30 sec.",
+      "\"Ouch\""
+    ]
+  },
+  {
+    "id": 21565,
+    "name": "Rune of Perfection",
+    "quality": 3,
+    "icon": "INV_Misc_Rune_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+7 Stamina",
+      "Requires Level 40",
+      "Equip:",
+      "Decreases the magical resistances of your spell targets by 20."
+    ]
+  },
+  {
+    "id": 21566,
+    "name": "Rune of Perfection",
+    "quality": 3,
+    "icon": "INV_Misc_Rune_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+4 Stamina",
+      "Requires Level 20",
+      "Equip:",
+      "Decreases the magical resistances of your spell targets by 10."
+    ]
+  },
+  {
+    "id": 21567,
+    "name": "Rune of Duty",
+    "quality": 3,
+    "icon": "INV_Misc_Rune_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+7 Stamina",
+      "Requires Level 40",
+      "Equip:",
+      "Your attacks ignore 25 of the target's armor."
+    ]
+  },
+  {
+    "id": 21568,
+    "name": "Rune of Duty",
+    "quality": 3,
+    "icon": "INV_Misc_Rune_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+4 Stamina",
+      "Requires Level 20",
+      "Equip:",
+      "Your attacks ignore 20 of the target's armor."
+    ]
+  },
+  {
+    "id": 21579,
+    "name": "Vanquished Tentacle of C'Thun",
+    "quality": 4,
+    "icon": "INV_Misc_AhnQirajTrinket_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Use:",
+      "Summons a Vanquished Tentacle to your aid for 30 sec."
+    ]
+  },
+  {
+    "id": 21625,
+    "name": "Scarab Brooch",
+    "quality": 4,
+    "icon": "INV_Misc_AhnQirajTrinket_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Use:",
+      "Your magical heals provide the target with a shield that absorbs damage equal to 15% of the amount healed for 30 sec."
+    ]
+  },
+  {
+    "id": 21647,
+    "name": "Fetish of the Sand Reaver",
+    "quality": 4,
+    "icon": "INV_Misc_AhnQirajTrinket_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Use:",
+      "Reduces the threat you generate by 70% for 20 sec."
+    ]
+  },
+  {
+    "id": 21670,
+    "name": "Badge of the Swarmguard",
+    "quality": 4,
+    "icon": "INV_Misc_AhnQirajTrinket_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Use:",
+      "Gives a chance on melee or ranged attack to apply an armor penetration effect on you for 30 sec, lowering the target's physical armor by 200 to your own attacks. The armor penetration effect can be applied up to 6 times."
+    ]
+  },
+  {
+    "id": 21685,
+    "name": "Petrified Scarab",
+    "quality": 4,
+    "icon": "INV_Misc_AhnQirajTrinket_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Use:",
+      "Increases your spell resistances by 100 for 60 sec. Every time a hostile spell lands on you, this bonus is reduced by 10 resistance."
+    ]
+  },
+  {
+    "id": 21891,
+    "name": "Shard of the Fallen Star",
+    "quality": 4,
+    "icon": "INV_Misc_AhnQirajTrinket_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 39.",
+      "Use:",
+      "Calls down a meteor, burning all enemies within the area for 400 to 443 total Fire damage."
+    ]
+  },
+  {
+    "id": 22268,
+    "name": "Draconic Infused Emblem",
+    "quality": 3,
+    "icon": "INV_Jewelry_Talisman_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 58",
+      "Use:",
+      "Increases your spell damage by up to 100 and your healing by up to 190 for 15 sec."
+    ]
+  },
+  {
+    "id": 22321,
+    "name": "Heart of Wyrmthalak",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Bloodstone_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 56",
+      "Equip:",
+      "Chance to bathe your melee target in flames for 120 to 181 Fire damage."
+    ]
+  },
+  {
+    "id": 22678,
+    "name": "Talisman of Ascendance",
+    "quality": 4,
+    "icon": "INV_Misc_Gem_Pearl_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Use:",
+      "Your next 5 damage or healing spells cast within 20 seconds will grant a bonus of up to 40 damage and up to 75 healing, stacking up to 5 times. Expires after 6 damage or healing spells or 20 seconds, whichever occurs first."
+    ]
+  },
+  {
+    "id": 22954,
+    "name": "Kiss of the Spider",
+    "quality": 4,
+    "icon": "INV_Trinket_Naxxramas04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to get a critical strike by 1%.",
+      "Equip:",
+      "Improves your chance to hit by 1%.",
+      "Use:",
+      "Increases your attack speed by 20% for 15 sec."
+    ]
+  },
+  {
+    "id": 23001,
+    "name": "Eye of Diminution",
+    "quality": 4,
+    "icon": "INV_Trinket_Naxxramas02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 3%.",
+      "Use:",
+      "Reduces the threat you generate by 35% for 20 sec."
+    ]
+  },
+  {
+    "id": 23027,
+    "name": "Warmth of Forgiveness",
+    "quality": 4,
+    "icon": "inv_trinket_naxxramas08",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 33.",
+      "Equip:",
+      "Restores 10 mana per 5 sec.",
+      "Use:",
+      "Restores 700 mana."
+    ]
+  },
+  {
+    "id": 23040,
+    "name": "Glyph of Deflection",
+    "quality": 4,
+    "icon": "INV_Trinket_Naxxramas05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your chance to block attacks with a shield by 3%.",
+      "Equip:",
+      "Increases the block value of your shield by 23.",
+      "Use:",
+      "Increases the block value of your shield by 235 for 20 sec."
+    ]
+  },
+  {
+    "id": 23041,
+    "name": "Slayer's Crest",
+    "quality": 4,
+    "icon": "INV_Trinket_Naxxramas03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "+64 Attack Power.",
+      "Use:",
+      "Increases Attack Power by 260 for 20 sec."
+    ]
+  },
+  {
+    "id": 23042,
+    "name": "Loatheb's Reflection",
+    "quality": 4,
+    "icon": "inv_trinket_naxxramas07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+13 Fire Resistance",
+      "+13 Nature Resistance",
+      "+13 Frost Resistance",
+      "+13 Shadow Resistance",
+      "+13 Arcane Resistance",
+      "Requires Level 60",
+      "Use:",
+      "Increases resistances to all schools of magic by 40 for 20 sec."
+    ]
+  },
+  {
+    "id": 23046,
+    "name": "The Restrained Essence of Sapphiron",
+    "quality": 4,
+    "icon": "INV_Trinket_Naxxramas06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 40.",
+      "Use:",
+      "Increases damage and healing done by magical spells and effects by up to 130 for 20 sec."
+    ]
+  },
+  {
+    "id": 23047,
+    "name": "Eye of the Dead",
+    "quality": 4,
+    "icon": "INV_Trinket_Naxxramas01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 70.",
+      "Use:",
+      "Increases healing done by the next 5 spells by up to 450 for 30 sec."
+    ]
+  },
+  {
+    "id": 23206,
+    "name": "Mark of the Champion",
+    "quality": 4,
+    "icon": "INV_Misc_Token_ArgentDawn2",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Equip:",
+      "+150 Attack Power when fighting Undead and Demons.  It also allows the acquisition of Scourgestones on behalf of the Argent Dawn."
+    ]
+  },
+  {
+    "id": 23207,
+    "name": "Mark of the Champion",
+    "quality": 4,
+    "icon": "INV_Misc_Token_ArgentDawn3",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Equip:",
+      "Increases damage done to Undead and Demons by magical spells and effects by up to 85.  It also allows the acquisition of Scourgestones on behalf of the Argent Dawn."
+    ]
+  },
+  {
+    "id": 23379,
+    "name": "Cinder Bracers",
+    "quality": 2,
+    "icon": "INV_Bracer_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Summons a Cinder Elemental that will protect you for 600 sec."
+    ]
+  },
+  {
+    "id": 23558,
+    "name": "The Burrower's Shell",
+    "quality": 4,
+    "icon": "INV_Shield_23",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Use:",
+      "Absorbs 900 damage.  Lasts 20 sec."
+    ]
+  },
+  {
+    "id": 23570,
+    "name": "Jom Gabbar",
+    "quality": 4,
+    "icon": "INV_Misc_EngGizmos_19",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Use:",
+      "Increases attack power by 65 and an additional 65 every 2 sec.  Lasts 20 sec."
+    ]
+  },
+  {
+    "id": 33027,
+    "name": "Huntsman's Halfhorn",
+    "quality": 3,
+    "icon": "INV_Misc_Horn_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+2 Spirit",
+      "Requires Level 22",
+      "Use:",
+      "Signal the horn, increasing attack and casting speed by 2% and movement speed by 10% for 20 sec."
+    ]
+  },
+  {
+    "id": 33048,
+    "name": "Heart of Windhorn",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Pearl_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+5 Stamina",
+      "+2 Spirit",
+      "Requires Level 26",
+      "Use:",
+      "Summons a swirling gale, increasing your dodge chance by 10% for 12 sec. Dodging during this effect slices enemies within 8 yards for 60 to 76 Nature damage. This effect can occur once every 2 sec."
+    ]
+  },
+  {
+    "id": 33058,
+    "name": "Vanguard's Charm",
+    "quality": 4,
+    "icon": "INV_Jewelry_Talisman_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+18 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 26.",
+      "Equip:",
+      "Allows 10% of your Health regeneration to work while in combat."
+    ]
+  },
+  {
+    "id": 33059,
+    "name": "Vanguard's Crest",
+    "quality": 4,
+    "icon": "INV_Jewelry_Talisman_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+18 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "+44 Attack Power.",
+      "Equip:",
+      "Allows 10% of your Health regeneration to work while in combat."
+    ]
+  },
+  {
+    "id": 33060,
+    "name": "Vanguard's Brooch",
+    "quality": 4,
+    "icon": "INV_Jewelry_Talisman_11",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+18 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 37.",
+      "Equip:",
+      "Allows 10% of your Health regeneration to work while in combat.",
+      "Equip:",
+      "Restores 5 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 33081,
+    "name": "Flask of Petrified Gold",
+    "quality": 4,
+    "icon": "INV_Potion_62",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+15 Stamina",
+      "Requires Level 60",
+      "Use:",
+      "Increases your chance to trigger effects from equipped items by 25%."
+    ]
+  },
+  {
+    "id": 33147,
+    "name": "Mar'kali, the Midnight Star",
+    "quality": 4,
+    "icon": "INV_Jewelry_Talisman_08",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Requires  - Exalted",
+      "Equip:",
+      "Your melee attacks, ranged attacks, and direct damaging spells have a 10% chance to deal Arcane damage equal to 15% of your maximum mana to the target."
+    ]
+  },
+  {
+    "id": 33149,
+    "name": "Battle Standard of the Broodcommander",
+    "quality": 4,
+    "icon": "battle_standard_of_the_broodcommander_2",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+7 Fire Resistance",
+      "+7 Shadow Resistance",
+      "Requires Level 60",
+      "Equip:",
+      "Your melee attacks have a 2% chance to increase attack and casting speed for you and your party by 3% for 15 sec."
+    ]
+  },
+  {
+    "id": 33151,
+    "name": "Onyxian Brood Egg",
+    "quality": 4,
+    "icon": "onyxia_brood_egg_1",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Use:",
+      "Hatches an Onyxian Whelp to aid you in battle for 30 sec."
+    ]
+  },
+  {
+    "id": 33153,
+    "name": "Ignited Obsidian Scale",
+    "quality": 4,
+    "icon": "ignited_obsidian_scale_1",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+20 Fire Resistance",
+      "Requires Level 60",
+      "Equip:",
+      "When struck in combat, you have a 3% chance to be surrounded by 10 protective scales, granting 600 Armor for 20 sec. Each time you are struck, you lose a scale. When all scales are lost, you release a wave of flames, dealing 400 Fire damage to nearby enemies and slowing them by 20% for 6 sec."
+    ]
+  },
+  {
+    "id": 33177,
+    "name": "Draenic Ritual Drums",
+    "quality": 2,
+    "icon": "INV_Misc_Root_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Stamina",
+      "+8 Agility",
+      "Requires Level 50",
+      "Requires  - Friendly",
+      "Equip:",
+      "+14 Attack Power."
+    ]
+  },
+  {
+    "id": 33186,
+    "name": "Spices of the Lost World",
+    "quality": 2,
+    "icon": "INV_Misc_Urn_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "+8 Strength",
+      "+5 Fire Resistance",
+      "Requires Level 53",
+      "Equip:",
+      "Increases your attack and casting speed by 1%."
+    ]
+  },
+  {
+    "id": 33195,
+    "name": "Queen's Favourite Comb",
+    "quality": 2,
+    "icon": "INV_Jewelry_Necklace_06",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "+10 Arcane Resistance",
+      "Requires Level 52",
+      "Equip:",
+      "Increases your attack and casting speed by 1%."
+    ]
+  },
+  {
+    "id": 33204,
+    "name": "Dreadful Grimoire",
+    "quality": 2,
+    "icon": "INV_Misc_Book_10",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "+12 Stamina",
+      "+5 Intellect",
+      "Classes: Warlock",
+      "Requires Level 53",
+      "Equip:",
+      "Increases your pet's damage by 4%."
+    ]
+  },
+  {
+    "id": 33205,
+    "name": "Skull of Larnaea",
+    "quality": 3,
+    "icon": "INV_misc_bone_taurenskull_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "Requires Level 58",
+      "Equip:",
+      "Increases damage done by Fire spells and effects by up to 17.",
+      "Equip:",
+      "Increases damage done by Frost spells and effects by up to 17.",
+      "Equip:",
+      "Increases damage done by Nature spells and effects by up to 17.",
+      "Coil of the Hydra",
+      "(0/4)",
+      "Hydracoil Trousers",
+      "Hydracoil Gauntlets",
+      "Hydracoil Spaulders",
+      "Skull of Larnaea",
+      "(2) Set:",
+      "Reduces the mana cost of Fire, Nature, and Frost spells by 4%.",
+      "(3) Set:",
+      "Your critical strikes with spells increase damage done by your Fire, Nature, and Frost spells by up to 75 for 6 sec.",
+      "(4) Set:",
+      "Dealing direct damage with Fire, Nature, or Frost spells has a chance to blast the target with a tricolored spell, causing 100 Fire, Nature, and Frost damage simultaneously."
+    ]
+  },
+  {
+    "id": 33211,
+    "name": "Smuggled First War Insignia",
+    "quality": 3,
+    "icon": "INV_Misc_ArmorKit_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+8 Agility",
+      "+8 Strength",
+      "+8 Intellect",
+      "+8 Spirit",
+      "+8 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Reduces damage taken from critical hits and damage over time effects by 3%.",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 11."
+    ]
+  },
+  {
+    "id": 33244,
+    "name": "Kodiak's Collar",
+    "quality": 3,
+    "icon": "INV_Misc_Bandage_15",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+15 Agility",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 18.",
+      "Equip:",
+      "Reduces the casting time of your Imp, Voidwalker, Succubus, and Felhunter summoning spells by 1500 sec and their mana cost by 15%.",
+      "Equip:",
+      "Reduces the casting time of Revive Pet by 1500 sec and its mana cost by 15%."
+    ]
+  },
+  {
+    "id": 33248,
+    "name": "Fetish of the Endless Bond",
+    "quality": 4,
+    "icon": "Spell_Nature_AgitatingTotem",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+15 Stamina",
+      "Requires Level 60",
+      "Use:",
+      "Attaches a tether to a party member, increasing both your and your party member's damage done by magical spells and effects by up to 110, and causing 10% of all damage taken to be redirected to the other tethered player. Can be used on yourself to increase damage done by magical spells and effects by up to 200 instead, without tethering. Lasts 20 sec."
+    ]
+  },
+  {
+    "id": 33253,
+    "name": "Heart of Decay",
+    "quality": 4,
+    "icon": "INV_Misc_Organ_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Your periodic damage spells have a 5% chance to deal an additional 180 Nature damage when dealing damage."
+    ]
+  },
+  {
+    "id": 33276,
+    "name": "Unity of the Timbermaw",
+    "quality": 4,
+    "icon": "INV_Misc_Idol_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 15 and Attack Power by 12 for all party members within 40 yards."
+    ]
+  },
+  {
+    "id": 33277,
+    "name": "Will of the Chieftain",
+    "quality": 4,
+    "icon": "INV_Belt_18",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+15 Stamina",
+      "Requires Level 60",
+      "Use:",
+      "Throws a chain at the target, pulling them toward you and reducing their movement speed by 70% for 1 sec. If the target cannot be pulled, they are instead immobilized for 4 sec."
+    ]
+  },
+  {
+    "id": 33284,
+    "name": "Claw of the Befouler",
+    "quality": 4,
+    "icon": "claw_of_the_satyr_2",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Use:",
+      "Steals corrupting power from the shard, increasing your Strength by 175 and inflicting 10% of your total health as Shadow damage every 5. Lasts 15 sec."
+    ]
+  },
+  {
+    "id": 33294,
+    "name": "Droplet of Nordrassil",
+    "quality": 4,
+    "icon": "inv_misc_ambersap",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage done by magical spells and effects by up to 80 and increases spell hit chance by 3% for 10 sec whenever your spells are fully or partially resisted.",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 40."
+    ]
+  },
+  {
+    "id": 33296,
+    "name": "Shard of Dreams",
+    "quality": 4,
+    "icon": "INV_Enchant_EssenceNetherLarge",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 55.",
+      "Equip:",
+      "Allows 10% of your Mana regeneration to continue while casting.",
+      "Use:",
+      "Channel the shard to infuse yourself with a fraction of the Emerald Dream for 12 sec. While infused, your direct healing spells allow 20% of your Mana regeneration to continue while casting and increase casting speed by 5% for 6 sec. Stacks up to 6001 times."
+    ]
+  },
+  {
+    "id": 33308,
+    "name": "Whispering Fragment of Aln",
+    "quality": 4,
+    "icon": "INV_Misc_StoneTablet_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 60",
+      "Use:",
+      "Beckon the fragment, allowing it to study and absorb knowledge equal to 20% of your physical damage dealt. After 12 sec, or when sufficient knowledge is absorbed, the fragment unleashes its stored power, dealing up to 3000 Shadow damage to targets within 10 yards, divided evenly among all targets."
+    ]
+  },
+  {
+    "id": 33351,
+    "name": "Jewel of the Moro'gai",
+    "quality": 2,
+    "icon": "INV_Misc_Gem_Opal_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Summons Ar'lia of the Moro'gai to aid in battle for 40 sec."
+    ]
+  },
+  {
+    "id": 33359,
+    "name": "Tablet of Maras'ethil",
+    "quality": 2,
+    "icon": "INV_Misc_Rune_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+12 Spirit",
+      "Equip:",
+      "Increases damage done by Frost spells and effects by up to 16."
+    ]
+  },
+  {
+    "id": 33365,
+    "name": "Shadowsong Orb",
+    "quality": 2,
+    "icon": "INV_Misc_Orb_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 55",
+      "Equip:",
+      "Dealing critical damage has a 10% chance to summon an Avatar of Vengeance to fight alongside you for 15 sec. The orb's fleeting energy may only allow the summoning of one avatar every minute."
+    ]
+  },
+  {
+    "id": 36701,
+    "name": "Oil-Powered Cooker",
+    "quality": 3,
+    "icon": "oil-powered_cooker_4",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Equip:",
+      "Increases the speed at which you cook by 50%."
+    ]
+  },
+  {
+    "id": 40061,
+    "name": "Rethress Tide Crest",
+    "quality": 2,
+    "icon": "INV_Jewelry_Talisman_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+5 Intellect",
+      "+10 Frost Resistance",
+      "Equip:",
+      "Increases swim speed by 15%."
+    ]
+  },
+  {
+    "id": 41011,
+    "name": "Wooden Gryphon Carving",
+    "quality": 2,
+    "icon": "Ability_Mount_Gryphon_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+9 Agility",
+      "+7 Stamina",
+      "\"\"For paps.\" is etched on the gryphon figure.\""
+    ]
+  },
+  {
+    "id": 41060,
+    "name": "Refined Plague Strain",
+    "quality": 3,
+    "icon": "INV_Potion_19",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "+-10 Spirit",
+      "Requires Level 56",
+      "Use:",
+      "Infects an enemy with the plague for 20 sec., causing it to inflict 75 Nature damage to its nearby allies every 4 sec."
+    ]
+  },
+  {
+    "id": 41195,
+    "name": "Ancient Branch",
+    "quality": 2,
+    "icon": "INV_Misc_Branch_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Equip:",
+      "Restores 2 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 41298,
+    "name": "Overloaded Heating Coil",
+    "quality": 3,
+    "icon": "Spell_Frost_FireResistanceTotem",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "+-20 Fire Resistance",
+      "Requires Level 47",
+      "Equip:",
+      "Has a 5% chance on striking the enemy for 50 to 71 Fire damage."
+    ]
+  },
+  {
+    "id": 41325,
+    "name": "Silver Medallion",
+    "quality": 2,
+    "icon": "INV_Jewelry_Talisman_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 25",
+      "Use:",
+      "Decrease the armor of target by 50 for 60 sec."
+    ]
+  },
+  {
+    "id": 41349,
+    "name": "Emberstone Idol",
+    "quality": 2,
+    "icon": "INV_Misc_Orb_05",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "+7 Fire Resistance",
+      "Requires Level 42",
+      "Equip:",
+      "Increases damage done by Fire spells and effects by up to 16."
+    ]
+  },
+  {
+    "id": 41561,
+    "name": "Flame of Eternal Searing",
+    "quality": 3,
+    "icon": "Spell_Fire_Fire",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+9 Intellect",
+      "Requires Level 29",
+      "Equip:",
+      "Increases damage done by Fire spells and effects by up to 11."
+    ]
+  },
+  {
+    "id": 41801,
+    "name": "Energized Relic Mechanism",
+    "quality": 2,
+    "icon": "INV_Misc_PocketWatch_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Equip:",
+      "Increases your attack and casting speed by 1%.",
+      "Equip:",
+      "+3 All Resistances.",
+      "\"The mechanism hums with ancient power.\""
+    ]
+  },
+  {
+    "id": 41975,
+    "name": "Brangar's Folly",
+    "quality": 2,
+    "icon": "BTN_cr_GCOIN",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+10 Shadow Resistance",
+      "Equip:",
+      "Restores 2 health per 5 sec."
+    ]
+  },
+  {
+    "id": 42107,
+    "name": "Treasure Compass",
+    "quality": 2,
+    "icon": "INV_Misc_PocketWatch_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 29",
+      "Use:",
+      "Displays nearby treasures on your minimap for 600 sec."
+    ]
+  },
+  {
+    "id": 42112,
+    "name": "Sharpened Herb Sickle",
+    "quality": 2,
+    "icon": "spirited_precision_sickle_2",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+5 Nature Resistance",
+      "Requires Level 36",
+      "Equip:",
+      "Herbalism +5."
+    ]
+  },
+  {
+    "id": 42184,
+    "name": "Mixologist Stone",
+    "quality": 4,
+    "icon": "INV_Misc_Gem_Pearl_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 60",
+      "Requires Alchemy (300)",
+      "Equip:",
+      "Increases the chance to apply poisons to your target by 5%."
+    ]
+  },
+  {
+    "id": 42196,
+    "name": "Timberheart Dreamcatcher",
+    "quality": 4,
+    "icon": "INV_Staff_49",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+15 Shadow Resistance",
+      "Requires Level 60",
+      "Requires Enchanting (300)",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 26.",
+      "Use:",
+      "Puts the enemy target to sleep for up to 10 sec.  Any damage caused will awaken the target."
+    ]
+  },
+  {
+    "id": 42231,
+    "name": "Spirited Precision Sickle",
+    "quality": 3,
+    "icon": "spirited_precision_sickle_4",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 55",
+      "Equip:",
+      "Increases the chance to gather Black Lotus."
+    ]
+  },
+  {
+    "id": 42232,
+    "name": "Prospectorâ€™s Magnifying Lens",
+    "quality": 3,
+    "icon": "prospectors_magnifying_lens_3",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 55",
+      "Equip:",
+      "Increases the chance to find Arcane Crystal."
+    ]
+  },
+  {
+    "id": 42362,
+    "name": "Wilted Moonflower",
+    "quality": 2,
+    "icon": "INV_Misc_Herb_14",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+-6 Spirit",
+      "+20 Intellect",
+      "+3 Nature Resistance"
+    ]
+  },
+  {
+    "id": 42382,
+    "name": "Lens of Maras'ethil",
+    "quality": 3,
+    "icon": "INV_Misc_Spyglass_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+8 Intellect",
+      "+14 Arcane Resistance",
+      "Equip:",
+      "Increases damage done by Arcane spells and effects by up to 9."
+    ]
+  },
+  {
+    "id": 42393,
+    "name": "Dragon Dust Residue",
+    "quality": 2,
+    "icon": "INV_Enchant_DustVision",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+6 Arcane Resistance",
+      "Equip:",
+      "Increases damage done by Arcane spells and effects by up to 23."
+    ]
+  },
+  {
+    "id": 50244,
+    "name": "Vampire Heart",
+    "quality": 6,
+    "icon": "INV_Misc_Organ_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 51",
+      "Equip:",
+      "After killing an opponent that yields experience or honor, your health is increased by 500 for 300 sec. Stacks up to 10 times."
+    ]
+  },
+  {
+    "id": 50245,
+    "name": "Crystal of Vengeance",
+    "quality": 6,
+    "icon": "INV_Misc_Gem_Bloodstone_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 51",
+      "Equip:",
+      "Melee attacks against you increase your attack power by 10 for 30 sec. Stacks up to 100 times."
+    ]
+  },
+  {
+    "id": 50246,
+    "name": "Concentrated Power of Will",
+    "quality": 6,
+    "icon": "INV_Jewelry_Amulet_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 51",
+      "Equip:",
+      "Healing taken increases your spirit by 50 for 120 sec. Stacks up to 20 times."
+    ]
+  },
+  {
+    "id": 50247,
+    "name": "Superconducting Magnet",
+    "quality": 6,
+    "icon": "INV_Misc_Gear_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 51",
+      "Equip:",
+      "You automatically charge any target within 100 yards."
+    ]
+  },
+  {
+    "id": 50248,
+    "name": "Black Widow Eggs",
+    "quality": 6,
+    "icon": "INV_Misc_MonsterSpiderCarapace_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 51",
+      "Equip:",
+      "Summons tiny spiders every time you move, which attack your enemies."
+    ]
+  },
+  {
+    "id": 50524,
+    "name": "Gnome Car Key",
+    "quality": 2,
+    "icon": "INV_Misc_Key_04",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 40",
+      "Equip:",
+      "Increases mount speed by 3%.",
+      "\"Allows you to control marvelous gnomish inventions. Handle with care.\""
+    ]
+  },
+  {
+    "id": 50525,
+    "name": "Goblin Car Key",
+    "quality": 2,
+    "icon": "INV_Misc_Key_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 40",
+      "Equip:",
+      "Increases mount speed by 3%.",
+      "\"You're driving the best GOBLIN car ever, kid! What makes it fast? Explosions, of course!\""
+    ]
+  },
+  {
+    "id": 51024,
+    "name": "Cursed Idol",
+    "quality": 3,
+    "icon": "INV_Misc_Idol_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+10 Shadow Resistance",
+      "Requires Level 50",
+      "Equip:",
+      "Restores 5 health every 5 sec.",
+      "Equip:",
+      "Restores 5 mana per 5 sec.",
+      "\"Laced with corrupting power.\""
+    ]
+  },
+  {
+    "id": 51301,
+    "name": "Shard of Beth'Amara",
+    "quality": 2,
+    "icon": "INV_Misc_Gem_Sapphire_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+7 Stamina",
+      "Equip:",
+      "+20 Attack Power."
+    ]
+  },
+  {
+    "id": 51755,
+    "name": "Rune of the Wildhammer Clan",
+    "quality": 2,
+    "icon": "INV_Misc_Rune_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Equip:",
+      "Improves your chance to hit with spells and attacks by 1%.",
+      "\"You can hear crackling thunder within.\""
+    ]
+  },
+  {
+    "id": 51758,
+    "name": "Siege Golem Core",
+    "quality": 2,
+    "icon": "INV_Misc_Rune_06",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "100 Armor",
+      "+-2 Spirit",
+      "+-7 Nature Resistance",
+      "Requires Level 37",
+      "\"Seems unstable.\""
+    ]
+  },
+  {
+    "id": 51840,
+    "name": "Inflatable Woman",
+    "quality": 3,
+    "icon": "INV_Misc_Idol_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Warrior",
+      "Requires Level 60",
+      "\"Happy Birthday, Smultron!\""
+    ]
+  },
+  {
+    "id": 51900,
+    "name": "Depleted Stone of Ahn'Qiraj",
+    "quality": null,
+    "icon": "INV_Stone_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "\"The stone is powerless. Now it's only a reminder of the events at the Scarab Wall.\""
+    ]
+  },
+  {
+    "id": 55066,
+    "name": "Master Kang's Inner Focus",
+    "quality": 3,
+    "icon": "Spell_Frost_WindWalkOn",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 45",
+      "Requires Ravenholdt - Revered",
+      "Equip:",
+      "Increased Fist Weapons +4.",
+      "Equip:",
+      "+16 Attack Power."
+    ]
+  },
+  {
+    "id": 55073,
+    "name": "Myrokos' Philosophical Dissertation",
+    "quality": 4,
+    "icon": "INV_Misc_Book_07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+12 Spirit",
+      "Requires Level 60",
+      "Requires Ravenholdt - Exalted",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 37.",
+      "\"Needs spell: Use: Lose yourself in the book and enter an enlightened state, regenerating 2100 Mana and Health over 12 seconds. You must continue reading to uphold your focus. Actuall quote: The long, drawn out sentences make you sleepy.\""
+    ]
+  },
+  {
+    "id": 55087,
+    "name": "Jewel of Wild Magics",
+    "quality": 4,
+    "icon": "INV_Misc_Gem_Variety_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+15 Fire Resistance",
+      "+15 Frost Resistance",
+      "+15 Arcane Resistance",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 3%.",
+      "Use:",
+      "Unleash a blast of a random element, dealing 490 - 540 damage of that element within 10 yards, additionally causing an effect depending on the element."
+    ]
+  },
+  {
+    "id": 55093,
+    "name": "Remains of Overwhelming Power",
+    "quality": 4,
+    "icon": "INV_Enchant_DustSoul",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Arcane Resistance",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 51.",
+      "Use:",
+      "Summons a Minor Arcane Elemental that will protect you for 60 sec. While this elemental is alive it increases your damage and healing done by magical spells and effects by up to 55."
+    ]
+  },
+  {
+    "id": 55101,
+    "name": "King's Edict",
+    "quality": 4,
+    "icon": "INV_Misc_Book_11",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+17 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your chance to parry an attack by 2%.",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%.",
+      "Equip:",
+      "Increased Defense +13.",
+      "Equip:",
+      "Successfully parrying an attack grants you 25 Attack Power for 8 sec. This effect stacks up to 2 times."
+    ]
+  },
+  {
+    "id": 55111,
+    "name": "Eye of Dormant Corruption",
+    "quality": 4,
+    "icon": "inv_misc_eye_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+-16 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage done by Shadow spells and effects by up to 69.",
+      "Equip:",
+      "Increase the duration of Corruption and Shadow Word: Pain by 3000 secs."
+    ]
+  },
+  {
+    "id": 55124,
+    "name": "Pure Jewel of Draenor",
+    "quality": 4,
+    "icon": "INV_Misc_Gem_Diamond_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 77.",
+      "Equip:",
+      "Gives a 10% chance when your helpful spells land to increase your target's health by 350 for 12 sec."
+    ]
+  },
+  {
+    "id": 55131,
+    "name": "Shieldrender Talisman",
+    "quality": 4,
+    "icon": "INV_Misc_StoneTablet_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Your physical attacks have a chance to cause your next 4 physical attacks to ignore armor. Lasts 10 sec.",
+      "Equip:",
+      "+84 Attack Power."
+    ]
+  },
+  {
+    "id": 55135,
+    "name": "Shard of Leyflow",
+    "quality": 4,
+    "icon": "Inv_misc_monsterscales_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+25 Arcane Resistance",
+      "Requires Level 60",
+      "Equip:",
+      "Restores 14 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 55146,
+    "name": "The Golden Goblet",
+    "quality": 2,
+    "icon": "BTNHL_Holy_Grail",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "+5 Stamina",
+      "Requires Level 33",
+      "Equip:",
+      "Increases damage done by Holy spells and effects by up to 13."
+    ]
+  },
+  {
+    "id": 55210,
+    "name": "Facetted Moonstone Brooch",
+    "quality": 2,
+    "icon": "INV_Misc_Gem_Pearl_06",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "+12 Spirit",
+      "Requires Level 35"
+    ]
+  },
+  {
+    "id": 55211,
+    "name": "Obsidian Brooch",
+    "quality": 2,
+    "icon": "INV_Misc_Gem_Pearl_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "+11 Stamina",
+      "Requires Level 33"
+    ]
+  },
+  {
+    "id": 55212,
+    "name": "Smoldering Brooch",
+    "quality": 2,
+    "icon": "INV_Misc_Gem_Pearl_04",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "Requires Level 38",
+      "Equip:",
+      "+24 Attack Power."
+    ]
+  },
+  {
+    "id": 55213,
+    "name": "Vitriol Brooch",
+    "quality": 2,
+    "icon": "INV_Misc_Gem_Sapphire_03",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "+12 Intellect",
+      "Requires Level 39"
+    ]
+  },
+  {
+    "id": 55268,
+    "name": "Quicksilver Whirl",
+    "quality": 2,
+    "icon": "INV_Misc_Orb_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "+12 Strength",
+      "+10 Intellect",
+      "Requires Level 52"
+    ]
+  },
+  {
+    "id": 55275,
+    "name": "Slivers of Nullification",
+    "quality": 4,
+    "icon": "INV_Misc_Gem_Amethyst_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+25 Stamina",
+      "+25 Arcane Resistance",
+      "Requires Level 60",
+      "Use:",
+      "Reflect the next harmful spell cast on you. Lasts 4 sec.",
+      "\"The fragments of the once powerful gem seem to be attracted to eachother.\""
+    ]
+  },
+  {
+    "id": 55340,
+    "name": "Shadowforged Eye",
+    "quality": 2,
+    "icon": "INV_Misc_ShadowEgg",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "+2 Stamina",
+      "+2 Strength",
+      "+2 Agility",
+      "+2 Intellect",
+      "+2 Spirit",
+      "Requires Level 15"
+    ]
+  },
+  {
+    "id": 55341,
+    "name": "Totem of Self Preservation",
+    "quality": 3,
+    "icon": "INV_QirajIdol_Life",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "15 Armor",
+      "+5 Spirit",
+      "+6 Frost Resistance",
+      "Requires Level 25",
+      "Equip:",
+      "1% of damage dealt is returned as healing."
+    ]
+  },
+  {
+    "id": 55363,
+    "name": "Grail of Forgotten Memories",
+    "quality": 4,
+    "icon": "INV_Jewelry_Trinket_VampiricGrail",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "+11 Stamina",
+      "Requires Level 54",
+      "Equip:",
+      "Increases your attack and casting speed by 1%.",
+      "Equip:",
+      "3% of damage dealt is returned as healing."
+    ]
+  },
+  {
+    "id": 55364,
+    "name": "Guardbreaker Charm",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_03",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "+26 Attack Power.",
+      "Equip:",
+      "Your attacks ignore 50 of the target's armor."
+    ]
+  },
+  {
+    "id": 55375,
+    "name": "Corrosive Vial",
+    "quality": 3,
+    "icon": "INV_Drink_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 17",
+      "Use:",
+      "Throw a corrosive vial at your target, inflicting 50 Nature damage every 5 sec. for 30 sec."
+    ]
+  },
+  {
+    "id": 55387,
+    "name": "Introduction to the Dark Arts",
+    "quality": 3,
+    "icon": "INV_Misc_Book_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+-5 Spirit",
+      "+10 Shadow Resistance",
+      "Requires Level 30",
+      "Equip:",
+      "Increases damage done by Shadow spells and effects by up to 13.",
+      "\"A few pages are missing, surely they can't be that important.\""
+    ]
+  },
+  {
+    "id": 55501,
+    "name": "Sphere of the Endless Gulch",
+    "quality": 4,
+    "icon": "INV_Ore_Arcanite_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 30.",
+      "Equip:",
+      "Gives a 20% chance when your harmful spells land to grant you Wisdom of the Mak'aru. Upon gaining Wisdom of the Mak'aru 20 times, you enter an enlightened state, increasing casting speed by 20% for 12 sec."
+    ]
+  },
+  {
+    "id": 55505,
+    "name": "The Scythe of Elune",
+    "quality": 5,
+    "icon": "Inv_weapon_shortblade_23",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Classes: Priest, Mage, Warlock, Druid",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to hit and get a critical strike with spells by 2%. Increases damage done by magical spells and effects by up to 40.",
+      "Equip:",
+      "Elune infuses your magic with astral power, giving a 5% chance when your harmful spells are cast to unleash astral energy, dealing 375 to 501 Arcane damage and imbuing your next harmful spell with moonlight. Spells imbued by moonlight increase the damage the target takes from its spell school by 8% and trigger an additional effect for 10 sec depending on the spell school of the harmful spell.",
+      "Use:",
+      "Pierce the veil between Azeroth and Vorgendor, summoning a Scytheclaw Pureborn to protect you for 60 sec.",
+      "\"The veil between worlds is hidden within this relic. The dark emanations of Vorgendor are silenced for now.\""
+    ]
+  },
+  {
+    "id": 56034,
+    "name": "Shimmering Moonstone Tablet",
+    "quality": 2,
+    "icon": "INV_Ingot_08",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "+5 Arcane Resistance",
+      "Requires Level 37",
+      "Use:",
+      "Absorbs 300 to 501 arcane damage.  Lasts 6 sec."
+    ]
+  },
+  {
+    "id": 56035,
+    "name": "Stormcloud Sigil",
+    "quality": 2,
+    "icon": "INV_Jewelry_Talisman_05",
+    "tooltip_lines_raw": [
+      "Unique",
+      "Trinket",
+      "+8 Nature Resistance",
+      "Requires Level 56",
+      "Equip:",
+      "Increases damage done by Nature spells and effects by up to 21.",
+      "Stormcloud Jewelry",
+      "(0/3)",
+      "Stormcloud Sigil",
+      "Stormcloud Shackles",
+      "Stormcloud Signet",
+      "(3) Set:",
+      "Increases damage done by Nature spells and effects by up to 14."
+    ]
+  },
+  {
+    "id": 56047,
+    "name": "Crystal Earring",
+    "quality": 2,
+    "icon": "INV_Jewelry_Ring_07",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "+4 Frost Resistance",
+      "+4 Shadow Resistance",
+      "Requires Level 35",
+      "Use:",
+      "Increases Frost and Shadow resistance by 10 for 60 sec."
+    ]
+  },
+  {
+    "id": 56073,
+    "name": "Ornament of Restraint",
+    "quality": 3,
+    "icon": "Spell_Shadow_GrimWard",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "+10 Shadow Resistance",
+      "Requires Level 47",
+      "Equip:",
+      "Increases your chance to resist Fear effects by 4%."
+    ]
+  },
+  {
+    "id": 58010,
+    "name": "Psalm of Righteous Fire",
+    "quality": 3,
+    "icon": "INV_Misc_Book_09",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "Requires Level 35",
+      "Equip:",
+      "Increases damage done by Fire spells and effects by up to 14.",
+      "Equip:",
+      "Increases damage done by Holy spells and effects by up to 14."
+    ]
+  },
+  {
+    "id": 58025,
+    "name": "Duel of Leaves",
+    "quality": 2,
+    "icon": "inv_duelofleaves_trinket",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+11 Spirit"
+    ]
+  },
+  {
+    "id": 58041,
+    "name": "Fangmother Essence",
+    "quality": 2,
+    "icon": "INV_Misc_Bone_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+3 Agility",
+      "+7 Nature Resistance",
+      "Requires Level 24"
+    ]
+  },
+  {
+    "id": 58059,
+    "name": "Razertooth Fetish",
+    "quality": 3,
+    "icon": "INV_Misc_Bone_07",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "Requires Level 38",
+      "Equip:",
+      "Restores 3 health per 5 sec.",
+      "Equip:",
+      "Improves your chance to get a critical strike by 1%."
+    ]
+  },
+  {
+    "id": 58073,
+    "name": "Grahan Family Seal",
+    "quality": 2,
+    "icon": "INV_Misc_Rune_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+4 Agility",
+      "+4 Strength",
+      "+4 Intellect",
+      "+4 Spirit",
+      "+4 Stamina"
+    ]
+  },
+  {
+    "id": 58079,
+    "name": "Pearlescent Shard",
+    "quality": 2,
+    "icon": "INV_Ore_Arcanite_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+3 Stamina",
+      "Equip:",
+      "Increases swim speed by 5%.",
+      "Equip:",
+      "Allows underwater breathing."
+    ]
+  },
+  {
+    "id": 58090,
+    "name": "Seed of Writhing Growth",
+    "quality": 3,
+    "icon": "INV_Misc_Root_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+3 Stamina",
+      "Requires Level 29",
+      "Equip:",
+      "When struck in combat inflicts 3 Nature damage to the attacker."
+    ]
+  },
+  {
+    "id": 58100,
+    "name": "Drakebone War Core",
+    "quality": 3,
+    "icon": "INV_Misc_Rune_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+3 Spirit",
+      "Requires Level 29",
+      "Equip:",
+      "Increases damage done by Frost spells and effects by up to 11.",
+      "Equip:",
+      "Increases damage done by Shadow spells and effects by up to 11."
+    ]
+  },
+  {
+    "id": 58151,
+    "name": "Salt-encrusted Compass",
+    "quality": 3,
+    "icon": "INV_Misc_PocketWatch_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 35",
+      "Equip:",
+      "You have a 2% chance when struck in combat to increase Defense by 30 for 6 sec."
+    ]
+  },
+  {
+    "id": 58162,
+    "name": "Horn of Razorscale",
+    "quality": 2,
+    "icon": "INV_Misc_Horn_03",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "Requires Level 32",
+      "Equip:",
+      "1% of damage dealt is returned as healing.",
+      "Equip:",
+      "Restores 3 health per 5 sec."
+    ]
+  },
+  {
+    "id": 58168,
+    "name": "Slickwick Wicker Box",
+    "quality": 2,
+    "icon": "INV_Misc_Bag_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Absorbs 300 to 501 Fire damage.  Lasts 60 sec."
+    ]
+  },
+  {
+    "id": 58175,
+    "name": "Blood-etched Fetish",
+    "quality": 3,
+    "icon": "INV_Misc_AhnQirajTrinket_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+4 Agility",
+      "Requires Level 37",
+      "Equip:",
+      "Increases your attack and casting speed by 1%.",
+      "Equip:",
+      "1% of damage dealt is returned as healing."
+    ]
+  },
+  {
+    "id": 58180,
+    "name": "Core of Mycellakos",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Pearl_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Nature Resistance",
+      "Requires Level 33",
+      "Equip:",
+      "Increases damage done by Nature spells and effects by up to 16."
+    ]
+  },
+  {
+    "id": 58191,
+    "name": "Whip of Shared Secrets",
+    "quality": 3,
+    "icon": "INV_Misc_Root_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+10 Shadow Resistance",
+      "Requires Level 35",
+      "Equip:",
+      "Increases your attack and casting speed by 1%."
+    ]
+  },
+  {
+    "id": 58202,
+    "name": "Twisted Demon Crystal",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Amethyst_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 37",
+      "Use:",
+      "Feast on the target's life essence, dealing 300 Shadow damage over 5 sec. If you fully channel this spell, your Stamina is increased by 20 and your target's Stamina is reduced by 20 for 60 sec."
+    ]
+  },
+  {
+    "id": 58211,
+    "name": "Molten Emberstone",
+    "quality": 4,
+    "icon": "INV_Misc_Gem_Ruby_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Use:",
+      "Increases your melee and ranged attack power by 200 for 20 sec."
+    ]
+  },
+  {
+    "id": 58231,
+    "name": "Penchant of Humility",
+    "quality": 4,
+    "icon": "INV_Staff_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+15 Shadow Resistance",
+      "Requires Level 60",
+      "Requires Argent Dawn - Exalted",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 26.",
+      "Equip:",
+      "Restores 9 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 58238,
+    "name": "Runed Wardstone",
+    "quality": 4,
+    "icon": "inv_square_rune_4",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+12 Stamina",
+      "Requires Level 60",
+      "Use:",
+      "Render yourself immune to Fire damage for 6 sec."
+    ]
+  },
+  {
+    "id": 58244,
+    "name": "Sigil of Ancient Accord",
+    "quality": 4,
+    "icon": "INV_Misc_Rune_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Your direct damage spells have a 8% chance to detonate surrounding magic, dealing 100 Arcane damage to the target and all enemies within 0 yards. The primary target takes an additional 300 Arcane damage."
+    ]
+  },
+  {
+    "id": 58247,
+    "name": "Champion's Insignia",
+    "quality": 4,
+    "icon": "INV_Misc_ArmorKit_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+25 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Reduces damage taken from critical hits and damage over time effects by 6%.",
+      "Use:",
+      "Dispels all types of crowd control effects."
+    ]
+  },
+  {
+    "id": 58254,
+    "name": "Miniature Astrolabium",
+    "quality": 3,
+    "icon": "INV_Misc_Orb_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+13 Spirit",
+      "Requires Level 58",
+      "Requires Shen'dralar - Revered",
+      "Equip:",
+      "Increases damage done by Arcane spells and effects by up to 16.",
+      "Equip:",
+      "Restores 6 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 58260,
+    "name": "Fang of Alichos",
+    "quality": 2,
+    "icon": "INV_Misc_Bone_07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+6 Stamina",
+      "+5 Shadow Resistance",
+      "Requires Level 30",
+      "Use:",
+      "Surrounds the caster with a shield woven from Shadow magic for 30 sec, absorbing up to 200 Physical or magical damage and inflicting 10 damage to melee attackers."
+    ]
+  },
+  {
+    "id": 58261,
+    "name": "Drinking Halfhorn",
+    "quality": 3,
+    "icon": "INV_Misc_Horn_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Increases the user's attack speed by 2% and increases the Physical damage it deals by 10 for 15 sec."
+    ]
+  },
+  {
+    "id": 58285,
+    "name": "Golden Effigy",
+    "quality": 2,
+    "icon": "INV_Scarab_Gold",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+-2 Agility",
+      "+-2 Strength",
+      "+-2 Intellect",
+      "+-2 Spirit",
+      "+-2 Stamina",
+      "Requires Level 30",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 14."
+    ]
+  },
+  {
+    "id": 58298,
+    "name": "Eye of the Forgotten Depths",
+    "quality": 3,
+    "icon": "INV_Misc_Eye_01",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "+5 Agility",
+      "+8 Stamina",
+      "Requires Level 34",
+      "Equip:",
+      "Increases your effective stealth level by 1."
+    ]
+  },
+  {
+    "id": 58301,
+    "name": "Shadowbind Sigil",
+    "quality": 3,
+    "icon": "Spell_Shadow_AntiShadow",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "-100 Armor",
+      "+8 Intellect",
+      "Requires Level 34",
+      "Equip:",
+      "Increases damage done by Shadow spells and effects by up to 17."
+    ]
+  },
+  {
+    "id": 58304,
+    "name": "Voltage-Neutralizing Nature Reflector",
+    "quality": 3,
+    "icon": "INV_Misc_EngGizmos_06",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "+20 Nature Resistance",
+      "Requires Level 55",
+      "Requires Engineering (300)",
+      "Use:",
+      "Reflects Nature spells back at their caster for 5 sec."
+    ]
+  },
+  {
+    "id": 58305,
+    "name": "Giga-Charged Arcane Reflector",
+    "quality": 3,
+    "icon": "INV_Misc_EngGizmos_15",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "+20 Arcane Resistance",
+      "Requires Level 55",
+      "Requires Engineering (300)",
+      "Use:",
+      "Reflects Arcane spells back at their caster for 5 sec."
+    ]
+  },
+  {
+    "id": 60201,
+    "name": "Tattered Banner of Lordaeron",
+    "quality": 3,
+    "icon": "INV_Banner_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "40 Armor",
+      "Equip:",
+      "+8 Attack Power.",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 7.",
+      "\"A testament of your triumph.\""
+    ]
+  },
+  {
+    "id": 60461,
+    "name": "Blackfire Orb",
+    "quality": 3,
+    "icon": "INV_Misc_Orb_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+5 Arcane Resistance",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 1%.",
+      "Equip:",
+      "Increases your attack and casting speed by 1%.",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 15."
+    ]
+  },
+  {
+    "id": 60464,
+    "name": "Orb of Kaladoon",
+    "quality": 3,
+    "icon": "INV_Misc_Orb_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+5 Arcane Resistance",
+      "Equip:",
+      "Improves your chance to hit with spells by 1%.",
+      "Equip:",
+      "Increases your attack and casting speed by 1%.",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 15."
+    ]
+  },
+  {
+    "id": 60470,
+    "name": "Ice Pearl of Kaneq'nuun",
+    "quality": 2,
+    "icon": "inv_misc_gem_pearl_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+10 Frost Resistance",
+      "Equip:",
+      "Increases swim speed by 15%.",
+      "Use:",
+      "Increases frost resistance by 35.  Lasts 30 sec.",
+      "\"A pearl of the far North Sea, glimmering with the essence of ice.\""
+    ]
+  },
+  {
+    "id": 60501,
+    "name": "Whip of Encouragement",
+    "quality": 3,
+    "icon": "INV_Misc_Crop_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your attack and casting speed by 3%.",
+      "Equip:",
+      "Increases mount speed by 3%."
+    ]
+  },
+  {
+    "id": 60551,
+    "name": "Pendant of the Faceless",
+    "quality": 4,
+    "icon": "Spell_Shadow_AntiShadow",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+15 Shadow Resistance",
+      "Requires Level 54",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 2%.",
+      "Equip:",
+      "Improves your chance to hit with spells by 1%.",
+      "\"Holds an otherworldly essence.\""
+    ]
+  },
+  {
+    "id": 60559,
+    "name": "Hatereaver Cog",
+    "quality": 3,
+    "icon": "INV_Gizmo_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "120 Armor",
+      "+12 Stamina",
+      "+5 Fire Resistance",
+      "Requires Level 52",
+      "Equip:",
+      "Increases your attack and casting speed by 1%."
+    ]
+  },
+  {
+    "id": 60570,
+    "name": "Dark Iron Hooked Net",
+    "quality": 3,
+    "icon": "INV_Misc_Net_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+5 Agility",
+      "Requires Level 51",
+      "Use:",
+      "Renders a target unable to move for 10 sec."
+    ]
+  },
+  {
+    "id": 60587,
+    "name": "Tharg's Rock of Friendship",
+    "quality": 2,
+    "icon": "INV_Stone_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+6 Strength",
+      "+3 Spirit",
+      "\"To new friend! Tharg love you.\""
+    ]
+  },
+  {
+    "id": 60654,
+    "name": "Spiritual Feather",
+    "quality": 2,
+    "icon": "INV_Feather_12",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+1 Spirit",
+      "Equip:",
+      "Restores 2 health per 5 sec."
+    ]
+  },
+  {
+    "id": 60668,
+    "name": "Badge of Shadowforge",
+    "quality": 2,
+    "icon": "BTN_cr_GCOIN",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "50 Armor",
+      "+18 Fire Resistance",
+      "Equip:",
+      "+18 Attack Power."
+    ]
+  },
+  {
+    "id": 60672,
+    "name": "Energized Golem Core",
+    "quality": 2,
+    "icon": "INV_Misc_Gem_Pearl_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Equip:",
+      "Increases damage done by Nature spells and effects by up to 24.",
+      "\"The core crackles with power.\""
+    ]
+  },
+  {
+    "id": 60715,
+    "name": "Taskmaster Whip",
+    "quality": 2,
+    "icon": "INV_Misc_Bandage_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Equip:",
+      "Increases your attack and casting speed by 2%."
+    ]
+  },
+  {
+    "id": 60789,
+    "name": "Finkle's Accelerator",
+    "quality": 4,
+    "icon": "INV_Misc_Gear_02",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "Requires Level 37",
+      "Equip:",
+      "Increases your attack and casting speed by 2%.",
+      "\"Guaranteed time dilation! Finkle Einhorn is not responsible for any malfunctions and untimely death via aging.\""
+    ]
+  },
+  {
+    "id": 60809,
+    "name": "Remains of the Lost",
+    "quality": 3,
+    "icon": "Spell_Shadow_Haunting",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "+19 Spirit",
+      "Requires Level 58",
+      "Equip:",
+      "Allows 5% of your Mana regeneration to continue while casting.",
+      "Possessions of the Lost",
+      "(0/4)",
+      "Memento of the Lost",
+      "Remains of the Lost",
+      "Loop of the Lost",
+      "Tome of the Lost",
+      "(3) Set:",
+      "Gives a 4% chance when your harmful spells land to reawaken the Lost for 20 sec."
+    ]
+  },
+  {
+    "id": 60853,
+    "name": "Dyad of Twitching Elven Ears",
+    "quality": 3,
+    "icon": "INV_Misc_Ear_NightElf_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+5 Agility",
+      "Equip:",
+      "Slightly increases your stealth detection.",
+      "\"Perking at the slightest sound.\""
+    ]
+  },
+  {
+    "id": 60854,
+    "name": "Blood of the First Khan",
+    "quality": 3,
+    "icon": "INV_Potion_50",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+5 Strength",
+      "Use:",
+      "Heal yourself for 225 to 376.",
+      "\"Blood of my blood.\""
+    ]
+  },
+  {
+    "id": 60855,
+    "name": "Ritual Dust of Satiation",
+    "quality": 3,
+    "icon": "INV_Misc_Powder_Black",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+5 Stamina",
+      "Equip:",
+      "Restores 3 mana per 5 sec.",
+      "Equip:",
+      "Restores 6 health per 5 sec.",
+      "\"Stirs something deep within.\""
+    ]
+  },
+  {
+    "id": 60859,
+    "name": "Theradras' Shed Tear",
+    "quality": 3,
+    "icon": "INV_Ore_Arcanite_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+5 Spirit",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 1%.",
+      "\"Glistening with emotion.\""
+    ]
+  },
+  {
+    "id": 60860,
+    "name": "Triskelion of Roving Elements",
+    "quality": 3,
+    "icon": "Spell_Frost_WindWalkOn",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+5 Intellect",
+      "Equip:",
+      "Minor increase to running and swimming speed.",
+      "\"Pulses impatiently when you stop moving.\""
+    ]
+  },
+  {
+    "id": 60985,
+    "name": "Icepaw Talisman",
+    "quality": 2,
+    "icon": "Spell_Misc_ConjureManaJewel",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+10 Frost Resistance"
+    ]
+  },
+  {
+    "id": 61014,
+    "name": "Temporal Anomaly",
+    "quality": 4,
+    "icon": "INV_Enchant_EssenceAstralLarge",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to hit with spells by 1%.",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 23.",
+      "Use:",
+      "Reduce your threat to the current target making them less likely to attack you."
+    ]
+  },
+  {
+    "id": 61059,
+    "name": "Mossheart's Heart",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Stone_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "145 Armor",
+      "Requires Level 60",
+      "Equip:",
+      "When struck in combat inflicts 1 Nature damage to the attacker.",
+      "Equip:",
+      "Restores 8 health per 5 sec.",
+      "\"Jagged and pure.\""
+    ]
+  },
+  {
+    "id": 61080,
+    "name": "Ebu's Lucky Banana",
+    "quality": 2,
+    "icon": "INV_Misc_Food_24",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+10 Nature Resistance",
+      "Equip:",
+      "Restores 5 health per 5 sec.",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%."
+    ]
+  },
+  {
+    "id": 61095,
+    "name": "Boon of Niremius",
+    "quality": 2,
+    "icon": "Spell_Shadow_AntiMagicShell",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+5 Fire Resistance",
+      "+5 Shadow Resistance",
+      "Equip:",
+      "Increases your attack and casting speed by 2%."
+    ]
+  },
+  {
+    "id": 61100,
+    "name": "Deckmaster's Commendation",
+    "quality": 2,
+    "icon": "INV_Misc_ArmorKit_07",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Equip:",
+      "+10 Attack Power.",
+      "\"In service to the Kul Tiran navy.\""
+    ]
+  },
+  {
+    "id": 61194,
+    "name": "The Heart of Dreams",
+    "quality": 4,
+    "icon": "BTNOrbOfDepths",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your attack and casting speed by 2%.",
+      "Equip:",
+      "Improves your chance to get a critical strike by 2%.",
+      "Equip:",
+      "Restores 5 health per 5 sec."
+    ]
+  },
+  {
+    "id": 61209,
+    "name": "Shard of Nightmare",
+    "quality": 4,
+    "icon": "INV_Enchant_EssenceMysticalLarge",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Nature Resistance",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 37.",
+      "Equip:",
+      "Improves your chance to hit with spells by 1%.",
+      "Use:",
+      "Puts the enemy target to sleep for up to 10 sec.  Any damage caused will awaken the target.",
+      "\"Past the point of cleansing, a small glimpse is enough to induce nightmares.\""
+    ]
+  },
+  {
+    "id": 61243,
+    "name": "Vial of Potent Venoms",
+    "quality": 4,
+    "icon": "INV_Potion_97",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Your melee and ranged attacks have a chance to inject poison into the target, dealing 120 Nature damage over 12 sec. Stacks up to 12001 times."
+    ]
+  },
+  {
+    "id": 61263,
+    "name": "Tooth of the Packlord",
+    "quality": 3,
+    "icon": "INV_Misc_MonsterFang_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "2% of damage dealt is returned as healing.",
+      "Equip:",
+      "Your attacks ignore 50 of the target's armor.",
+      "\"No stranger to chewing through heavy armor.\""
+    ]
+  },
+  {
+    "id": 61299,
+    "name": "Shawl of the Castellan",
+    "quality": 4,
+    "icon": "INV_Misc_Bandage_16",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%.",
+      "Equip:",
+      "Increases your attack and casting speed by 2%.",
+      "Equip:",
+      "When struck has an 1% chance to increase your Dodge chance by 35% for 5 sec."
+    ]
+  },
+  {
+    "id": 61317,
+    "name": "Scriptures of Blood",
+    "quality": 3,
+    "icon": "INV_Misc_Book_10",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Fire Resistance",
+      "Requires Level 44",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 24.",
+      "Equip:",
+      "Restores 5 health per 5 sec."
+    ]
+  },
+  {
+    "id": 61393,
+    "name": "Low Energy Regulator",
+    "quality": 2,
+    "icon": "INV_Gizmo_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Use:",
+      "Absorbs 300 to 501 nature damage.  Lasts 6 sec."
+    ]
+  },
+  {
+    "id": 61450,
+    "name": "The Mind's Key",
+    "quality": 3,
+    "icon": "INV_Misc_Key_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to hit with spells by 1%.",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 26.",
+      "\"An unlocked mind opens many other doors.\""
+    ]
+  },
+  {
+    "id": 61451,
+    "name": "Sliver of Hope",
+    "quality": 3,
+    "icon": "INV_Enchant_EssenceEternalSmall",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 44.",
+      "Equip:",
+      "Restores 7 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 61508,
+    "name": "Thorned Branch",
+    "quality": 2,
+    "icon": "Ability_Creature_Poison_04",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "+6 Spirit",
+      "Requires Level 32",
+      "Equip:",
+      "When struck in combat inflicts 2 Nature damage to the attacker."
+    ]
+  },
+  {
+    "id": 61511,
+    "name": "Scale of the Makrura",
+    "quality": 2,
+    "icon": "INV_Misc_StoneTablet_07",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "140 Armor",
+      "Requires Level 53",
+      "Equip:",
+      "Increased Defense +5."
+    ]
+  },
+  {
+    "id": 61517,
+    "name": "Chimaera's Eye",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Emerald_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Equip:",
+      "Your attacks ignore 50 of the target's armor.",
+      "\"This magical gem seems to slowly exude a corossive poison that no armor of man nor monster can endure.\""
+    ]
+  },
+  {
+    "id": 61520,
+    "name": "The Golden Banana",
+    "quality": 2,
+    "icon": "INV_Misc_Food_24",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "+-8 Intellect",
+      "+-5 Agility",
+      "Requires Level 55",
+      "Equip:",
+      "+60 Attack Power when fighting Beasts.",
+      "\"Holds power over the apekind, yet it's afflicted with a terrible curse.\""
+    ]
+  },
+  {
+    "id": 61527,
+    "name": "Breath of Solnius",
+    "quality": 4,
+    "icon": "BTNOrbofChaos",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+11 Spirit",
+      "Requires Level 60",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 30.",
+      "Equip:",
+      "Gives a 5% chance when your helpful spells land to increase your casting speed by 20 for 20 sec.",
+      "\"Brimming with life energies.\""
+    ]
+  },
+  {
+    "id": 61531,
+    "name": "Glowing Black Pearl",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Pearl_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 52",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 33.",
+      "Equip:",
+      "Restores 5 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 61555,
+    "name": "Ancient Grove Reed",
+    "quality": 3,
+    "icon": "INV_Misc_Root_02",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "+-6 Fire Resistance",
+      "Requires Level 30",
+      "Equip:",
+      "Increases damage done by Arcane spells and effects by up to 14.",
+      "Equip:",
+      "Increases damage done by Nature spells and effects by up to 14."
+    ]
+  },
+  {
+    "id": 61563,
+    "name": "Grimoire of Grells",
+    "quality": 3,
+    "icon": "INV_Misc_Book_06",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "+20 Shadow Resistance",
+      "Requires Level 58",
+      "Equip:",
+      "Improves your chance to hit with spells by 1%."
+    ]
+  },
+  {
+    "id": 61564,
+    "name": "Chromie's Broken Pocket Watch",
+    "quality": 3,
+    "icon": "INV_Misc_PocketWatch_02",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "+10 Intellect",
+      "Requires Level 59",
+      "Equip:",
+      "Improves your chance to hit with spells by 2%.",
+      "Equip:",
+      "Your direct damaging spells have a 10% chance to decrease your casting speed by 10% for 15 sec."
+    ]
+  },
+  {
+    "id": 61585,
+    "name": "Brawling Trophy",
+    "quality": 2,
+    "icon": "INV_Misc_Bone_03",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "40 Armor",
+      "+6 Spirit",
+      "Requires Level 41",
+      "Equip:",
+      "+20 Attack Power."
+    ]
+  },
+  {
+    "id": 61700,
+    "name": "Fabric of Time",
+    "quality": 3,
+    "icon": "inv_fabric_celestial_cloth",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+-20 Intellect",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 30.",
+      "Equip:",
+      "Restores 7 mana per 5 sec.",
+      "\"Prone to tearing.\""
+    ]
+  },
+  {
+    "id": 61754,
+    "name": "Deepwood Pipe",
+    "quality": 4,
+    "icon": "INV_Misc_Pipe_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 59",
+      "Use:",
+      "Emits a cloud of smoke, stunning nearby enemies for 3 sec. and putting the caster into stealth mode.",
+      "\"One puff is enough to knock the user unconcious.\""
+    ]
+  },
+  {
+    "id": 61816,
+    "name": "Araxxna's Husk",
+    "quality": 3,
+    "icon": "INV_Shield_21",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "140 Armor",
+      "+15 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%."
+    ]
+  },
+  {
+    "id": 62008,
+    "name": "Thornpod",
+    "quality": 3,
+    "icon": "INV_Misc_Herb_08",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "Requires Level 48",
+      "Use:",
+      "Deals 75 Physical damage to nearby enemies, knocking them down for 2 sec.",
+      "\"Ready to burst.\""
+    ]
+  },
+  {
+    "id": 65105,
+    "name": "Scale of the Wakener",
+    "quality": 4,
+    "icon": "INV_Misc_MonsterScales_11",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+15 Nature Resistance",
+      "Durability 55 / 55",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your chance to dodge an attack by 2%.",
+      "Equip:",
+      "Increases your chance to block attacks with a shield by 1%.",
+      "Equip:",
+      "Increases the block value of your shield by 27.",
+      "\"One must wait so the rest may sleep.\""
+    ]
+  },
+  {
+    "id": 70033,
+    "name": "Tazan's Tusk",
+    "quality": 2,
+    "icon": "INV_Misc_Bone_05",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Equip:",
+      "+4 Attack Power.",
+      "\"A claimed trophy from an enemy.\""
+    ]
+  },
+  {
+    "id": 70034,
+    "name": "Threshadon Trophy",
+    "quality": 2,
+    "icon": "INV_Misc_Bone_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Equip:",
+      "+4 Attack Power."
+    ]
+  },
+  {
+    "id": 80674,
+    "name": "Corrosive Core",
+    "quality": 3,
+    "icon": "Ability_Creature_Poison_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Nature Resistance",
+      "Requires Level 48",
+      "Equip:",
+      "Your attacks ignore 40 of the target's armor.",
+      "Equip:",
+      "Improves your chance to hit by 1%."
+    ]
+  },
+  {
+    "id": 80793,
+    "name": "The Wolf Horn of Orgrimmar",
+    "quality": 4,
+    "icon": "INV_Misc_Horn_02",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "Requires Level 58",
+      "Equip:",
+      "1% chance to stun a victim struck in combat for 1 sec."
+    ]
+  },
+  {
+    "id": 80805,
+    "name": "Prismatic Crystal",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Variety_02",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "Requires Level 45",
+      "Requires Dalaran - Honored",
+      "Use:",
+      "Summons 1 Prismatic Exile to aid the caster in battle for 60 sec.",
+      "\"Always changing colors, never the same.\""
+    ]
+  },
+  {
+    "id": 80806,
+    "name": "Healing Ward",
+    "quality": 3,
+    "icon": "INV_Banner_01",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Requires Level 36",
+      "Requires Darkspear Trolls - Revered",
+      "Use:",
+      "Heal friendly target for 300 to 501."
+    ]
+  },
+  {
+    "id": 80826,
+    "name": "Scale of the Red Drake",
+    "quality": 3,
+    "icon": "INV_Misc_MonsterScales_15",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "+10 Fire Resistance",
+      "Requires Level 42",
+      "Equip:",
+      "Increases damage done by Fire spells and effects by up to 19."
+    ]
+  },
+  {
+    "id": 80830,
+    "name": "Fey Dreamcatcher",
+    "quality": 3,
+    "icon": "INV_Feather_12",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "+6 Spirit",
+      "Requires Level 27",
+      "Equip:",
+      "Allows 3% of your Mana regeneration to continue while casting."
+    ]
+  },
+  {
+    "id": 80842,
+    "name": "Scale of the Blue Drake",
+    "quality": 3,
+    "icon": "INV_Misc_MonsterScales_09",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Unique",
+      "Trinket",
+      "Requires Level 56",
+      "Equip:",
+      "Your Frostbolt spells have a 6% chance to restore 50 mana when cast."
+    ]
+  },
+  {
+    "id": 81140,
+    "name": "Steamwheedle Limited Edition Wormhole",
+    "quality": null,
+    "icon": "INV_Misc_EngGizmos_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "\"Takes you to the Steamwheedle Beach Experience. Notice: Upon use, the user consents that The Steamwheedle Cartel is not responsible for device malfunctions.\""
+    ]
+  },
+  {
+    "id": 81268,
+    "name": "Orb of the Hellcaller",
+    "quality": 3,
+    "icon": "INV_Misc_Orb_05",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "Requires Level 24",
+      "Use:",
+      "Does 250 fire damage to all enemies in the area of effect over 10 sec."
+    ]
+  },
+  {
+    "id": 81269,
+    "name": "Araga's Tail",
+    "quality": 2,
+    "icon": "INV_Misc_Bone_03",
+    "tooltip_lines_raw": [
+      "Binds when equipped",
+      "Trinket",
+      "Requires Level 32",
+      "Equip:",
+      "Increases your attack and casting speed by 1%."
+    ]
+  },
+  {
+    "id": 81364,
+    "name": "Scale of Malygos",
+    "quality": 3,
+    "icon": "INV_Misc_MonsterScales_09",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+10 Intellect",
+      "+5 Frost Resistance",
+      "+5 Arcane Resistance",
+      "Requires Level 56",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 16.",
+      "Equip:",
+      "Increases damage done by Arcane spells and effects by up to 16.",
+      "\"A scale of the Blue Dragon Aspect\""
+    ]
+  },
+  {
+    "id": 81382,
+    "name": "Gordunni War Beads",
+    "quality": 3,
+    "icon": "INV_Jewelry_Necklace_19",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+2 Strength",
+      "Requires Level 47",
+      "Equip:",
+      "Increases your chance to resist Stun and Fear effects by 1%."
+    ]
+  },
+  {
+    "id": 83210,
+    "name": "Crescent Sigil",
+    "quality": 3,
+    "icon": "Inv_weapon_shortblade_23",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+10 Arcane Resistance",
+      "Requires Level 33",
+      "Equip:",
+      "Increases damage done by Arcane spells and effects by up to 13."
+    ]
+  },
+  {
+    "id": 83224,
+    "name": "Horn of Engryss",
+    "quality": 3,
+    "icon": "INV_Misc_Horn_03",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "30 Armor",
+      "+8 Stamina",
+      "+5 Nature Resistance",
+      "Requires Level 34",
+      "Equip:",
+      "Restores 4 health per 5 sec.",
+      "Equip:",
+      "When struck in combat inflicts 4 Nature damage to the attacker.",
+      "\"Marked with furbolg symbols, and used to rally the tribes\""
+    ]
+  },
+  {
+    "id": 83275,
+    "name": "Ashbeard's Lucky Telescope",
+    "quality": 4,
+    "icon": "INV_Misc_Spyglass_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "+5 Nature Resistance",
+      "Requires Level 49",
+      "Equip:",
+      "Increases your chance to dodge an attack by 2%.",
+      "Use:",
+      "Allows you to look far into the distance."
+    ]
+  },
+  {
+    "id": 83450,
+    "name": "Soul of the Spider",
+    "quality": 3,
+    "icon": "INV_Misc_Gem_Pearl_06",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+25 Nature Resistance",
+      "Requires Level 60",
+      "Use:",
+      "Poisons target for 20 Nature damage every 2 sec for 20 sec."
+    ]
+  },
+  {
+    "id": 83563,
+    "name": "Pearl of the Tides",
+    "quality": 4,
+    "icon": "INV_Ore_Arcanite_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 32.",
+      "Equip:",
+      "Restores 6 mana per 5 sec."
+    ]
+  },
+  {
+    "id": 84006,
+    "name": "Banner of the Scarlet Crusade",
+    "quality": 4,
+    "icon": "INV_Banner_02",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "Equip:",
+      "Increases your attack and casting speed by 4%.",
+      "Equip:",
+      "+30 Attack Power.",
+      "\"Soaked in the blood of those devoted to this zealous crusade.\""
+    ]
+  },
+  {
+    "id": 84031,
+    "name": "Consecrated Sigil",
+    "quality": 4,
+    "icon": "Spell_Holy_InnerFire",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "Requires Level 60",
+      "Equip:",
+      "Improves your chance to get a critical strike with spells by 2%.",
+      "Equip:",
+      "Increases healing done by spells and effects by up to 73.",
+      "Equip:",
+      "Increases damage done by Holy spells and effects by up to 47."
+    ]
+  },
+  {
+    "id": 84039,
+    "name": "Tinsel's Carrot",
+    "quality": 2,
+    "icon": "INV_Misc_Food_54",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Trinket",
+      "\"A gesture of good faith from a snowman. Maybe you're not on Greatfather Winter's naughty list after all!\""
+    ]
+  },
+  {
+    "id": 84501,
+    "name": "Corrupted Reed",
+    "quality": 4,
+    "icon": "INV_Misc_Root_02Corrupt",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+-10 Shadow Resistance",
+      "Requires Level 60",
+      "Equip:",
+      "Increases damage and healing done by magical spells and effects by up to 37."
+    ]
+  },
+  {
+    "id": 84504,
+    "name": "Lasher's Whip",
+    "quality": 4,
+    "icon": "INV_Misc_Herb_15",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "+15 Stamina",
+      "+15 Nature Resistance",
+      "Requires Level 60",
+      "Equip:",
+      "When struck in combat inflicts 4 Nature damage to the attacker."
+    ]
+  },
+  {
+    "id": 91777,
+    "name": "Araxxna's Husk",
+    "quality": 3,
+    "icon": "INV_Shield_21",
+    "tooltip_lines_raw": [
+      "Binds when picked up",
+      "Unique",
+      "Trinket",
+      "140 Armor",
+      "+15 Stamina",
+      "Requires Level 60",
+      "Equip:",
+      "Increases your chance to dodge an attack by 1%."
+    ]
+  }
+]
