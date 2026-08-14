@@ -1076,7 +1076,7 @@ class NoCacheHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             super().do_GET()
 
 # Boss scraping functions (from scrape_bosses.py)
-BOSS_DB_URL = "https://database.turtlecraft.gg"
+BOSS_DB_URL = "https://octowow.st/db"
 
 def search_bosses_by_name(query):
     """Search for bosses by name and return list of matches with IDs"""

@@ -183,12 +183,12 @@ export const raceIconData = {
     dwarf: { name: 'Dwarf', icon: 'assets/icons/dwarf_male.jpg' },
     nightelf: { name: 'Night Elf', icon: 'assets/icons/nightelf_male.jpg' },
     highelf: { name: 'High Elf', icon: 'assets/icons/highelf_male.jpg' },
-    gnome: { name: 'Gnome', icon: 'https://database.turtlecraft.gg/images/icons/medium/race_gnome.png' },
+    gnome: { name: 'Gnome', icon: 'https://octowow.st/db/images/icons/medium/race_gnome.png' },
     orc: { name: 'Orc', icon: 'assets/icons/orc_male.jpg' },
     troll: { name: 'Troll', icon: 'assets/icons/troll_male.jpg' },
     tauren: { name: 'Tauren', icon: 'assets/icons/tauren_male.jpg' },
     undead: { name: 'Undead', icon: 'assets/icons/undead_male.jpg' },
-    goblin: { name: 'Goblin', icon: 'https://database.turtlecraft.gg/images/icons/medium/race_goblin.png' },
+    goblin: { name: 'Goblin', icon: 'https://octowow.st/db/images/icons/medium/race_goblin.png' },
 };
 
 /**

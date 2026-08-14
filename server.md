@@ -16,7 +16,7 @@
 2. **Server Orchestration** - Start and manage armory proxy and bug report servers
 3. **Build Management** - Save/load character builds via file storage
 4. **Boss Search** - Search boss database by name
-5. **Boss Scraping** - Scrape boss stats from database.turtlecraft.gg
+5. **Boss Scraping** - Scrape boss stats from octowow.st/db
 6. **API Proxying** - Proxy requests to armory API and bug report server
 7. **CORS Handling** - Add CORS headers for local development
 
@@ -552,7 +552,7 @@ GET /bosses/search?q=ragnaros
     {
       "id": "11502",
       "name": "Ragnaros",
-      "url": "https://database.turtlecraft.gg/?npc=11502",
+      "url": "https://octowow.st/db/?npc=11502",
       "is_boss": true,
       "level": "??",
       "classification": 3
@@ -695,7 +695,7 @@ elif parsed_path.startswith('/builds/') or parsed_path.startswith('/api/builds/'
 
 #### search_bosses_by_name(query)
 ```python
-BOSS_DB_URL = "https://database.turtlecraft.gg"
+BOSS_DB_URL = "https://octowow.st/db"
 
 def search_bosses_by_name(query):
     search_url = f"{BOSS_DB_URL}/"
@@ -1100,14 +1100,14 @@ Profile JSON responses on `server.js` (`GET/POST/PATCH` profile success and `DEL
 ```
 1. Client: GET /bosses/search?q=ragnaros
 2. server.py: search_bosses_by_name("ragnaros")
-3. server.py: requests.get("https://database.turtlecraft.gg/?search=ragnaros")
+3. server.py: requests.get("https://octowow.st/db/?search=ragnaros")
 4. server.py: parses HTML, extracts NPC list
 5. server.py: returns [{"id": "11502", "name": "Ragnaros", ...}]
 6. Client: displays boss list
 7. User: selects "Ragnaros"
 8. Client: GET /bosses/scrape?id=11502
 9. server.py: scrape_boss("11502")
-10. server.py: requests.get("https://database.turtlecraft.gg/?npc=11502")
+10. server.py: requests.get("https://octowow.st/db/?npc=11502")
 11. server.py: parse_boss_damage(html) → extracts stats
 12. server.py: get_creature_attack_speed(11502) → 2.0
 13. server.py: returns {"success": true, "boss": {...}}

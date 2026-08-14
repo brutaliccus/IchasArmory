@@ -246,7 +246,7 @@ const openerItems = [
     {
         key: 'naturalAlignmentCrystal',
         name: 'Natural Alignment Crystal',
-        icon: 'https://database.turtlecraft.gg/images/icons/large/inv_trinket_naxxramas04.png', // Need actual icon
+        icon: 'https://octowow.st/db/images/icons/large/inv_trinket_naxxramas04.png', // Need actual icon
         type: 'trinket'
     },
     {

@@ -2318,7 +2318,7 @@ function displayMainResults(totals) {
             const avoidanceWithHolyShield = Math.min((totals.totalMitigation || 0) + holyShieldBlockBonus, 100);
 
             // Add Holy Shield bonus to block display with icon
-            const holyShieldIcon = '<img src="https://database.turtlecraft.gg/images/icons/large/spell_holy_blessingofprotection.png" style="width: 14px; height: 14px; vertical-align: middle; margin-left: 4px;" alt="Holy Shield" title="With Holy Shield active">';
+            const holyShieldIcon = '<img src="https://octowow.st/db/images/icons/large/spell_holy_blessingofprotection.png" style="width: 14px; height: 14px; vertical-align: middle; margin-left: 4px;" alt="Holy Shield" title="With Holy Shield active">';
             elements.totalBlock.innerHTML = `${(totals.block || 0).toFixed(2)}% (${holyShieldIcon} ${blockWithHolyShield.toFixed(2)}%)`;
 
             // Add Holy Shield bonus to avoidance display with icon
@@ -3301,18 +3301,18 @@ function renderProcUptimeTimeline(procStats, duration) {
 
     // Map proc IDs to display info
     const procInfo = {
-        'holy_shield': { name: 'Holy Shield', color: '#FFD700', icon: 'https://database.turtlecraft.gg/images/icons/large/spell_holy_blessingofprotection.png' },
-        'redoubt': { name: 'Redoubt', color: '#FF9800', icon: 'https://database.turtlecraft.gg/images/icons/large/ability_defend.png' },
-        'glyph_of_deflection': { name: 'Glyph of Deflection', color: '#2196F3', icon: 'https://database.turtlecraft.gg/images/icons/large/inv_misc_gem_stone_01.png' },
-        'bulwark_of_enduring_earth': { name: 'Bulwark of Enduring Earth', color: '#9C27B0', icon: 'https://database.turtlecraft.gg/images/icons/large/inv_shield_31.png' },
-        'stoneshield_potion': { name: 'Greater Stoneshield Potion', color: '#8BC34A', icon: 'https://database.turtlecraft.gg/images/icons/large/inv_potion_24.png' },
-        'lion_horn_of_stormwind': { name: 'The Lion Horn of Stormwind', color: '#F44336', icon: 'https://database.turtlecraft.gg/images/icons/large/inv_misc_horn_01.png' },
-        'stormstrike': { name: 'Stormstrike', color: '#0070DD', icon: 'https://database.turtlecraft.gg/images/icons/large/ability_shaman_stormstrike.png' },
-        'elementalDevastation': { name: 'Elemental Devastation', color: '#A335EE', icon: 'https://database.turtlecraft.gg/images/icons/large/spell_fire_elementaldevastation.png' },
-        'elementalMastery': { name: 'Elemental Mastery', color: '#FF7D0A', icon: 'https://database.turtlecraft.gg/images/icons/large/spell_nature_wispheal.png' },
-        'naturalAlignmentCrystal': { name: 'Natural Alignment Crystal', color: '#00FF96', icon: 'https://database.turtlecraft.gg/images/icons/large/inv_misc_gem_03.png' },
-        'lightningShield': { name: 'Lightning Shield', color: '#4E84C4', icon: 'https://database.turtlecraft.gg/images/icons/large/spell_nature_lightningshield.png' },
-        'crusader': { name: 'Crusader', color: '#FFD700', icon: 'https://database.turtlecraft.gg/images/icons/medium/spell_holy_blessingofstrength.png' }
+        'holy_shield': { name: 'Holy Shield', color: '#FFD700', icon: 'https://octowow.st/db/images/icons/large/spell_holy_blessingofprotection.png' },
+        'redoubt': { name: 'Redoubt', color: '#FF9800', icon: 'https://octowow.st/db/images/icons/large/ability_defend.png' },
+        'glyph_of_deflection': { name: 'Glyph of Deflection', color: '#2196F3', icon: 'https://octowow.st/db/images/icons/large/inv_misc_gem_stone_01.png' },
+        'bulwark_of_enduring_earth': { name: 'Bulwark of Enduring Earth', color: '#9C27B0', icon: 'https://octowow.st/db/images/icons/large/inv_shield_31.png' },
+        'stoneshield_potion': { name: 'Greater Stoneshield Potion', color: '#8BC34A', icon: 'https://octowow.st/db/images/icons/large/inv_potion_24.png' },
+        'lion_horn_of_stormwind': { name: 'The Lion Horn of Stormwind', color: '#F44336', icon: 'https://octowow.st/db/images/icons/large/inv_misc_horn_01.png' },
+        'stormstrike': { name: 'Stormstrike', color: '#0070DD', icon: 'https://octowow.st/db/images/icons/large/ability_shaman_stormstrike.png' },
+        'elementalDevastation': { name: 'Elemental Devastation', color: '#A335EE', icon: 'https://octowow.st/db/images/icons/large/spell_fire_elementaldevastation.png' },
+        'elementalMastery': { name: 'Elemental Mastery', color: '#FF7D0A', icon: 'https://octowow.st/db/images/icons/large/spell_nature_wispheal.png' },
+        'naturalAlignmentCrystal': { name: 'Natural Alignment Crystal', color: '#00FF96', icon: 'https://octowow.st/db/images/icons/large/inv_misc_gem_03.png' },
+        'lightningShield': { name: 'Lightning Shield', color: '#4E84C4', icon: 'https://octowow.st/db/images/icons/large/spell_nature_lightningshield.png' },
+        'crusader': { name: 'Crusader', color: '#FFD700', icon: 'https://octowow.st/db/images/icons/medium/spell_holy_blessingofstrength.png' }
     };
 
     // Filter procs that have activationTimes data
@@ -3389,7 +3389,7 @@ function renderProcUptimeTimeline(procStats, duration) {
                 const leftPercent = (triggerTime / duration) * 100;
                 const iconUrl = activation.triggerIcon.startsWith('http')
                     ? activation.triggerIcon
-                    : `https://database.turtlecraft.gg/images/icons/large/${activation.triggerIcon}.png`;
+                    : `https://octowow.st/db/images/icons/large/${activation.triggerIcon}.png`;
                 html += `<div style="position: absolute; left: ${leftPercent}%; top: 50%; transform: translate(-50%, -50%); z-index: 15;">`;
                 html += `<img src="${iconUrl}" style="width: 16px; height: 16px; border: 1px solid #ffd700; border-radius: 3px;" title="Triggered by ${activation.triggerSource} at ${triggerTime.toFixed(2)}s">`;
                 html += `</div>`;
@@ -3401,7 +3401,7 @@ function renderProcUptimeTimeline(procStats, duration) {
                     const leftPercent = (consumption.time / duration) * 100;
                     let iconUrl = consumption.icon || '';
                     if (iconUrl && !iconUrl.startsWith('http')) {
-                        iconUrl = `https://database.turtlecraft.gg/images/icons/large/${iconUrl}.png`;
+                        iconUrl = `https://octowow.st/db/images/icons/large/${iconUrl}.png`;
                     }
 
                     html += `<div style="position: absolute; left: ${leftPercent}%; top: 50%; transform: translate(-50%, -50%); z-index: 15;">`;
@@ -3429,7 +3429,7 @@ function renderProcUptimeTimeline(procStats, duration) {
                         // For other refreshes (Crusader, Elemental Devastation), show triggering ability icon
                         let iconUrl = refresh.icon || '';
                         if (iconUrl && !iconUrl.startsWith('http')) {
-                            iconUrl = `https://database.turtlecraft.gg/images/icons/large/${iconUrl}.png`;
+                            iconUrl = `https://octowow.st/db/images/icons/large/${iconUrl}.png`;
                         }
                         html += `<div style="position: absolute; left: ${leftPercent}%; top: 50%; transform: translate(-50%, -50%); z-index: 15;">`;
                         if (iconUrl) {
@@ -3446,7 +3446,7 @@ function renderProcUptimeTimeline(procStats, duration) {
                     const leftPercent = (empowered.time / duration) * 100;
                     let iconUrl = empowered.icon || '';
                     if (iconUrl && !iconUrl.startsWith('http')) {
-                        iconUrl = `https://database.turtlecraft.gg/images/icons/large/${iconUrl}.png`;
+                        iconUrl = `https://octowow.st/db/images/icons/large/${iconUrl}.png`;
                     }
                     html += `<div style="position: absolute; left: ${leftPercent}%; top: 50%; transform: translate(-50%, -50%); z-index: 15;">`;
                     if (iconUrl) {
@@ -4529,7 +4529,7 @@ async function init() {
             if (item && item.id) {
                 e.preventDefault();
                 e.stopPropagation();
-                window.open('https://database.turtlecraft.gg/?item=' + item.id, '_blank');
+                window.open('https://octowow.st/db/?item=' + item.id, '_blank');
             }
         }
     });
@@ -4639,7 +4639,7 @@ async function init() {
         if (modalItem && modalItem.dataset.itemId) {
             e.preventDefault();
             e.stopPropagation();
-            window.open('https://database.turtlecraft.gg/?item=' + modalItem.dataset.itemId, '_blank');
+            window.open('https://octowow.st/db/?item=' + modalItem.dataset.itemId, '_blank');
         }
     });
 

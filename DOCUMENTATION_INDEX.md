@@ -72,7 +72,7 @@ This document provides an index of all documentation files created for the IchaC
 - HTTP server orchestration (Flask-based)
 - Build management endpoints (save/load with random IDs)
 - Boss search via HTML scraping
-- Boss stat scraping from database.turtlecraft.gg
+- Boss stat scraping from octowow.st/db
 - API proxying to backend services
 - Process management and cleanup
 - Static file serving

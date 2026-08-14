@@ -27,7 +27,7 @@ export const slotIconMap = {
     offhand: 'offhand',
     ranged: 'ranged'
 };
-export const ICON_BASE_URL = 'https://database.turtlecraft.gg/images/icons/large/';
+export const ICON_BASE_URL = 'https://octowow.st/db/images/icons/large/';
 /** Second fallback when primary DB is down (same icon names, .jpg on Wowhead CDN) */
 export const ICON_CDN_ZAMIMG_LARGE = 'https://wow.zamimg.com/images/wow/icons/large/';
 export const ICON_CDN_ZAMIMG_MEDIUM = 'https://wow.zamimg.com/images/wow/icons/medium/';
@@ -37,7 +37,7 @@ let _iconFallbackInstalled = false;
 
 /**
  * Installs a single capture-phase listener so any <img> whose src fails to load
- * from database.turtlecraft.gg tries wow.zamimg (.jpg) then database.turtle-wow.org (.png).
+ * from octowow.st/db tries wow.zamimg (.jpg) then database.turtle-wow.org (.png).
  * Call once from app init (covers hardcoded innerHTML URLs as well as createIconImage).
  */
 export function installIconLoadFallbacks() {
@@ -47,7 +47,7 @@ export function installIconLoadFallbacks() {
         const el = e.target;
         if (!el || el.tagName !== 'IMG') return;
         const src = el.currentSrc || el.src || '';
-        if (!src.includes('database.turtlecraft.gg')) return;
+        if (!src.includes('octowow.st/db')) return;
         const m = src.match(/\/images\/icons\/(large|medium)\/([^/?#]+)\.png/i);
         if (!m) return;
         const size = m[1].toLowerCase();

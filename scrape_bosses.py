@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-Boss Scraper - Scrapes boss damage data from database.turtlecraft.gg
+Boss Scraper - Scrapes boss damage data from octowow.st/db
 
 Usage:
     python scrape_bosses.py [boss_id]
     python scrape_bosses.py --search [boss_name]  # Search for boss ID by name
     python scrape_bosses.py --list [raid_name]    # List bosses in a raid
     
-Bosses are accessed by ID: https://database.turtlecraft.gg/?npc=[ID] (legacy /npc/[ID] paths 404)
+Bosses are accessed by ID: https://octowow.st/db/?npc=[ID] (legacy /npc/[ID] paths 404)
 """
 
 import requests
@@ -17,7 +17,7 @@ import json
 import sys
 from urllib.parse import quote, urljoin
 
-BASE_URL = "https://database.turtlecraft.gg"
+BASE_URL = "https://octowow.st/db"
 
 # Turtle NPC pages show `<div>Faction: <a ...>Label</a></div>` (WoW faction / often aligns with creature family).
 # Map recognized labels to canonical `faction` tags in dpsRaidBossStats.json (lowercase snake_case).
@@ -82,7 +82,7 @@ def parse_npc_faction_tag_from_turtle_html(html):
 
 def search_bosses_by_name(query):
     """Search for bosses by name and return list of matches with IDs"""
-    # Search URL format: https://database.turtlecraft.gg/?search=ragnaros#npcs
+    # Search URL format: https://octowow.st/db/?search=ragnaros#npcs
     search_url = f"{BASE_URL}/"
     params = {"search": query}
     
@@ -189,7 +189,7 @@ def search_bosses_by_name(query):
 
 def get_boss_page(boss_id):
     """Get the boss detail page"""
-    # URL format: https://database.turtlecraft.gg/?npc=11502
+    # URL format: https://octowow.st/db/?npc=11502
     url = f"{BASE_URL}/"
     params = {"npc": boss_id}
     try:

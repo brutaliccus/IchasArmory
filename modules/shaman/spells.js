@@ -39,7 +39,7 @@ export const shamanSpells = {
     frostShock: {
         id: 10473,
         name: "Frost Shock",
-        icon: "https://database.turtlecraft.gg/images/icons/large/spell_frost_frostshock.png",
+        icon: "https://octowow.st/db/images/icons/large/spell_frost_frostshock.png",
         school: "frost",
         damageMin: 442,
         damageMax: 470,
@@ -391,7 +391,7 @@ export const shamanSpells = {
     stormstrike: {
         id: 17364,
         name: "Stormstrike",
-        icon: "https://database.turtlecraft.gg/images/icons/large/ability_shaman_stormstrike.png",
+        icon: "https://octowow.st/db/images/icons/large/ability_shaman_stormstrike.png",
         school: "physical",
         weaponDamagePercent: 1.0,  // 100% weapon damage
         cooldown: 8,   // 8s cooldown
@@ -505,7 +505,7 @@ export const shamanSpells = {
     frostbrandWeapon: {
         id: 16356,
         name: "Frostbrand Weapon",
-        icon: "https://database.turtlecraft.gg/images/icons/large/spell_frost_frostbrand.png",
+        icon: "https://octowow.st/db/images/icons/large/spell_frost_frostbrand.png",
         school: "frost",
         // Base proc damage scales with base weapon speed (same pattern as Flametongue)
         damageMin: 186,
@@ -536,7 +536,7 @@ export const shamanSpells = {
     lightningBolt: {
         id: 10391,
         name: "Lightning Bolt",
-        icon: "https://database.turtlecraft.gg/images/icons/large/spell_nature_lightning.png",
+        icon: "https://octowow.st/db/images/icons/large/spell_nature_lightning.png",
         school: "nature",
         damageMin: 419,
         damageMax: 468,
@@ -567,7 +567,7 @@ export const shamanSpells = {
     chainLightning: {
         id: 10605,
         name: "Chain Lightning",
-        icon: "https://database.turtlecraft.gg/images/icons/large/spell_nature_chainlightning.png",
+        icon: "https://octowow.st/db/images/icons/large/spell_nature_chainlightning.png",
         school: "nature",
         damageMin: 493,
         damageMax: 552,
@@ -599,7 +599,7 @@ export const shamanSpells = {
     moltenBlast: {
         id: 0,
         name: "Molten Blast",
-        icon: "https://database.turtlecraft.gg/images/icons/large/spell_fire_meteorstorm.png",
+        icon: "https://octowow.st/db/images/icons/large/spell_fire_meteorstorm.png",
         school: "fire",
         castTime: 2.0,
         damageMin: 290,
@@ -628,7 +628,7 @@ export const shamanSpells = {
     earthquake: {
         id: 48308,
         name: "Earthquake",
-        icon: "https://database.turtlecraft.gg/images/icons/large/spell_nature_earthquake.png",
+        icon: "https://octowow.st/db/images/icons/large/spell_nature_earthquake.png",
         school: "nature",
         damageMin: 587,
         damageMax: 634,
@@ -665,7 +665,7 @@ export const shamanSpells = {
     bloodlust: {
         id: 2825,
         name: "Bloodlust",
-        icon: "https://database.turtlecraft.gg/images/icons/large/spell_nature_bloodlust.png",
+        icon: "https://octowow.st/db/images/icons/large/spell_nature_bloodlust.png",
         school: "nature",
         cooldown: 360,  // 6 minutes (360 seconds)
         castTime: 0,    // Instant cast
@@ -680,7 +680,7 @@ export const shamanSpells = {
     hippogryphMightNature: {
         id: 0,
         name: "Might of the Hippogryph",
-        icon: "https://database.turtlecraft.gg/images/icons/large/spell_lightning_lightningbolt01.png",
+        icon: "https://octowow.st/db/images/icons/large/spell_lightning_lightningbolt01.png",
         school: "nature",
         damageMin: 150,
         damageMax: 150,

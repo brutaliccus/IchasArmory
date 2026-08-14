@@ -601,7 +601,7 @@ Example spell ID lookup:
 if (buff.spellId) {
     const spell = findSpellById(buff.spellId);
     if (spell && spell.icon) {
-        iconUrl = `https://database.turtlecraft.gg/images/icons/large/${spell.icon.toLowerCase()}.png`;
+        iconUrl = `https://octowow.st/db/images/icons/large/${spell.icon.toLowerCase()}.png`;
     }
 }
 ```
@@ -872,7 +872,7 @@ export const foodBuffs = [
     {
         id: 'spicy_stew',
         name: 'Spicy Dragon Stew',
-        icon: 'https://database.turtlecraft.gg/images/icons/large/inv_misc_food_70.png',
+        icon: 'https://octowow.st/db/images/icons/large/inv_misc_food_70.png',
         base_stats: {
             sta: 30,
             armor: 200

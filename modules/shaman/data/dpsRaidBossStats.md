@@ -16,7 +16,7 @@ Per boss: `name`, `level`, `armor`, `attackSpeed`, `resistance_*` (same shape as
 
 ## Regenerating
 
-After editing `modules/tank/raidDefinitions.js` boss lists, refresh stats from **database.turtlecraft.gg** (same parsing as `scrape_bosses.py` / server scrape; swing speed from `creature_attack_speeds.py`):
+After editing `modules/tank/raidDefinitions.js` boss lists, refresh stats from **octowow.st/db** (same parsing as `scrape_bosses.py` / server scrape; swing speed from `creature_attack_speeds.py`):
 
 ```bash
 npm run gen:dps-boss-stats

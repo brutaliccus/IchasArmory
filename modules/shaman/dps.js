@@ -151,7 +151,7 @@ function getCanonicalDpsBossNpcId(bossId) {
 
 /** Turtle WoW DB NPC pages use `/?npc=id` (paths like `/npc/123` return 404). */
 function getTurtleNpcDatabaseUrl(npcId) {
-    return `https://database.turtlecraft.gg/?npc=${encodeURIComponent(String(npcId))}`;
+    return `https://octowow.st/db/?npc=${encodeURIComponent(String(npcId))}`;
 }
 
 function formatDpsBossFactionLabel(rawTag) {
@@ -3316,7 +3316,7 @@ function generateAbilityRowHTML(key, result, spellResults, stats) {
         const mainhandWeapon = getCurrentlyEquippedItem('mainhand');
         if (mainhandWeapon && mainhandWeapon.icon) {
             const iconName = mainhandWeapon.icon.toLowerCase();
-            iconUrl = `https://database.turtlecraft.gg/images/icons/large/${iconName}.png`;
+            iconUrl = `https://octowow.st/db/images/icons/large/${iconName}.png`;
         } else {
             iconUrl = `https://talents.turtlecraft.gg/icons/${spell.icon}.png`;
         }
@@ -3380,7 +3380,7 @@ function generateAbilityRowHTML(key, result, spellResults, stats) {
         const ftSpell = ftResult.spell;
         const ftTooltip = generateAbilityTooltip(ftSpell, ftResult, stats);
         const ftTooltipId = `tooltip-flametongueWeapon`;
-        const ftIconUrl = 'https://database.turtlecraft.gg/images/icons/large/spell_fire_flametounge.png';
+        const ftIconUrl = 'https://octowow.st/db/images/icons/large/spell_fire_flametounge.png';
 
         html += '<div class="sub-ability">';
         html += '<div style="display: flex; align-items: center; gap: 8px;">';
@@ -3400,7 +3400,7 @@ function generateAbilityRowHTML(key, result, spellResults, stats) {
         const fbTooltipId = 'tooltip-frostbrandWeapon';
         const fbIconUrl = fbSpell.icon && fbSpell.icon.startsWith('http')
             ? fbSpell.icon
-            : `https://database.turtlecraft.gg/images/icons/large/spell_frost_frostbrand.png`;
+            : `https://octowow.st/db/images/icons/large/spell_frost_frostbrand.png`;
 
         html += '<div class="sub-ability">';
         html += '<div style="display: flex; align-items: center; gap: 8px;">';
@@ -3449,7 +3449,7 @@ function generateAbilityRowHTML(key, result, spellResults, stats) {
     }
 
     if (spell.name === "Earthquake") {
-        const eqIconUrl = 'https://database.turtlecraft.gg/images/icons/large/spell_nature_earthquake.png';
+        const eqIconUrl = 'https://octowow.st/db/images/icons/large/spell_nature_earthquake.png';
         const aftershockDmg = `${Math.round(result.min * 0.30)} - ${Math.round(result.max * 0.30)}`;
         const splashDmg = `${Math.round(result.min * 0.35)} - ${Math.round(result.max * 0.35)}`;
         html += '<div class="sub-ability">';
@@ -3469,7 +3469,7 @@ function generateAbilityRowHTML(key, result, spellResults, stats) {
     }
 
     if (spell.name === "Molten Blast" && stats.activeModifiers?.improvedMoltenBlast > 0) {
-        const rekindleIconUrl = 'https://database.turtlecraft.gg/images/icons/large/spell_fire_meteorstorm.png';
+        const rekindleIconUrl = 'https://octowow.st/db/images/icons/large/spell_fire_meteorstorm.png';
         const impMbRank = stats.activeModifiers.improvedMoltenBlast;
         let rekindlePercent = impMbRank * 0.30;
         if (stats.totemOfEruption) rekindlePercent += 0.20;
@@ -5196,7 +5196,7 @@ function generateSimConfigModalHTML(containerElement, stats, forceDefaultBoss = 
     html += '<div class="dps-sim-config-target-meta" style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-bottom: 8px; font-size: 11px; color: #888;">';
     html += '<span>Creature type: <span class="dps-target-faction-display" style="color:#c9d4c9;">—</span></span>';
     html += '<span class="dps-boss-db-link-wrap" style="display: none;">';
-    html += '<a class="dps-boss-db-link" href="https://database.turtlecraft.gg/?npc=0" target="_blank" rel="noopener noreferrer" style="color: #6ab7ff;">Open in Turtle DB</a>';
+    html += '<a class="dps-boss-db-link" href="https://octowow.st/db/?npc=0" target="_blank" rel="noopener noreferrer" style="color: #6ab7ff;">Open in Turtle DB</a>';
     html += '</span>';
     html += '</div>';
 
@@ -5375,7 +5375,7 @@ function generateDpsSharedTargetStripHTML(savedDPSTab) {
     html += '<div id="dps-boss-display-name" style="font-size: 16px; font-weight: bold; color: #ffd700; line-height: 1.25; word-break: break-word; text-align: center;">Target</div>';
     html += '<div style="font-size: 11px; color: #888;">Creature type: <span class="dps-target-faction-display" style="color:#c9d4c9;">—</span></div>';
     html += '<div class="dps-boss-db-link-wrap" style="display: none; line-height: 1.2;">';
-    html += '<a class="dps-boss-db-link" href="https://database.turtlecraft.gg/?npc=0" target="_blank" rel="noopener noreferrer" style="font-size: 11px; color: #6ab7ff;">Turtle WoW DB</a>';
+    html += '<a class="dps-boss-db-link" href="https://octowow.st/db/?npc=0" target="_blank" rel="noopener noreferrer" style="font-size: 11px; color: #6ab7ff;">Turtle WoW DB</a>';
     html += '</div>';
     html += '</div>';
     html += '<div class="dps-combat-summary-stats" style="font-size: 11px; color: #aaa; display: flex; flex-direction: column; gap: 8px; width: 100%; text-align: center;">';
@@ -5701,7 +5701,7 @@ function getAbilityIconUrl(abilityName) {
             const mainhandWeapon = getCurrentlyEquippedItem('mainhand');
             if (mainhandWeapon && mainhandWeapon.icon) {
                 const iconName = mainhandWeapon.icon.toLowerCase();
-                return `https://database.turtlecraft.gg/images/icons/large/${iconName}.png`;
+                return `https://octowow.st/db/images/icons/large/${iconName}.png`;
             }
             return `https://talents.turtlecraft.gg/icons/inv_sword_04.png`;
         },
@@ -5713,8 +5713,8 @@ function getAbilityIconUrl(abilityName) {
             const icon = shamanSpells.frostShock.icon;
             return icon.startsWith('http') ? icon : `https://talents.turtlecraft.gg/icons/${icon}.png`;
         },
-        'Freezing Cold': () => 'https://database.turtlecraft.gg/images/icons/large/spell_frost_frostshock.png',
-        'Holy Smite': () => 'https://database.turtlecraft.gg/images/icons/large/spell_holy_holysmite.png',
+        'Freezing Cold': () => 'https://octowow.st/db/images/icons/large/spell_frost_frostshock.png',
+        'Holy Smite': () => 'https://octowow.st/db/images/icons/large/spell_holy_holysmite.png',
         'Flame Shock': () => {
             const icon = shamanSpells.flameShock.icon;
             return icon.startsWith('http') ? icon : `https://talents.turtlecraft.gg/icons/${icon}.png`;
@@ -5749,7 +5749,7 @@ function getAbilityIconUrl(abilityName) {
         },
         'Frostbrand Weapon': () => {
             const icon = shamanSpells.frostbrandWeapon.icon;
-            return icon && icon.startsWith('http') ? icon : `https://database.turtlecraft.gg/images/icons/large/spell_frost_frostbrand.png`;
+            return icon && icon.startsWith('http') ? icon : `https://octowow.st/db/images/icons/large/spell_frost_frostbrand.png`;
         },
         'Lightning Shield': () => {
             const icon = shamanSpells.lightningShield.icon;
@@ -5767,73 +5767,73 @@ function getAbilityIconUrl(abilityName) {
             const icon = shamanSpells.fireNovaTotem.icon;
             return icon.startsWith('http') ? icon : `https://talents.turtlecraft.gg/icons/${icon}.png`;
         },
-        'Magma Totem': () => 'https://database.turtlecraft.gg/images/icons/large/spell_fire_selfdestruct.png',
-        'Tidal Wave': () => 'https://database.turtlecraft.gg/images/icons/large/spell_frost_frostnova.png',
-        'Totem of Tides': () => 'https://database.turtlecraft.gg/images/icons/large/spell_frost_frostnova.png',
-        'Spell Strike (Fire)': () => 'https://database.turtlecraft.gg/images/icons/large/spell_fire_fireball02.png',
-        'Spell Strike (Nature)': () => 'https://database.turtlecraft.gg/images/icons/large/spell_nature_callstorm.png',
-        'Spell Strike (Holy)': () => 'https://database.turtlecraft.gg/images/icons/large/spell_holy_searinglight.png',
+        'Magma Totem': () => 'https://octowow.st/db/images/icons/large/spell_fire_selfdestruct.png',
+        'Tidal Wave': () => 'https://octowow.st/db/images/icons/large/spell_frost_frostnova.png',
+        'Totem of Tides': () => 'https://octowow.st/db/images/icons/large/spell_frost_frostnova.png',
+        'Spell Strike (Fire)': () => 'https://octowow.st/db/images/icons/large/spell_fire_fireball02.png',
+        'Spell Strike (Nature)': () => 'https://octowow.st/db/images/icons/large/spell_nature_callstorm.png',
+        'Spell Strike (Holy)': () => 'https://octowow.st/db/images/icons/large/spell_holy_searinglight.png',
         'Stoneclaw Totem': () => {
             const icon = (shamanSpells.stoneclawTotem && shamanSpells.stoneclawTotem.icon) || 'spell_nature_stoneclawtotem';
             return icon.startsWith('http') ? icon : `https://talents.turtlecraft.gg/icons/${icon}.png`;
         },
-        'Shard of the Fallen Star': () => 'https://database.turtlecraft.gg/images/icons/large/inv_misc_ahnqirajtrinket_04.png',
-        'Incendosaur 3pc (Fire)': () => 'https://database.turtlecraft.gg/images/icons/large/spell_fire_fireball02.png',
-        'Might of the Hippogryph': () => 'https://database.turtlecraft.gg/images/icons/large/spell_lightning_lightningbolt01.png',
+        'Shard of the Fallen Star': () => 'https://octowow.st/db/images/icons/large/inv_misc_ahnqirajtrinket_04.png',
+        'Incendosaur 3pc (Fire)': () => 'https://octowow.st/db/images/icons/large/spell_fire_fireball02.png',
+        'Might of the Hippogryph': () => 'https://octowow.st/db/images/icons/large/spell_lightning_lightningbolt01.png',
         'Lightning Bolt': () => {
             const icon = shamanSpells.lightningBolt?.icon;
-            return icon && icon.startsWith('http') ? icon : `https://database.turtlecraft.gg/images/icons/large/spell_nature_lightning.png`;
+            return icon && icon.startsWith('http') ? icon : `https://octowow.st/db/images/icons/large/spell_nature_lightning.png`;
         },
         'Lightning Bolt (T2 8pc)': () => {
             const icon = shamanSpells.lightningBolt?.icon;
-            return icon && icon.startsWith('http') ? icon : `https://database.turtlecraft.gg/images/icons/large/spell_nature_lightning.png`;
+            return icon && icon.startsWith('http') ? icon : `https://octowow.st/db/images/icons/large/spell_nature_lightning.png`;
         },
-        'Echoed Thunder': () => 'https://database.turtlecraft.gg/images/icons/large/spell_nature_callstorm.png',
-        'Windfury Attack': () => 'https://database.turtlecraft.gg/images/icons/large/spell_nature_cyclone.png',
-        'Hand of Justice': () => 'https://database.turtlecraft.gg/images/icons/large/inv_jewelry_talisman_01.png',
-        'Ornate Bloodstone Dagger': () => 'https://database.turtlecraft.gg/images/icons/large/spell_fire_lavaspawn.png',
-        'Blade of Eternal Darkness': () => 'https://database.turtlecraft.gg/images/icons/large/spell_shadow_lifedrain02.png',
-        'Elemental Focus': () => 'https://database.turtlecraft.gg/images/icons/large/spell_shadow_manaburn.png',
-        'Dragonbreath Chili': () => 'https://database.turtlecraft.gg/images/icons/large/spell_fire_incinerate.png',
-        'Sigil of Ancient Accord': () => 'https://database.turtlecraft.gg/images/icons/large/inv_misc_rune_03.png',
-        'Sulfuras': () => 'https://database.turtlecraft.gg/images/icons/large/spell_fire_firebolt02.png',
-        'Sulfuras (DoT)': () => 'https://database.turtlecraft.gg/images/icons/large/spell_fire_fire.png',
-        'Ring of Burning Talons': () => 'https://database.turtlecraft.gg/images/icons/large/spell_fire_incinerate.png',
-        'Ring of Burning Talons (DoT)': () => 'https://database.turtlecraft.gg/images/icons/large/spell_fire_incinerate.png',
-        'Misplaced Servo Arm': () => 'https://database.turtlecraft.gg/images/icons/large/spell_nature_lightning.png',
-        'Deathbringer': () => 'https://database.turtlecraft.gg/images/icons/large/spell_shadow_shadowbolt.png',
-        'Neretzek': () => 'https://database.turtlecraft.gg/images/icons/large/spell_shadow_lifedrain02.png',
-        'Vial of Potent Venoms': () => 'https://database.turtlecraft.gg/images/icons/large/inv_potion_97.png',
-        'Lightning Bolt (HotEO)': () => 'https://database.turtlecraft.gg/images/icons/large/spell_nature_lightning.png',
-        'Chain Lightning': () => 'https://database.turtlecraft.gg/images/icons/large/spell_nature_chainlightning.png',
-        'Chain Lightning (HotEO)': () => 'https://database.turtlecraft.gg/images/icons/large/spell_nature_chainlightning.png',
-        'Molten Blast': () => 'https://database.turtlecraft.gg/images/icons/large/spell_fire_meteorstorm.png',
-        'Molten Blast (HotEO)': () => 'https://database.turtlecraft.gg/images/icons/large/spell_fire_meteorstorm.png',
-        'Rekindle': () => 'https://database.turtlecraft.gg/images/icons/large/spell_fire_meteorstorm.png',
-        "Insomnius' Retribution": () => 'https://database.turtlecraft.gg/images/icons/large/spell_nature_earthshock.png',
-        'Jewel of Wild Magics: Fire': () => 'https://database.turtlecraft.gg/images/icons/large/spell_holy_excorcism_02.png',
-        'Jewel of Wild Magics: Fire (DoT)': () => 'https://database.turtlecraft.gg/images/icons/large/spell_fire_incinerate.png',
-        'Jewel of Wild Magics: Frost': () => 'https://database.turtlecraft.gg/images/icons/large/spell_frost_frostnova.png',
-        'Jewel of Wild Magics: Arcane': () => 'https://database.turtlecraft.gg/images/icons/large/spell_nature_wispsplode.png',
-        'Jewel of Wild Magics: Holy': () => 'https://database.turtlecraft.gg/images/icons/large/spell_holy_holynova.png',
-        'Arcane Surge': () => 'https://database.turtlecraft.gg/images/icons/large/spell_nature_astralrecal.png',
-        'Earthquake': () => 'https://database.turtlecraft.gg/images/icons/large/spell_nature_earthquake.png',
-        'Earthquake (Splash)': () => 'https://database.turtlecraft.gg/images/icons/large/spell_nature_earthquake.png',
-        'Earthquake (Aftershock)': () => 'https://database.turtlecraft.gg/images/icons/large/spell_nature_earthquake.png',
-        'Arcane Missiles': () => 'https://database.turtlecraft.gg/images/icons/large/spell_nature_starfall.png',
-        'Storm Cloud (Totem of Thundercall)': () => 'https://database.turtlecraft.gg/images/icons/large/spell_nature_callstorm.png',
+        'Echoed Thunder': () => 'https://octowow.st/db/images/icons/large/spell_nature_callstorm.png',
+        'Windfury Attack': () => 'https://octowow.st/db/images/icons/large/spell_nature_cyclone.png',
+        'Hand of Justice': () => 'https://octowow.st/db/images/icons/large/inv_jewelry_talisman_01.png',
+        'Ornate Bloodstone Dagger': () => 'https://octowow.st/db/images/icons/large/spell_fire_lavaspawn.png',
+        'Blade of Eternal Darkness': () => 'https://octowow.st/db/images/icons/large/spell_shadow_lifedrain02.png',
+        'Elemental Focus': () => 'https://octowow.st/db/images/icons/large/spell_shadow_manaburn.png',
+        'Dragonbreath Chili': () => 'https://octowow.st/db/images/icons/large/spell_fire_incinerate.png',
+        'Sigil of Ancient Accord': () => 'https://octowow.st/db/images/icons/large/inv_misc_rune_03.png',
+        'Sulfuras': () => 'https://octowow.st/db/images/icons/large/spell_fire_firebolt02.png',
+        'Sulfuras (DoT)': () => 'https://octowow.st/db/images/icons/large/spell_fire_fire.png',
+        'Ring of Burning Talons': () => 'https://octowow.st/db/images/icons/large/spell_fire_incinerate.png',
+        'Ring of Burning Talons (DoT)': () => 'https://octowow.st/db/images/icons/large/spell_fire_incinerate.png',
+        'Misplaced Servo Arm': () => 'https://octowow.st/db/images/icons/large/spell_nature_lightning.png',
+        'Deathbringer': () => 'https://octowow.st/db/images/icons/large/spell_shadow_shadowbolt.png',
+        'Neretzek': () => 'https://octowow.st/db/images/icons/large/spell_shadow_lifedrain02.png',
+        'Vial of Potent Venoms': () => 'https://octowow.st/db/images/icons/large/inv_potion_97.png',
+        'Lightning Bolt (HotEO)': () => 'https://octowow.st/db/images/icons/large/spell_nature_lightning.png',
+        'Chain Lightning': () => 'https://octowow.st/db/images/icons/large/spell_nature_chainlightning.png',
+        'Chain Lightning (HotEO)': () => 'https://octowow.st/db/images/icons/large/spell_nature_chainlightning.png',
+        'Molten Blast': () => 'https://octowow.st/db/images/icons/large/spell_fire_meteorstorm.png',
+        'Molten Blast (HotEO)': () => 'https://octowow.st/db/images/icons/large/spell_fire_meteorstorm.png',
+        'Rekindle': () => 'https://octowow.st/db/images/icons/large/spell_fire_meteorstorm.png',
+        "Insomnius' Retribution": () => 'https://octowow.st/db/images/icons/large/spell_nature_earthshock.png',
+        'Jewel of Wild Magics: Fire': () => 'https://octowow.st/db/images/icons/large/spell_holy_excorcism_02.png',
+        'Jewel of Wild Magics: Fire (DoT)': () => 'https://octowow.st/db/images/icons/large/spell_fire_incinerate.png',
+        'Jewel of Wild Magics: Frost': () => 'https://octowow.st/db/images/icons/large/spell_frost_frostnova.png',
+        'Jewel of Wild Magics: Arcane': () => 'https://octowow.st/db/images/icons/large/spell_nature_wispsplode.png',
+        'Jewel of Wild Magics: Holy': () => 'https://octowow.st/db/images/icons/large/spell_holy_holynova.png',
+        'Arcane Surge': () => 'https://octowow.st/db/images/icons/large/spell_nature_astralrecal.png',
+        'Earthquake': () => 'https://octowow.st/db/images/icons/large/spell_nature_earthquake.png',
+        'Earthquake (Splash)': () => 'https://octowow.st/db/images/icons/large/spell_nature_earthquake.png',
+        'Earthquake (Aftershock)': () => 'https://octowow.st/db/images/icons/large/spell_nature_earthquake.png',
+        'Arcane Missiles': () => 'https://octowow.st/db/images/icons/large/spell_nature_starfall.png',
+        'Storm Cloud (Totem of Thundercall)': () => 'https://octowow.st/db/images/icons/large/spell_nature_callstorm.png',
         'Elementium Reaper': () => {
             const mh = getCurrentlyEquippedItem('mainhand');
             if (mh && (mh.id === 33094 || String(mh.id) === '33094') && mh.icon) {
                 const n = String(mh.icon).toLowerCase().replace(/\.png$/i, '');
-                return `https://database.turtlecraft.gg/images/icons/large/${n}.png`;
+                return `https://octowow.st/db/images/icons/large/${n}.png`;
             }
             const item = getItemById(33094);
             if (item?.icon) {
                 const n = String(item.icon).toLowerCase().replace(/\.png$/i, '');
-                return `https://database.turtlecraft.gg/images/icons/large/${n}.png`;
+                return `https://octowow.st/db/images/icons/large/${n}.png`;
             }
-            return 'https://database.turtlecraft.gg/images/icons/large/inv_axe_09.png';
+            return 'https://octowow.st/db/images/icons/large/inv_axe_09.png';
         }
     };
 
@@ -5845,10 +5845,10 @@ function getAbilityIconUrl(abilityName) {
     // Spell Strike (other schools: Shadow, Arcane, Frost, etc.)
     if (typeof abilityName === 'string' && abilityName.startsWith('Spell Strike (')) {
         const school = abilityName.replace('Spell Strike (', '').replace(')', '');
-        if (school === 'Fire') return 'https://database.turtlecraft.gg/images/icons/large/spell_fire_fireball02.png';
-        if (school === 'Nature') return 'https://database.turtlecraft.gg/images/icons/large/spell_nature_callstorm.png';
-        if (school === 'Holy') return 'https://database.turtlecraft.gg/images/icons/large/spell_holy_searinglight.png';
-        return 'https://database.turtlecraft.gg/images/icons/large/spell_nature_callstorm.png';
+        if (school === 'Fire') return 'https://octowow.st/db/images/icons/large/spell_fire_fireball02.png';
+        if (school === 'Nature') return 'https://octowow.st/db/images/icons/large/spell_nature_callstorm.png';
+        if (school === 'Holy') return 'https://octowow.st/db/images/icons/large/spell_holy_searinglight.png';
+        return 'https://octowow.st/db/images/icons/large/spell_nature_callstorm.png';
     }
     
     // Default fallback
@@ -7013,14 +7013,14 @@ function renderProcUptimeTimeline(procStats, duration) {
             const mainhandWeapon = getCurrentlyEquippedItem('mainhand');
             if (mainhandWeapon && mainhandWeapon.icon) {
                 const iconName = mainhandWeapon.icon.toLowerCase();
-                return `https://database.turtlecraft.gg/images/icons/large/${iconName}.png`;
+                return `https://octowow.st/db/images/icons/large/${iconName}.png`;
             }
-            return 'https://database.turtlecraft.gg/images/icons/large/inv_sword_04.png';
+            return 'https://octowow.st/db/images/icons/large/inv_sword_04.png';
         }
         // If icon is explicitly provided (e.g., from proc definitions), use it
         if (icon) {
             if (icon.startsWith('http')) return icon;
-            return `https://database.turtlecraft.gg/images/icons/large/${icon}.png`;
+            return `https://octowow.st/db/images/icons/large/${icon}.png`;
         }
         // Otherwise try to get icon from getAbilityIconUrl (handles Stormstrike, Lightning Strike, Shocks, etc.)
         const mappedIcon = getAbilityIconUrl(abilityName);
@@ -7098,7 +7098,7 @@ function renderProcUptimeTimeline(procStats, duration) {
     }
 
     // Base URL for item icons (match item database)
-    const ICON_BASE = 'https://database.turtlecraft.gg/images/icons/large';
+    const ICON_BASE = 'https://octowow.st/db/images/icons/large';
 
     // Fallback icon names by item ID (from item DB) when getItemById not yet loaded
     const ITEM_ICON_BY_ID = {
@@ -7165,74 +7165,74 @@ function renderProcUptimeTimeline(procStats, duration) {
         seekingThunder: {
             name: 'Seeking Thunder',
             color: '#9370DB', // Medium purple
-            icon: 'https://database.turtlecraft.gg/images/icons/large/spell_shadow_teleport.png'
+            icon: 'https://octowow.st/db/images/icons/large/spell_shadow_teleport.png'
         },
         stormwolfFrenzy: {
             name: "Stormwolf's Frenzy",
             color: '#00CED1', // Dark turquoise
-            icon: 'https://database.turtlecraft.gg/images/icons/large/spell_nature_shamanrage.png'
+            icon: 'https://octowow.st/db/images/icons/large/spell_nature_shamanrage.png'
         },
         stormwolfCunning: {
             name: "Stormwolf's Cunning",
             color: '#87CEEB', // Sky blue
-            icon: 'https://database.turtlecraft.gg/images/icons/large/ability_mount_whitedirewolf.png'
+            icon: 'https://octowow.st/db/images/icons/large/ability_mount_whitedirewolf.png'
         },
         towerforgeFury: {
             name: 'Towerforge Fury',
             color: '#C0C0C0', // Silver
-            icon: 'https://database.turtlecraft.gg/images/icons/large/inv_hammer_19.png'
+            icon: 'https://octowow.st/db/images/icons/large/inv_hammer_19.png'
         },
         hippogryphMight: {
             name: 'Might of the Hippogryph (3pc)',
             color: '#20B2AA', // Light sea green
-            icon: 'https://database.turtlecraft.gg/images/icons/large/spell_lightning_lightningbolt01.png'
+            icon: 'https://octowow.st/db/images/icons/large/spell_lightning_lightningbolt01.png'
         },
         // Talent buffs
         bloodlust: {
             name: 'Bloodlust',
             color: '#DC143C', // Crimson
-            icon: 'https://database.turtlecraft.gg/images/icons/large/spell_nature_bloodlust.png'
+            icon: 'https://octowow.st/db/images/icons/large/spell_nature_bloodlust.png'
         },
         flurry: {
             name: 'Flurry',
             color: '#4169E1', // Royal blue
-            icon: 'https://database.turtlecraft.gg/images/icons/large/ability_ghoulfrenzy.png'
+            icon: 'https://octowow.st/db/images/icons/large/ability_ghoulfrenzy.png'
         },
         // Raid debuffs
         nightfall: {
             name: 'Nightfall',
             color: '#8B008B', // Dark magenta
-            icon: 'https://database.turtlecraft.gg/images/icons/large/spell_shadow_twilight.png'
+            icon: 'https://octowow.st/db/images/icons/large/spell_shadow_twilight.png'
         },
         hemorrhage: {
             name: 'Hemorrhage',
             color: '#B22222', // Firebrick
-            icon: 'https://database.turtlecraft.gg/images/icons/large/spell_shadow_lifedrain.png'
+            icon: 'https://octowow.st/db/images/icons/large/spell_shadow_lifedrain.png'
         },
         corrosiveSpit: {
             name: 'Feast of Hakkar',
             color: '#6B8E23', // Olive drab (poison/acid green)
-            icon: 'https://database.turtlecraft.gg/images/icons/large/spell_shadow_bloodboil.png'
+            icon: 'https://octowow.st/db/images/icons/large/spell_shadow_bloodboil.png'
         },
         waterShield: {
             name: 'Water Shield',
             color: '#00BFFF', // Deep sky blue
-            icon: 'https://database.turtlecraft.gg/images/icons/large/ability_shaman_watershield.png'
+            icon: 'https://octowow.st/db/images/icons/large/ability_shaman_watershield.png'
         },
         arcaneSurge: {
             name: 'Arcane Surge',
             color: '#9C27B0', // Purple (Jewel Arcane outcome)
-            icon: 'https://database.turtlecraft.gg/images/icons/large/spell_nature_astralrecal.png'
+            icon: 'https://octowow.st/db/images/icons/large/spell_nature_astralrecal.png'
         },
         ewFlametongueBuff: {
             name: 'Elemental Weapons (Fire)',
             color: '#FF6347', // Tomato red
-            icon: 'https://database.turtlecraft.gg/images/icons/large/spell_fire_flametounge.png'
+            icon: 'https://octowow.st/db/images/icons/large/spell_fire_flametounge.png'
         },
         ewWindfuryHaste: {
             name: 'Elemental Weapons (Haste)',
             color: '#00CED1', // Turquoise
-            icon: 'https://database.turtlecraft.gg/images/icons/large/spell_nature_cyclone.png'
+            icon: 'https://octowow.st/db/images/icons/large/spell_nature_cyclone.png'
         }
     };
 
@@ -7241,10 +7241,10 @@ function renderProcUptimeTimeline(procStats, duration) {
         // 0. Auto Attack: use equipped mainhand weapon icon
         if (buffKey === 'autoAttack') {
             const mainhandWeapon = getCurrentlyEquippedItem('mainhand');
-            let icon = 'https://database.turtlecraft.gg/images/icons/large/inv_misc_questionmark.png';
+            let icon = 'https://octowow.st/db/images/icons/large/inv_misc_questionmark.png';
             if (mainhandWeapon && mainhandWeapon.icon) {
                 const iconName = mainhandWeapon.icon.toLowerCase();
-                icon = `https://database.turtlecraft.gg/images/icons/large/${iconName}.png`;
+                icon = `https://octowow.st/db/images/icons/large/${iconName}.png`;
             }
             return {
                 name: 'Auto Attack',
@@ -7265,7 +7265,7 @@ function renderProcUptimeTimeline(procStats, duration) {
         return {
             name: buffKey.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').trim(), // camelCase/snake_case to Title Case
             color: generateColorFromId(buffKey),
-            icon: 'https://database.turtlecraft.gg/images/icons/large/inv_misc_questionmark.png'
+            icon: 'https://octowow.st/db/images/icons/large/inv_misc_questionmark.png'
         };
     };
 
@@ -7438,7 +7438,7 @@ function renderProcUptimeTimeline(procStats, duration) {
                     const leftPercent = (empowered.time / duration) * 100;
                     let iconUrl = empowered.icon || '';
                     if (iconUrl && !iconUrl.startsWith('http')) {
-                        iconUrl = `https://database.turtlecraft.gg/images/icons/large/${iconUrl}.png`;
+                        iconUrl = `https://octowow.st/db/images/icons/large/${iconUrl}.png`;
                     }
                     html += `<div style="position: absolute; left: ${leftPercent}%; top: 50%; transform: translate(-50%, -50%); z-index: 15;">`;
                     if (iconUrl) {
@@ -8725,7 +8725,7 @@ export function getPresetShamanDpsPriority(presetName) {
 /** WoW Totemic hero talent atlas — static first slot in priority rows */
 const PRIORITY_PRESET_MENU_ICON_URL = 'https://wow.zamimg.com/images/wow/TextureAtlas/live/talents-heroclass-shaman-totemic.webp';
 
-const TURTLE_ICON_LARGE = 'https://database.turtlecraft.gg/images/icons/large';
+const TURTLE_ICON_LARGE = 'https://octowow.st/db/images/icons/large';
 
 /** Fallback for preset wedges not listed in SHAMAN_PRESET_SPEC_ICONS */
 const PRIORITY_PRESET_RADIAL_FALLBACK_ICON_URL = `${TURTLE_ICON_LARGE}/inv_misc_questionmark.png`;
@@ -8855,7 +8855,7 @@ function showJewelForcedOutcomePopup(anchorElement, currentValue, onSelect) {
         return;
     }
     const current = (currentValue || '').trim().toLowerCase();
-    const ICON_BASE = 'https://database.turtlecraft.gg/images/icons/large';
+    const ICON_BASE = 'https://octowow.st/db/images/icons/large';
     const popup = document.createElement('div');
     popup.id = 'jewel-forced-outcome-popup';
     popup.style.cssText = 'position: fixed; background: rgba(28,28,32,0.98); border: 1px solid #9C27B0; border-radius: 6px; padding: 14px 16px; z-index: 10001; box-shadow: 0 4px 16px rgba(0,0,0,0.6); min-width: 200px;';
@@ -9214,7 +9214,7 @@ function refreshPriorityList(priorityList, container, stats, isAoePriority = fal
         // Construct icon URL (spell icon name, full URL, or site-root path like /assets/...)
         let iconUrl = ability.icon;
         if (!isAbsoluteIconUrl(iconUrl)) {
-            iconUrl = `https://database.turtlecraft.gg/images/icons/large/${iconUrl}.png`;
+            iconUrl = `https://octowow.st/db/images/icons/large/${iconUrl}.png`;
         } else if (typeof iconUrl === 'string' && iconUrl.startsWith('//')) {
             iconUrl = `https:${iconUrl}`;
         }
@@ -9555,7 +9555,7 @@ function showPriorityConfigModal(abilityKey, abilityName, config, onSave, isAoeP
     }
 
     // Get ability icon (trinkets/cooldowns use their item icon; spells use shamanSpells)
-    const ICON_BASE = 'https://database.turtlecraft.gg/images/icons/large';
+    const ICON_BASE = 'https://octowow.st/db/images/icons/large';
     const trinketAndCooldownIcons = {
         elementalMastery: 'spell_nature_wispheal',
         bloodlust: (shamanSpells.bloodlust?.icon || 'spell_nature_bloodlust'),
@@ -9932,7 +9932,7 @@ function hasKissOfTheSpider() {
  * Get all available opener items (abilities and trinkets)
  */
 function getOpenerItems(isCasterMode = false, isCasterAoe = false) {
-    const ICON_BASE = 'https://database.turtlecraft.gg/images/icons/large';
+    const ICON_BASE = 'https://octowow.st/db/images/icons/large';
 
     // Auto-generate on-use trinket/consumable entries from proc definitions
     const trinketItems = getOnUseTrinketProcs().map(proc => {
@@ -9956,7 +9956,7 @@ function getOpenerItems(isCasterMode = false, isCasterAoe = false) {
         {
             key: 'elementalMastery',
             name: 'Elemental Mastery',
-            icon: 'https://database.turtlecraft.gg/images/icons/large/spell_nature_wispheal.png',
+            icon: 'https://octowow.st/db/images/icons/large/spell_nature_wispheal.png',
             type: 'ability'
         },
         
@@ -9964,67 +9964,67 @@ function getOpenerItems(isCasterMode = false, isCasterAoe = false) {
         {
             key: 'flameShock',
             name: 'Flame Shock',
-            icon: shamanSpells.flameShock.icon?.startsWith('http') ? shamanSpells.flameShock.icon : `https://database.turtlecraft.gg/images/icons/large/${shamanSpells.flameShock.icon || 'spell_fire_flameshock'}.png`,
+            icon: shamanSpells.flameShock.icon?.startsWith('http') ? shamanSpells.flameShock.icon : `https://octowow.st/db/images/icons/large/${shamanSpells.flameShock.icon || 'spell_fire_flameshock'}.png`,
             type: 'ability'
         },
         {
             key: 'stormstrike',
             name: 'Stormstrike',
-            icon: shamanSpells.stormstrike.icon?.startsWith('http') ? shamanSpells.stormstrike.icon : `https://database.turtlecraft.gg/images/icons/large/${shamanSpells.stormstrike.icon || 'ability_shaman_stormstrike'}.png`,
+            icon: shamanSpells.stormstrike.icon?.startsWith('http') ? shamanSpells.stormstrike.icon : `https://octowow.st/db/images/icons/large/${shamanSpells.stormstrike.icon || 'ability_shaman_stormstrike'}.png`,
             type: 'ability'
         },
         {
             key: 'lightningStrike',
             name: 'Lightning Strike',
-            icon: shamanSpells.lightningStrike.icon?.startsWith('http') ? shamanSpells.lightningStrike.icon : `https://database.turtlecraft.gg/images/icons/large/${shamanSpells.lightningStrike.icon || 'spell_nature_thunderclap'}.png`,
+            icon: shamanSpells.lightningStrike.icon?.startsWith('http') ? shamanSpells.lightningStrike.icon : `https://octowow.st/db/images/icons/large/${shamanSpells.lightningStrike.icon || 'spell_nature_thunderclap'}.png`,
             type: 'ability'
         },
         {
             key: 'earthShock',
             name: 'Earth Shock',
-            icon: shamanSpells.earthShock.icon?.startsWith('http') ? shamanSpells.earthShock.icon : `https://database.turtlecraft.gg/images/icons/large/${shamanSpells.earthShock.icon || 'spell_nature_earthshock'}.png`,
+            icon: shamanSpells.earthShock.icon?.startsWith('http') ? shamanSpells.earthShock.icon : `https://octowow.st/db/images/icons/large/${shamanSpells.earthShock.icon || 'spell_nature_earthshock'}.png`,
             type: 'ability'
         },
         {
             key: 'chainLightning',
             name: 'Chain Lightning',
-            icon: shamanSpells.chainLightning?.icon?.startsWith('http') ? shamanSpells.chainLightning.icon : `https://database.turtlecraft.gg/images/icons/large/spell_nature_chainlightning.png`,
+            icon: shamanSpells.chainLightning?.icon?.startsWith('http') ? shamanSpells.chainLightning.icon : `https://octowow.st/db/images/icons/large/spell_nature_chainlightning.png`,
             type: 'ability'
         },
         {
             key: 'fireNovaTotem',
             name: 'Fire Nova Totem',
-            icon: shamanSpells.fireNovaTotem.icon?.startsWith('http') ? shamanSpells.fireNovaTotem.icon : `https://database.turtlecraft.gg/images/icons/large/${shamanSpells.fireNovaTotem.icon || 'spell_fire_sealoffire'}.png`,
+            icon: shamanSpells.fireNovaTotem.icon?.startsWith('http') ? shamanSpells.fireNovaTotem.icon : `https://octowow.st/db/images/icons/large/${shamanSpells.fireNovaTotem.icon || 'spell_fire_sealoffire'}.png`,
             type: 'ability'
         },
         {
             key: 'magmaTotem',
             name: 'Magma Totem',
-            icon: shamanSpells.magmaTotem?.icon?.startsWith('http') ? shamanSpells.magmaTotem.icon : `https://database.turtlecraft.gg/images/icons/large/spell_fire_selfdestruct.png`,
+            icon: shamanSpells.magmaTotem?.icon?.startsWith('http') ? shamanSpells.magmaTotem.icon : `https://octowow.st/db/images/icons/large/spell_fire_selfdestruct.png`,
             type: 'ability'
         },
         {
             key: 'bloodlust',
             name: 'Bloodlust',
-            icon: shamanSpells.bloodlust?.icon || 'https://database.turtlecraft.gg/images/icons/large/spell_nature_bloodlust.png',
+            icon: shamanSpells.bloodlust?.icon || 'https://octowow.st/db/images/icons/large/spell_nature_bloodlust.png',
             type: 'ability'
         },
         {
             key: 'lightningBoltCast',
             name: 'Lightning Bolt (Cast)',
-            icon: shamanSpells.lightningBolt?.icon?.startsWith('http') ? shamanSpells.lightningBolt.icon : `https://database.turtlecraft.gg/images/icons/large/${shamanSpells.lightningBolt?.icon || 'spell_nature_lightning'}.png`,
+            icon: shamanSpells.lightningBolt?.icon?.startsWith('http') ? shamanSpells.lightningBolt.icon : `https://octowow.st/db/images/icons/large/${shamanSpells.lightningBolt?.icon || 'spell_nature_lightning'}.png`,
             type: 'ability'
         },
         {
             key: 'moltenBlastCast',
             name: 'Molten Blast (Cast)',
-            icon: shamanSpells.moltenBlast?.icon?.startsWith('http') ? shamanSpells.moltenBlast.icon : `https://database.turtlecraft.gg/images/icons/large/spell_fire_meteorstorm.png`,
+            icon: shamanSpells.moltenBlast?.icon?.startsWith('http') ? shamanSpells.moltenBlast.icon : `https://octowow.st/db/images/icons/large/spell_fire_meteorstorm.png`,
             type: 'ability'
         },
         {
             key: 'earthquake',
             name: 'Earthquake',
-            icon: shamanSpells.earthquake?.icon?.startsWith('http') ? shamanSpells.earthquake.icon : `https://database.turtlecraft.gg/images/icons/large/spell_nature_earthquake.png`,
+            icon: shamanSpells.earthquake?.icon?.startsWith('http') ? shamanSpells.earthquake.icon : `https://octowow.st/db/images/icons/large/spell_nature_earthquake.png`,
             type: 'ability'
         }
     ];
@@ -10894,7 +10894,7 @@ function renderComparisonItemCards(container) {
         iconDiv.style.cssText = `flex: 0 0 32px; width: 32px; height: 32px; border-radius: 4px; overflow: hidden; border: 1px solid ${qualityColor}; background: rgba(0,0,0,0.4);`;
         if (item.icon) {
             const iconFileName = (item.icon || '').toLowerCase();
-            iconDiv.innerHTML = `<img src="https://database.turtlecraft.gg/images/icons/large/${iconFileName}.png" alt="${item.name || ''}" style="width: 100%; height: 100%; object-fit: cover;">`;
+            iconDiv.innerHTML = `<img src="https://octowow.st/db/images/icons/large/${iconFileName}.png" alt="${item.name || ''}" style="width: 100%; height: 100%; object-fit: cover;">`;
         }
 
         const nameSpan = document.createElement('span');
@@ -10941,7 +10941,7 @@ function renderComparisonItemCards(container) {
                 bIconDiv.style.cssText = `flex: 0 0 24px; width: 24px; height: 24px; border-radius: 3px; overflow: hidden; border: 1px solid ${bColor}; background: rgba(0,0,0,0.4);`;
                 if (bItem.icon) {
                     const bIconFn = (bItem.icon || '').toLowerCase();
-                    bIconDiv.innerHTML = `<img src="https://database.turtlecraft.gg/images/icons/large/${bIconFn}.png" alt="${bItem.name || ''}" style="width: 100%; height: 100%; object-fit: cover;">`;
+                    bIconDiv.innerHTML = `<img src="https://octowow.st/db/images/icons/large/${bIconFn}.png" alt="${bItem.name || ''}" style="width: 100%; height: 100%; object-fit: cover;">`;
                 }
 
                 const slotLabel = document.createElement('span');
@@ -11117,7 +11117,7 @@ function renderGearCompareTrinketConfig(container) {
         const isEnabled = abilityConfig.enabled !== false;
         const itemIconName = (item.icon || '').toLowerCase();
         const iconUrl = itemIconName
-            ? `https://database.turtlecraft.gg/images/icons/large/${itemIconName}.png`
+            ? `https://octowow.st/db/images/icons/large/${itemIconName}.png`
             : `https://talents.turtlecraft.gg/icons/${ability.icon}.png`;
 
         const card = document.createElement('div');
@@ -11227,7 +11227,7 @@ function createBuildCompareSlotCell(slotId, itemId) {
             wrap.style.borderColor = getItemQualityColor(item);
             if (item.icon) {
                 const iconFileName = String(item.icon).toLowerCase();
-                wrap.innerHTML = `<img src="https://database.turtlecraft.gg/images/icons/large/${iconFileName}.png" alt="${item.name || ''}" style="width: 100%; height: 100%; object-fit: cover;">`;
+                wrap.innerHTML = `<img src="https://octowow.st/db/images/icons/large/${iconFileName}.png" alt="${item.name || ''}" style="width: 100%; height: 100%; object-fit: cover;">`;
             }
             attachItemTooltip(wrap, item);
         } else {
@@ -11916,7 +11916,7 @@ function renderItemBadge(item) {
     html += `<div style="flex: 0 0 32px; width: 32px; height: 32px; border-radius: 4px; overflow: hidden; border: 1px solid ${qualityColor}; background: rgba(0,0,0,0.4);">`;
     if (item.icon) {
         const iconFileName = (item.icon || '').toLowerCase();
-        const iconUrl = `https://database.turtlecraft.gg/images/icons/large/${iconFileName}.png`;
+        const iconUrl = `https://octowow.st/db/images/icons/large/${iconFileName}.png`;
         html += `<img src="${iconUrl}" alt="${item.name || ''}" style="width: 100%; height: 100%; object-fit: cover;">`;
     }
     html += '</div>';

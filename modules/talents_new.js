@@ -162,7 +162,7 @@ function generateRankDescriptions(talent) {
 // New tree-based talent display for Shaman
 function generateTalentTrees(container, treeData, className) {
     const treesHTML = Object.entries(treeData).map(([treeKey, tree]) => {
-        const iconUrl = `https://database.turtlecraft.gg/images/icons/large/${tree.icon}.png`;
+        const iconUrl = `https://octowow.st/db/images/icons/large/${tree.icon}.png`;
 
         // Create 4x8 grid
         const grid = createTalentGrid(tree.talents, treeKey);
@@ -245,7 +245,7 @@ function createTalentGrid(talents, treeKey) {
         for (let col = 0; col < 4; col++) {
             const talent = grid[row][col];
             if (talent) {
-                const iconUrl = `https://database.turtlecraft.gg/images/icons/large/${talent.icon}.png`;
+                const iconUrl = `https://octowow.st/db/images/icons/large/${talent.icon}.png`;
                 const talentId = `${treeKey}-${talent.id}`;
 
                 // Process description - handle both array format and string format
