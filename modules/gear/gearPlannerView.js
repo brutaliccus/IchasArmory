@@ -109,24 +109,34 @@ function wireHeaderControls() {
     });
 }
 
+function closeGpClassDrawer() {
+    const drawer = document.getElementById('gp-cr-drawer-class');
+    const toggle = document.getElementById('gp-class-drawer-toggle');
+    drawer?.classList.remove('is-open');
+    toggle?.setAttribute('aria-expanded', 'false');
+}
+
 function wireClassDrawer() {
     const toggle = document.getElementById('gp-class-drawer-toggle');
-    const panel = document.getElementById('gp-class-drawer-panel');
+    const drawer = document.getElementById('gp-cr-drawer-class');
     const sidebar = document.getElementById('gp-class-sidebar');
-    if (!toggle || !panel) return;
+    if (!toggle || !drawer) return;
 
     toggle.addEventListener('click', (e) => {
+        e.preventDefault();
         e.stopPropagation();
-        const open = toggle.getAttribute('aria-expanded') === 'true';
-        toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
-        panel.classList.toggle('cr-drawer-panel--open', !open);
+        const open = drawer.classList.contains('is-open');
+        if (open) {
+            closeGpClassDrawer();
+        } else {
+            generateGpClassIcons();
+            drawer.classList.add('is-open');
+            toggle.setAttribute('aria-expanded', 'true');
+        }
     });
 
     document.addEventListener('click', (e) => {
-        if (sidebar && !sidebar.contains(e.target)) {
-            toggle.setAttribute('aria-expanded', 'false');
-            panel.classList.remove('cr-drawer-panel--open');
-        }
+        if (sidebar && !sidebar.contains(e.target)) closeGpClassDrawer();
     });
 
     generateGpClassIcons();
@@ -152,17 +162,15 @@ function generateGpClassIcons() {
         </div>`;
     }).join('');
 
-    const toggleBtn = document.getElementById('gp-class-drawer-toggle');
-    const panelEl = document.getElementById('gp-class-drawer-panel');
     container.querySelectorAll('.gp-class-icon').forEach(el => {
-        el.addEventListener('click', () => {
+        el.addEventListener('click', (e) => {
+            e.stopPropagation();
             currentPlan.class = el.dataset.classId;
             sidebar.dataset.selectedClass = el.dataset.classId;
-            generateGpClassIcons();
             persistSession();
             updateQuickSimVisibility();
-            toggleBtn?.setAttribute('aria-expanded', 'false');
-            panelEl?.classList.remove('cr-drawer-panel--open');
+            closeGpClassDrawer();
+            generateGpClassIcons();
         });
     });
 }

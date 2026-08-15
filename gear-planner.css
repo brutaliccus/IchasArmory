@@ -22,6 +22,12 @@ body[data-app-mode="character"] #gear-planner-shell {
 .gp-class-sidebar {
     flex: 0 0 auto;
     align-self: flex-start;
+    z-index: 20;
+    pointer-events: none;
+}
+
+.gp-class-sidebar .cr-drawer {
+    pointer-events: auto;
 }
 
 .gp-main {
@@ -84,6 +90,23 @@ body[data-app-mode="character"] #gear-planner-shell {
 .gp-btn-primary {
     background: linear-gradient(180deg, #4a3d10 0%, #2a2208 100%);
     border-color: #c9a227;
+}
+
+.gp-btn-icon {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-color: var(--accent-color, #ffd700);
+    color: var(--accent-color, #ffd700);
+}
+
+.gp-btn-icon svg {
+    width: 18px;
+    height: 18px;
+    display: block;
 }
 
 .gp-layout {

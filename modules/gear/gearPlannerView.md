@@ -10,7 +10,8 @@ Renders the Gear Planner page: class drawer, two-column expandable slot cards, s
 ## UI elements (index.html)
 
 - `#gear-planner-shell`, `#gp-class-sidebar`, `#gp-slots-left`, `#gp-slots-right`
-- Header: `#gp-plan-name`, save/load/share, `#gp-quick-sim-wrap` (Shaman only)
+- Header: `#gp-plan-name`, icon-only save/load/share (`#gp-save-btn`, `#gp-load-btn`, `#gp-share-btn`), `#gp-quick-sim-wrap` (Shaman only)
+- Class drawer: `#gp-cr-drawer-class` uses `.is-open` (same as character `#cr-drawer-class`) so `#gp-class-drawer-toggle` expands `#gp-class-drawer-panel`
 
 ## Slot cards
 
