@@ -12,7 +12,7 @@ import { ICON_BASE_URL } from './gear.js';
 import { runGearPlanQuickSim } from '../shaman/dps.js';
 import { createItemTooltipHTML } from '../ui/tooltips.js';
 import { positionItemTooltipAtCursor } from '../ui/itemTooltipPosition.js';
-import { ensureItemSourcesLoaded, getSourcesForItem, getPrimarySourceLabel } from './itemSources.js';
+import { ensureItemSourcesLoaded, getSourcesForItem, getPrimarySourceLabel, getInstanceFilterGroups } from './itemSources.js';
 
 const LEFT_SLOTS = ['head', 'neck', 'shoulder', 'back', 'chest', 'wrist', 'mainhand', 'offhand'];
 const RIGHT_SLOTS = ['hands', 'waist', 'legs', 'feet', 'ring1', 'ring2', 'trinket1', 'trinket2', 'ranged'];
@@ -255,6 +255,84 @@ function formatPlannerSourceLine(itemId) {
     return inst || boss || getPrimarySourceLabel(itemId) || '';
 }
 
+const LOCATION_KIND_ORDER = [
+    ['dungeon', 'Dungeons'],
+    ['raid', 'Raids'],
+    ['worldboss', 'World Bosses'],
+    ['other', 'Other'],
+];
+
+function collectPlanItemIds(plan) {
+    const ids = [];
+    for (const slot of Object.values(plan?.slots || {})) {
+        if (slot?.primary != null) ids.push(slot.primary);
+        if (Array.isArray(slot?.alternatives)) {
+            for (const alt of slot.alternatives) {
+                if (alt != null) ids.push(alt);
+            }
+        }
+    }
+    return ids;
+}
+
+function sortLocationEntries(kind, entries) {
+    if (kind === 'dungeon') {
+        const groups = getInstanceFilterGroups();
+        const order = new Map((groups.dungeons || []).map((d, i) => [d.id, i]));
+        return [...entries].sort((a, b) => {
+            const ia = order.has(a.id) ? order.get(a.id) : 999;
+            const ib = order.has(b.id) ? order.get(b.id) : 999;
+            if (ia !== ib) return ia - ib;
+            return String(a.name).localeCompare(String(b.name));
+        });
+    }
+    return [...entries].sort((a, b) => String(a.name).localeCompare(String(b.name)));
+}
+
+function collectLocationGroups(plan) {
+    const byKind = {
+        dungeon: new Map(),
+        raid: new Map(),
+        worldboss: new Map(),
+        other: new Map(),
+    };
+    for (const itemId of collectPlanItemIds(plan)) {
+        const sources = getSourcesForItem(itemId);
+        if (!sources.length) {
+            byKind.other.set('__other__', 'Other / Unknown');
+            continue;
+        }
+        for (const s of sources) {
+            const kind = (s.kind === 'dungeon' || s.kind === 'raid' || s.kind === 'worldboss') ? s.kind : 'other';
+            const id = s.instanceId || s.instanceName || '__other__';
+            const name = s.instanceName || s.tableTitle || id;
+            if (!byKind[kind].has(id)) byKind[kind].set(id, name);
+        }
+    }
+    return LOCATION_KIND_ORDER
+        .filter(([kind]) => byKind[kind].size)
+        .map(([kind, label]) => ({
+            kind,
+            label,
+            names: sortLocationEntries(kind, [...byKind[kind].entries()].map(([id, name]) => ({ id, name }))).map(e => e.name),
+        }));
+}
+
+function renderLocationsSidebar() {
+    const list = document.getElementById('gp-locations-list');
+    if (!list) return;
+    const groups = collectLocationGroups(currentPlan);
+    if (!groups.length) {
+        list.innerHTML = '<p class="gp-locations-empty">No locations yet</p>';
+        return;
+    }
+    list.innerHTML = groups.map(g => `
+        <div class="gp-locations-group" data-kind="${escapeHtml(g.kind)}">
+            <h4 class="gp-locations-group-heading">${escapeHtml(g.label)}</h4>
+            <ul>${g.names.map(n => `<li>${escapeHtml(n)}</li>`).join('')}</ul>
+        </div>`).join('');
+}
+
 function itemIconHtml(item) {
     const file = (item?.icon || 'inv_misc_questionmark').toLowerCase();
     return `<img src="${ICON_BASE_URL}${file}.png" alt="${escapeHtml(item?.name || '')}">`;
@@ -278,6 +356,7 @@ export function renderGearPlanner() {
     generateGpClassIcons();
     updateQuickSimVisibility();
     syncEditModeUi();
+    renderLocationsSidebar();
 
     const leftCol = document.getElementById('gp-slots-left');
     const rightCol = document.getElementById('gp-slots-right');

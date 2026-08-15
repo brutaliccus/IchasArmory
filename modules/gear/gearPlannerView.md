@@ -1,6 +1,14 @@
 # gearPlannerView.js
 
-Renders the Gear Planner page: class drawer, two-column expandable slot cards, save/load/share, and Shaman quick sim.
+Renders the Gear Planner page: locations-needed sidebar, class drawer, two-column expandable slot cards, save/load/share, and Shaman quick sim.
+
+## Locations sidebar
+
+- `#gp-locations-sidebar` sits far left of `#gear-planner-shell` (left of the class drawer). Layout: locations | class | two slot columns.
+- Built from the current plan’s **primary and alternative** item IDs via `getSourcesForItem` (`itemSources.js`). Unique instance names are grouped under **Dungeons**, **Raids**, **World Bosses**, and **Other** (only categories that appear).
+- Dungeons follow the same high-level-first order as the item-modal instance filter (`getInstanceFilterGroups`). Other groups are alphabetical.
+- `renderLocationsSidebar()` runs on every `renderGearPlanner()` so add/remove/clear updates live. Empty plan: “No locations yet”.
+- Compact gold/dark panel (`gear-planner.css`); independent scroll if the list is long.
 
 ## Integration (app.js)
 
@@ -9,7 +17,7 @@ Renders the Gear Planner page: class drawer, two-column expandable slot cards, s
 
 ## UI elements (index.html)
 
-- `#gear-planner-shell`, `#gp-class-sidebar`, `#gp-slots-left`, `#gp-slots-right`
+- `#gear-planner-shell`, `#gp-locations-sidebar`, `#gp-class-sidebar`, `#gp-slots-left`, `#gp-slots-right`
 - Header: `#gp-plan-name`; icon buttons Save / **Edit mode** (`#gp-edit-mode-btn`, pencil, `aria-pressed`) / Load / Share; Shaman-only **Configure Sim** and **Quick DPS Sim** (plus `#gp-quick-sim-result`) in the same header
 - `#gp-quick-sim-wrap`: dismissible info banner only (no action buttons). Dismiss X stores `ichacalc_gp_sim_hint_dismissed` in localStorage
 - Class drawer: `#gp-cr-drawer-class` uses `.is-open` (same as character `#cr-drawer-class`) so `#gp-class-drawer-toggle` expands `#gp-class-drawer-panel`

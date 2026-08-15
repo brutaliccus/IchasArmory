@@ -19,6 +19,64 @@ body[data-app-mode="character"] #gear-planner-shell {
     min-height: calc(100vh / var(--ui-scale, 1));
 }
 
+.gp-locations-sidebar {
+    flex: 0 0 168px;
+    width: 168px;
+    max-height: calc(100vh / var(--ui-scale, 1) - 100px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-self: flex-start;
+    padding: 10px 10px 12px;
+    background: linear-gradient(145deg, #1a1a1f 0%, #121218 100%);
+    border: 1px solid #3d3520;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+}
+
+.gp-locations-title {
+    margin: 0 0 8px;
+    color: var(--accent-color, #ffd700);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.gp-locations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.gp-locations-empty {
+    margin: 0;
+    color: #888;
+    font-size: 0.78rem;
+    line-height: 1.35;
+}
+
+.gp-locations-group-heading {
+    margin: 0 0 4px;
+    color: var(--accent-color, #ffd700);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+
+.gp-locations-group ul {
+    margin: 0;
+    padding: 0 0 0 10px;
+    list-style: none;
+}
+
+.gp-locations-group li {
+    color: #c8c0a8;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    padding: 1px 0;
+}
+
 .gp-class-sidebar {
     flex: 0 0 auto;
     align-self: flex-start;
