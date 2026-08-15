@@ -388,6 +388,17 @@ This document provides an index of all documentation files created for the IchaC
 
 ---
 
+### 13c. modules/ui/uiScale.js - Viewport UI scaling
+**File:** `modules/ui/uiScale.md`  
+**Source:** `modules/ui/uiScale.js`
+
+**Contents:**
+- Auto-fit scale for 2560×1440 baseline (width + height)
+- Manual UI scale (70%–130%) via top-nav settings cog; persisted in `localStorage`
+- `uiScaleChanged` event; `app.js` repositions item picker on scale change
+
+---
+
 ### 14. modules/ui/tooltips.js - Tooltip Generation
 **File:** `modules/ui/tooltips.md`
 **Source:** `modules/ui/tooltips.js`

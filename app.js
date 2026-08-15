@@ -15,6 +15,7 @@ import { getSetBonuses } from './modules/gear/setBonuses.js';
 import { getStatSearchTerms, parseStatsFromTooltip, KEY_MAP, getItemType, filterEnchantsByItemType, getAttackPowerBonusVsCreatureType, getSpellDamageHealingBonusVsCreatureType, AP_VS_DISPLAY_ORDER, DMG_HEALING_VS_DISPLAY_ORDER, getApVsRowLabel, getDmgHealingVsRowLabel } from './modules/character/stats.js';
 import { initializeGearCompare, setComparisonItem, getCurrentCompareSlot, setEHPCalculator, setGetCurrentClass, setCharacterDataCallbacks } from './modules/gear/gearCompare.js';
 import { filterAndRenderItems, filterAndRenderEnchants, getSelectedQualities, getCurrentFilters, openItemModal as openItemModalFromModule, openEnchantModal as openEnchantModalFromModule, repositionItemPickerIfOpen } from './modules/ui/modal.js';
+import { initUiScale } from './modules/ui/uiScale.js';
 import { positionItemTooltipAtCursor } from './modules/ui/itemTooltipPosition.js';
 import { itemLoader } from './modules/gear/itemLoader.js';
 import { importFromArmoryAPI as importFromArmoryModule, updateCharacterStatusBar, initializeStatusBar, updateStatusBarValues, setImportedState as setImportedStateArmory, RACE_TO_FACTION, FACTION_ICONS } from './modules/armory/armory.js';
@@ -4249,6 +4250,8 @@ function checkInitComplete() {
 async function init() {
     console.log('[INIT] Starting initialization...');
 
+    initUiScale();
+
     // Finish profile auth + cloud list before onboarding so default build / saved list are not racing loadProfiles().
     if (window.profileManager) {
         await window.profileManager.init();
@@ -4549,6 +4552,7 @@ async function init() {
     // Tooltip required-level range (min/max dual sliders) + can-equip toggle: wired in modal.js (filterChanged)
 
     window.addEventListener('resize', () => repositionItemPickerIfOpen());
+    window.addEventListener('uiScaleChanged', () => repositionItemPickerIfOpen());
 
     document.addEventListener('keydown', e => {
         if (e.key !== 'Escape') return;

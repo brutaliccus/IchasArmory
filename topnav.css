@@ -104,6 +104,88 @@
     justify-self: end;
 }
 
+/* UI scale settings (top-right cog) */
+.ui-scale-settings-wrap {
+    position: relative;
+}
+
+.ui-scale-settings-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: min(92vw, 300px);
+    padding: 14px 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--ichacalc-ui-orange, #FFA500);
+    border-radius: 10px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+    z-index: 3000;
+}
+
+.ui-scale-settings-header {
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-bottom: 6px;
+}
+
+.ui-scale-settings-hint {
+    margin: 0 0 12px;
+    font-size: 0.78rem;
+    line-height: 1.35;
+    color: #aaa;
+}
+
+.ui-scale-settings-label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.ui-scale-slider-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ui-scale-slider-row input[type="range"] {
+    flex: 1;
+    min-width: 0;
+}
+
+.ui-scale-value {
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+    min-width: 3rem;
+    text-align: right;
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.ui-scale-effective {
+    margin-top: 10px;
+    font-size: 0.75rem;
+    color: #999;
+    line-height: 1.35;
+}
+
+.ui-scale-reset-btn {
+    margin-top: 12px;
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ui-scale-reset-btn:hover {
+    border-color: var(--primary-color);
+}
+
 /*
  * Sidebar + main: full-width row below fixed nav.
  * Column 1 = class/race (far left). Column 2 = main sheet (max-width centered in remaining space).

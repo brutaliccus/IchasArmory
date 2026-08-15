@@ -1727,8 +1727,9 @@ input, select {
     left: 0;
     top: 0;
     width: min(96vw, 1320px);
-    max-height: min(94vh, calc(100vh - 16px));
-    min-height: min(78vh, 840px);
+    height: min(94vh, calc(100dvh - 16px));
+    max-height: min(94vh, calc(100dvh - 16px));
+    min-height: 0;
     display: flex;
     flex-direction: column;
     background: linear-gradient(165deg, rgba(34, 34, 40, 0.98) 0%, var(--card-bg) 100%);
@@ -1740,7 +1741,7 @@ input, select {
     /* Horizontal slide from slot; transform-origin set in JS (0 0 = east, 100% 0 = west) */
     transform: translateX(-12px) scale(0.98);
     transition: opacity 0.22s ease, transform 0.22s ease;
-    overflow: visible;
+    overflow: hidden;
 }
 .item-picker-panel[data-item-picker-side="west"] {
     transform: translateX(12px) scale(0.98);
@@ -1768,7 +1769,11 @@ input, select {
     overflow: hidden;
 }
 .item-picker-filters.modal-filters {
-    flex-shrink: 0;
+    flex-shrink: 1;
+    min-height: 0;
+    max-height: min(42vh, 400px);
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 .item-picker-search {
     width: 100%;
@@ -2061,8 +2066,8 @@ input, select {
 }
 .item-picker-list.modal-item-list {
     margin-top: 10px;
-    flex: 1 1 0;
-    min-height: 0;
+    flex: 1 1 auto;
+    min-height: 140px;
     max-height: none;
     overflow-y: auto;
     overflow-x: hidden;
@@ -2076,8 +2081,14 @@ input, select {
 
 @media (max-height: 520px) {
     .item-picker-panel {
-        min-height: 0;
-        max-height: min(96vh, calc(100vh - 8px));
+        height: min(96vh, calc(100dvh - 8px));
+        max-height: min(96vh, calc(100dvh - 8px));
+    }
+    .item-picker-filters.modal-filters {
+        max-height: min(36vh, 280px);
+    }
+    .item-picker-list.modal-item-list {
+        min-height: 100px;
     }
 }
 
@@ -3864,64 +3875,21 @@ input, select {
 /* ===         RESPONSIVE SCALING FOR ALL RESOLUTIONS   === */
 /* ======================================================= */
 
-/* Designed for 2560x1440 (2K) - scale DOWN for smaller resolutions */
-/* Use CSS zoom for uniform scaling that maintains aspect ratios */
-
-/* Default for 2K and larger - NO SCALING */
+/* UI scale: auto-fit 2560×1440 baseline + optional manual multiplier (modules/ui/uiScale.js) */
+html {
+    --ui-auto-scale: 1;
+    --ui-user-scale: 1;
+    --ui-scale: 1;
+}
 body {
-    zoom: 1;
+    zoom: var(--ui-scale);
 }
 
-/* Ultrawide resolutions (3440x1440, 3840x1600, etc.) - NO SCALING, just constrain width */
+/* Ultrawide: constrain main column width at very large resolutions */
 @media (min-width: 3000px) {
-    body {
-        zoom: 1; /* No zoom */
-    }
     .main-content {
-        max-width: 2400px; /* Constrain width, center content */
+        max-width: 2400px;
         margin: 0 auto;
-    }
-}
-
-/* Standard 2K (2560x1440) - NO SCALING, original design size */
-@media (min-width: 2560px) and (max-width: 2999px) {
-    body {
-        zoom: 1; /* No zoom */
-    }
-}
-
-/* Between 2K and 1080p (2200-2559px) - slight scale down */
-@media (max-width: 2559px) and (min-width: 2200px) {
-    body {
-        zoom: 0.88; /* Scale down to 88% */
-    }
-}
-
-/* 1080p range (1920px-2199px) - scale DOWN to fit */
-@media (max-width: 2199px) and (min-width: 1920px) {
-    body {
-        zoom: 0.75; /* Scale down to 75% - this is the key for 1080p */
-    }
-}
-
-/* Below 1080p (1600px-1919px) - scale down more */
-@media (max-width: 1919px) and (min-width: 1600px) {
-    body {
-        zoom: 0.65; /* Scale down to 65% */
-    }
-}
-
-/* Smaller displays (1366px-1599px) - scale down further */
-@media (max-width: 1599px) and (min-width: 1366px) {
-    body {
-        zoom: 0.55; /* Scale down to 55% */
-    }
-}
-
-/* Very small displays (below 1366px) - minimum scale */
-@media (max-width: 1365px) {
-    body {
-        zoom: 0.50; /* Scale down to 50% */
     }
 }
 

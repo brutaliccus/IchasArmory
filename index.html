@@ -52,6 +52,26 @@
             color: var(--accent-color) !important;
         }
     </style>
+    <script>
+        (function () {
+            var DESIGN_W = 2560, DESIGN_H = 1440;
+            var USER_MIN = 0.7, USER_MAX = 1.3;
+            try {
+                var w = window.innerWidth || DESIGN_W;
+                var h = window.innerHeight || DESIGN_H;
+                var auto = Math.min(w / DESIGN_W, h / DESIGN_H, 1);
+                var user = parseFloat(localStorage.getItem('ichacalc_uiUserScale'));
+                if (!isFinite(user)) user = 1;
+                user = Math.max(USER_MIN, Math.min(USER_MAX, user));
+                var total = auto * user;
+                var root = document.documentElement;
+                root.style.setProperty('--ui-auto-scale', String(auto));
+                root.style.setProperty('--ui-user-scale', String(user));
+                root.style.setProperty('--ui-scale', String(total));
+                root.style.zoom = String(total);
+            } catch (e) { /* ignore */ }
+        })();
+    </script>
 </head>
 <body>
     <!-- Loading Screen -->
@@ -201,6 +221,24 @@
         </div>
         <h1 class="site-title">Ichabaddie's Armory</h1>
         <div id="user-controls" class="user-controls">
+            <div class="ui-scale-settings-wrap">
+                <button type="button" id="ui-scale-settings-btn" class="top-nav-icon-btn ui-scale-settings-btn" title="UI scale settings" aria-label="UI scale settings" aria-expanded="false" aria-controls="ui-scale-settings-panel">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true">
+                        <path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+                    </svg>
+                </button>
+                <div id="ui-scale-settings-panel" class="ui-scale-settings-panel" hidden>
+                    <div class="ui-scale-settings-header">UI Scale</div>
+                    <p class="ui-scale-settings-hint">Adjust layout size without changing browser zoom. Auto-fit uses your screen size.</p>
+                    <label class="ui-scale-settings-label" for="ui-scale-slider">Manual scale</label>
+                    <div class="ui-scale-slider-row">
+                        <input type="range" id="ui-scale-slider" min="0.7" max="1.3" step="0.05" value="1" aria-valuemin="70" aria-valuemax="130">
+                        <span id="ui-scale-value" class="ui-scale-value">100%</span>
+                    </div>
+                    <div id="ui-scale-effective" class="ui-scale-effective" aria-live="polite">100%</div>
+                    <button type="button" id="ui-scale-reset-btn" class="ui-scale-reset-btn">Reset to 100%</button>
+                </div>
+            </div>
             <!-- Login button (shown when not authenticated, hidden by profiles.js when logged in) -->
             <button id="login-btn" class="user-btn login-btn" onclick="window.location.href='/auth/discord'" style="display:flex;align-items:center;gap:8px;padding:10px 20px;background:linear-gradient(135deg,#5865F2,#4752C4);border:none;color:#fff;font-weight:600;border-radius:8px;cursor:pointer;font-size:0.9rem;">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36" fill="currentColor" width="18" height="18">

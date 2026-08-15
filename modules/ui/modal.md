@@ -37,7 +37,7 @@ Opens the **anchored item picker** (not a centered fullscreen modal): `#item-mod
 1. **Primary row** (`.item-picker-filters-primary-row`): six equal columns — search (`#modal-search-input`, `.item-picker-search--inline`), **type** cell (`.item-picker-type-cell`: `#armor-type-container` *or* `#weapon-type-container` by slot), Primary, Secondary, Defensive, Quality. Below ~1100px width the grid goes to three columns with the search spanning full width; below ~640px, two columns.
 2. **Toolbar**: **min / max** required level — `.item-picker-req-axis` + dual-thumb range (`#ilvl-min-slider` / `#ilvl-max-slider`, 1–60), **Can equip** (`#can-equip-toggle`), **DPS** / **Tank** sort buttons (larger tap targets), **Reset**.
 
-**Panel layout (CSS):** `#item-modal-panel` is wider (`min(96vw, 1320px)`), taller by default (`min-height: min(78vh, 840px)`, `max-height: min(94vh, …)`). `#item-picker-body` uses `overflow: hidden` so only `#modal-item-list` scrolls; the list is no longer capped by a small `max-height` so most of the panel height is usable for results.
+**Panel layout (CSS):** `#item-modal-panel` is wider (`min(96vw, 1320px)`), height capped at `min(94vh, 100dvh - 16px)` with `overflow: hidden` so the flex column bounds correctly. Filters scroll inside `max-height: min(42vh, 400px)` when tall; `#modal-item-list` keeps at least **140px** height and scrolls. UI-wide scale is handled by `modules/ui/uiScale.js` (2560×1440 auto-fit + manual cog in top nav).
 
 **Behavior:**
 1. Sets `dataset.currentSlot` and `dataset.anchorSlotId` on the root
