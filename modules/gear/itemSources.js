@@ -70,7 +70,73 @@ export function isOtherItem(itemId) {
     return sources.every(s => s.kind === 'other');
 }
 
-/** Grouped instance list for multiselect UI. */
+/** Typical Turtle/classic dungeon max level when index has no level field. Higher = later in progression. */
+const DUNGEON_MAX_LEVEL_BY_ID = {
+    'karazhan-crypt': 60,
+    'stormwind-vault': 60,
+    'caverns-of-time-black-morass': 60,
+    'upper-blackrock-spire': 60,
+    'lower-blackrock-spire': 58,
+    'scholomance': 60,
+    'stratholme': 60,
+    'dire-maul-north': 60,
+    'dire-maul-west': 60,
+    'dire-maul-east': 58,
+    'blackrock-depths': 60,
+    'hateforge-quarry': 56,
+    'the-sunken-temple': 55,
+    'zul-farrak': 48,
+    'maraudon': 49,
+    'gilneas-city': 46,
+    'uldaman': 45,
+    'razorfen-downs': 42,
+    'stormwrought-ruins': 42,
+    'scarlet-monastery-cathedral': 42,
+    'scarlet-monastery-armory': 40,
+    'scarlet-monastery-library': 38,
+    'scarlet-monastery-graveyard': 34,
+    'the-crescent-grove': 36,
+    'razorfen-kraul': 31,
+    'gnomeregan': 30,
+    'dragonmaw-retreat': 32,
+    'windhorn-canyon': 28,
+    'blackfathom-deeps': 28,
+    'the-stockade': 26,
+    'shadowfang-keep': 25,
+    'the-deadmines': 23,
+    'wailing-caverns': 21,
+    'frostmane-hollow': 16,
+    'ragefire-chasm': 16,
+};
+
+function dungeonMaxLevel(inst) {
+    if (!inst) return 0;
+    const range = inst.levelRange;
+    if (typeof range === 'string') {
+        const nums = range.match(/\d+/g);
+        if (nums?.length) return Number(nums[nums.length - 1]);
+    }
+    if (typeof inst.maxLevel === 'number') return inst.maxLevel;
+    if (typeof inst.minLevel === 'number') return inst.minLevel;
+    if (typeof inst.level === 'number') return inst.level;
+    if (inst.id && DUNGEON_MAX_LEVEL_BY_ID[inst.id] != null) return DUNGEON_MAX_LEVEL_BY_ID[inst.id];
+    const name = (inst.name || inst.id || '').toLowerCase();
+    for (const [id, lvl] of Object.entries(DUNGEON_MAX_LEVEL_BY_ID)) {
+        const key = id.replace(/-/g, ' ');
+        if (name.includes(key) || name.includes(id)) return lvl;
+    }
+    return 40;
+}
+
+function sortDungeonsHighLevelFirst(dungeons) {
+    return [...dungeons].sort((a, b) => {
+        const diff = dungeonMaxLevel(b) - dungeonMaxLevel(a);
+        if (diff !== 0) return diff;
+        return String(a.name || a.id).localeCompare(String(b.name || b.id));
+    });
+}
+
+/** Grouped instance list for multiselect UI. Dungeons: highest level first. */
 export function getInstanceFilterGroups() {
     if (!instancesIndex) return { dungeons: [], raids: [], worldBosses: [], other: [] };
     const dungeons = [];
@@ -83,7 +149,7 @@ export function getInstanceFilterGroups() {
     }
     const other = [...(instancesIndex.otherGroups || [])];
     other.push({ id: '__other__', name: 'Other / Unknown', kind: 'other' });
-    return { dungeons, raids, worldBosses, other };
+    return { dungeons: sortDungeonsHighLevelFirst(dungeons), raids, worldBosses, other };
 }
 
 export function getInstancesIndex() {

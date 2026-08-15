@@ -1,7 +1,6 @@
 // modules/gear/gearPlannerView.js — Gear Planner page UI
 
 import {
-    GEAR_PLAN_SLOTS,
     createEmptyGearPlan,
     getGearPlanData,
     saveGearPlannerSession,
@@ -9,8 +8,34 @@ import {
     loadLocalGearPlans,
     saveLocalGearPlans,
 } from './gearPlanner.js';
-import { createIconImage } from './gear.js';
+import { ICON_BASE_URL } from './gear.js';
 import { runGearPlanQuickSim } from '../shaman/dps.js';
+import { createItemTooltipHTML } from '../ui/tooltips.js';
+import { positionItemTooltipAtCursor } from '../ui/itemTooltipPosition.js';
+import { ensureItemSourcesLoaded, getSourcesForItem, getPrimarySourceLabel } from './itemSources.js';
+
+const LEFT_SLOTS = ['head', 'neck', 'shoulder', 'back', 'chest', 'wrist', 'mainhand', 'offhand'];
+const RIGHT_SLOTS = ['hands', 'waist', 'legs', 'feet', 'ring1', 'ring2', 'trinket1', 'trinket2', 'ranged'];
+
+const SLOT_LABELS = {
+    head: 'Head',
+    neck: 'Neck',
+    shoulder: 'Shoulder',
+    back: 'Back',
+    chest: 'Chest',
+    wrist: 'Wrist',
+    hands: 'Hands',
+    waist: 'Waist',
+    legs: 'Legs',
+    feet: 'Feet',
+    ring1: 'Finger 1',
+    ring2: 'Finger 2',
+    trinket1: 'Trinket 1',
+    trinket2: 'Trinket 2',
+    mainhand: 'Main Hand',
+    offhand: 'Off Hand',
+    ranged: 'Ranged',
+};
 
 const classIconData = {
     warrior: { name: 'Warrior', icon: 'assets/icons/classicon_warrior.jpg' },
@@ -37,6 +62,7 @@ export function initGearPlannerView(cbs) {
     }
     wireHeaderControls();
     wireClassDrawer();
+    ensureItemSourcesLoaded().then(() => renderGearPlanner()).catch(() => {});
     renderGearPlanner();
 }
 
@@ -159,6 +185,40 @@ function updateQuickSimVisibility() {
     if (wrap) wrap.style.display = isShaman ? '' : 'none';
 }
 
+function escapeHtml(str) {
+    return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+function formatPlannerSourceLine(itemId) {
+    const sources = getSourcesForItem(itemId);
+    if (!sources.length) return getPrimarySourceLabel(itemId) || '';
+    const primary = sources[0];
+    const inst = primary.instanceName || '';
+    let boss = primary.tableTitle || '';
+    if (inst && boss.startsWith(`${inst} - `)) boss = boss.slice(inst.length + 3);
+    if (inst && boss && boss !== inst) return `${inst} · ${boss}`;
+    return inst || boss || getPrimarySourceLabel(itemId) || '';
+}
+
+function itemIconHtml(item) {
+    const file = (item?.icon || 'inv_misc_questionmark').toLowerCase();
+    return `<img src="${ICON_BASE_URL}${file}.png" alt="${escapeHtml(item?.name || '')}">`;
+}
+
+function renderItemMeta(item) {
+    if (!item) return '';
+    const q = item.quality ?? 0;
+    const source = formatPlannerSourceLine(item.id);
+    return `<div class="gp-item-meta">
+        <div class="gp-item-name q${q}">${escapeHtml(item.name || `Item ${item.id}`)}</div>
+        ${source ? `<div class="gp-item-source">${escapeHtml(source)}</div>` : ''}
+    </div>`;
+}
+
 export function renderGearPlanner() {
     const nameInput = document.getElementById('gp-plan-name');
     if (nameInput && nameInput !== document.activeElement) {
@@ -169,79 +229,100 @@ export function renderGearPlanner() {
 
     const leftCol = document.getElementById('gp-slots-left');
     const rightCol = document.getElementById('gp-slots-right');
-    const centerCol = document.getElementById('gp-slots-center');
-    if (!leftCol || !rightCol || !centerCol) return;
+    if (!leftCol || !rightCol) return;
 
-    const leftSlots = ['head', 'neck', 'shoulder', 'back', 'chest', 'wrist', 'mainhand', 'offhand'];
-    const rightSlots = ['hands', 'waist', 'legs', 'feet', 'ring1', 'ring2', 'trinket1', 'trinket2', 'ranged'];
-
-    leftCol.innerHTML = leftSlots.map(s => renderSlotColumn(s)).join('');
-    rightCol.innerHTML = rightSlots.map(s => renderSlotColumn(s)).join('');
-    centerCol.innerHTML = GEAR_PLAN_SLOTS.map(s => renderSlotDetail(s)).join('');
+    leftCol.innerHTML = LEFT_SLOTS.map(s => renderSlotCard(s, 'left')).join('');
+    rightCol.innerHTML = RIGHT_SLOTS.map(s => renderSlotCard(s, 'right')).join('');
 
     bindSlotEvents();
     persistSession();
 }
 
-function renderSlotColumn(slotId) {
-    const label = slotId.replace(/(\d+)/, ' $1');
-    return `<div class="gp-slot-icon" data-slot="${slotId}" title="${label}">
-        <div class="gp-slot-icon-frame" id="gp_icon_${slotId}"><span class="gp-slot-empty">+</span></div>
-        <span class="gp-slot-label">${label}</span>
-    </div>`;
-}
+function renderSlotCard(slotId, side) {
+    if (!currentPlan.ui) currentPlan.ui = { collapsed: {} };
+    if (!currentPlan.ui.collapsed) currentPlan.ui.collapsed = {};
 
-function renderSlotDetail(slotId) {
     const slot = currentPlan.slots[slotId];
-    const collapsed = currentPlan.ui?.collapsed?.[slotId] !== false;
+    const collapsed = currentPlan.ui.collapsed[slotId] !== false;
     const primaryId = slot?.primary;
     const alts = slot?.alternatives || [];
     const primaryItem = primaryId && callbacks.getItemById ? callbacks.getItemById(primaryId) : null;
+    const label = SLOT_LABELS[slotId] || slotId;
+    const empty = !primaryItem;
+    const expanded = !collapsed && !empty;
 
-    const altsHtml = alts.length
-        ? alts.map((id, i) => {
-            const it = callbacks.getItemById?.(id);
-            const name = it?.name || `Item ${id}`;
-            const q = it?.quality ?? 0;
-            return `<div class="gp-alt-row" data-slot="${slotId}" data-alt-index="${i}">
-                <span class="q${q}">${name}</span>
-                <button type="button" class="gp-remove-alt" data-slot="${slotId}" data-alt-index="${i}" title="Remove">×</button>
-            </div>`;
-        }).join('')
-        : '<div class="gp-alt-empty">No alternatives</div>';
+    const altsHtml = alts.map((id, i) => {
+        const it = callbacks.getItemById?.(id);
+        const q = it?.quality ?? 0;
+        const name = it?.name || `Item ${id}`;
+        const source = it ? formatPlannerSourceLine(it.id) : '';
+        const icon = it ? itemIconHtml(it) : '';
+        return `<div class="gp-alt-row gp-item-tip" data-slot="${slotId}" data-alt-index="${i}" data-item-id="${id}">
+            <div class="gp-alt-icon">${icon}</div>
+            <div class="gp-item-meta">
+                <div class="gp-item-name q${q}">${escapeHtml(name)}</div>
+                ${source ? `<div class="gp-item-source">${escapeHtml(source)}</div>` : ''}
+            </div>
+            <button type="button" class="gp-remove-alt" data-slot="${slotId}" data-alt-index="${i}" title="Remove">×</button>
+        </div>`;
+    }).join('');
 
-    return `<div class="gp-slot-detail" data-slot="${slotId}">
-        <div class="gp-slot-detail-header">
-            <h4>${slotId}</h4>
-            <button type="button" class="gp-toggle-alts" data-slot="${slotId}" aria-expanded="${!collapsed}">
-                ${collapsed ? 'Show' : 'Hide'} alternatives
-            </button>
-        </div>
-        <div class="gp-primary-row">
-            <button type="button" class="gp-pick-primary" data-slot="${slotId}">
-                ${primaryItem ? `<span class="q${primaryItem.quality}">${primaryItem.name}</span>` : 'Select primary item…'}
-            </button>
-            ${primaryId ? `<button type="button" class="gp-clear-primary" data-slot="${slotId}" title="Clear">×</button>` : ''}
-        </div>
-        <div class="gp-alts-panel" data-slot="${slotId}" ${collapsed ? 'hidden' : ''}>
-            ${altsHtml}
+    const primaryInner = empty
+        ? `<button type="button" class="gp-empty-primary" data-slot="${slotId}">
+                <span class="gp-slot-icon-frame gp-slot-icon-frame--dashed"><span class="gp-slot-empty">+</span></span>
+                <span class="gp-empty-label">Add ${escapeHtml(label)}</span>
+           </button>`
+        : `<div class="gp-primary-row gp-item-tip" data-item-id="${primaryItem.id}">
+                <button type="button" class="gp-pick-primary" data-slot="${slotId}" title="Change ${escapeHtml(label)}">
+                    <span class="gp-slot-icon-frame">${itemIconHtml(primaryItem)}</span>
+                </button>
+                ${renderItemMeta(primaryItem)}
+                <button type="button" class="gp-toggle-alts" data-slot="${slotId}" aria-expanded="${expanded}" title="Alternatives">▾</button>
+                <button type="button" class="gp-clear-primary" data-slot="${slotId}" title="Clear">×</button>
+           </div>`;
+
+    return `<article class="gp-slot-card gp-slot-card--${side}${empty ? ' gp-slot-card--empty' : ''}${expanded ? ' gp-slot-card--expanded' : ''}"
+        data-slot="${slotId}" data-side="${side}" aria-expanded="${expanded}">
+        <div class="gp-slot-card-header">${primaryInner}</div>
+        <div class="gp-alts-panel" data-slot="${slotId}" ${expanded ? '' : 'hidden'}>
+            ${altsHtml || '<div class="gp-alt-empty">No alternatives</div>'}
             <button type="button" class="gp-add-alt" data-slot="${slotId}">+ Add alternative</button>
         </div>
-    </div>`;
+    </article>`;
+}
+
+function toggleSlotCollapsed(slotId) {
+    if (!currentPlan.ui) currentPlan.ui = { collapsed: {} };
+    if (!currentPlan.ui.collapsed) currentPlan.ui.collapsed = {};
+    const wasCollapsed = currentPlan.ui.collapsed[slotId] !== false;
+    currentPlan.ui.collapsed[slotId] = !wasCollapsed;
+    renderGearPlanner();
 }
 
 function bindSlotEvents() {
-    document.querySelectorAll('.gp-pick-primary, .gp-slot-icon').forEach(el => {
-        el.addEventListener('click', () => {
-            const slotId = el.dataset.slot || el.closest('[data-slot]')?.dataset.slot;
-            if (!slotId) return;
+    document.querySelectorAll('.gp-slot-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('.gp-pick-primary, .gp-empty-primary, .gp-add-alt, .gp-remove-alt, .gp-clear-primary, .gp-toggle-alts')) return;
+            const slotId = card.dataset.slot;
+            if (!currentPlan.slots[slotId]?.primary) {
+                openPickerForSlot(slotId, false);
+                return;
+            }
+            toggleSlotCollapsed(slotId);
+        });
+    });
+
+    document.querySelectorAll('.gp-empty-primary, .gp-pick-primary').forEach(el => {
+        el.addEventListener('click', (e) => {
+            e.stopPropagation();
             editingAltSlot = null;
-            openPickerForSlot(slotId, false);
+            openPickerForSlot(el.dataset.slot, false);
         });
     });
 
     document.querySelectorAll('.gp-add-alt').forEach(el => {
-        el.addEventListener('click', () => {
+        el.addEventListener('click', (e) => {
+            e.stopPropagation();
             editingAltSlot = el.dataset.slot;
             openPickerForSlot(el.dataset.slot, true);
         });
@@ -256,7 +337,8 @@ function bindSlotEvents() {
     });
 
     document.querySelectorAll('.gp-remove-alt').forEach(el => {
-        el.addEventListener('click', () => {
+        el.addEventListener('click', (e) => {
+            e.stopPropagation();
             const slotId = el.dataset.slot;
             const idx = parseInt(el.dataset.altIndex, 10);
             currentPlan.slots[slotId].alternatives.splice(idx, 1);
@@ -265,27 +347,29 @@ function bindSlotEvents() {
     });
 
     document.querySelectorAll('.gp-toggle-alts').forEach(el => {
-        el.addEventListener('click', () => {
-            const slotId = el.dataset.slot;
-            const wasCollapsed = currentPlan.ui.collapsed[slotId] !== false;
-            currentPlan.ui.collapsed[slotId] = !wasCollapsed;
-            renderGearPlanner();
+        el.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleSlotCollapsed(el.dataset.slot);
         });
     });
 
-    for (const slotId of GEAR_PLAN_SLOTS) {
-        const frame = document.getElementById(`gp_icon_${slotId}`);
-        const itemId = currentPlan.slots[slotId]?.primary;
-        if (!frame) continue;
-        frame.innerHTML = '';
-        if (itemId && callbacks.getItemById) {
-            const item = callbacks.getItemById(itemId);
-            if (item) frame.appendChild(createIconImage(item.icon, item.name));
-            else frame.innerHTML = '<span class="gp-slot-empty">+</span>';
-        } else {
-            frame.innerHTML = '<span class="gp-slot-empty">+</span>';
-        }
-    }
+    bindPlannerTooltips();
+}
+
+function bindPlannerTooltips() {
+    const tooltip = document.getElementById('item-tooltip');
+    if (!tooltip) return;
+    document.querySelectorAll('#gear-planner-shell .gp-item-tip').forEach(el => {
+        const itemId = Number(el.dataset.itemId);
+        const item = itemId && callbacks.getItemById ? callbacks.getItemById(itemId) : null;
+        if (!item) return;
+        el.addEventListener('mouseenter', () => {
+            tooltip.innerHTML = createItemTooltipHTML(item);
+            tooltip.style.display = 'block';
+        });
+        el.addEventListener('mousemove', (e) => positionItemTooltipAtCursor(tooltip, e));
+        el.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+    });
 }
 
 async function openPickerForSlot(slotId, isAlt) {

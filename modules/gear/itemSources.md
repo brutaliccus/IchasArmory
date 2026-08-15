@@ -17,7 +17,9 @@ Lazy-loads TurtleAtlasLoot-derived loot data from `/data/loot/` for item modal i
 | `getPrimarySourceLabel(itemId)` | Short label for modal row subline |
 | `itemMatchesInstanceFilter(itemId, selectedIds)` | OR filter; empty = no filter |
 | `isOtherItem(itemId)` | No dungeon/raid/worldboss source |
-| `getInstanceFilterGroups()` | UI groups: dungeons, raids, worldBosses, other |
+| `getInstanceFilterGroups()` | UI groups: dungeons (highest level first), raids, worldBosses, other |
+
+Dungeon checkboxes inherit this order. Level comes from `levelRange` / `maxLevel` / `minLevel` when present; otherwise a Turtle/classic progression table by instance id.
 
 ## SourceEntry
 

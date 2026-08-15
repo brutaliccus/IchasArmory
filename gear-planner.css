@@ -88,26 +88,59 @@ body[data-app-mode="character"] #gear-planner-shell {
 
 .gp-layout {
     display: grid;
-    grid-template-columns: 72px 1fr 72px;
-    gap: 12px;
-    min-height: 480px;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    align-items: start;
 }
 
 .gp-slot-column {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
 }
 
-.gp-slot-icon {
+.gp-slot-card {
+    background: linear-gradient(145deg, #1a1a1f 0%, #121218 100%);
+    border: 1px solid #3d3520;
+    border-radius: 10px;
+    padding: 8px 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
     cursor: pointer;
-    text-align: center;
+}
+
+.gp-slot-card:hover {
+    border-color: #c9a227;
+}
+
+.gp-slot-card--expanded {
+    border-color: #ffd700;
+}
+
+.gp-primary-row,
+.gp-empty-primary,
+.gp-alt-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.gp-slot-card--right .gp-primary-row,
+.gp-slot-card--right .gp-empty-primary,
+.gp-slot-card--right .gp-alt-row,
+.gp-slot-card--right .gp-alts-panel {
+    flex-direction: row-reverse;
+}
+
+.gp-slot-card--right .gp-item-meta,
+.gp-slot-card--right .gp-empty-label {
+    text-align: right;
 }
 
 .gp-slot-icon-frame {
-    width: 56px;
-    height: 56px;
-    margin: 0 auto;
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
     border: 2px solid #4a4028;
     border-radius: 6px;
     background: #1c1c22;
@@ -117,10 +150,25 @@ body[data-app-mode="character"] #gear-planner-shell {
     overflow: hidden;
 }
 
-.gp-slot-icon-frame img {
+.gp-slot-icon-frame--dashed {
+    border-style: dashed;
+}
+
+.gp-slot-icon-frame img,
+.gp-alt-icon img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.gp-alt-icon {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    border: 1px solid #4a4028;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #1c1c22;
 }
 
 .gp-slot-empty {
@@ -128,67 +176,60 @@ body[data-app-mode="character"] #gear-planner-shell {
     font-size: 1.4rem;
 }
 
-.gp-slot-label {
-    font-size: 0.65rem;
-    color: #888;
-    text-transform: capitalize;
+.gp-item-meta {
+    flex: 1;
+    min-width: 0;
 }
 
-.gp-center-panel {
-    background: rgba(22, 22, 28, 0.95);
-    border: 1px solid #35353d;
-    border-radius: 10px;
-    padding: 12px;
-    max-height: 70vh;
-    overflow-y: auto;
-}
-
-.gp-slot-detail {
-    padding: 10px 0;
-    border-bottom: 1px solid #2a2a32;
-}
-
-.gp-slot-detail:last-child {
-    border-bottom: none;
-}
-
-.gp-slot-detail-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 6px;
-}
-
-.gp-slot-detail-header h4 {
-    margin: 0;
+.gp-item-name {
     font-size: 0.9rem;
-    color: #c9a227;
-    text-transform: capitalize;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.gp-item-source {
+    font-size: 0.72rem;
+    color: #8a8070;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.gp-empty-primary {
+    background: none;
+    border: none;
+    color: #8a8070;
+    cursor: pointer;
+    padding: 0;
+}
+
+.gp-empty-label {
+    flex: 1;
+    font-size: 0.85rem;
+}
+
+.gp-pick-primary {
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 .gp-toggle-alts {
     background: none;
     border: none;
-    color: #8a8a9a;
+    color: #c9a227;
     cursor: pointer;
-    font-size: 0.78rem;
+    font-size: 1rem;
+    padding: 4px;
+    flex: 0 0 auto;
 }
 
-.gp-primary-row {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-
-.gp-pick-primary {
-    flex: 1;
-    text-align: left;
-    padding: 8px 10px;
-    background: #232328;
-    border: 1px dashed #4a4028;
-    border-radius: 6px;
-    color: var(--text-color);
-    cursor: pointer;
+.gp-slot-card--expanded .gp-toggle-alts {
+    transform: rotate(180deg);
 }
 
 .gp-clear-primary,
@@ -200,34 +241,32 @@ body[data-app-mode="character"] #gear-planner-shell {
     cursor: pointer;
     width: 28px;
     height: 28px;
+    flex: 0 0 28px;
 }
 
 .gp-alts-panel {
     margin-top: 8px;
-    padding-left: 8px;
-    border-left: 2px solid #3d3520;
+    padding-top: 8px;
+    border-top: 1px solid #3d3520;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
-.gp-alt-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 4px 0;
-    font-size: 0.85rem;
+.gp-alts-panel[hidden] {
+    display: none;
 }
 
 .gp-alt-empty {
     color: #666;
     font-size: 0.8rem;
-    margin-bottom: 6px;
 }
 
 .gp-add-alt {
-    margin-top: 6px;
     background: none;
     border: 1px dashed #4a4028;
     color: #c9a227;
-    padding: 4px 10px;
+    padding: 6px 10px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.8rem;
