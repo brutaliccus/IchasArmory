@@ -924,6 +924,12 @@
                             <polyline points="7 3 7 8 15 8"></polyline>
                         </svg>
                     </button>
+                    <button type="button" id="gp-edit-mode-btn" class="gp-btn gp-btn-icon" title="Edit mode" aria-label="Edit mode" aria-pressed="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 20h9"></path>
+                            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+                        </svg>
+                    </button>
                     <button type="button" id="gp-load-btn" class="gp-btn gp-btn-icon" title="Load" aria-label="Load">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
@@ -938,13 +944,14 @@
                             <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
                         </svg>
                     </button>
+                    <button type="button" id="gp-configure-sim-btn" class="gp-btn" style="display:none;">Configure Sim</button>
+                    <button type="button" id="gp-quick-sim-btn" class="gp-btn gp-btn-primary" style="display:none;">Quick DPS Sim</button>
+                    <div id="gp-quick-sim-result"></div>
                 </div>
             </header>
-            <div id="gp-quick-sim-wrap" class="gp-quick-sim-wrap" style="display:none;">
+            <div id="gp-quick-sim-wrap" class="gp-quick-sim-wrap" style="display:none;" hidden>
                 <p class="gp-quick-sim-hint">Quick DPS sim uses your current character talents, buffs, and rotation. Configure them on the DPS sim page for accurate results.</p>
-                <button type="button" id="gp-configure-sim-btn" class="gp-btn">Configure Sim</button>
-                <button type="button" id="gp-quick-sim-btn" class="gp-btn gp-btn-primary">Quick DPS Sim</button>
-                <div id="gp-quick-sim-result"></div>
+                <button type="button" id="gp-sim-hint-dismiss" class="gp-sim-hint-dismiss" title="Dismiss" aria-label="Dismiss">×</button>
             </div>
             <div class="gp-layout">
                 <div class="gp-slot-column" id="gp-slots-left"></div>
@@ -1010,6 +1017,8 @@
                                 <span class="dropdown-arrow">▼</span>
                             </div>
                             <div class="stat-dropdown-menu" id="weapon-type-dropdown" style="display: none;">
+                                <label><input type="checkbox" name="weapon-type-filter" value="One-Handed"><span>One-Handed</span></label>
+                                <label><input type="checkbox" name="weapon-type-filter" value="Two-Handed"><span>Two-Handed</span></label>
                                 <label><input type="checkbox" name="weapon-type-filter" value="Axe"><span>Axe</span></label>
                                 <label><input type="checkbox" name="weapon-type-filter" value="Sword"><span>Sword</span></label>
                                 <label><input type="checkbox" name="weapon-type-filter" value="Mace"><span>Mace</span></label>
@@ -1017,6 +1026,7 @@
                                 <label><input type="checkbox" name="weapon-type-filter" value="Fist Weapon"><span>Fist Weapon</span></label>
                                 <label><input type="checkbox" name="weapon-type-filter" value="Polearm"><span>Polearm</span></label>
                                 <label><input type="checkbox" name="weapon-type-filter" value="Staff"><span>Staff</span></label>
+                                <label><input type="checkbox" name="weapon-type-filter" value="Fishing Pole"><span>Fishing Pole</span></label>
                                 <label><input type="checkbox" name="weapon-type-filter" value="Bow"><span>Bow</span></label>
                                 <label><input type="checkbox" name="weapon-type-filter" value="Crossbow"><span>Crossbow</span></label>
                                 <label><input type="checkbox" name="weapon-type-filter" value="Gun"><span>Gun</span></label>

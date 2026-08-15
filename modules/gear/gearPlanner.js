@@ -54,6 +54,7 @@ export function getGearPlanData(plan) {
         };
     }
     if (plan.ui?.collapsed) out.ui.collapsed = { ...plan.ui.collapsed };
+    if (plan.id) out.id = plan.id;
     return out;
 }
 

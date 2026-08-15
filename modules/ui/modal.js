@@ -104,9 +104,97 @@ const CAN_USE_SHIELD = new Set(['warrior', 'paladin', 'shaman']);
 const RANGED_WEAPON_TYPE_LINES = new Set(['wand', 'bow', 'crossbow', 'gun', 'thrown']);
 
 /** Melee + shield categories shown in the weapon-type dropdown for hand slots. */
-const WEAPON_FILTER_MELEE = ['Axe', 'Sword', 'Mace', 'Dagger', 'Fist Weapon', 'Polearm', 'Staff'];
+const WEAPON_FILTER_HANDS = ['One-Handed', 'Two-Handed'];
+const WEAPON_FILTER_MELEE = ['Axe', 'Sword', 'Mace', 'Dagger', 'Fist Weapon', 'Polearm', 'Staff', 'Fishing Pole'];
 const WEAPON_FILTER_RANGED_PHYSICAL = ['Bow', 'Crossbow', 'Gun', 'Thrown'];
 const WEAPON_FILTER_RELICS = ['Libram', 'Totem', 'Idol'];
+const WEAPON_FILTER_HAND_SET = new Set(WEAPON_FILTER_HANDS.map(v => v.toLowerCase()));
+const WEAPON_FILTER_SUBTYPE_SET = new Set([
+    ...WEAPON_FILTER_MELEE,
+    ...WEAPON_FILTER_RANGED_PHYSICAL,
+    ...WEAPON_FILTER_RELICS,
+    'Shield',
+    'Wand',
+].map(v => v.toLowerCase()));
+const ARMOR_TYPE_SET = new Set(['plate', 'mail', 'leather', 'cloth']);
+
+function isLikelyEquipTypeLine(line) {
+    const l = String(line || '').trim().toLowerCase();
+    if (!l) return false;
+    if (l.startsWith('binds') || l.startsWith('requires') || l.startsWith('classes:') || l.startsWith('"')) return false;
+    if (l.includes('durability') || l.includes('damage per second')) return false;
+    if (/^\d/.test(l) || l.includes(' - ') && l.includes('damage')) return false;
+    if (l.startsWith('+')) return false;
+    return true;
+}
+
+function normalizeHandToken(part) {
+    const p = String(part || '').toLowerCase().replace(/\s+/g, ' ').trim();
+    if (!p) return null;
+    if (p === 'one-hand' || p === 'one-handed' || p === 'one hand' || p === 'one handed' || p === 'main hand') {
+        return 'one-handed';
+    }
+    if (p === 'two-hand' || p === 'two-handed' || p === 'two hand' || p === 'two handed') {
+        return 'two-handed';
+    }
+    return null;
+}
+
+/**
+ * Parse Atlas-style type lines: "One-Hand, Dagger" or separate "Main Hand" / "Sword" rows.
+ */
+function parseItemTypeTokens(item) {
+    const hands = new Set();
+    const subtypes = new Set();
+    if (!item?.tooltip_lines_raw) return { hands, subtypes };
+    for (const line of item.tooltip_lines_raw) {
+        if (!isLikelyEquipTypeLine(line)) continue;
+        const parts = String(line).split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+        for (const part of parts) {
+            const hand = normalizeHandToken(part);
+            if (hand) {
+                hands.add(hand);
+                continue;
+            }
+            subtypes.add(part);
+        }
+    }
+    return { hands, subtypes };
+}
+
+function tooltipHasHandedness(item, handKey) {
+    const { hands } = parseItemTypeTokens(item);
+    if (hands.has(handKey)) return true;
+    const blob = (item?.tooltip_lines_raw || []).join('\n').toLowerCase();
+    if (handKey === 'one-handed') {
+        return /\bone[- ]hands?\b|\bone[- ]handed\b|main hand/.test(blob);
+    }
+    if (handKey === 'two-handed') {
+        return /\btwo[- ]hands?\b|\btwo[- ]handed\b/.test(blob);
+    }
+    return false;
+}
+
+function itemMatchesWeaponTypeFilters(item, handFilters, subtypeFilters) {
+    if ((!handFilters || handFilters.length === 0) && (!subtypeFilters || subtypeFilters.length === 0)) {
+        return true;
+    }
+    const { subtypes } = parseItemTypeTokens(item);
+    const blob = (item?.tooltip_lines_raw || []).join('\n').toLowerCase();
+
+    if (handFilters.length > 0) {
+        const handOk = handFilters.some(h => tooltipHasHandedness(item, h));
+        if (!handOk) return false;
+    }
+    if (subtypeFilters.length > 0) {
+        const subOk = subtypeFilters.some(st => {
+            if (subtypes.has(st)) return true;
+            return blob.includes(st);
+        });
+        if (!subOk) return false;
+    }
+    return true;
+}
 
 /**
  * Wand / bow / crossbow / gun / thrown as a full tooltip line (exact match, any position).
@@ -141,10 +229,10 @@ function itemBelongsInRangedSlotOnly(item) {
 function getVisibleWeaponFilterValues(slotId, classLower) {
     const c = (classLower || 'warrior').toLowerCase();
     if (slotId === 'mainhand') {
-        return new Set(WEAPON_FILTER_MELEE);
+        return new Set([...WEAPON_FILTER_HANDS, ...WEAPON_FILTER_MELEE]);
     }
     if (slotId === 'offhand') {
-        return new Set([...WEAPON_FILTER_MELEE, 'Shield']);
+        return new Set([...WEAPON_FILTER_HANDS, ...WEAPON_FILTER_MELEE, 'Shield']);
     }
     if (slotId === 'ranged') {
         const rangedType = CLASS_RANGED_TYPE[c];
@@ -178,6 +266,9 @@ function syncWeaponTypeFilterUI(slotId, playerClass) {
     const visible = getVisibleWeaponFilterValues(slotId, playerClass);
     if (!visible) return;
 
+    const visibleLow = new Set([...visible].map(v => v.toLowerCase()));
+    savedFilters.stats = savedFilters.stats.filter(s => !ARMOR_TYPE_SET.has(String(s).toLowerCase()));
+
     menu.querySelectorAll('input[name="weapon-type-filter"]').forEach(cb => {
         const val = cb.value;
         const label = cb.closest('label');
@@ -189,6 +280,17 @@ function syncWeaponTypeFilterUI(slotId, playerClass) {
             savedFilters.stats = savedFilters.stats.filter(s => s.toLowerCase() !== low);
         }
     });
+
+    const anyVisibleSelected = savedFilters.stats.some(s => visibleLow.has(String(s).toLowerCase()));
+    if (!anyVisibleSelected) {
+        menu.querySelectorAll('input[name="weapon-type-filter"]').forEach(cb => {
+            if (!visible.has(cb.value)) return;
+            cb.checked = true;
+            if (!savedFilters.stats.some(s => s.toLowerCase() === cb.value.toLowerCase())) {
+                savedFilters.stats.push(cb.value);
+            }
+        });
+    }
 }
 
 /**
@@ -240,8 +342,8 @@ function canClassEquipItem(item, playerClass, slot) {
     // 3. Offhand slot: dual wield, shield, and held-in-off-hand rules
     if (slot === 'offhand') {
         const hasShield = tooltipText.includes('Shield');
-        const hasHeldInOffHand = tooltipText.includes('Held In Off-Hand');
-        const hasOneHand = tooltipText.includes('One-hand');
+        const hasHeldInOffHand = /held in off-hand/i.test(tooltipText);
+        const hasOneHand = tooltipHasHandedness(item, 'one-handed');
 
         // Shields: only warrior, paladin, shaman
         if (hasShield) {
@@ -293,14 +395,11 @@ function filterItemsBySlot(items, slot) {
             if (itemBelongsInRangedSlotOnly(item)) return false;
             if (!item.tooltip_lines_raw) return true;
             const tooltipText = item.tooltip_lines_raw.join('\n');
+            const hasOneHand = tooltipHasHandedness(item, 'one-handed');
+            const hasMainHand = /main hand/i.test(tooltipText);
+            const hasTwoHand = tooltipHasHandedness(item, 'two-handed');
+            const hasOffHand = /off hand/i.test(tooltipText) && !/held in off-hand/i.test(tooltipText);
 
-            // Check for weapon hand requirements (note: "One-hand" and "Two-hand" have lowercase 'h')
-            const hasOneHand = tooltipText.includes('One-hand');
-            const hasMainHand = tooltipText.includes('Main Hand');
-            const hasTwoHand = tooltipText.includes('Two-hand');
-            const hasOffHand = tooltipText.includes('Off Hand');
-
-            // Allow One-hand, Main Hand, Two-hand but NOT Off Hand
             return hasOneHand || hasMainHand || hasTwoHand || !hasOffHand;
         });
     }
@@ -311,17 +410,13 @@ function filterItemsBySlot(items, slot) {
             if (itemBelongsInRangedSlotOnly(item)) return false;
             if (!item.tooltip_lines_raw) return true;
             const tooltipText = item.tooltip_lines_raw.join('\n');
+            const hasOneHand = tooltipHasHandedness(item, 'one-handed');
+            const hasOffHand = /off hand/i.test(tooltipText);
+            const hasHeldInOffHand = /held in off-hand/i.test(tooltipText);
+            const hasShield = /shield/i.test(tooltipText);
+            const hasMainHand = /main hand/i.test(tooltipText);
+            const hasTwoHand = tooltipHasHandedness(item, 'two-handed');
 
-            // Check for weapon hand requirements (note: "One-hand" and "Two-hand" have lowercase 'h')
-            const hasOneHand = tooltipText.includes('One-hand');
-            const hasOffHand = tooltipText.includes('Off Hand');
-            const hasHeldInOffHand = tooltipText.includes('Held In Off-Hand');
-            const hasShield = tooltipText.includes('Shield');
-            const hasMainHand = tooltipText.includes('Main Hand');
-            const hasTwoHand = tooltipText.includes('Two-hand');
-
-            // One-hand + Off Hand weapons (not Main Hand–only), frills, shields; never 2H.
-            // Main-hand-only items are excluded; true One-hand weapons are merged from mainhand.json in getItemsForSlot('offhand').
             return (hasOneHand || hasOffHand || hasHeldInOffHand || hasShield) && !hasMainHand && !hasTwoHand;
         });
     }
@@ -419,40 +514,55 @@ export function filterAndRenderItems(allItems, filters, listElement) {
         });
     }
 
-    // Apply stat filters (multiple stats with exact matching)
+    // Apply stat / armor / weapon type filters
     if (filters.stats && filters.stats.length > 0) {
-        console.log('Applying stat filters:', filters.stats);
+        const armorFilters = [];
+        const selectedWeapon = [];
+        const actualStatFilters = [];
+        for (const statFilter of filters.stats) {
+            const low = String(statFilter).toLowerCase().trim();
+            if (ARMOR_TYPE_SET.has(low)) armorFilters.push(low);
+            else if (WEAPON_FILTER_HAND_SET.has(low) || WEAPON_FILTER_SUBTYPE_SET.has(low)) selectedWeapon.push(low);
+            else actualStatFilters.push(statFilter);
+        }
+
+        const visibleWeapon = filters.slot
+            ? getVisibleWeaponFilterValues(filters.slot, getPlayerClassForItemFilters())
+            : null;
+        let handFilters = selectedWeapon.filter(s => WEAPON_FILTER_HAND_SET.has(s));
+        let subtypeFilters = selectedWeapon.filter(s => WEAPON_FILTER_SUBTYPE_SET.has(s));
+        if (visibleWeapon) {
+            const visHands = [...WEAPON_FILTER_HANDS].filter(v => visibleWeapon.has(v)).map(v => v.toLowerCase());
+            const visSubs = [...visibleWeapon].filter(v => WEAPON_FILTER_SUBTYPE_SET.has(v.toLowerCase())).map(v => v.toLowerCase());
+            if (visHands.length && visHands.every(h => handFilters.includes(h))) handFilters = [];
+            if (visSubs.length && visSubs.every(s => subtypeFilters.includes(s))) subtypeFilters = [];
+        }
 
         filteredItems = filteredItems.filter(item => {
             if (!item.tooltip_lines_raw) return false;
+            const blob = item.tooltip_lines_raw.join('\n').toLowerCase();
 
-            // Item must match ALL selected stats
-            const matches = filters.stats.every(statFilter => {
+            if (armorFilters.length > 0) {
+                const armorOk = armorFilters.some(a =>
+                    item.tooltip_lines_raw.some(line => line.trim().toLowerCase() === a)
+                    || blob.includes(a)
+                );
+                if (!armorOk) return false;
+            }
+
+            if (!itemMatchesWeaponTypeFilters(item, handFilters, subtypeFilters)) return false;
+
+            if (actualStatFilters.length === 0) return true;
+            return actualStatFilters.every(statFilter => {
                 const statLower = statFilter.toLowerCase();
                 const searchTerms = getStatSearchTerms(statLower);
                 const allTerms = [statLower, ...searchTerms];
-
-                // Check each tooltip line individually for exact stat matches
-                const hasMatch = item.tooltip_lines_raw.some(line => {
+                return item.tooltip_lines_raw.some(line => {
                     const lineLower = line.toLowerCase();
-                    // Try exact match with any search term
                     return allTerms.some(term => lineLower.includes(term));
                 });
-
-                if (!hasMatch && item.name.includes('Spell')) {
-                    console.log(`Item "${item.name}" failed filter "${statFilter}"`, {
-                        searchTerms: allTerms,
-                        tooltipLines: item.tooltip_lines_raw
-                    });
-                }
-
-                return hasMatch;
             });
-
-            return matches;
         });
-
-        console.log('Filtered down to', filteredItems.length, 'items');
     }
 
     // Apply instance / loot source filter (OR semantics)
@@ -473,7 +583,7 @@ export function filterAndRenderItems(allItems, filters, listElement) {
     if (filters.stats && filters.stats.length > 0 && typeof parseStatsFromTooltip === 'function') {
         // Filter out armor types and weapon types from stat filters
         const armorTypes = ['plate', 'mail', 'leather', 'cloth'];
-        const weaponTypes = ['axe', 'sword', 'mace', 'dagger', 'fist weapon', 'polearm', 'staff', 'bow', 'crossbow', 'gun', 'wand', 'thrown', 'shield', 'libram', 'totem', 'idol'];
+        const weaponTypes = ['one-handed', 'two-handed', 'axe', 'sword', 'mace', 'dagger', 'fist weapon', 'polearm', 'staff', 'fishing pole', 'bow', 'crossbow', 'gun', 'wand', 'thrown', 'shield', 'libram', 'totem', 'idol'];
         const nonStatFilters = [...armorTypes, ...weaponTypes];
 
         // Get the first actual stat filter (excluding armor/weapon types)
@@ -1452,6 +1562,11 @@ export function openItemModal(slotId, items, elements, anchorEl = null) {
         // Show armor type filter, hide weapon type
         if (armorTypeContainer) armorTypeContainer.style.display = 'block';
         if (weaponTypeContainer) weaponTypeContainer.style.display = 'none';
+        savedFilters.stats = savedFilters.stats.filter(s => {
+            const low = String(s).toLowerCase();
+            return !WEAPON_FILTER_HAND_SET.has(low) && !WEAPON_FILTER_SUBTYPE_SET.has(low);
+        });
+        document.querySelectorAll('input[name="weapon-type-filter"]').forEach(cb => { cb.checked = false; });
     }
 
     // Restore stat checkbox selections from saved filters

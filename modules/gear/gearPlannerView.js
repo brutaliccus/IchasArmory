@@ -49,16 +49,27 @@ const classIconData = {
     druid: { name: 'Druid', icon: 'assets/icons/classicon_druid.jpg' },
 };
 
+const SIM_HINT_DISMISS_KEY = 'ichacalc_gp_sim_hint_dismissed';
+
 let currentPlan = createEmptyGearPlan();
 let callbacks = {};
 let editingAltSlot = null;
 let pickCallback = null;
+let editMode = true;
+let gpDidDrag = false;
 
 export function initGearPlannerView(cbs) {
     callbacks = cbs || {};
     const session = loadGearPlannerSession();
     if (session?.plan) {
         currentPlan = getGearPlanData(session.plan);
+        if (typeof session.editMode === 'boolean') {
+            editMode = session.editMode;
+        } else {
+            editMode = !currentPlan.id;
+        }
+    } else {
+        editMode = true;
     }
     wireHeaderControls();
     wireClassDrawer();
@@ -72,12 +83,13 @@ export function getCurrentGearPlan() {
 
 export function setGearPlan(plan) {
     currentPlan = getGearPlanData(plan);
+    editMode = !currentPlan.id;
     persistSession();
     renderGearPlanner();
 }
 
 export function handleGearPlanItemSelected(item) {
-    if (!pickCallback || !item?.id) return;
+    if (!editMode || !pickCallback || !item?.id) return;
     pickCallback(item);
     pickCallback = null;
     editingAltSlot = null;
@@ -86,6 +98,7 @@ export function handleGearPlanItemSelected(item) {
 function persistSession() {
     saveGearPlannerSession({
         plan: getGearPlanData(currentPlan),
+        editMode,
         timestamp: Date.now(),
     });
 }
@@ -100,12 +113,22 @@ function wireHeaderControls() {
     }
 
     document.getElementById('gp-save-btn')?.addEventListener('click', () => saveCurrentPlan());
+    document.getElementById('gp-edit-mode-btn')?.addEventListener('click', () => {
+        editMode = !editMode;
+        persistSession();
+        renderGearPlanner();
+    });
     document.getElementById('gp-load-btn')?.addEventListener('click', () => openLoadDropdown());
     document.getElementById('gp-share-btn')?.addEventListener('click', () => shareCurrentPlan());
     document.getElementById('gp-quick-sim-btn')?.addEventListener('click', () => runQuickSim());
     document.getElementById('gp-configure-sim-btn')?.addEventListener('click', () => {
         if (typeof callbacks.setAppMode === 'function') callbacks.setAppMode('character');
         document.querySelector('[data-tab="dps-sim"]')?.click();
+    });
+    document.getElementById('gp-sim-hint-dismiss')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        try { localStorage.setItem(SIM_HINT_DISMISS_KEY, '1'); } catch { /* ignore */ }
+        updateQuickSimVisibility();
     });
 }
 
@@ -187,10 +210,30 @@ function syncGpClassToggle() {
 
 function updateQuickSimVisibility() {
     const btn = document.getElementById('gp-quick-sim-btn');
+    const cfg = document.getElementById('gp-configure-sim-btn');
     const wrap = document.getElementById('gp-quick-sim-wrap');
+    const resultEl = document.getElementById('gp-quick-sim-result');
     const isShaman = currentPlan.class === 'shaman';
     if (btn) btn.style.display = isShaman ? '' : 'none';
-    if (wrap) wrap.style.display = isShaman ? '' : 'none';
+    if (cfg) cfg.style.display = isShaman ? '' : 'none';
+    if (resultEl) resultEl.style.display = isShaman ? '' : 'none';
+    let hintDismissed = false;
+    try { hintDismissed = localStorage.getItem(SIM_HINT_DISMISS_KEY) === '1'; } catch { hintDismissed = false; }
+    if (wrap) {
+        const showHint = isShaman && !hintDismissed;
+        wrap.hidden = !showHint;
+        wrap.style.display = showHint ? '' : 'none';
+    }
+}
+
+function syncEditModeUi() {
+    const shell = document.getElementById('gear-planner-shell');
+    shell?.classList.toggle('gp-view-mode', !editMode);
+    const btn = document.getElementById('gp-edit-mode-btn');
+    if (btn) {
+        btn.setAttribute('aria-pressed', editMode ? 'true' : 'false');
+        btn.classList.toggle('is-active', editMode);
+    }
 }
 
 function escapeHtml(str) {
@@ -234,6 +277,7 @@ export function renderGearPlanner() {
     }
     generateGpClassIcons();
     updateQuickSimVisibility();
+    syncEditModeUi();
 
     const leftCol = document.getElementById('gp-slots-left');
     const rightCol = document.getElementById('gp-slots-right');
@@ -265,28 +309,33 @@ function renderSlotCard(slotId, side) {
         const name = it?.name || `Item ${id}`;
         const source = it ? formatPlannerSourceLine(it.id) : '';
         const icon = it ? itemIconHtml(it) : '';
-        return `<div class="gp-alt-row gp-item-tip" data-slot="${slotId}" data-alt-index="${i}" data-item-id="${id}">
-            <div class="gp-alt-icon">${icon}</div>
+        return `<div class="gp-alt-row" data-slot="${slotId}" data-alt-index="${i}" data-item-id="${id}">
+            <div class="gp-alt-icon gp-drag-handle gp-item-tip" draggable="${editMode ? 'true' : 'false'}" data-slot="${slotId}" data-gp-role="alt" data-alt-index="${i}" data-item-id="${id}">${icon}</div>
             <div class="gp-item-meta">
                 <div class="gp-item-name q${q}">${escapeHtml(name)}</div>
                 ${source ? `<div class="gp-item-source">${escapeHtml(source)}</div>` : ''}
             </div>
-            <button type="button" class="gp-remove-alt" data-slot="${slotId}" data-alt-index="${i}" title="Remove">×</button>
+            <button type="button" class="gp-remove-alt" data-slot="${slotId}" data-alt-index="${i}" title="Remove"${editMode ? '' : ' hidden'}>×</button>
         </div>`;
     }).join('');
 
     const primaryInner = empty
-        ? `<button type="button" class="gp-empty-primary" data-slot="${slotId}">
+        ? (editMode
+            ? `<button type="button" class="gp-empty-primary" data-slot="${slotId}">
                 <span class="gp-slot-icon-frame gp-slot-icon-frame--dashed"><span class="gp-slot-empty">+</span></span>
                 <span class="gp-empty-label">Add ${escapeHtml(label)}</span>
            </button>`
-        : `<div class="gp-primary-row gp-item-tip" data-item-id="${primaryItem.id}">
-                <button type="button" class="gp-pick-primary" data-slot="${slotId}" title="Change ${escapeHtml(label)}">
-                    <span class="gp-slot-icon-frame">${itemIconHtml(primaryItem)}</span>
+            : `<div class="gp-empty-primary">
+                <span class="gp-slot-icon-frame gp-slot-icon-frame--dashed"><span class="gp-slot-empty">+</span></span>
+                <span class="gp-empty-label">${escapeHtml(label)}</span>
+           </div>`)
+        : `<div class="gp-primary-row" data-item-id="${primaryItem.id}">
+                <button type="button" class="gp-pick-primary" data-slot="${slotId}" title="${editMode ? `Change ${escapeHtml(label)}` : escapeHtml(label)}">
+                    <span class="gp-slot-icon-frame gp-drag-handle gp-item-tip" draggable="${editMode ? 'true' : 'false'}" data-slot="${slotId}" data-gp-role="primary" data-item-id="${primaryItem.id}">${itemIconHtml(primaryItem)}</span>
                 </button>
                 ${renderItemMeta(primaryItem)}
                 <button type="button" class="gp-toggle-alts" data-slot="${slotId}" aria-expanded="${expanded}" title="Alternatives">▾</button>
-                <button type="button" class="gp-clear-primary" data-slot="${slotId}" title="Clear">×</button>
+                <button type="button" class="gp-clear-primary" data-slot="${slotId}" title="Clear"${editMode ? '' : ' hidden'}>×</button>
            </div>`;
 
     return `<article class="gp-slot-card gp-slot-card--${side}${empty ? ' gp-slot-card--empty' : ''}${expanded ? ' gp-slot-card--expanded' : ''}"
@@ -294,7 +343,7 @@ function renderSlotCard(slotId, side) {
         <div class="gp-slot-card-header">${primaryInner}</div>
         <div class="gp-alts-panel" data-slot="${slotId}" ${expanded ? '' : 'hidden'}>
             ${altsHtml || '<div class="gp-alt-empty">No alternatives</div>'}
-            <button type="button" class="gp-add-alt" data-slot="${slotId}">+ Add alternative</button>
+            ${editMode ? `<button type="button" class="gp-add-alt" data-slot="${slotId}">+ Add alternative</button>` : ''}
         </div>
     </article>`;
 }
@@ -310,10 +359,11 @@ function toggleSlotCollapsed(slotId) {
 function bindSlotEvents() {
     document.querySelectorAll('.gp-slot-card').forEach(card => {
         card.addEventListener('click', (e) => {
+            if (gpDidDrag) return;
             if (e.target.closest('.gp-pick-primary, .gp-empty-primary, .gp-add-alt, .gp-remove-alt, .gp-clear-primary, .gp-toggle-alts')) return;
             const slotId = card.dataset.slot;
             if (!currentPlan.slots[slotId]?.primary) {
-                openPickerForSlot(slotId, false);
+                if (editMode) openPickerForSlot(slotId, false);
                 return;
             }
             toggleSlotCollapsed(slotId);
@@ -323,6 +373,7 @@ function bindSlotEvents() {
     document.querySelectorAll('.gp-empty-primary, .gp-pick-primary').forEach(el => {
         el.addEventListener('click', (e) => {
             e.stopPropagation();
+            if (!editMode) return;
             editingAltSlot = null;
             openPickerForSlot(el.dataset.slot, false);
         });
@@ -362,6 +413,7 @@ function bindSlotEvents() {
     });
 
     bindPlannerTooltips();
+    bindPlannerDragDrop();
 }
 
 function bindPlannerTooltips() {
@@ -380,8 +432,100 @@ function bindPlannerTooltips() {
     });
 }
 
+function bindPlannerDragDrop() {
+    if (!editMode) return;
+    document.querySelectorAll('#gear-planner-shell .gp-drag-handle').forEach(el => {
+        el.addEventListener('dragstart', (e) => {
+            e.stopPropagation();
+            gpDidDrag = true;
+            const payload = {
+                slot: el.dataset.slot,
+                role: el.dataset.gpRole,
+                altIndex: el.dataset.altIndex != null ? parseInt(el.dataset.altIndex, 10) : null,
+                itemId: Number(el.dataset.itemId),
+            };
+            e.dataTransfer.setData('application/json', JSON.stringify(payload));
+            e.dataTransfer.effectAllowed = 'move';
+            el.classList.add('gp-dragging');
+            const tooltip = document.getElementById('item-tooltip');
+            if (tooltip) tooltip.style.display = 'none';
+        });
+        el.addEventListener('dragend', () => {
+            el.classList.remove('gp-dragging');
+            document.querySelectorAll('.gp-drop-target').forEach(n => n.classList.remove('gp-drop-target'));
+            setTimeout(() => { gpDidDrag = false; }, 0);
+        });
+        el.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            el.classList.add('gp-drop-target');
+        });
+        el.addEventListener('dragleave', () => el.classList.remove('gp-drop-target'));
+        el.addEventListener('drop', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            el.classList.remove('gp-drop-target');
+            let payload;
+            try {
+                payload = JSON.parse(e.dataTransfer.getData('application/json') || '{}');
+            } catch {
+                return;
+            }
+            applyPlannerItemMove(payload, {
+                slot: el.dataset.slot,
+                role: el.dataset.gpRole,
+                altIndex: el.dataset.altIndex != null ? parseInt(el.dataset.altIndex, 10) : null,
+            });
+        });
+        el.addEventListener('click', (e) => {
+            if (gpDidDrag) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        });
+    });
+}
+
+function applyPlannerItemMove(from, to) {
+    if (!from?.slot || !to?.slot || from.slot !== to.slot) return;
+    const slot = currentPlan.slots[from.slot];
+    if (!slot) return;
+    const alts = slot.alternatives || [];
+
+    if (from.role === 'alt' && to.role === 'primary') {
+        const idx = Number.isInteger(from.altIndex) ? from.altIndex : alts.indexOf(from.itemId);
+        if (idx < 0 || idx >= alts.length) return;
+        const moving = alts[idx];
+        const oldPrimary = slot.primary;
+        slot.primary = moving;
+        if (oldPrimary) alts[idx] = oldPrimary;
+        else alts.splice(idx, 1);
+        renderGearPlanner();
+        return;
+    }
+
+    if (from.role === 'primary' && to.role === 'alt') {
+        const idx = Number.isInteger(to.altIndex) ? to.altIndex : 0;
+        if (idx < 0 || idx >= alts.length || !slot.primary) return;
+        const oldAlt = alts[idx];
+        alts[idx] = slot.primary;
+        slot.primary = oldAlt;
+        renderGearPlanner();
+        return;
+    }
+
+    if (from.role === 'alt' && to.role === 'alt') {
+        const fromIdx = Number.isInteger(from.altIndex) ? from.altIndex : alts.indexOf(from.itemId);
+        const toIdx = Number.isInteger(to.altIndex) ? to.altIndex : 0;
+        if (fromIdx < 0 || toIdx < 0 || fromIdx >= alts.length || toIdx >= alts.length || fromIdx === toIdx) return;
+        const [moved] = alts.splice(fromIdx, 1);
+        alts.splice(toIdx, 0, moved);
+        renderGearPlanner();
+    }
+}
+
 async function openPickerForSlot(slotId, isAlt) {
-    if (!callbacks.openItemModalForGearPlan) return;
+    if (!editMode || !callbacks.openItemModalForGearPlan) return;
     pickCallback = (item) => {
         if (isAlt) {
             const alts = currentPlan.slots[slotId].alternatives;
@@ -402,9 +546,15 @@ async function saveCurrentPlan() {
     const plan = getGearPlanData(currentPlan);
     plan.updatedAt = new Date().toISOString();
 
-        if (window.profileManager?.user) {
-            const ok = await window.profileManager.saveGearPlan(plan);
-        if (ok) window.notify?.success('Gear plan saved to cloud', 3000, 'Gear Planner');
+    if (window.profileManager?.user) {
+        const ok = await window.profileManager.saveGearPlan(plan);
+        if (ok) {
+            if (plan.id) currentPlan.id = plan.id;
+            editMode = false;
+            persistSession();
+            renderGearPlanner();
+            window.notify?.success('Gear plan saved to cloud', 3000, 'Gear Planner');
+        }
         return;
     }
 
@@ -415,6 +565,9 @@ async function saveCurrentPlan() {
     else local.push(plan);
     saveLocalGearPlans(local);
     currentPlan.id = plan.id;
+    editMode = false;
+    persistSession();
+    renderGearPlanner();
     window.notify?.success('Gear plan saved locally', 3000, 'Gear Planner');
 }
 
@@ -443,6 +596,9 @@ function openLoadDropdown() {
                 const plan = plans.find(p => String(p.id) === btn.dataset.id);
                 if (plan) {
                     currentPlan = getGearPlanData(plan);
+                    if (plan.id) currentPlan.id = plan.id;
+                    editMode = false;
+                    persistSession();
                     renderGearPlanner();
                     modal.style.display = 'none';
                 }

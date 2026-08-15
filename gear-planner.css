@@ -109,6 +109,11 @@ body[data-app-mode="character"] #gear-planner-shell {
     display: block;
 }
 
+.gp-btn-icon[aria-pressed="true"] {
+    background: linear-gradient(180deg, #4a3d10 0%, #2a2208 100%);
+    box-shadow: 0 0 0 1px var(--accent-color, #ffd700);
+}
+
 .gp-layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -150,8 +155,7 @@ body[data-app-mode="character"] #gear-planner-shell {
 
 .gp-slot-card--right .gp-primary-row,
 .gp-slot-card--right .gp-empty-primary,
-.gp-slot-card--right .gp-alt-row,
-.gp-slot-card--right .gp-alts-panel {
+.gp-slot-card--right .gp-alt-row {
     flex-direction: row-reverse;
 }
 
@@ -182,6 +186,21 @@ body[data-app-mode="character"] #gear-planner-shell {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    pointer-events: none;
+}
+
+.gp-drag-handle {
+    cursor: grab;
+}
+
+.gp-drag-handle.gp-dragging {
+    opacity: 0.45;
+    cursor: grabbing;
+}
+
+.gp-drag-handle.gp-drop-target {
+    outline: 2px solid #c9a227;
+    outline-offset: 1px;
 }
 
 .gp-alt-icon {
@@ -205,7 +224,7 @@ body[data-app-mode="character"] #gear-planner-shell {
 }
 
 .gp-item-name {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
@@ -213,8 +232,8 @@ body[data-app-mode="character"] #gear-planner-shell {
 }
 
 .gp-item-source {
-    font-size: 0.72rem;
-    color: #8a8070;
+    font-size: 0.9rem;
+    color: #c4b8a4;
     margin-top: 2px;
     white-space: nowrap;
     overflow: hidden;
@@ -293,11 +312,26 @@ body[data-app-mode="character"] #gear-planner-shell {
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.8rem;
+    width: 100%;
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    align-self: stretch;
+}
+
+#gear-planner-shell.gp-view-mode .gp-clear-primary,
+#gear-planner-shell.gp-view-mode .gp-remove-alt,
+#gear-planner-shell.gp-view-mode .gp-add-alt {
+    display: none;
+}
+
+#gear-planner-shell.gp-view-mode .gp-drag-handle {
+    cursor: default;
 }
 
 .gp-quick-sim-wrap {
-    margin-top: 8px;
-    padding: 10px;
+    position: relative;
+    margin-bottom: 14px;
+    padding: 10px 32px 10px 12px;
     background: #1a1810;
     border: 1px solid #3d3520;
     border-radius: 8px;
@@ -305,15 +339,39 @@ body[data-app-mode="character"] #gear-planner-shell {
     color: #b8b0a0;
 }
 
+.gp-quick-sim-wrap[hidden] {
+    display: none !important;
+}
+
 .gp-quick-sim-hint {
-    margin: 0 0 8px;
+    margin: 0;
     line-height: 1.4;
 }
 
+.gp-sim-hint-dismiss {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #c4b8a4;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.gp-sim-hint-dismiss:hover {
+    color: #f0e6c8;
+}
+
 #gp-quick-sim-result {
-    margin-top: 6px;
     color: var(--accent-color);
     font-weight: 600;
+    font-size: 0.88rem;
+    min-width: 4rem;
 }
 
 .gp-load-modal {

@@ -62,26 +62,28 @@ openItemModal('mainhand', weaponItems, {
 Applies intelligent filtering based on equipment slot rules.
 
 **Mainhand Slot:**
-- Allows: One-hand, Main Hand, Two-hand weapons
+- Allows: One-hand / One-Hand / One-Handed, Main Hand, and Two-hand / Two-Hand / Two-Handed weapons (comma-combined Atlas lines such as `One-Hand, Dagger` are parsed by splitting on comma)
 - Blocks: Off Hand only weapons; **wands, bows, crossbows, guns, thrown** (ranged-slot subtypes); **relics** (Totem / Idol / Libram with `Relic` in tooltip)
 
 **Offhand Slot:**
 - **Item list:** `getItemsForSlot('offhand')` merges **`offhand.json`** with **One-hand** weapons from **`mainhand.json`** (so dual-wielders see real 1H weapons; shields/frills stay in `offhand.json`).
-- **Modal filter:** Allows **One-hand**, **Off Hand** (OH-only weapons), **Held In Off-Hand**, **Shields**; blocks **Main Hand**–only rows, **Two-hand** weapons, and the same **ranged subtypes** / **relics** as mainhand.
+- **Modal filter:** Allows **One-hand** (including `One-Hand, …`), **Off Hand** (OH-only weapons), **Held In Off-Hand**, **Shields**; blocks **Main Hand**–only rows, **Two-hand** weapons, and the same **ranged subtypes** / **relics** as mainhand.
 - **One-hand** / **Off Hand** melee in OH: `canClassEquipItem` → **`CAN_DUAL_WIELD`** (warrior, rogue, hunter, shaman). Shields → warrior/paladin/shaman; held-in-off-hand → any class.
 
 **Ranged Slot:**
 - Allows only: ranged weapon subtypes (wand/bow/crossbow/gun/thrown as early tooltip lines) **or** relic items (totem/idol/libram + relic). Class-specific equipping is still enforced by `canClassEquipItem()`.
 
 **Weapon type dropdown (`syncWeaponTypeFilterUI`):**
-- **Mainhand:** melee types only (Axe, Sword, Mace, Dagger, Fist Weapon, Polearm, Staff) — no Shield, no ranged, no relic rows.
-- **Offhand:** melee + Shield; no ranged, no relic rows.
+- **Mainhand:** One-Handed, Two-Handed, plus melee subtypes (Axe, Sword, Mace, Dagger, Fist Weapon, Polearm, Staff, Fishing Pole) — no Shield, no ranged, no relic rows.
+- **Offhand:** handedness + melee + Shield; no ranged, no relic rows.
 - **Ranged:** depends on class via `CLASS_RANGED_TYPE`: Hunter/Warrior/Rogue → Bow, Crossbow, Gun, Thrown; Priest/Mage/Warlock → Wand; Shaman → Totem; Druid → Idol + Wand; Paladin → Libram. Hidden rows are unchecked and removed from `savedFilters.stats`.
+- **Default:** all **visible** weapon checkboxes are checked so the list is not empty. Armor-type leftovers are stripped when opening a weapon slot (and weapon leftovers when opening armor).
+- **Match logic:** handedness is OR among selected One-Handed/Two-Handed; subtype is OR among selected types; the two groups AND together. If every visible handedness (or every visible subtype) is selected, that group is unrestricted. Checking only **Dagger** matches `Dagger` and `One-Hand, Dagger`. Checking only **Two-Handed** shows all two-hand weapons. Real stats still AND. Armor types stay OR among Plate/Mail/Leather/Cloth and are not affected.
 
 **Other Slots:**
 - No additional filtering (items are already slot-appropriate from database)
 
-**`canClassEquipItem`:** For mainhand/offhand, rejects ranged subtypes and relics before other rules.
+**`canClassEquipItem`:** For mainhand/offhand, rejects ranged subtypes and relics before other rules. One-hand detection is case-insensitive (`One-Hand` / `One-hand`).
 
 ---
 
@@ -664,11 +666,10 @@ function filterItemsBySlot(items, slot) {
         return items.filter(item => {
             const tooltipText = item.tooltip_lines_raw.join('\n');
 
-            // Modify these conditions
-            const hasOneHand = tooltipText.includes('One-hand');
-            const hasMainHand = tooltipText.includes('Main Hand');
-            const hasTwoHand = tooltipText.includes('Two-hand');
-            const hasOffHand = tooltipText.includes('Off Hand');
+            const hasOneHand = tooltipHasHandedness(item, 'one-handed');
+            const hasMainHand = /main hand/i.test(tooltipText);
+            const hasTwoHand = tooltipHasHandedness(item, 'two-handed');
+            const hasOffHand = /off hand/i.test(tooltipText);
 
             // Change this logic to adjust what's allowed
             return hasOneHand || hasMainHand || hasTwoHand || !hasOffHand;
