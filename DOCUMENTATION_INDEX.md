@@ -88,6 +88,15 @@ This document provides an index of all documentation files created for the IchaC
 
 ## Gear & Equipment System
 
+### Gear Planner (v1)
+**Files:** `modules/gear/gearPlanner.js`, `modules/gear/gearPlannerView.js`, `modules/gear/itemSources.js`, `gear-planner.css`
+
+- BiS gear plans per class (items only, no enchants)
+- Loot source filter in item modal (dungeons, raids, world bosses, other)
+- Session persistence via `ichacalc_gear_planner_session_v1`
+- Cloud saves: `user.gearPlans[]`, share URL `?gp=id`, Discord inbox `kind: gearPlan`
+- Data: `data/loot/` from `npm run import:loot` (TurtleAtlasLootWeb)
+
 ### 4. modules/gear/gearCompare.js - Gear Comparison & Tank Score
 **File:** `modules/gear/gearCompare.md`
 **Source:** `modules/gear/gearCompare.js` (1,229 LOC)

@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="profiles.css">
     <link rel="stylesheet" href="notifications.css">
     <link rel="stylesheet" href="topnav.css">
+    <link rel="stylesheet" href="gear-planner.css">
     <style>
         /* Critical CSS - loaded inline to prevent FOUC */
         :root {
@@ -72,7 +73,7 @@
         })();
     </script>
 </head>
-<body>
+<body data-app-mode="character">
     <!-- Loading Screen -->
     <div id="loading-screen">
         <div class="loading-content">
@@ -220,6 +221,14 @@
         </div>
         <h1 class="site-title">Ichabaddie's Armory</h1>
         <div id="user-controls" class="user-controls">
+            <div class="planner-mode-toggle" title="Switch planner mode">
+                <button type="button" id="mode-character-btn" class="planner-mode-btn active" title="Character Planner" aria-label="Character Planner">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </button>
+                <button type="button" id="mode-gear-planner-btn" class="planner-mode-btn" title="Gear Planner" aria-label="Gear Planner">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.43 12.98c.04-.32.07-.64.07-.98 0-.34-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98 0 .33.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+                </button>
+            </div>
             <div class="ui-scale-settings-wrap ui-scale-settings-wrap--guest">
                 <button type="button" id="ui-scale-settings-btn-guest" class="dropdown-btn icon-only ui-scale-settings-btn" title="UI scale settings" aria-label="UI scale settings" aria-expanded="false" aria-controls="ui-scale-settings-panel"><span class="ui-scale-settings-label-text">UI</span></button>
             </div>
@@ -890,6 +899,51 @@
         </section>
     </main>
     </div>
+
+    <!-- Gear Planner (separate mode) -->
+    <div id="gear-planner-shell">
+        <aside class="class-race-sidebar gp-class-sidebar" id="gp-class-sidebar" aria-label="Class" data-selected-class="warrior">
+            <div class="cr-drawer" id="gp-cr-drawer-class">
+                <button type="button" class="cr-drawer-toggle" id="gp-class-drawer-toggle" aria-expanded="false" aria-controls="gp-class-drawer-panel" title="Select class">
+                    <img id="gp-class-drawer-toggle-img" alt="" width="56" height="56" decoding="async" />
+                </button>
+                <div class="cr-drawer-panel" id="gp-class-drawer-panel" role="region" aria-label="Classes">
+                    <div id="gp-class-selector" class="class-selector-container cr-drawer-icons"></div>
+                </div>
+            </div>
+        </aside>
+        <div class="gp-main">
+            <header class="gp-header">
+                <h2>Gear Planner</h2>
+                <input type="text" id="gp-plan-name" class="gp-plan-name-input" value="New Gear Plan" aria-label="Plan name" />
+                <div class="gp-header-actions">
+                    <button type="button" id="gp-save-btn" class="gp-btn">Save</button>
+                    <button type="button" id="gp-load-btn" class="gp-btn">Load</button>
+                    <button type="button" id="gp-share-btn" class="gp-btn gp-btn-primary">Share</button>
+                </div>
+            </header>
+            <div id="gp-quick-sim-wrap" class="gp-quick-sim-wrap" style="display:none;">
+                <p class="gp-quick-sim-hint">Quick DPS sim uses your current character talents, buffs, and rotation. Configure them on the DPS sim page for accurate results.</p>
+                <button type="button" id="gp-configure-sim-btn" class="gp-btn">Configure Sim</button>
+                <button type="button" id="gp-quick-sim-btn" class="gp-btn gp-btn-primary">Quick DPS Sim</button>
+                <div id="gp-quick-sim-result"></div>
+            </div>
+            <div class="gp-layout">
+                <div class="gp-slot-column" id="gp-slots-left"></div>
+                <div class="gp-center-panel" id="gp-slots-center"></div>
+                <div class="gp-slot-column" id="gp-slots-right"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="gp-load-modal" class="gp-load-modal">
+        <div class="gp-load-modal-card">
+            <h3>Load Gear Plan</h3>
+            <div id="gp-load-list"></div>
+            <button type="button" class="gp-btn gp-load-close" style="margin-top:12px;">Close</button>
+        </div>
+    </div>
+
     <script type="module" src="app.js"></script>
     <script>
         // Add scrolled class to top nav bar when scrolling
@@ -1054,6 +1108,7 @@
                         </div>
                         <button type="button" id="reset-filters-btn" class="item-picker-reset-btn">Reset</button>
                     </div>
+                    <div class="item-picker-instance-filter" id="instance-filter-container" aria-label="Loot source filter"></div>
                 </div>
                 <div id="modal-item-list" class="modal-item-list item-picker-list"></div>
             </div>

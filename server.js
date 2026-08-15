@@ -45,9 +45,11 @@ if (!fs.existsSync(bugReportsDir)) {
 const dataDir = path.join(__dirname, 'data');
 const usersDir = path.join(dataDir, 'users');
 const inboxDir = path.join(dataDir, 'inbox');
+const sessionsDir = path.join(dataDir, 'sessions');
 const buildsDir = path.join(__dirname, 'builds');
+const gearPlansDir = path.join(__dirname, 'gear-plans');
 
-[dataDir, usersDir, inboxDir, buildsDir].forEach(dir => {
+[dataDir, usersDir, inboxDir, sessionsDir, buildsDir, gearPlansDir].forEach(dir => {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
     }
@@ -104,6 +106,21 @@ app.get('/data/items/*.json', (req, res, next) => {
     }
 });
 
+// Serve pre-compressed loot JSON files
+app.get('/data/loot/*.json', (req, res, next) => {
+    const requestedPath = path.join(__dirname, req.path);
+    const gzipPath = requestedPath + '.gz';
+    const acceptsGzip = req.headers['accept-encoding']?.includes('gzip');
+    if (acceptsGzip && fs.existsSync(gzipPath)) {
+        res.setHeader('Content-Encoding', 'gzip');
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Cache-Control', 'public, max-age=3600');
+        res.sendFile(gzipPath);
+    } else {
+        next();
+    }
+});
+
 // Serve all other static files (JS, CSS, images, etc.)
 app.use(express.static(__dirname, {
     maxAge: '1h',
@@ -121,27 +138,40 @@ app.use(express.json());
 // Setup authentication if enabled
 if (authEnabled) {
     const session = require('express-session');
+    const FileStore = require('session-file-store')(session);
     const passport = require('passport');
     const DiscordStrategy = require('passport-discord-auth').Strategy;
 
     // Trust proxy - required when running behind Nginx reverse proxy
     app.set('trust proxy', 1);
 
-    // Configure session
+    const sessionMaxAgeMs = 7 * 24 * 60 * 60 * 1000; // 7 days
+    const sessionCookieSecure = process.env.SESSION_COOKIE_SECURE === '1'
+        || process.env.SESSION_COOKIE_SECURE === 'true';
+
+    // Persist sessions on disk so deploy restarts (systemctl restart) do not log users out.
+    // Default MemoryStore clears all sessions when server.js exits.
     app.use(session({
         secret: process.env.SESSION_SECRET,
-        resave: true,
+        store: new FileStore({
+            path: sessionsDir,
+            ttl: Math.floor(sessionMaxAgeMs / 1000),
+            retries: 1,
+            logFn: () => {}
+        }),
+        resave: false,
         saveUninitialized: true, // Required for OAuth: Passport must persist the state before the Discord redirect
         name: 'ichacalc.sid',
         cookie: {
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-            secure: false,
+            maxAge: sessionMaxAgeMs,
+            secure: sessionCookieSecure,
             httpOnly: true,
             sameSite: 'lax',
             path: '/'
         },
         proxy: true
     }));
+    console.log(`Session store: ${sessionsDir}`);
 
     // Initialize Passport
     app.use(passport.initialize());
@@ -874,6 +904,118 @@ app.get('/builds/:buildId', (req, res) => {
         res.json({ success: true, build: buildData });
     } catch (error) {
         console.error('[Builds] Error loading build:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+function generatePlanId() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
+    let result = '';
+    for (let i = 0; i < 8; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+}
+
+// Save a gear plan (public share URL)
+app.post('/gear-plans', (req, res) => {
+    try {
+        const planData = req.body;
+        if (!planData || planData.kind !== 'gearPlan') {
+            return res.status(400).json({ success: false, error: 'Invalid gear plan data' });
+        }
+        let planId = generatePlanId();
+        let planPath = path.join(gearPlansDir, `${planId}.json`);
+        while (fs.existsSync(planPath)) {
+            planId = generatePlanId();
+            planPath = path.join(gearPlansDir, `${planId}.json`);
+        }
+        const withMeta = {
+            ...planData,
+            _meta: { id: planId, createdAt: new Date().toISOString() },
+        };
+        fs.writeFileSync(planPath, JSON.stringify(withMeta, null, 2));
+        res.json({ success: true, planId });
+    } catch (error) {
+        console.error('[GearPlans] Error saving:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+app.get('/gear-plans/:planId', (req, res) => {
+    try {
+        const { planId } = req.params;
+        if (!/^[A-Za-z0-9]+$/.test(planId)) {
+            return res.status(400).json({ success: false, error: 'Invalid plan ID' });
+        }
+        const planPath = path.join(gearPlansDir, `${planId}.json`);
+        if (!fs.existsSync(planPath)) {
+            return res.status(404).json({ success: false, error: 'Gear plan not found' });
+        }
+        const plan = JSON.parse(fs.readFileSync(planPath, 'utf-8'));
+        res.json({ success: true, plan });
+    } catch (error) {
+        console.error('[GearPlans] Error loading:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// User cloud gear plans (authenticated)
+app.get('/user-gear-plans', requireAuth, (req, res) => {
+    try {
+        const userFile = path.join(usersDir, `${req.user.id}.json`);
+        const user = JSON.parse(fs.readFileSync(userFile, 'utf-8'));
+        res.set('Cache-Control', 'no-store');
+        res.json({ success: true, gearPlans: user.gearPlans || [] });
+    } catch (error) {
+        console.error('Error fetching gear plans:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+app.post('/user-gear-plans', requireAuth, (req, res) => {
+    try {
+        const { plan } = req.body;
+        if (!plan || plan.kind !== 'gearPlan') {
+            return res.status(400).json({ success: false, error: 'Invalid gear plan' });
+        }
+        const userFile = path.join(usersDir, `${req.user.id}.json`);
+        const user = JSON.parse(fs.readFileSync(userFile, 'utf-8'));
+        if (!user.gearPlans) user.gearPlans = [];
+
+        const now = new Date().toISOString();
+        let saved;
+        if (plan.id) {
+            const idx = user.gearPlans.findIndex(p => String(p.id) === String(plan.id));
+            if (idx >= 0) {
+                user.gearPlans[idx] = { ...plan, updatedAt: now };
+                saved = user.gearPlans[idx];
+            } else {
+                saved = { ...plan, id: plan.id, createdAt: now, updatedAt: now };
+                user.gearPlans.push(saved);
+            }
+        } else {
+            saved = { ...plan, id: `gp_${Date.now()}`, createdAt: now, updatedAt: now };
+            user.gearPlans.push(saved);
+        }
+        fs.writeFileSync(userFile, JSON.stringify(user, null, 2));
+        res.json({ success: true, plan: saved });
+    } catch (error) {
+        console.error('Error saving gear plan:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+app.delete('/user-gear-plans/:id', requireAuth, (req, res) => {
+    try {
+        const { id } = req.params;
+        const userFile = path.join(usersDir, `${req.user.id}.json`);
+        const user = JSON.parse(fs.readFileSync(userFile, 'utf-8'));
+        user.gearPlans = (user.gearPlans || []).filter(p => String(p.id) !== String(id));
+        fs.writeFileSync(userFile, JSON.stringify(user, null, 2));
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error deleting gear plan:', error);
         res.status(500).json({ success: false, error: error.message });
     }
 });

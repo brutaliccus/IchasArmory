@@ -4,6 +4,7 @@ import { shamanSpells } from './spells.js';
 import { ShamanStats, callOfThunderCritBonusFraction } from '../character/shamanTalents.js';
 import { calculateSpellDPS, calculateSpellDamage, formatDamage, formatDPS } from './damageCalc.js';
 import { getCurrentlyEquippedItem, getAllSpellStrikeSources, getEquippedGearObjects, getItemById, equipItem, clearItem, createIconImage, PLACEHOLDER_ICON_URL, slotIconMap, setVirtualStatWeightItem, clearVirtualStatWeightItem } from '../gear/gear.js';
+import { GEAR_PLAN_SLOTS } from '../gear/gearPlanner.js';
 import { openCustomRadialMenu, openRadialMenu, closeRadialMenu } from '../ui/radialMenu.js';
 import { runShamanSimulation, replayShamanSimulationIteration } from './combatSim.js';
 
@@ -11933,4 +11934,52 @@ function renderItemBadge(item) {
  */
 export function getPriorityConfig(setBonuses = null) {
     return loadPriorityConfig(setBonuses);
+}
+
+/**
+ * Quick DPS sim for gear planner: snapshot build, equip plan primaries, sim, restore.
+ * @param {import('../gear/gearPlanner.js').GearPlan} gearPlan
+ */
+export async function runGearPlanQuickSim(gearPlan) {
+    if (!gearPlan || gearPlan.class !== 'shaman') {
+        return { error: 'Quick DPS sim is only available for Shaman gear plans.' };
+    }
+
+    const snapshot = {};
+    for (const slot of GEAR_PLAN_SLOTS) {
+        snapshot[slot] = getCurrentlyEquippedItem(slot);
+    }
+
+    try {
+        for (const slot of GEAR_PLAN_SLOTS) {
+            const id = gearPlan.slots?.[slot]?.primary;
+            if (id) equipItem(id, slot);
+            else clearItem(slot);
+        }
+
+        const freshStats = getFreshShamanStats();
+        const priorityConfig = loadPriorityConfig(freshStats.setBonuses || {});
+        const results = await runShamanSimulation(
+            freshStats,
+            120,
+            400,
+            null,
+            priorityConfig,
+            { quickSim: true }
+        );
+
+        return {
+            dps: results?.dps ?? 0,
+            note: 'Uses current talents, buffs, and rotation. Configure on the DPS sim page for accurate results.',
+        };
+    } catch (error) {
+        console.error('[runGearPlanQuickSim]', error);
+        return { error: error.message || 'Simulation failed' };
+    } finally {
+        for (const slot of GEAR_PLAN_SLOTS) {
+            const prev = snapshot[slot];
+            if (prev?.id) equipItem(prev.id, slot);
+            else clearItem(slot);
+        }
+    }
 }

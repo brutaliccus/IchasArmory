@@ -6,7 +6,7 @@ This project uses a Service Worker for caching. Instead of updating version numb
 
 When you make changes to any JavaScript, CSS, or HTML files, update the cache version:
 
-1. Open `sw.js`
+1. Open `public/sw.js` (copied to `dist/sw.js` by Vite)
 2. Change the `CACHE_VERSION` constant at the top:
    ```javascript
    const CACHE_VERSION = 'v2';  // Increment this (v1 -> v2 -> v3, etc.)
@@ -16,16 +16,21 @@ When you make changes to any JavaScript, CSS, or HTML files, update the cache ve
 
 The service worker will automatically:
 - Clear old caches
-- Re-cache all files with the new version
+- Re-cache the HTML shell with the new version
 - Update users' browsers on next visit
 
 ## What Gets Cached
 
 The service worker caches:
-- HTML files (index.html)
-- CSS files (style.css)
-- JavaScript modules (all files in /modules/)
-- Main app file (app.js)
+- HTML shell (`index.html`, `/`) — network-first, offline fallback only
+- Other static assets (images, fonts, etc.) — cache-first
+
+It does **not** cache:
+- Vite hashed bundles under `/_app/` (immutable HTTP cache)
+- `/modules/` (dev) or `.js` / `.css` paths (handled by Vite/CDN headers)
+- **Auth and API routes:** `/auth/*`, `/user`, `/profiles*`, `/inbox*`, `/share`, `/api/*`, `/builds*`, `/bug-report*`
+
+Bumping `CACHE_VERSION` does **not** log users out of Discord auth. Sessions live in the `ichacalc.sid` cookie and on-disk session files (`data/sessions/` on the Pi), not in the service worker cache.
 
 ## Testing Locally
 
@@ -37,7 +42,7 @@ When testing locally:
 
 ## Cache Strategy
 
-- **Cache First**: Files are served from cache when available
-- **Network Fallback**: If not in cache, fetches from network
-- **Auto-cleanup**: Old cache versions are automatically deleted
-- **Update check**: Runs every 60 seconds to check for new versions
+- **HTML:** Network-first; cache used only when offline
+- **Images/fonts:** Cache-first with network fallback
+- **Auth/API:** Service worker bypass — always network
+- **Auto-cleanup:** Old `ichacalc-*` cache versions are deleted on activate

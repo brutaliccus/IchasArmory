@@ -5,6 +5,12 @@ import { createItemTooltipHTML, createEnchantTooltipHTML, calculateItemDpsScore,
 import { positionItemTooltipAtCursor } from './itemTooltipPosition.js';
 import { createIconImage, getCurrentlyEquippedItem } from '../gear/gear.js';
 import { getStatSearchTerms, getItemType, filterEnchantsByItemType, parseStatsFromTooltip, KEY_MAP } from '../character/stats.js';
+import {
+    ensureItemSourcesLoaded,
+    getPrimarySourceLabel,
+    itemMatchesInstanceFilter,
+    getInstanceFilterGroups,
+} from '../gear/itemSources.js';
 
 const REQ_LEVEL_MIN = 1;
 const REQ_LEVEL_MAX = 60;
@@ -29,9 +35,18 @@ function normalizeReqLevelPair(minV, maxV) {
     return { lo, hi };
 }
 
+/** When set (gear planner), overrides sidebar class for can-equip filter. */
+let itemModalPlayerClassOverride = null;
+
+export function setItemModalPlayerClassOverride(classId) {
+    itemModalPlayerClassOverride = classId || null;
+}
+
 function getPlayerClassForItemFilters() {
+    if (itemModalPlayerClassOverride) return itemModalPlayerClassOverride;
     const bar = document.getElementById('class-race-sidebar');
     return bar?.dataset?.selectedClass
+        || document.getElementById('gp-class-sidebar')?.dataset?.selectedClass
         || document.querySelector('.class-icon.active')?.dataset.classId
         || 'warrior';
 }
@@ -42,7 +57,8 @@ const savedFilters = {
     stats: [],
     qualities: [3, 4, 5], // Default: rare, epic, legendary
     ilvlMin: 1,
-    ilvlMax: 60
+    ilvlMax: 60,
+    instances: [],
 };
 
 // Sort toggle states (DPS / Tank mutually exclusive)
@@ -439,6 +455,13 @@ export function filterAndRenderItems(allItems, filters, listElement) {
         console.log('Filtered down to', filteredItems.length, 'items');
     }
 
+    // Apply instance / loot source filter (OR semantics)
+    if (filters.instances && filters.instances.length > 0) {
+        filteredItems = filteredItems.filter(item =>
+            itemMatchesInstanceFilter(item.id, filters.instances)
+        );
+    }
+
     // Apply quality filter
     if (filters.qualities && filters.qualities.length > 0) {
         filteredItems = filteredItems.filter(item =>
@@ -662,6 +685,14 @@ function renderItems(items, listElement) {
         }
 
         nameContainer.appendChild(nameSpan);
+
+        const sourceLabel = getPrimarySourceLabel(item.id);
+        if (sourceLabel) {
+            const sourceSpan = document.createElement('span');
+            sourceSpan.className = 'modal-item-source';
+            sourceSpan.textContent = sourceLabel;
+            nameContainer.appendChild(sourceSpan);
+        }
 
         // Add stat preview if filters are active
         const statPreview = extractStatPreview(item, selectedStats);
@@ -1027,6 +1058,8 @@ function resetFilters() {
     savedFilters.qualities = [3, 4, 5];
     savedFilters.ilvlMin = REQ_LEVEL_MIN;
     savedFilters.ilvlMax = REQ_LEVEL_MAX;
+    savedFilters.instances = [];
+    document.querySelectorAll('input.instance-filter-cb').forEach(cb => { cb.checked = false; });
 
     // Reset sort buttons
     sortByDpsActive = false;
@@ -1265,6 +1298,49 @@ export function repositionItemPickerIfOpen() {
     positionItemPickerPanel(anchor || null);
 }
 
+let instanceFilterUiReady = false;
+
+async function setupInstanceFilterUI() {
+    const host = document.getElementById('instance-filter-container');
+    if (!host) return;
+    await ensureItemSourcesLoaded();
+    if (instanceFilterUiReady) {
+        host.querySelectorAll('input.instance-filter-cb').forEach(cb => {
+            cb.checked = savedFilters.instances.includes(cb.value);
+        });
+        return;
+    }
+    const groups = getInstanceFilterGroups();
+    const sections = [
+        { key: 'dungeons', title: 'Dungeons' },
+        { key: 'raids', title: 'Raids' },
+        { key: 'worldBosses', title: 'World Bosses' },
+        { key: 'other', title: 'Other' },
+    ];
+    host.innerHTML = '<div class="instance-filter-groups"></div>';
+    const grid = host.querySelector('.instance-filter-groups');
+    for (const { key, title } of sections) {
+        const list = groups[key] || [];
+        if (!list.length) continue;
+        const group = document.createElement('div');
+        group.className = 'instance-filter-group';
+        group.innerHTML = `<h5>${title}</h5>`;
+        for (const inst of list) {
+            const id = `inst-filter-${inst.id}`;
+            const label = document.createElement('label');
+            label.innerHTML = `<input type="checkbox" class="instance-filter-cb" id="${id}" value="${inst.id}"> ${inst.name}`;
+            const cb = label.querySelector('input');
+            cb.checked = savedFilters.instances.includes(inst.id);
+            cb.addEventListener('change', () => {
+                document.dispatchEvent(new CustomEvent('filterChanged'));
+            });
+            group.appendChild(label);
+        }
+        grid.appendChild(group);
+    }
+    instanceFilterUiReady = true;
+}
+
 /**
  * Open the item modal for a specific slot
  * @param {string} slotId - The slot ID
@@ -1299,6 +1375,8 @@ export function openItemModal(slotId, items, elements, anchorEl = null) {
     if (ilvlMinSlider) ilvlMinSlider.value = String(savedFilters.ilvlMin);
     if (ilvlMaxSlider) ilvlMaxSlider.value = String(savedFilters.ilvlMax);
     updateReqLevelDualUI();
+
+    setupInstanceFilterUI();
 
     // Setup stat filter listeners if not already done
     if (!window.statFilterListenersSetup) {
@@ -1380,6 +1458,7 @@ export function openItemModal(slotId, items, elements, anchorEl = null) {
         qualities: selectedQualities.length > 0 ? selectedQualities : savedFilters.qualities,
         ilvlMin: savedFilters.ilvlMin,
         ilvlMax: savedFilters.ilvlMax,
+        instances: savedFilters.instances,
         slot: slotId
     }, elements.modalItemList);
 
@@ -1433,12 +1512,16 @@ export function getCurrentFilters() {
     savedFilters.ilvlMin = lo;
     savedFilters.ilvlMax = hi;
 
+    const instanceCbs = document.querySelectorAll('input.instance-filter-cb:checked');
+    savedFilters.instances = Array.from(instanceCbs).map(cb => cb.value);
+
     return {
         search: savedFilters.search,
         stats: savedFilters.stats,
         qualities: savedFilters.qualities,
         ilvlMin: lo,
         ilvlMax: hi,
+        instances: savedFilters.instances,
         slot: currentSlot
     };
 }

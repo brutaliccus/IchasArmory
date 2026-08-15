@@ -13,8 +13,11 @@ discord.env
 bug-reports/
 backups/
 builds/
+gear-plans/
+.tmp-turtle-atlas-loot/
 data/users/
 data/inbox/
+data/sessions/
 data/items_old/
 data/items.zip
 

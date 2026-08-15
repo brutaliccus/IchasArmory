@@ -45,6 +45,8 @@ export default defineConfig({
             '/inbox':       { target: 'http://localhost:6100', changeOrigin: true },
             '/auth':        { target: 'http://localhost:6100', changeOrigin: true },
             '/builds':      { target: 'http://localhost:6100', changeOrigin: true },
+            '/gear-plans':  { target: 'http://localhost:6100', changeOrigin: true },
+            '/user-gear-plans': { target: 'http://localhost:6100', changeOrigin: true },
             '/share':       { target: 'http://localhost:6100', changeOrigin: true },
             '/bug-report':  { target: 'http://localhost:6100', changeOrigin: true },
             '/bug-reports': { target: 'http://localhost:6100', changeOrigin: true },

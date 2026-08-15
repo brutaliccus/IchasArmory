@@ -1074,6 +1074,13 @@ Press Ctrl+C to stop all servers.
 
 Profile JSON responses on `server.js` (`GET/POST/PATCH` profile success and `DELETE` profile success) set `Cache-Control: no-store` so intermediaries and browsers do not serve stale build lists after saves.
 
+### Discord session storage (server.js)
+
+- **Store:** `session-file-store` writes session files under `data/sessions/` (gitignored). Previously the default MemoryStore cleared every session when `server.js` restarted during deploy.
+- **Cookie:** `ichacalc.sid`, 7-day `maxAge`, `httpOnly`, `sameSite: lax`, `path: /`. Set `SESSION_COOKIE_SECURE=true` in `discord.env` when served only over HTTPS behind the reverse proxy.
+- **Deploy:** `scripts/deploy_to_pi.sh` syncs `package.json`, runs `npm install --omit=dev`, and restarts `ehp-calculator`. Static assets in `dist/` update via rsync; auth sessions survive restart as long as `data/sessions/` and `SESSION_SECRET` are unchanged.
+- **Service worker:** `public/sw.js` bypasses all auth/API routes; bumping `CACHE_VERSION` recaches the HTML shell only and does not invalidate Discord sessions.
+
 ---
 
 ## Data Flow Examples

@@ -422,3 +422,52 @@ export async function importBuildFromURL(options) {
         console.error('[Build Import] Failed to import build:', error);
     }
 }
+
+/**
+ * Export gear plan to shareable URL (?gp=id)
+ */
+export async function exportGearPlanToURL({ plan }) {
+    if (!plan || plan.kind !== 'gearPlan') {
+        window.notify?.error('Invalid gear plan', 3000, 'Share Gear Plan');
+        return;
+    }
+    try {
+        const response = await fetch('/gear-plans', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(plan),
+        });
+        const result = await response.json();
+        if (!result.success) throw new Error(result.error || 'Save failed');
+        const newURL = `${window.location.origin}${window.location.pathname}?gp=${result.planId}`;
+        await navigator.clipboard.writeText(newURL);
+        window.notify?.success('Gear plan URL copied to clipboard!', 3000, 'Share Gear Plan');
+    } catch (error) {
+        console.error('Error sharing gear plan:', error);
+        window.notify?.error('Failed to share gear plan: ' + error.message, 5000, 'Share Gear Plan');
+    }
+}
+
+/**
+ * Import gear plan from ?gp= URL param
+ */
+export async function importGearPlanFromURL({ setGearPlan, setAppMode }) {
+    const params = new URLSearchParams(window.location.search);
+    const planId = params.get('gp');
+    if (!planId) return;
+
+    try {
+        const response = await fetch(`/gear-plans/${encodeURIComponent(planId)}`);
+        const result = await response.json();
+        if (!result.success || !result.plan) {
+            window.notify?.error('Failed to load gear plan', 5000, 'Gear Planner');
+            return;
+        }
+        setGearPlan(result.plan);
+        if (typeof setAppMode === 'function') setAppMode('gearPlanner');
+        window.notify?.success('Gear plan loaded!', 3000, 'Gear Planner');
+    } catch (error) {
+        console.error('[Gear Plan Import]', error);
+        window.notify?.error('Failed to load gear plan: ' + error.message, 5000, 'Gear Planner');
+    }
+}

@@ -1367,6 +1367,20 @@ class ProfileManager {
                 return;
             }
 
+            if (buildData.kind === 'gearPlan') {
+                if (typeof window.setGearPlan === 'function') {
+                    window.setGearPlan(buildData);
+                }
+                if (typeof window.setAppMode === 'function') {
+                    window.setAppMode('gearPlanner');
+                }
+                const modal = document.getElementById('inbox-modal');
+                if (modal) modal.style.display = 'none';
+                this.closeInboxDropdown();
+                notify.success('Gear plan loaded!');
+                return;
+            }
+
             // Check if build is already in new format (has gear/class directly)
             const isNewFormat = buildData.gear || buildData.class || buildData.talents;
             
@@ -1653,6 +1667,46 @@ window.getShamanSavedBuildsForCompare = function getShamanSavedBuildsForCompare(
     return typeof window.profileManager?.getShamanSavedBuildsForCompare === 'function'
         ? window.profileManager.getShamanSavedBuildsForCompare()
         : [];
+};
+
+ProfileManager.prototype.fetchGearPlans = async function fetchGearPlans() {
+    if (!this.user) return [];
+    try {
+        const res = await fetch('/user-gear-plans', { credentials: 'include' });
+        const data = await res.json();
+        return data.success ? (data.gearPlans || []) : [];
+    } catch (e) {
+        console.error('[Profiles] fetchGearPlans:', e);
+        return [];
+    }
+};
+
+ProfileManager.prototype.saveGearPlan = async function saveGearPlan(plan) {
+    if (!this.user) return false;
+    try {
+        const res = await fetch('/user-gear-plans', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ plan }),
+        });
+        const data = await res.json();
+        return !!data.success;
+    } catch (e) {
+        console.error('[Profiles] saveGearPlan:', e);
+        return false;
+    }
+};
+
+ProfileManager.prototype.shareGearPlan = async function shareGearPlan(plan, recipientId, message = '') {
+    const buildDataToShare = { ...plan, profileName: plan.name };
+    const response = await fetch('/share', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recipientId, buildData: buildDataToShare, message }),
+    });
+    return response.json();
 };
 
 // Initialize profile manager when DOM is ready

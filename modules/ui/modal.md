@@ -391,6 +391,18 @@ Each class can only wear certain armor types:
 
 ---
 
+## Loot Source / Instance Filter
+
+Multiselect checkboxes in `#instance-filter-container` (grouped: Dungeons, Raids, World Bosses, Other). Data from `/data/loot/` via `modules/gear/itemSources.js`.
+
+- **OR semantics**: item shown if any source matches a selected instance id
+- **Empty selection**: no instance filter (all items)
+- **`savedFilters.instances`**: persisted with other modal filters
+- **Source subline**: `getPrimarySourceLabel(itemId)` on each modal row (`.modal-item-source`)
+- **Gear planner**: `setItemModalPlayerClassOverride(classId)` for can-equip when picking plan items
+
+---
+
 ## Item Rendering and Tooltips
 
 ### Item List Rendering

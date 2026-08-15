@@ -359,7 +359,7 @@ class NoCacheHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             self._handle_old_domain_redirect()
             return
         # Handle DELETE requests - proxy to bug report server
-        if self.path.startswith('/profiles/') or self.path.startswith('/inbox/'):
+        if self.path.startswith('/profiles/') or self.path.startswith('/inbox/') or self.path.startswith('/user-gear-plans/'):
             br_process = self.get_bug_report_process()
             br_port = self.get_bug_report_port()
             if br_process and br_port and br_process.poll() is None:
@@ -477,7 +477,7 @@ class NoCacheHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             self._handle_old_domain_redirect()
             return
         # Handle auth/profile/share requests - proxy to bug report server (server.js)
-        if self.path == '/bug-report' or self.path.startswith('/profiles') or self.path.startswith('/share'):
+        if self.path == '/bug-report' or self.path.startswith('/profiles') or self.path.startswith('/share') or self.path.startswith('/gear-plans') or self.path.startswith('/user-gear-plans'):
             br_process = self.get_bug_report_process()
             br_port = self.get_bug_report_port()
             if br_process and br_port and br_process.poll() is None:
@@ -642,7 +642,7 @@ class NoCacheHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 return
 
         # Handle user/profiles/inbox routes - proxy to server.js
-        if parsed_path.startswith('/user') or parsed_path.startswith('/profiles') or parsed_path.startswith('/inbox'):
+        if parsed_path.startswith('/user') or parsed_path.startswith('/profiles') or parsed_path.startswith('/inbox') or parsed_path.startswith('/gear-plans') or parsed_path.startswith('/user-gear-plans'):
             br_process = self.get_bug_report_process()
             br_port = self.get_bug_report_port()
             print(f"[API DEBUG] process={br_process}, port={br_port}, poll={br_process.poll() if br_process else 'N/A'}")

@@ -1,5 +1,5 @@
 // Service Worker for IchaCalc
-const CACHE_VERSION = 'v136';
+const CACHE_VERSION = 'v137';
 const CACHE_NAME = `ichacalc-${CACHE_VERSION}`;
 
 // Vite handles JS/CSS caching via content-hashed filenames + immutable Cache-Control headers.
@@ -8,6 +8,21 @@ const urlsToCache = [
     '/',
     '/index.html',
 ];
+
+/** Auth, profile, and API routes must never be intercepted — always hit the network. */
+function shouldBypassServiceWorker(pathname) {
+    if (pathname.startsWith('/auth/')) return true;
+    if (pathname === '/user') return true;
+    if (pathname === '/profiles' || pathname.startsWith('/profiles/')) return true;
+    if (pathname.startsWith('/inbox')) return true;
+    if (pathname === '/share' || pathname.startsWith('/share/')) return true;
+    if (pathname.startsWith('/api/')) return true;
+    if (pathname.startsWith('/builds')) return true;
+    if (pathname.startsWith('/gear-plans')) return true;
+    if (pathname.startsWith('/user-gear-plans')) return true;
+    if (pathname.startsWith('/bug-report')) return true;
+    return false;
+}
 
 // Install event - cache HTML shell only
 self.addEventListener('install', event => {
@@ -47,14 +62,13 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
     const url = new URL(event.request.url);
 
-    // Skip service worker for API routes - always fetch from network
-    // GET /profiles (list) has no trailing slash — must bypass cache-first static handler.
-    if (url.pathname.startsWith('/auth/') ||
-        url.pathname === '/user' ||
-        url.pathname === '/profiles' ||
-        url.pathname.startsWith('/profiles/') ||
-        url.pathname.startsWith('/inbox') ||
-        url.pathname.startsWith('/share')) {
+    // Same-origin only; cross-origin requests are not handled by this SW.
+    if (url.origin !== self.location.origin) {
+        return;
+    }
+
+    // Never cache auth/session/API routes (cookies are httpOnly; SW must not serve stale responses).
+    if (shouldBypassServiceWorker(url.pathname)) {
         return;
     }
 
@@ -67,6 +81,10 @@ self.addEventListener('fetch', event => {
 
     // Skip service worker for item JSON files — large, pre-compressed, no benefit from SW cache
     if (url.pathname.startsWith('/data/items/')) {
+        return;
+    }
+
+    if (url.pathname.startsWith('/data/loot/')) {
         return;
     }
 

@@ -1,0 +1,362 @@
+/* Gear Planner — DPS-sim themed panels, gold accents */
+
+body[data-app-mode="gearPlanner"] .app-scroll-layout {
+    display: none !important;
+}
+
+body[data-app-mode="character"] #gear-planner-shell {
+    display: none !important;
+}
+
+#gear-planner-shell {
+    display: flex;
+    gap: 12px;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 12px 16px 32px;
+}
+
+.gp-class-sidebar {
+    flex: 0 0 auto;
+    align-self: flex-start;
+}
+
+.gp-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.gp-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+    background: linear-gradient(145deg, #1a1a1f 0%, #121218 100%);
+    border: 1px solid #3d3520;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.gp-header h2 {
+    margin: 0;
+    color: var(--accent-color, #ffd700);
+    font-size: 1.15rem;
+    flex: 1 1 140px;
+}
+
+.gp-plan-name-input {
+    flex: 1 1 200px;
+    max-width: 320px;
+    padding: 8px 12px;
+    background: var(--input-bg, #232328);
+    border: 1px solid #4a4028;
+    border-radius: 6px;
+    color: var(--text-color);
+}
+
+.gp-header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.gp-btn {
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: 1px solid #5a4a20;
+    background: linear-gradient(180deg, #2a2618 0%, #1e1a10 100%);
+    color: #f0e6c8;
+    cursor: pointer;
+    font-size: 0.88rem;
+}
+
+.gp-btn:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.gp-btn-primary {
+    background: linear-gradient(180deg, #4a3d10 0%, #2a2208 100%);
+    border-color: #c9a227;
+}
+
+.gp-layout {
+    display: grid;
+    grid-template-columns: 72px 1fr 72px;
+    gap: 12px;
+    min-height: 480px;
+}
+
+.gp-slot-column {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.gp-slot-icon {
+    cursor: pointer;
+    text-align: center;
+}
+
+.gp-slot-icon-frame {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto;
+    border: 2px solid #4a4028;
+    border-radius: 6px;
+    background: #1c1c22;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.gp-slot-icon-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gp-slot-empty {
+    color: #666;
+    font-size: 1.4rem;
+}
+
+.gp-slot-label {
+    font-size: 0.65rem;
+    color: #888;
+    text-transform: capitalize;
+}
+
+.gp-center-panel {
+    background: rgba(22, 22, 28, 0.95);
+    border: 1px solid #35353d;
+    border-radius: 10px;
+    padding: 12px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.gp-slot-detail {
+    padding: 10px 0;
+    border-bottom: 1px solid #2a2a32;
+}
+
+.gp-slot-detail:last-child {
+    border-bottom: none;
+}
+
+.gp-slot-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.gp-slot-detail-header h4 {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #c9a227;
+    text-transform: capitalize;
+}
+
+.gp-toggle-alts {
+    background: none;
+    border: none;
+    color: #8a8a9a;
+    cursor: pointer;
+    font-size: 0.78rem;
+}
+
+.gp-primary-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.gp-pick-primary {
+    flex: 1;
+    text-align: left;
+    padding: 8px 10px;
+    background: #232328;
+    border: 1px dashed #4a4028;
+    border-radius: 6px;
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+.gp-clear-primary,
+.gp-remove-alt {
+    background: #2a1a1a;
+    border: 1px solid #5a3030;
+    color: #f88;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+}
+
+.gp-alts-panel {
+    margin-top: 8px;
+    padding-left: 8px;
+    border-left: 2px solid #3d3520;
+}
+
+.gp-alt-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    font-size: 0.85rem;
+}
+
+.gp-alt-empty {
+    color: #666;
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+}
+
+.gp-add-alt {
+    margin-top: 6px;
+    background: none;
+    border: 1px dashed #4a4028;
+    color: #c9a227;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.gp-quick-sim-wrap {
+    margin-top: 8px;
+    padding: 10px;
+    background: #1a1810;
+    border: 1px solid #3d3520;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    color: #b8b0a0;
+}
+
+.gp-quick-sim-hint {
+    margin: 0 0 8px;
+    line-height: 1.4;
+}
+
+#gp-quick-sim-result {
+    margin-top: 6px;
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.gp-load-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.gp-load-modal-card {
+    background: var(--card-bg);
+    border: 1px solid #4a4028;
+    border-radius: 10px;
+    padding: 20px;
+    min-width: 320px;
+    max-width: 90vw;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.gp-load-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+    margin: 4px 0;
+    background: #232328;
+    border: 1px solid #35353d;
+    border-radius: 6px;
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+.gp-load-meta {
+    color: #888;
+    font-size: 0.8rem;
+    margin-left: 8px;
+}
+
+/* Instance filter in item modal */
+.item-picker-instance-filter {
+    grid-column: 1 / -1;
+    margin-top: 4px;
+}
+
+.instance-filter-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 8px;
+    max-height: 160px;
+    overflow-y: auto;
+    padding: 8px;
+    background: #1a1a1f;
+    border: 1px solid #35353d;
+    border-radius: 6px;
+}
+
+.instance-filter-group h5 {
+    margin: 0 0 4px;
+    font-size: 0.72rem;
+    color: #c9a227;
+    text-transform: uppercase;
+}
+
+.instance-filter-group label {
+    display: block;
+    font-size: 0.78rem;
+    cursor: pointer;
+    padding: 1px 0;
+}
+
+.modal-item-source {
+    display: block;
+    font-size: 0.72rem;
+    color: #888;
+    margin-top: 2px;
+}
+
+/* Mode toggle in top nav */
+.planner-mode-toggle {
+    display: flex;
+    gap: 4px;
+    margin-right: 8px;
+}
+
+.planner-mode-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--input-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.planner-mode-btn.active {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.25);
+}
+
+.planner-mode-btn svg {
+    width: 20px;
+    height: 20px;
+}

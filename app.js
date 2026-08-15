@@ -14,13 +14,15 @@ import { createItemTooltipHTML, createEnchantTooltipHTML, setGetEquippedGear } f
 import { getSetBonuses } from './modules/gear/setBonuses.js';
 import { getStatSearchTerms, parseStatsFromTooltip, KEY_MAP, getItemType, filterEnchantsByItemType, getAttackPowerBonusVsCreatureType, getSpellDamageHealingBonusVsCreatureType, AP_VS_DISPLAY_ORDER, DMG_HEALING_VS_DISPLAY_ORDER, getApVsRowLabel, getDmgHealingVsRowLabel } from './modules/character/stats.js';
 import { initializeGearCompare, setComparisonItem, getCurrentCompareSlot, setEHPCalculator, setGetCurrentClass, setCharacterDataCallbacks } from './modules/gear/gearCompare.js';
-import { filterAndRenderItems, filterAndRenderEnchants, getSelectedQualities, getCurrentFilters, openItemModal as openItemModalFromModule, openEnchantModal as openEnchantModalFromModule, repositionItemPickerIfOpen } from './modules/ui/modal.js';
+import { filterAndRenderItems, filterAndRenderEnchants, getSelectedQualities, getCurrentFilters, openItemModal as openItemModalFromModule, openEnchantModal as openEnchantModalFromModule, repositionItemPickerIfOpen, setItemModalPlayerClassOverride } from './modules/ui/modal.js';
 import { initUiScale } from './modules/ui/uiScale.js';
 import { positionItemTooltipAtCursor } from './modules/ui/itemTooltipPosition.js';
 import { itemLoader } from './modules/gear/itemLoader.js';
 import { importFromArmoryAPI as importFromArmoryModule, updateCharacterStatusBar, initializeStatusBar, updateStatusBarValues, setImportedState as setImportedStateArmory, RACE_TO_FACTION, FACTION_ICONS } from './modules/armory/armory.js';
 import { displayStatWeightFormula } from './modules/statWeightFormulas.js';
-import { exportBuildToURL as exportBuildModule, importBuildFromURL as importBuildModule } from './modules/armory/buildManager.js';
+import { exportBuildToURL as exportBuildModule, importBuildFromURL as importBuildModule, exportGearPlanToURL as exportGearPlanModule, importGearPlanFromURL as importGearPlanModule } from './modules/armory/buildManager.js';
+import { initGearPlannerView, handleGearPlanItemSelected, setGearPlan, getCurrentGearPlan, renderGearPlanner } from './modules/gear/gearPlannerView.js';
+import { ensureItemSourcesLoaded } from './modules/gear/itemSources.js';
 import { runTankSimulation, getBossDatabase, getBossById } from './modules/tank/tankSimulator.js';
 import { raidDefinitions, getAvailableRaids, getRaidBosses } from './modules/tank/raidDefinitions.js';
 import { initBugReport, initBugReportsViewer } from './modules/ui/bugReport.js';
@@ -157,6 +159,49 @@ export function getCurrentRace() {
     const id = bar?.dataset?.selectedRace;
     if (id && raceIconData[id]) return id;
     return document.querySelector('.race-icon.active')?.dataset.raceId || 'human';
+}
+
+let appMode = 'character';
+
+export function setAppMode(mode) {
+    const next = mode === 'gearPlanner' ? 'gearPlanner' : 'character';
+    if (next === appMode) return;
+    appMode = next;
+    document.body.dataset.appMode = next;
+    document.getElementById('mode-character-btn')?.classList.toggle('active', next === 'character');
+    document.getElementById('mode-gear-planner-btn')?.classList.toggle('active', next === 'gearPlanner');
+    if (next === 'gearPlanner') {
+        renderGearPlanner();
+    }
+}
+
+window.setAppMode = setAppMode;
+window.setGearPlan = setGearPlan;
+
+export function getAppMode() {
+    return appMode;
+}
+
+async function openItemModalForGearPlan(slotId, classId) {
+    setItemModalPlayerClassOverride(classId);
+    let items = await getItemsForSlot(slotId);
+    if (slotId === 'mainhand') {
+        items = items.filter(item => {
+            if (!item.tooltip_lines_raw) return true;
+            return !item.tooltip_lines_raw.some(line => {
+                const lowerLine = line.toLowerCase();
+                return lowerLine === 'off hand' || lowerLine.includes('held in off-hand') || lowerLine === 'shield';
+            });
+        });
+    }
+    elements.modal.dataset.compareMode = 'false';
+    elements.modal.dataset.gearPlanPick = 'true';
+    const anchor = document.getElementById(`gp_icon_${slotId}`) || document.querySelector(`[data-slot="${slotId}"]`);
+    openItemModalFromModule(slotId, items, elements, anchor);
+}
+
+async function exportGearPlanToURL(plan) {
+    await exportGearPlanModule({ plan });
 }
 
 // Helper functions for profile management
@@ -795,7 +840,9 @@ function closeModal() {
         elements.modal.classList.remove('item-picker--open');
         elements.modal.style.display = 'none';
         elements.modal.setAttribute('aria-hidden', 'true');
+        elements.modal.dataset.gearPlanPick = 'false';
     }
+    setItemModalPlayerClassOverride(null);
     if (elements.enchantModal) elements.enchantModal.style.display = 'none';
 }
 
@@ -4612,7 +4659,12 @@ async function init() {
             const isDPSBundleMode = elements.modal.dataset.dpsBundleMode === 'true';
             const isDPSCompareMode = elements.modal.dataset.dpsCompareMode === 'true';
             const isCompareMode = elements.modal.dataset.compareMode === 'true';
-            if (isDPSBundleMode) {
+            const isGearPlanPick = elements.modal.dataset.gearPlanPick === 'true';
+            if (isGearPlanPick) {
+                const item = getItemById(modalItem.dataset.itemId);
+                handleGearPlanItemSelected(item);
+                closeModal();
+            } else if (isDPSBundleMode) {
                 const item = getItemById(modalItem.dataset.itemId);
                 const bundleSlot = elements.modal.dataset.dpsBundleSlot;
                 addDPSBundleItem(item, bundleSlot);
@@ -4830,6 +4882,27 @@ async function init() {
     console.log('[INIT] DOM and UI setup complete');
     initStatus.domReady = true;
     initStatus.uiReady = true;
+
+    document.getElementById('mode-character-btn')?.addEventListener('click', () => setAppMode('character'));
+    document.getElementById('mode-gear-planner-btn')?.addEventListener('click', () => setAppMode('gearPlanner'));
+
+    ensureItemSourcesLoaded().catch(() => {});
+
+    initGearPlannerView({
+        setAppMode,
+        getItemById,
+        openItemModalForGearPlan,
+        exportGearPlanToURL,
+    });
+
+    const gpParam = new URLSearchParams(window.location.search).get('gp');
+    if (gpParam) {
+        await importGearPlanModule({
+            setGearPlan,
+            setAppMode,
+        });
+    }
+
     checkInitComplete();
 
     // Final calculations
