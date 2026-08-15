@@ -59,7 +59,20 @@ If you prefer to deploy manually:
 
 ### Option B: Using Command Line
 ```bash
-# Transfer files
+# Production: build dist/ first (server.py serves dist/ when present), then deploy
+npm run build
+bash scripts/deploy_to_pi.sh
+
+# Or manually:
+scp -r dist/* pihole@pihole:/opt/stacks/IchaCalc/dist/
+ssh pihole@pihole "sudo systemctl restart ehp-calculator"
+```
+
+**Important:** `server.py` serves static files from `dist/` when `dist/index.html` exists. Copying only source files to the Pi root does **not** update the live site — you must run `npm run build` and sync `dist/`.
+
+### Option C: Legacy manual steps
+```bash
+# Transfer files (source only — NOT sufficient for production if dist/ exists)
 scp -r /c/dev/IchaCalc/* pi@192.168.1.100:/var/www/IchaCalc/
 
 # SSH and restart

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "deploy:pi": "bash scripts/deploy_to_pi.sh",
     "gen:dps-boss-stats": "python scripts/export-dps-raid-boss-stats.py",
     "gen:dps-boss-stats:defaults": "node scripts/generate-dps-raid-boss-stats.mjs",
     "gen:dps-boss-icons:zam": "python scripts/apply-zam-ej-icons-to-dps-boss-json.py",

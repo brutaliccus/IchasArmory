@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Deploy IchaCalc to Raspberry Pi (production serves Vite dist/, not source root).
+set -euo pipefail
+
+PI_HOST="${PI_HOST:-pihole@pihole}"
+PI_PATH="${PI_PATH:-/opt/stacks/IchaCalc}"
+SERVICE="${SERVICE:-ehp-calculator}"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+
+echo "==> Building production bundle (dist/)"
+cd "$ROOT"
+npm run build
+
+echo "==> Syncing dist/ to ${PI_HOST}:${PI_PATH}/dist/"
+ssh "$PI_HOST" "mkdir -p '${PI_PATH}/dist'"
+if command -v rsync >/dev/null 2>&1; then
+  rsync -avz --delete "${ROOT}/dist/" "${PI_HOST}:${PI_PATH}/dist/"
+else
+  scp -r "${ROOT}/dist/"* "${PI_HOST}:${PI_PATH}/dist/"
+fi
+
+echo "==> Syncing server/runtime files"
+for f in server.py server.js armory_proxy.py profiles.js requirements.txt; do
+  if [[ -f "${ROOT}/${f}" ]]; then
+    scp "${ROOT}/${f}" "${PI_HOST}:${PI_PATH}/"
+  fi
+done
+
+echo "==> Restarting ${SERVICE}"
+ssh "$PI_HOST" "sudo systemctl restart ${SERVICE} && sleep 2 && sudo systemctl is-active ${SERVICE}"
+
+echo "==> Verifying live bundle contains UI scale markup"
+ssh "$PI_HOST" "curl -fsS http://127.0.0.1:6100/index.html | grep -q ui-scale-settings && echo OK: ui-scale-settings present in served index.html"
+
+echo "Deploy complete."
