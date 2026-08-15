@@ -1151,16 +1151,22 @@ function getRightGearIconsLeftEdge() {
     return rr.width > 0 ? rr.left : null;
 }
 
+function isGearPlannerAppMode() {
+    return document.body?.dataset?.appMode === 'gearPlanner';
+}
+
 /**
  * Largest allowed `left` for the panel so it does not cover the right gear column
  * or spill past the viewport (panel width `w` in px).
  */
 function getItemPickerMaxLeft(panelWidth, vw) {
     let maxL = vw - panelWidth - ITEM_PICKER_VIEWPORT_RIGHT;
-    const iconLeft = getRightGearIconsLeftEdge();
-    if (iconLeft != null && iconLeft > 0) {
-        const capFromGear = iconLeft - ITEM_PICKER_RIGHT_GEAR_GAP - panelWidth;
-        maxL = Math.min(maxL, capFromGear);
+    if (!isGearPlannerAppMode()) {
+        const iconLeft = getRightGearIconsLeftEdge();
+        if (iconLeft != null && iconLeft > 0) {
+            const capFromGear = iconLeft - ITEM_PICKER_RIGHT_GEAR_GAP - panelWidth;
+            maxL = Math.min(maxL, capFromGear);
+        }
     }
     return Math.max(ITEM_PICKER_MARGIN_LEFT, maxL);
 }
@@ -1184,6 +1190,23 @@ function itemPickerPreferOpenToRight(anchorEl) {
  * (right of left-column slots, left of right-column slots), clamped into the viewport.
  * @param {HTMLElement|null} anchorEl - e.g. #icon_frame_head
  */
+function centerItemPickerPanel(panel, w, h, vw, vh) {
+    let left = Math.round((vw - w) / 2);
+    const maxL = getItemPickerMaxLeft(w, vw);
+    left = Math.max(ITEM_PICKER_MARGIN_LEFT, Math.min(left, maxL));
+    let top = Math.round((vh - h) / 2);
+    if (top + h > vh - ITEM_PICKER_MARGIN_BOTTOM) {
+        top = vh - h - ITEM_PICKER_MARGIN_BOTTOM;
+    }
+    if (top < getItemPickerMarginTop()) {
+        top = getItemPickerMarginTop();
+    }
+    panel.style.left = `${left}px`;
+    panel.style.top = `${top}px`;
+    panel.style.transformOrigin = '50% 50%';
+    panel.dataset.itemPickerSide = 'center';
+}
+
 export function positionItemPickerPanel(anchorEl) {
     const panel = document.getElementById('item-modal-panel');
     const root = document.getElementById('item-modal');
@@ -1197,8 +1220,12 @@ export function positionItemPickerPanel(anchorEl) {
 
     const GAP = 12;
 
-    if (anchorEl && typeof anchorEl.getBoundingClientRect === 'function') {
-        const ar = anchorEl.getBoundingClientRect();
+    if (isGearPlannerAppMode() || !anchorEl || typeof anchorEl.getBoundingClientRect !== 'function') {
+        centerItemPickerPanel(panel, w, h, vw, vh);
+        return;
+    }
+
+    const ar = anchorEl.getBoundingClientRect();
         const preferRight = itemPickerPreferOpenToRight(anchorEl);
 
         /** Panel east of slot (opens to the right); inner edge = panel left */
@@ -1277,28 +1304,16 @@ export function positionItemPickerPanel(anchorEl) {
         panel.style.top = `${Math.round(top)}px`;
         panel.dataset.itemPickerSide = side;
         panel.style.transformOrigin = side === 'east' ? '0 0' : '100% 0';
-    } else {
-        let left = Math.round((vw - w) / 2);
-        const maxL = getItemPickerMaxLeft(w, vw);
-        left = Math.max(ITEM_PICKER_MARGIN_LEFT, Math.min(left, maxL));
-        let top = Math.round((vh - h) / 2);
-        if (top + h > vh - ITEM_PICKER_MARGIN_BOTTOM) {
-            top = vh - h - ITEM_PICKER_MARGIN_BOTTOM;
-        }
-        if (top < getItemPickerMarginTop()) {
-            top = getItemPickerMarginTop();
-        }
-        panel.style.left = `${left}px`;
-        panel.style.top = `${top}px`;
-        panel.style.transformOrigin = '50% 50%';
-        panel.dataset.itemPickerSide = 'center';
-    }
 }
 
 /** Reposition when window resizes while picker is open */
 export function repositionItemPickerIfOpen() {
     const root = document.getElementById('item-modal');
     if (!root || root.style.display === 'none') return;
+    if (isGearPlannerAppMode()) {
+        positionItemPickerPanel(null);
+        return;
+    }
     const slotId = root.dataset.anchorSlotId;
     const anchor = slotId ? document.getElementById(`icon_frame_${slotId}`) : null;
     positionItemPickerPanel(anchor || null);
@@ -1488,7 +1503,9 @@ export function openItemModal(slotId, items, elements, anchorEl = null) {
         panel.classList.remove('item-picker-panel--visible');
     }
 
-    const anchor = anchorEl || document.getElementById(`icon_frame_${slotId}`);
+    const anchor = isGearPlannerAppMode()
+        ? null
+        : (anchorEl || document.getElementById(`icon_frame_${slotId}`));
     requestAnimationFrame(() => {
         positionItemPickerPanel(anchor);
         requestAnimationFrame(() => {

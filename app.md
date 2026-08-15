@@ -177,6 +177,10 @@ Returns a complete build object:
 - Sets `data-compare-mode` attribute
 - Delegates to `openItemModalFromModule()` from `modal.js`
 
+#### `openItemModalForGearPlan(slotId, classId)`
+- Same item fetch/filter as character planner, plus class override and `data-gear-plan-pick`
+- Passes **no slot anchor** so `modal.js` centers the picker on Gear Planner
+
 #### `openEnchantModal(slotId)` (Lines 356-359)
 - Fetches enchants from `enchantDatabase[slotId]`
 - Delegates to `openEnchantModalFromModule()` from `modal.js`

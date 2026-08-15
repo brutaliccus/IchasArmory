@@ -196,8 +196,7 @@ async function openItemModalForGearPlan(slotId, classId) {
     }
     elements.modal.dataset.compareMode = 'false';
     elements.modal.dataset.gearPlanPick = 'true';
-    const anchor = document.getElementById(`gp_icon_${slotId}`) || document.querySelector(`[data-slot="${slotId}"]`);
-    openItemModalFromModule(slotId, items, elements, anchor);
+    openItemModalFromModule(slotId, items, elements, null);
 }
 
 async function exportGearPlanToURL(plan) {
