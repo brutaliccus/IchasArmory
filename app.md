@@ -609,7 +609,7 @@ initStatus = {
    - Includes gear slots, modals, inputs, buttons, panels
 
 2. **Initialize item lazy-loader** (Lines 3425-3430)
-   - `itemLoader.init()` → marks `initStatus.lazyLoad = true`
+   - `itemLoader.loadAll()` → background slot JSON preload (does not gate the loading screen)
 
 3. **Generate UI elements** (Lines 3432-3441)
    - `generateClassIcons()`
@@ -981,7 +981,7 @@ const characterData = {
 
 ### Lazy Loading
 - Items are lazy-loaded per slot (reduces initial load time)
-- `itemLoader.init()` preloads item database in background
+- `itemLoader.loadAll()` preloads all slot JSON from `/data/items/` in the background after UI init (gzip, memory cache)
 
 ### Calculation Caching
 - `window.currentCalculatorTotals` caches last calculation result

@@ -4885,7 +4885,9 @@ async function init() {
     document.getElementById('mode-character-btn')?.addEventListener('click', () => setAppMode('character'));
     document.getElementById('mode-gear-planner-btn')?.addEventListener('click', () => setAppMode('gearPlanner'));
 
+    // Local /data/loot + /data/items (gzip from same origin). Do not block the loading screen.
     ensureItemSourcesLoaded().catch(() => {});
+    itemLoader.loadAll().catch(() => {});
 
     initGearPlannerView({
         setAppMode,
@@ -4914,7 +4916,6 @@ async function init() {
     }
     updateAllCalculations();
 
-    // Item JSONs load on demand when the item modal is opened — no preload needed.
     initStatus.gearLoaded = true;
     checkInitComplete();
 }

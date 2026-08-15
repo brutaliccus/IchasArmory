@@ -1,6 +1,6 @@
 # itemSources.js
 
-Lazy-loads TurtleAtlasLoot-derived loot data from `/data/loot/` for item modal instance filtering and source sublines.
+Lazy-loads TurtleAtlasLoot-derived loot data from **local** `/data/loot/` (same origin, gzip via `server.js`) for item modal instance filtering and source sublines. Fetches use `cache: 'force-cache'` and results stay in module memory. `app.js` calls `ensureItemSourcesLoaded()` at init so the picker is not blocked on first open. No GitHub/Atlas clone at runtime.
 
 ## Data files
 

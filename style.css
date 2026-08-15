@@ -1867,6 +1867,15 @@ input, select {
     min-height: 40px;
     box-sizing: border-box;
 }
+.item-picker-dd-group {
+    padding: 6px 8px 2px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    opacity: 0.65;
+    pointer-events: none;
+}
 .item-picker-toolbar {
     display: flex;
     flex-wrap: wrap;

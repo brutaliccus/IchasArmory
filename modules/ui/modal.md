@@ -77,7 +77,8 @@ Applies intelligent filtering based on equipment slot rules.
 - **Mainhand:** One-Handed, Two-Handed, plus melee subtypes (Axe, Sword, Mace, Dagger, Fist Weapon, Polearm, Staff, Fishing Pole) — no Shield, no ranged, no relic rows.
 - **Offhand:** handedness + melee + Shield; no ranged, no relic rows.
 - **Ranged:** depends on class via `CLASS_RANGED_TYPE`: Hunter/Warrior/Rogue → Bow, Crossbow, Gun, Thrown; Priest/Mage/Warlock → Wand; Shaman → Totem; Druid → Idol + Wand; Paladin → Libram. Hidden rows are unchecked and removed from `savedFilters.stats`.
-- **Default:** all **visible** weapon checkboxes are checked so the list is not empty. Armor-type leftovers are stripped when opening a weapon slot (and weapon leftovers when opening armor).
+- **Default:** no weapon checkboxes selected means **no weapon type/handedness filter** (show all items eligible for the slot). Do **not** auto-check every visible option. A legacy saved state with **all** visible options checked is treated as none selected.
+- **Type vs handedness:** Axe / Sword / Mace / etc. match **both** one-hand and two-hand of that type. One-Handed / Two-Handed / Shield only apply when those boxes are checked. Sword + One-Handed → 1H swords only. Dropdown groups: Handedness then Type. Armor-type leftovers are stripped when opening a weapon slot (and weapon leftovers when opening armor).
 - **Match logic:** handedness is OR among selected One-Handed/Two-Handed; subtype is OR among selected types; the two groups AND together. If every visible handedness (or every visible subtype) is selected, that group is unrestricted. Checking only **Dagger** matches `Dagger` and `One-Hand, Dagger`. Checking only **Two-Handed** shows all two-hand weapons. Real stats still AND. Armor types stay OR among Plate/Mail/Leather/Cloth and are not affected.
 
 **Other Slots:**

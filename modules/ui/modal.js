@@ -175,25 +175,56 @@ function tooltipHasHandedness(item, handKey) {
     return false;
 }
 
+function itemHasWeaponSubtype(item, st) {
+    const { subtypes } = parseItemTypeTokens(item);
+    if (subtypes.has(st)) return true;
+    for (const token of subtypes) {
+        if (token.endsWith(` ${st}`) || token.endsWith(`-${st}`)) return true;
+    }
+    for (const line of item?.tooltip_lines_raw || []) {
+        const parts = String(line).split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+        for (const part of parts) {
+            if (part === st || part.endsWith(` ${st}`) || part.endsWith(`-${st}`)) return true;
+        }
+    }
+    return false;
+}
+
 function itemMatchesWeaponTypeFilters(item, handFilters, subtypeFilters) {
     if ((!handFilters || handFilters.length === 0) && (!subtypeFilters || subtypeFilters.length === 0)) {
         return true;
     }
-    const { subtypes } = parseItemTypeTokens(item);
-    const blob = (item?.tooltip_lines_raw || []).join('\n').toLowerCase();
 
     if (handFilters.length > 0) {
-        const handOk = handFilters.some(h => tooltipHasHandedness(item, h));
+        const handOk = handFilters.some(h => {
+            if (h === 'shield') return itemHasWeaponSubtype(item, 'shield');
+            return tooltipHasHandedness(item, h);
+        });
         if (!handOk) return false;
     }
     if (subtypeFilters.length > 0) {
-        const subOk = subtypeFilters.some(st => {
-            if (subtypes.has(st)) return true;
-            return blob.includes(st);
-        });
+        const subOk = subtypeFilters.some(st => itemHasWeaponSubtype(item, st));
         if (!subOk) return false;
     }
     return true;
+}
+
+function titleCaseWeaponPart(s) {
+    return String(s || '').split(/[\s-]+/).filter(Boolean).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+}
+
+/** Short list label: "Two-Hand • Sword" from separate tooltip lines. */
+function formatWeaponTypeLabel(item) {
+    const { hands, subtypes } = parseItemTypeTokens(item);
+    let hand = '';
+    if (hands.has('two-handed')) hand = 'Two-Hand';
+    else if (hands.has('one-handed')) hand = 'One-Hand';
+    const known = [...subtypes].filter(s =>
+        WEAPON_FILTER_SUBTYPE_SET.has(s) || s === 'held in off-hand' || s === 'off hand'
+    );
+    const sub = known[0] ? titleCaseWeaponPart(known[0]) : '';
+    if (hand && sub) return `${hand} • ${sub}`;
+    return hand || sub;
 }
 
 /**
@@ -281,16 +312,25 @@ function syncWeaponTypeFilterUI(slotId, playerClass) {
         }
     });
 
-    const anyVisibleSelected = savedFilters.stats.some(s => visibleLow.has(String(s).toLowerCase()));
-    if (!anyVisibleSelected) {
+    const selectedVisible = savedFilters.stats.filter(s => visibleLow.has(String(s).toLowerCase()));
+    // Legacy default was "all visible checked" (= no filter). Treat that as none selected.
+    if (visible.size > 0 && selectedVisible.length === visible.size) {
         menu.querySelectorAll('input[name="weapon-type-filter"]').forEach(cb => {
             if (!visible.has(cb.value)) return;
-            cb.checked = true;
-            if (!savedFilters.stats.some(s => s.toLowerCase() === cb.value.toLowerCase())) {
-                savedFilters.stats.push(cb.value);
-            }
+            cb.checked = false;
         });
+        savedFilters.stats = savedFilters.stats.filter(s => !visibleLow.has(String(s).toLowerCase()));
     }
+
+    menu.querySelectorAll('.item-picker-dd-group').forEach(group => {
+        let el = group.nextElementSibling;
+        let any = false;
+        while (el && !el.classList.contains('item-picker-dd-group')) {
+            if (el.matches('label') && el.style.display !== 'none') any = true;
+            el = el.nextElementSibling;
+        }
+        group.style.display = any ? '' : 'none';
+    });
 }
 
 /**
@@ -439,7 +479,7 @@ function filterItemsBySlot(items, slot) {
  * @param {HTMLElement} listElement - The DOM element to render items into
  */
 export function filterAndRenderItems(allItems, filters, listElement) {
-    console.log('filterAndRenderItems called with:', {
+    const _filterDebug = {
         itemCount: allItems?.length,
         filters,
         listElement
@@ -529,11 +569,14 @@ export function filterAndRenderItems(allItems, filters, listElement) {
         const visibleWeapon = filters.slot
             ? getVisibleWeaponFilterValues(filters.slot, getPlayerClassForItemFilters())
             : null;
-        let handFilters = selectedWeapon.filter(s => WEAPON_FILTER_HAND_SET.has(s));
-        let subtypeFilters = selectedWeapon.filter(s => WEAPON_FILTER_SUBTYPE_SET.has(s));
+        let handFilters = selectedWeapon.filter(s => WEAPON_FILTER_HAND_SET.has(s) || s === 'shield');
+        let subtypeFilters = selectedWeapon.filter(s => WEAPON_FILTER_SUBTYPE_SET.has(s) && s !== 'shield');
         if (visibleWeapon) {
-            const visHands = [...WEAPON_FILTER_HANDS].filter(v => visibleWeapon.has(v)).map(v => v.toLowerCase());
-            const visSubs = [...visibleWeapon].filter(v => WEAPON_FILTER_SUBTYPE_SET.has(v.toLowerCase())).map(v => v.toLowerCase());
+            const visHands = [...WEAPON_FILTER_HANDS, 'Shield'].filter(v => visibleWeapon.has(v)).map(v => v.toLowerCase());
+            const visSubs = [...visibleWeapon].filter(v => {
+                const low = v.toLowerCase();
+                return WEAPON_FILTER_SUBTYPE_SET.has(low) && low !== 'shield';
+            }).map(v => v.toLowerCase());
             if (visHands.length && visHands.every(h => handFilters.includes(h))) handFilters = [];
             if (visSubs.length && visSubs.every(s => subtypeFilters.includes(s))) subtypeFilters = [];
         }
@@ -723,6 +766,9 @@ function extractStatPreview(item, selectedStats) {
 
     selectedStats.forEach(statFilter => {
         const statLower = statFilter.toLowerCase();
+        if (WEAPON_FILTER_HAND_SET.has(statLower) || WEAPON_FILTER_SUBTYPE_SET.has(statLower) || ARMOR_TYPE_SET.has(statLower)) {
+            return;
+        }
         const searchTerms = getStatSearchTerms(statLower);
         const allTerms = [statLower, ...searchTerms];
 
@@ -795,6 +841,14 @@ function renderItems(items, listElement) {
         }
 
         nameContainer.appendChild(nameSpan);
+
+        const typeLabel = formatWeaponTypeLabel(item);
+        if (typeLabel) {
+            const typeSpan = document.createElement('span');
+            typeSpan.className = 'modal-item-source';
+            typeSpan.textContent = typeLabel;
+            nameContainer.appendChild(typeSpan);
+        }
 
         const sourceLabel = getPrimarySourceLabel(item.id);
         if (sourceLabel) {

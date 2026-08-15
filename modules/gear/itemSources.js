@@ -6,7 +6,7 @@ let instancesIndex = null;
 let sourcesByItemId = null;
 
 async function fetchJson(url) {
-    const res = await fetch(url);
+    const res = await fetch(url, { cache: 'force-cache' });
     if (!res.ok) throw new Error(`Failed to load ${url}: ${res.status}`);
     return res.json();
 }

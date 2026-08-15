@@ -26,17 +26,14 @@ class ItemLoader {
 
         // Start loading
         console.log(`[ItemLoader] Loading slot: ${slotName}`);
-        this.loading[slotName] = fetch(`/data/items/${slotName}.json`)
+        this.loading[slotName] = fetch(`/data/items/${slotName}.json`, { cache: 'force-cache' })
             .then(response => {
-                console.log(`[ItemLoader] Fetch response for ${slotName}:`, response.status);
                 if (!response.ok) {
                     throw new Error(`Failed to load items for slot: ${slotName}, status: ${response.status}`);
                 }
                 return response.json();
             })
             .then(items => {
-                console.log(`[ItemLoader] Loaded ${items.length} items for ${slotName}`);
-                // Cache the items for this slot
                 this.cache[slotName] = items;
 
                 // Also add to itemsById index and tag with slot
