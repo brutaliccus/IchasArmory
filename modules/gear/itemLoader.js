@@ -25,7 +25,6 @@ class ItemLoader {
         }
 
         // Start loading
-        console.log(`[ItemLoader] Loading slot: ${slotName}`);
         this.loading[slotName] = fetch(`/data/items/${slotName}.json`, { cache: 'force-cache' })
             .then(response => {
                 if (!response.ok) {
@@ -53,9 +52,6 @@ class ItemLoader {
                     }
                 }
 
-                console.log(`[ItemLoader] Total items in index: ${Object.keys(this.itemsById).length}`);
-
-                // Clean up loading tracker
                 delete this.loading[slotName];
 
                 return items;
@@ -90,9 +86,40 @@ class ItemLoader {
             'trinket1', 'trinket2', 'mainhand', 'offhand', 'ranged'
         ];
 
-        console.log('Preloading all item slots...');
         await Promise.all(slots.map(slot => this.loadSlot(slot)));
-        console.log('All item slots loaded!');
+    }
+
+    /**
+     * Warm slot JSON in idle time so the first item-picker open is instant.
+     * Does not block app init.
+     */
+    scheduleIdlePreload() {
+        if (this._idlePreloadStarted) return;
+        this._idlePreloadStarted = true;
+        const slots = [
+            'mainhand', 'offhand', 'head', 'chest', 'legs', 'shoulder',
+            'hands', 'feet', 'waist', 'wrist', 'back', 'neck',
+            'ring1', 'trinket1', 'ranged',
+        ];
+        let i = 0;
+        const run = (deadline) => {
+            while (i < slots.length && (!deadline || deadline.timeRemaining() > 8 || deadline.didTimeout)) {
+                this.loadSlot(slots[i++]);
+                if (deadline && !deadline.didTimeout && deadline.timeRemaining() < 8) break;
+            }
+            if (i < slots.length) {
+                if (typeof requestIdleCallback === 'function') {
+                    requestIdleCallback(run, { timeout: 1500 });
+                } else {
+                    setTimeout(() => run({ timeRemaining: () => 50, didTimeout: true }), 50);
+                }
+            }
+        };
+        if (typeof requestIdleCallback === 'function') {
+            requestIdleCallback(run, { timeout: 800 });
+        } else {
+            setTimeout(() => run({ timeRemaining: () => 50, didTimeout: true }), 0);
+        }
     }
 
     /**

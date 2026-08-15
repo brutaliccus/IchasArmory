@@ -4887,7 +4887,7 @@ async function init() {
 
     // Local /data/loot + /data/items (gzip from same origin). Do not block the loading screen.
     ensureItemSourcesLoaded().catch(() => {});
-    itemLoader.loadAll().catch(() => {});
+    itemLoader.scheduleIdlePreload();
 
     initGearPlannerView({
         setAppMode,

@@ -89,7 +89,7 @@ This document provides an index of all documentation files created for the IchaC
 ## Gear & Equipment System
 
 ### Gear Planner (v1)
-**Files:** `modules/gear/gearPlanner.js`, `modules/gear/gearPlannerView.js`, `modules/gear/itemSources.js`, `gear-planner.css`
+**Files:** `modules/gear/gearPlanner.js`, `modules/gear/gearPlannerView.js`, `modules/gear/itemSources.js`, `modules/gear/itemLoader.js`, `gear-planner.css`
 
 - BiS gear plans per class (items only, no enchants)
 - Loot source filter in item modal (dungeons, raids, world bosses, other)

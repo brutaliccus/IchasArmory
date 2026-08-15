@@ -268,6 +268,7 @@ function main() {
         files: {
             instancesIndex: 'instances-index.json',
             itemSources: 'item-sources.json',
+            itemSourcesLite: 'item-sources-lite.json',
         },
         stats: {
             instanceCount: instances.length,
@@ -279,6 +280,17 @@ function main() {
     fs.mkdirSync(OUT, { recursive: true });
     writeJsonGzip(path.join(OUT, 'instances-index.json'), instancesIndex);
     writeJsonGzip(path.join(OUT, 'item-sources.json'), { schemaVersion: 1, sources: itemSources });
+    const liteSources = {};
+    for (const [id, rows] of Object.entries(itemSources)) {
+        const seen = new Set();
+        liteSources[id] = [];
+        for (const s of rows) {
+            if (seen.has(s.instanceId)) continue;
+            seen.add(s.instanceId);
+            liteSources[id].push([s.instanceId, s.instanceName, s.kind]);
+        }
+    }
+    writeJsonGzip(path.join(OUT, 'item-sources-lite.json'), { schemaVersion: 2, lite: true, sources: liteSources });
     writeJsonGzip(path.join(OUT, 'manifest.json'), manifest);
 
     console.log(`Wrote ${instances.length} instances, ${otherGroups.length} other groups, ${Object.keys(itemSources).length} items with sources → ${OUT}`);

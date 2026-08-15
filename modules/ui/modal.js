@@ -479,12 +479,6 @@ function filterItemsBySlot(items, slot) {
  * @param {HTMLElement} listElement - The DOM element to render items into
  */
 export function filterAndRenderItems(allItems, filters, listElement) {
-    const _filterDebug = {
-        itemCount: allItems?.length,
-        filters,
-        listElement
-    });
-
     if (!listElement) {
         console.error('No listElement provided to filterAndRenderItems');
         return;

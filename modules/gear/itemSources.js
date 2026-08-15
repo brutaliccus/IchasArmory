@@ -20,10 +20,20 @@ export async function ensureItemSourcesLoaded() {
 
     loadPromise = Promise.all([
         fetchJson('/data/loot/instances-index.json'),
-        fetchJson('/data/loot/item-sources.json'),
+        fetchJson('/data/loot/item-sources-lite.json').catch(() => fetchJson('/data/loot/item-sources.json')),
     ]).then(([indexData, sourcesData]) => {
         instancesIndex = indexData;
-        sourcesByItemId = sourcesData.sources || sourcesData;
+        if (sourcesData.schemaVersion === 2 || sourcesData.lite) {
+            const raw = sourcesData.sources || {};
+            sourcesByItemId = {};
+            for (const [id, rows] of Object.entries(raw)) {
+                sourcesByItemId[id] = rows.map(r => Array.isArray(r)
+                    ? { instanceId: r[0], instanceName: r[1], kind: r[2] }
+                    : { instanceId: r.id || r.instanceId, instanceName: r.n || r.instanceName, kind: r.k || r.kind });
+            }
+        } else {
+            sourcesByItemId = sourcesData.sources || sourcesData;
+        }
     }).catch(err => {
         loadPromise = null;
         console.error('[itemSources] Failed to load loot data:', err);
