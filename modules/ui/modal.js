@@ -889,7 +889,7 @@ function renderItems(items, listElement) {
             if (tooltip && item) {
                 tooltip.innerHTML = createItemTooltipHTML(item);
                 tooltip.style.display = 'block';
-                requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, img));
+                requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, img, { side: 'west' }));
             }
         });
 
@@ -1001,7 +1001,7 @@ function renderEnchants(enchants, allEnchants, listElement) {
                     const tooltipHTML = await createEnchantTooltipHTML(enchant);
                     tooltip.innerHTML = tooltipHTML;
                     tooltip.style.display = 'block';
-                    requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, enchantItem));
+                    requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, enchantItem, { side: 'list-left' }));
                 });
                 
                 enchantItem.addEventListener('mouseleave', () => {

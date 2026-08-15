@@ -15,29 +15,40 @@ body[data-app-mode="character"] #gear-planner-shell {
     margin: 0 auto;
     box-sizing: border-box;
     /* Nav is position:fixed + unscaled; this padding is inside CSS zoom */
-    padding: calc(68px / var(--ui-scale, 1)) 16px 32px;
+    /* Locations dock is 260px of unscaled viewport — convert for zoomed shell */
+    padding: calc(68px / var(--ui-scale, 1)) 16px 32px calc(260px / var(--ui-scale, 1) + 16px);
     min-height: calc(100vh / var(--ui-scale, 1));
 }
 
 .gp-locations-sidebar {
-    flex: 0 0 168px;
-    width: 168px;
-    max-height: calc(100vh / var(--ui-scale, 1) - 100px);
+    display: none;
+}
+
+body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 0;
+    top: 60px;
+    bottom: 0;
+    width: 260px;
+    z-index: 1100;
     overflow-y: auto;
     overflow-x: hidden;
-    align-self: flex-start;
-    padding: 10px 10px 12px;
+    padding: 16px 16px 20px;
     background: linear-gradient(145deg, #1a1a1f 0%, #121218 100%);
     border: 1px solid #3d3520;
-    border-radius: 10px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    border-left: none;
+    border-radius: 0 10px 10px 0;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
     box-sizing: border-box;
+    zoom: 1 !important;
 }
 
 .gp-locations-title {
-    margin: 0 0 8px;
+    margin: 0 0 14px;
     color: var(--accent-color, #ffd700);
-    font-size: 0.78rem;
+    font-size: 1.05rem;
     font-weight: 700;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -46,35 +57,49 @@ body[data-app-mode="character"] #gear-planner-shell {
 .gp-locations-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 16px;
 }
 
 .gp-locations-empty {
     margin: 0;
     color: #888;
-    font-size: 0.78rem;
-    line-height: 1.35;
+    font-size: 0.95rem;
+    line-height: 1.4;
 }
 
 .gp-locations-group-heading {
-    margin: 0 0 4px;
+    margin: 0 0 8px;
     color: var(--accent-color, #ffd700);
-    font-size: 0.72rem;
-    font-weight: 600;
+    font-size: 0.95rem;
+    font-weight: 700;
     letter-spacing: 0.03em;
 }
 
 .gp-locations-group ul {
     margin: 0;
-    padding: 0 0 0 10px;
+    padding: 0 0 0 4px;
     list-style: none;
 }
 
-.gp-locations-group li {
+.gp-locations-group li,
+.gp-location-entry {
     color: #c8c0a8;
-    font-size: 0.75rem;
-    line-height: 1.4;
-    padding: 1px 0;
+    font-size: 1rem;
+    line-height: 1.35;
+    padding: 8px 8px;
+    border-radius: 6px;
+    cursor: default;
+}
+
+.gp-location-entry:hover {
+    background: rgba(255, 215, 0, 0.12);
+    color: #ffe9a0;
+}
+
+.gp-item--location-hl {
+    outline: 2px solid #ffd700;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.5);
+    border-radius: 8px;
 }
 
 .gp-class-sidebar {

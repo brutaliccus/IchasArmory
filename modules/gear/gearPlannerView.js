@@ -314,7 +314,7 @@ function collectLocationGroups(plan) {
         .map(([kind, label]) => ({
             kind,
             label,
-            names: sortLocationEntries(kind, [...byKind[kind].entries()].map(([id, name]) => ({ id, name }))).map(e => e.name),
+            entries: sortLocationEntries(kind, [...byKind[kind].entries()].map(([id, name]) => ({ id, name }))),
         }));
 }
 
@@ -324,13 +324,51 @@ function renderLocationsSidebar() {
     const groups = collectLocationGroups(currentPlan);
     if (!groups.length) {
         list.innerHTML = '<p class="gp-locations-empty">No locations yet</p>';
+        clearLocationHighlights();
         return;
     }
     list.innerHTML = groups.map(g => `
         <div class="gp-locations-group" data-kind="${escapeHtml(g.kind)}">
             <h4 class="gp-locations-group-heading">${escapeHtml(g.label)}</h4>
-            <ul>${g.names.map(n => `<li>${escapeHtml(n)}</li>`).join('')}</ul>
+            <ul>${g.entries.map(e => `<li class="gp-location-entry" data-instance-id="${escapeHtml(e.id)}" data-instance-name="${escapeHtml(e.name)}">${escapeHtml(e.name)}</li>`).join('')}</ul>
         </div>`).join('');
+    bindLocationHoverHighlights();
+}
+
+function clearLocationHighlights() {
+    document.querySelectorAll('.gp-item--location-hl').forEach(el => el.classList.remove('gp-item--location-hl'));
+}
+
+function itemMatchesLocationHover(itemId, instanceId, instanceName) {
+    const sources = getSourcesForItem(itemId);
+    if (!sources.length) {
+        return instanceId === '__other__' || instanceName === 'Other / Unknown';
+    }
+    return sources.some(s =>
+        (instanceId && s.instanceId === instanceId) ||
+        (instanceName && s.instanceName === instanceName)
+    );
+}
+
+function applyLocationHighlights(instanceId, instanceName) {
+    clearLocationHighlights();
+    document.querySelectorAll('#gear-planner-shell .gp-primary-row[data-item-id], #gear-planner-shell .gp-alt-row[data-item-id]').forEach(el => {
+        const itemId = Number(el.dataset.itemId);
+        if (!itemId || !itemMatchesLocationHover(itemId, instanceId, instanceName)) return;
+        el.classList.add('gp-item--location-hl');
+        el.closest('.gp-slot-card')?.classList.add('gp-item--location-hl');
+    });
+}
+
+function bindLocationHoverHighlights() {
+    const list = document.getElementById('gp-locations-list');
+    if (!list) return;
+    list.querySelectorAll('.gp-location-entry').forEach(li => {
+        li.addEventListener('mouseenter', () => {
+            applyLocationHighlights(li.dataset.instanceId || '', li.dataset.instanceName || '');
+        });
+        li.addEventListener('mouseleave', () => clearLocationHighlights());
+    });
 }
 
 function itemIconHtml(item) {
@@ -505,7 +543,8 @@ function bindPlannerTooltips() {
         el.addEventListener('mouseenter', () => {
             tooltip.innerHTML = createItemTooltipHTML(item);
             tooltip.style.display = 'block';
-            requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, el));
+            const side = el.closest('#gp-slots-right') || el.closest('.gp-slot-card--right') ? 'east' : 'left';
+            requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, el, { side }));
         });
         el.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
     });

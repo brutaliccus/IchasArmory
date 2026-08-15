@@ -4,11 +4,13 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 
 ## Locations sidebar
 
-- `#gp-locations-sidebar` sits far left of `#gear-planner-shell` (left of the class drawer). Layout: locations | class | two slot columns.
-- Built from the current plan’s **primary and alternative** item IDs via `getSourcesForItem` (`itemSources.js`). Unique instance names are grouped under **Dungeons**, **Raids**, **World Bosses**, and **Other** (only categories that appear).
+- `#gp-locations-sidebar` is **outside** `#ichacalc-scaled-root`: `position: fixed; left: 0; top: 60px` (below the unscaled nav), docked to the **screen** left. Hidden unless `body[data-app-mode="gearPlanner"]`.
+- `#gear-planner-shell` uses extra **left padding** (`260px / --ui-scale`) so planner content is not under the dock.
+- Built from the current plan’s **primary and alternative** item IDs via `getSourcesForItem` (`itemSources.js`). Unique instance names are grouped under **Dungeons**, **Raids**, **World Bosses**, and **Other** (only categories that appear). List entries store `data-instance-id` / `data-instance-name`.
+- Hovering a location highlights matching slot rows/cards with `.gp-item--location-hl` (source `instanceId` / `instanceName`). Highlight clears on mouseleave.
 - Dungeons follow the same high-level-first order as the item-modal instance filter (`getInstanceFilterGroups`). Other groups are alphabetical.
 - `renderLocationsSidebar()` runs on every `renderGearPlanner()` so add/remove/clear updates live. Empty plan: “No locations yet”.
-- Compact gold/dark panel (`gear-planner.css`); independent scroll if the list is long.
+- Larger type in `gear-planner.css` (~1rem instance names, gold headings); independent scroll if the list is long.
 
 ## Integration (app.js)
 

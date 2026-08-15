@@ -170,6 +170,8 @@ export function setAppMode(mode) {
     document.body.dataset.appMode = next;
     document.getElementById('mode-character-btn')?.classList.toggle('active', next === 'character');
     document.getElementById('mode-gear-planner-btn')?.classList.toggle('active', next === 'gearPlanner');
+    const locSidebar = document.getElementById('gp-locations-sidebar');
+    if (locSidebar) locSidebar.hidden = next !== 'gearPlanner';
     if (next === 'gearPlanner') {
         renderGearPlanner();
     }
@@ -4734,7 +4736,8 @@ async function init() {
     });
 
     function positionTooltip(tooltip, anchorEl) {
-        positionItemTooltipOnIcon(tooltip, anchorEl);
+        const side = anchorEl?.closest?.('#gear-icons-right') ? 'east' : undefined;
+        positionItemTooltipOnIcon(tooltip, anchorEl, side ? { side } : undefined);
     }
 
     // Tooltip handlers — icon-anchored; do not follow the cursor

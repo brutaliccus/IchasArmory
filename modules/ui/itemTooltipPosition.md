@@ -4,18 +4,24 @@ Shared **icon-anchored** placement for the global `#item-tooltip` element (`posi
 
 ## Purpose
 
-Tooltips **do not follow the cursor**. They originate at the item icon’s **outer top corner** and grow **away from the paperdoll/center** and **down**.
+Tooltips **do not follow the cursor**. They originate at the item icon’s **outer top corner** and grow **away from the paperdoll/center** and **down**. They are **not** centered on the icon (`translateX(-50%)` is cleared).
 
 - **Left-side icons** (left gear column / left Gear Planner cards): origin at the icon’s **top-left** (outer) corner; tooltip expands **left and down** (`transform-origin: top right`).
-- **Right-side icons**: origin at **top-right**; expand **right and down** (`transform-origin: top left`).
-- **Modal / list / radial**: `auto` side — grow down and toward whichever side fits the viewport; still anchored to the icon rect.
-- If there is not enough room below, **flip up** while keeping the same outer-corner origin. Positions are clamped so the tooltip stays on-screen.
+- **Right-side icons**: origin at **top-right**; expand **right and down** (`transform-origin: top left`). Call sites may pass `side: 'right'` or `'east'`.
+- **Item/enchant modal lists**: `side: 'west'` / `'list-left'` — origin at the row icon’s **top-left**, grow **left and down** so the tooltip does not cover the list. Viewport clamp still applies.
+- **Radial / other**: `auto` — grow toward whichever side fits.
+- If there is not enough room below, **flip up** while keeping the same outer-corner origin.
+
+## Zoom
+
+`#item-tooltip` lives inside `#ichacalc-scaled-root` (`zoom: var(--ui-scale)`). `getBoundingClientRect()` is in **viewport** pixels; `style.left` / `style.top` are **pre-zoom** layout pixels. Placement divides visual coordinates by `--ui-scale`. Skipping that made right-column tooltips land over the icon (left column still looked roughly correct because values stayed near the left edge).
 
 ## API
 
 - **`getItemTooltipAnchorEl(fromEl)`** — Resolves `.icon-image-container`, Gear Planner `.gp-item-tip` img, modal row icon, enchant button, or radial icon frame.
-- **`inferTooltipGrowSide(anchorEl)`** — `'left'` | `'right'` | `'auto'` from paperdoll slot / `#gp-slots-left|right`.
-- **`positionItemTooltipOnIcon(tooltip, anchorEl, options?)`** — Sets `left` / `top` / `transform-origin`.
+- **`normalizeTooltipGrowSide(side)`** — Maps `east`/`right` → `'right'`, `west`/`list-left`/`left` → `'left'`.
+- **`inferTooltipGrowSide(anchorEl)`** — `'left'` | `'right'` | `'auto'` from paperdoll slot, `#gear-icons-left|right`, `#gp-slots-left|right`, or modal rows (left).
+- **`positionItemTooltipOnIcon(tooltip, anchorEl, options?)`** — Sets `left` / `top` / `transform-origin`. `options.side` may be `'left'|'right'|'auto'|'east'|'west'|'list-left'`.
 - **`positionItemTooltipAtCursor(tooltip, event)`** — Compat wrapper: uses `event.target` as the icon (ignores cursor coords).
 
 ## Consumers

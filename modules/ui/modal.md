@@ -442,7 +442,7 @@ When stat weights have been generated (via the Stat Weights sim), each item row 
 
 **Tooltip Positioning:**
 
-`#item-tooltip` uses **`position: fixed`** with **`positionItemTooltipOnIcon()`** from `itemTooltipPosition.js`: outer top corner of the item icon, grow down and to the side that fits the viewport, clamped on-screen.
+`#item-tooltip` uses **`position: fixed`** with **`positionItemTooltipOnIcon(..., { side: 'west' })`** from `itemTooltipPosition.js`: origin at the row icon’s **top-left**, grow **left and down** (away from the list). Enchant rows use `{ side: 'list-left' }`. Positions are clamped on-screen.
 
 ---
 
