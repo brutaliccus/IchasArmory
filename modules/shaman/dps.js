@@ -21,6 +21,7 @@ import { parseStatsFromTooltip, getAttackPowerBonusVsCreatureType, getSpellDamag
 import { getTalentBonuses } from '../talents_new.js';
 import { getSetBonuses } from '../gear/setBonuses.js';
 import { createItemTooltipHTML } from '../ui/tooltips.js';
+import { positionItemTooltipOnIcon } from '../ui/itemTooltipPosition.js';
 /**
  * Onboarding shaman presets: full priority + opener (+ caster/AoE) copied from shared builds
  * (regenerate: node scripts/extract-onboarding-preset-priority.mjs).
@@ -10540,26 +10541,17 @@ function attachItemTooltip(element, item) {
     const onEnter = () => {
         tooltip.innerHTML = createItemTooltipHTML(item);
         tooltip.style.display = 'block';
-    };
-    const onMove = (e) => {
-        const x = e.clientX + 15;
-        const y = e.clientY + 15;
-        const maxX = window.innerWidth - tooltip.offsetWidth - 10;
-        const maxY = window.innerHeight - tooltip.offsetHeight - 10;
-        tooltip.style.left = Math.min(x, maxX) + 'px';
-        tooltip.style.top = Math.min(y, maxY) + 'px';
+        requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, element));
     };
     const onLeave = () => {
         tooltip.style.display = 'none';
     };
 
     element.addEventListener('mouseenter', onEnter);
-    element.addEventListener('mousemove', onMove);
     element.addEventListener('mouseleave', onLeave);
 
     element._gcTooltipCleanup = () => {
         element.removeEventListener('mouseenter', onEnter);
-        element.removeEventListener('mousemove', onMove);
         element.removeEventListener('mouseleave', onLeave);
     };
 }

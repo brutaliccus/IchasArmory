@@ -371,16 +371,16 @@ This document provides an index of all documentation files created for the IchaC
 
 ---
 
-### 13a. modules/ui/itemTooltipPosition.js - Item tooltip cursor placement
+### 13a. modules/ui/itemTooltipPosition.js - Item tooltip icon placement
 **File:** `modules/ui/itemTooltipPosition.md`  
 **Source:** `modules/ui/itemTooltipPosition.js`
 
 **Contents:**
-- `positionItemTooltipAtCursor()` — viewport (`clientX`/`clientY`) positioning and clamping for `#item-tooltip` (`position: fixed`)
+- `positionItemTooltipOnIcon()` — icon-rect placement for `#item-tooltip` (`position: fixed`): outer top corner, grow away from center and down, clamp / flip up
 
 **Key features:**
-- Avoids mixing document-space mouse coords with viewport clamping
-- Reduces cross-browser skew with `body { zoom }` (e.g. Edge vs Brave)
+- Does not follow the cursor
+- Left vs right paperdoll / Gear Planner columns set grow direction; lists use the side that fits
 
 ---
 

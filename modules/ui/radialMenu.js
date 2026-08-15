@@ -2,7 +2,7 @@
 
 import { getEquippedGearObjects, createIconImage, PLACEHOLDER_ICON_URL, slotIconMap } from '../gear/gear.js';
 import { createItemTooltipHTML } from './tooltips.js';
-import { positionItemTooltipAtCursor } from './itemTooltipPosition.js';
+import { positionItemTooltipOnIcon } from './itemTooltipPosition.js';
 
 const SLOT_ORDER = [
     'head', 'neck', 'shoulder', 'back', 'chest',
@@ -177,31 +177,20 @@ function createRadialMenuItem(slotId, item, angle, radius, slotsOnly = false) {
  * Setup hover tooltip for menu item
  */
 function setupItemHover(menuItem, item) {
-    menuItem.addEventListener('mouseenter', (e) => {
+    menuItem.addEventListener('mouseenter', () => {
         const tooltip = document.getElementById('item-tooltip');
         if (!tooltip || !item) return;
 
         const equippedGear = getEquippedGearObjects();
         tooltip.innerHTML = createItemTooltipHTML(item, equippedGear);
         tooltip.style.display = 'block';
-
-        const updateTooltipPosition = (event) => {
-            positionItemTooltipAtCursor(tooltip, event, 15);
-        };
-
-        updateTooltipPosition(e);
-        menuItem.addEventListener('mousemove', updateTooltipPosition);
-        menuItem._updateTooltipPosition = updateTooltipPosition;
+        requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, menuItem));
     });
 
     menuItem.addEventListener('mouseleave', () => {
         const tooltip = document.getElementById('item-tooltip');
         if (tooltip) {
             tooltip.style.display = 'none';
-        }
-        if (menuItem._updateTooltipPosition) {
-            menuItem.removeEventListener('mousemove', menuItem._updateTooltipPosition);
-            delete menuItem._updateTooltipPosition;
         }
     });
 }

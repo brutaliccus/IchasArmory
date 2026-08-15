@@ -2,7 +2,7 @@
 // Consolidates duplicate modal logic
 
 import { createItemTooltipHTML, createEnchantTooltipHTML, calculateItemDpsScore, calculateItemTankScore } from './tooltips.js';
-import { positionItemTooltipAtCursor } from './itemTooltipPosition.js';
+import { positionItemTooltipOnIcon } from './itemTooltipPosition.js';
 import { createIconImage, getCurrentlyEquippedItem } from '../gear/gear.js';
 import { getStatSearchTerms, getItemType, filterEnchantsByItemType, parseStatsFromTooltip, KEY_MAP } from '../character/stats.js';
 import {
@@ -884,19 +884,12 @@ function renderItems(items, listElement) {
         }
 
         // Add tooltip on hover
-        modalItem.addEventListener('mouseenter', (e) => {
+        modalItem.addEventListener('mouseenter', () => {
             const tooltip = document.getElementById('item-tooltip');
             if (tooltip && item) {
                 tooltip.innerHTML = createItemTooltipHTML(item);
                 tooltip.style.display = 'block';
-
-                const updateTooltipPosition = (event) => {
-                    requestAnimationFrame(() => positionItemTooltipAtCursor(tooltip, event, 15));
-                };
-
-                updateTooltipPosition(e);
-                modalItem.addEventListener('mousemove', updateTooltipPosition);
-                modalItem._updateTooltipPosition = updateTooltipPosition;
+                requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, img));
             }
         });
 
@@ -904,10 +897,6 @@ function renderItems(items, listElement) {
             const tooltip = document.getElementById('item-tooltip');
             if (tooltip) {
                 tooltip.style.display = 'none';
-            }
-            if (modalItem._updateTooltipPosition) {
-                modalItem.removeEventListener('mousemove', modalItem._updateTooltipPosition);
-                delete modalItem._updateTooltipPosition;
             }
         });
 
@@ -1008,27 +997,16 @@ function renderEnchants(enchants, allEnchants, listElement) {
             const enchant = allEnchants[index];
             
             if (enchant) {
-                enchantItem.addEventListener('mouseenter', async (e) => {
+                enchantItem.addEventListener('mouseenter', async () => {
                     const tooltipHTML = await createEnchantTooltipHTML(enchant);
                     tooltip.innerHTML = tooltipHTML;
                     tooltip.style.display = 'block';
-                    
-                    const updateTooltipPosition = (event) => {
-                        requestAnimationFrame(() => positionItemTooltipAtCursor(tooltip, event, 15));
-                    };
-                    
-                    updateTooltipPosition(e);
-                    enchantItem.addEventListener('mousemove', updateTooltipPosition);
-                    enchantItem._updateTooltipPosition = updateTooltipPosition;
+                    requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, enchantItem));
                 });
                 
                 enchantItem.addEventListener('mouseleave', () => {
                     if (tooltip) {
                         tooltip.style.display = 'none';
-                    }
-                    if (enchantItem._updateTooltipPosition) {
-                        enchantItem.removeEventListener('mousemove', enchantItem._updateTooltipPosition);
-                        delete enchantItem._updateTooltipPosition;
                     }
                 });
             }

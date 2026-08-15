@@ -11,7 +11,7 @@ import {
 import { ICON_BASE_URL } from './gear.js';
 import { runGearPlanQuickSim } from '../shaman/dps.js';
 import { createItemTooltipHTML } from '../ui/tooltips.js';
-import { positionItemTooltipAtCursor } from '../ui/itemTooltipPosition.js';
+import { positionItemTooltipOnIcon } from '../ui/itemTooltipPosition.js';
 import { ensureItemSourcesLoaded, getSourcesForItem, getPrimarySourceLabel, getInstanceFilterGroups } from './itemSources.js';
 
 const LEFT_SLOTS = ['head', 'neck', 'shoulder', 'back', 'chest', 'wrist', 'mainhand', 'offhand'];
@@ -505,8 +505,8 @@ function bindPlannerTooltips() {
         el.addEventListener('mouseenter', () => {
             tooltip.innerHTML = createItemTooltipHTML(item);
             tooltip.style.display = 'block';
+            requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, el));
         });
-        el.addEventListener('mousemove', (e) => positionItemTooltipAtCursor(tooltip, e));
         el.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
     });
 }

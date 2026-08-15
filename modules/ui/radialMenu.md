@@ -15,7 +15,7 @@ Shared **gear-style radial wheel** (`#radial-menu-container` / `#radial-menu-whe
 
 **`menuMode`** is **`'gear'`** | **`'custom'`** | **`null`** so custom vs gear state is tracked for toggle and teardown.
 
-## Consumers
+Gear-mode item hover uses **`positionItemTooltipOnIcon`** (icon-anchored `#item-tooltip`, not cursor follow).
 
 - **`modules/gear/gearCompare.js`** — `openRadialMenu` on equipped icon.
 - **`modules/shaman/dps.js`** — `openRadialMenu` (stat weights compare slot picker); **`openCustomRadialMenu`** for onboarding priority presets (Totemic slot).

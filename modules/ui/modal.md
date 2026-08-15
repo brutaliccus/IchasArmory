@@ -437,15 +437,12 @@ When stat weights have been generated (via the Stat Weights sim), each item row 
 ### Tooltip System
 
 **Hover Behavior:**
-- On `mouseenter`: Display tooltip with full item/enchant details
-- On `mousemove`: Update tooltip position to follow cursor
+- On `mouseenter`: Display tooltip with full item/enchant details, anchored to the row icon (not the cursor)
 - On `mouseleave`: Hide tooltip
 
 **Tooltip Positioning:**
 
-`#item-tooltip` uses **`position: fixed`** (see `style.css`) with **`positionItemTooltipAtCursor()`** from `itemTooltipPosition.js`: **`clientX` / `clientY`** plus offset, clamped to `innerWidth` / `innerHeight`. This matches viewport space to the tooltip’s containing mode and avoids skew from mixing `pageX`/`pageY` with viewport clamping or from **`body { zoom }`** (Edge vs other Chromium browsers).
-
-**Performance:** Uses `requestAnimationFrame()` for smooth tooltip updates
+`#item-tooltip` uses **`position: fixed`** with **`positionItemTooltipOnIcon()`** from `itemTooltipPosition.js`: outer top corner of the item icon, grow down and to the side that fits the viewport, clamped on-screen.
 
 ---
 

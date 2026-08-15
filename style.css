@@ -1664,8 +1664,8 @@ input, select {
 .enchant-item:hover {
     background-color: var(--accent-color);
 }
-/* fixed + clientX/Y so tooltips align with the pointer across zoom/scroll; pageX + absolute skewed Edge vs Brave */
-.item-tooltip { position: fixed; z-index: 3000; background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 10px; border-radius: 4px; max-width: 350px; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.5; pointer-events: none; }
+/* fixed; JS sets transform-origin to the outer icon corner used for placement */
+.item-tooltip { position: fixed; z-index: 3000; background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 10px; border-radius: 4px; max-width: 350px; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.5; pointer-events: none; transform-origin: top left; }
 .item-tooltip b.q0, .q0 { color: #9d9d9d; }
 .item-tooltip b.q1, .q1 { color: #ffffff; }
 .item-tooltip b.q2, .q2 { color: #1eff00; }

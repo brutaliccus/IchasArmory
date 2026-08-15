@@ -953,7 +953,7 @@ const characterData = {
 - **stats.js** - Stat parsing from tooltips
 - **gearCompare.js** - Gear comparison system
 - **modal.js** - Item/enchant selection modals
-- **itemTooltipPosition.js** - Viewport cursor placement for `#item-tooltip`
+- **itemTooltipPosition.js** - Icon-anchored placement for `#item-tooltip`
 - **itemLoader.js** - Lazy-loading item database
 - **armory.js** - WoW armory integration
 - **statWeightFormulas.js** - Stat weight display

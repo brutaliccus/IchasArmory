@@ -685,7 +685,7 @@ Some buffs have dynamic tooltips that change based on talents. These use the `ge
 
 ### Tooltip Positioning
 
-Buff icon tooltips use their own positioning relative to the icon. When a buff uses the shared **`#item-tooltip`** (item-style spell data), **`left` / `top`** are set in **viewport pixels** only, matching **`position: fixed`** on that element (same convention as `positionItemTooltipAtCursor` in `modules/ui/itemTooltipPosition.js`).
+Buff icon tooltips use their own positioning relative to the icon. When a buff uses the shared **`#item-tooltip`** (item-style spell data), **`left` / `top`** are set in **viewport pixels** only, matching **`position: fixed`** on that element (same convention as `positionItemTooltipOnIcon` in `modules/ui/itemTooltipPosition.js`).
 
 Tooltips are positioned dynamically to stay on screen:
 - Default: Centered above the buff icon

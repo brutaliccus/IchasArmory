@@ -16,7 +16,7 @@ import { getStatSearchTerms, parseStatsFromTooltip, KEY_MAP, getItemType, filter
 import { initializeGearCompare, setComparisonItem, getCurrentCompareSlot, setEHPCalculator, setGetCurrentClass, setCharacterDataCallbacks } from './modules/gear/gearCompare.js';
 import { filterAndRenderItems, filterAndRenderEnchants, getSelectedQualities, getCurrentFilters, openItemModal as openItemModalFromModule, openEnchantModal as openEnchantModalFromModule, repositionItemPickerIfOpen, setItemModalPlayerClassOverride } from './modules/ui/modal.js';
 import { initUiScale } from './modules/ui/uiScale.js';
-import { positionItemTooltipAtCursor } from './modules/ui/itemTooltipPosition.js';
+import { positionItemTooltipOnIcon } from './modules/ui/itemTooltipPosition.js';
 import { itemLoader } from './modules/gear/itemLoader.js';
 import { importFromArmoryAPI as importFromArmoryModule, updateCharacterStatusBar, initializeStatusBar, updateStatusBarValues, setImportedState as setImportedStateArmory, RACE_TO_FACTION, FACTION_ICONS } from './modules/armory/armory.js';
 import { displayStatWeightFormula } from './modules/statWeightFormulas.js';
@@ -4733,11 +4733,11 @@ async function init() {
         }
     });
 
-    function positionTooltip(tooltip, event) {
-        positionItemTooltipAtCursor(tooltip, event, 15);
+    function positionTooltip(tooltip, anchorEl) {
+        positionItemTooltipOnIcon(tooltip, anchorEl);
     }
 
-    // Tooltip handlers
+    // Tooltip handlers — icon-anchored; do not follow the cursor
     const tooltip = document.getElementById('item-tooltip');
     document.body.addEventListener('mouseover', async event => {
         const enchantBtn = event.target.closest('.enchant-btn');
@@ -4749,8 +4749,7 @@ async function init() {
                 if (enchant && enchant.name !== 'None') {
                     tooltip.innerHTML = await createEnchantTooltipHTML(enchant);
                     tooltip.style.display = 'block';
-                    // Use requestAnimationFrame to ensure tooltip is rendered before measuring
-                    requestAnimationFrame(() => positionTooltip(tooltip, event));
+                    requestAnimationFrame(() => positionTooltip(tooltip, enchantBtn));
                 }
             }
             return;
@@ -4762,15 +4761,8 @@ async function init() {
             if (item) {
                 tooltip.innerHTML = createItemTooltipHTML(item);
                 tooltip.style.display = 'block';
-                // Use requestAnimationFrame to ensure tooltip is rendered before measuring
-                requestAnimationFrame(() => positionTooltip(tooltip, event));
+                requestAnimationFrame(() => positionTooltip(tooltip, iconFrame));
             }
-        }
-    });
-
-    document.body.addEventListener('mousemove', event => {
-        if (tooltip && tooltip.style.display === 'block') {
-            positionTooltip(tooltip, event);
         }
     });
 
