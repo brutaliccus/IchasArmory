@@ -104,22 +104,52 @@
     justify-self: end;
 }
 
-/* UI scale settings (top-right cog) */
+/* UI scale settings (top nav) */
 .ui-scale-settings-wrap {
     position: relative;
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
 }
 
+.user-dropdown .ui-scale-settings-wrap {
+    display: inline-flex;
+}
+
+.ui-scale-settings-btn {
+    min-width: 38px;
+    min-height: 38px;
+    justify-content: center;
+    padding: 8px 10px !important;
+}
+
+.ui-scale-settings-label-text {
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    user-select: none;
+}
+
+/* Panel is fixed to viewport so body zoom does not shift it while dragging the slider */
 .ui-scale-settings-panel {
-    position: absolute;
-    top: calc(100% + 8px);
-    right: 0;
-    width: min(92vw, 300px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
     padding: 14px 16px;
     background: var(--card-bg);
     border: 1px solid var(--ichacalc-ui-orange, #FFA500);
     border-radius: 10px;
     box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
-    z-index: 3000;
+    z-index: 3500;
+    box-sizing: border-box;
+    contain: layout style;
+}
+
+.ui-scale-settings-panel[hidden] {
+    display: none !important;
 }
 
 .ui-scale-settings-header {
@@ -133,6 +163,7 @@
     font-size: 0.78rem;
     line-height: 1.35;
     color: #aaa;
+    min-height: 2.7em;
 }
 
 .ui-scale-settings-label {
@@ -146,6 +177,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    min-height: 28px;
 }
 
 .ui-scale-slider-row input[type="range"] {
@@ -156,17 +188,32 @@
 .ui-scale-value {
     font-size: 0.85rem;
     font-variant-numeric: tabular-nums;
-    min-width: 3rem;
+    width: 3rem;
+    flex-shrink: 0;
     text-align: right;
     color: var(--accent-color);
     font-weight: 600;
 }
 
-.ui-scale-effective {
+.ui-scale-effective-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4px 10px;
     margin-top: 10px;
+    min-height: 4.5em;
+    align-content: start;
     font-size: 0.75rem;
-    color: #999;
-    line-height: 1.35;
+}
+
+.ui-scale-effective-label {
+    color: #888;
+    font-weight: 600;
+}
+
+.ui-scale-effective {
+    color: #bbb;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
 }
 
 .ui-scale-reset-btn {
@@ -184,6 +231,11 @@
 
 .ui-scale-reset-btn:hover {
     border-color: var(--primary-color);
+}
+
+/* Logged-out guest trigger: hide when user menu is visible */
+.user-controls:has(#user-info:not([style*="display: none"])) .ui-scale-settings-wrap--guest {
+    display: none;
 }
 
 /*

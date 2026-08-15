@@ -7,6 +7,9 @@ export const USER_SCALE_MIN = 0.7;
 export const USER_SCALE_MAX = 1.3;
 export const USER_SCALE_DEFAULT = 1;
 
+const PANEL_GAP = 8;
+const PANEL_MARGIN = 12;
+
 /**
  * Scale down to fit the design baseline (2560×1440) in both width and height.
  * Never scales above 1.
@@ -74,15 +77,52 @@ function formatPercent(fraction) {
     return `${Math.round(fraction * 100)}%`;
 }
 
+function getActiveToggle(toggles) {
+    for (const btn of toggles) {
+        if (btn && btn.offsetParent !== null) return btn;
+    }
+    return toggles[0] || null;
+}
+
+function positionSettingsPanel(panel, toggle) {
+    if (!panel || !toggle || panel.hidden) return;
+
+    const rect = toggle.getBoundingClientRect();
+    const panelW = panel.offsetWidth || 280;
+    const panelH = panel.offsetHeight || 200;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    let left = rect.right - panelW;
+    let top = rect.bottom + PANEL_GAP;
+
+    if (left < PANEL_MARGIN) left = PANEL_MARGIN;
+    if (left + panelW > vw - PANEL_MARGIN) left = vw - panelW - PANEL_MARGIN;
+    if (top + panelH > vh - PANEL_MARGIN) {
+        top = rect.top - panelH - PANEL_GAP;
+    }
+    if (top < PANEL_MARGIN) top = PANEL_MARGIN;
+
+    panel.style.left = `${Math.round(left)}px`;
+    panel.style.top = `${Math.round(top)}px`;
+}
+
 function bindUiScaleSettings() {
-    const toggle = document.getElementById('ui-scale-settings-btn');
+    const toggles = [
+        document.getElementById('ui-scale-settings-btn'),
+        document.getElementById('ui-scale-settings-btn-guest')
+    ].filter(Boolean);
     const panel = document.getElementById('ui-scale-settings-panel');
     const slider = document.getElementById('ui-scale-slider');
     const valueEl = document.getElementById('ui-scale-value');
     const effectiveEl = document.getElementById('ui-scale-effective');
+    const autoEl = document.getElementById('ui-scale-auto');
+    const manualEl = document.getElementById('ui-scale-manual');
     const resetBtn = document.getElementById('ui-scale-reset-btn');
 
-    if (!toggle || !panel || !slider) return;
+    if (!toggles.length || !panel || !slider) return;
+
+    let activeToggle = getActiveToggle(toggles);
 
     const syncPanel = () => {
         const user = getUserScale();
@@ -90,30 +130,39 @@ function bindUiScaleSettings() {
         const total = auto * user;
         slider.value = String(user);
         if (valueEl) valueEl.textContent = formatPercent(user);
-        if (effectiveEl) {
-            effectiveEl.textContent = `${formatPercent(total)} (auto ${formatPercent(auto)} × manual ${formatPercent(user)})`;
-        }
+        if (effectiveEl) effectiveEl.textContent = formatPercent(total);
+        if (autoEl) autoEl.textContent = formatPercent(auto);
+        if (manualEl) manualEl.textContent = formatPercent(user);
+        activeToggle = getActiveToggle(toggles);
+        positionSettingsPanel(panel, activeToggle);
+    };
+
+    const setExpanded = (open) => {
+        toggles.forEach(btn => btn.setAttribute('aria-expanded', open ? 'true' : 'false'));
     };
 
     const closePanel = () => {
         panel.hidden = true;
-        toggle.setAttribute('aria-expanded', 'false');
+        setExpanded(false);
     };
 
-    const openPanel = () => {
+    const openPanel = (toggle) => {
+        activeToggle = toggle || getActiveToggle(toggles);
         syncPanel();
         panel.hidden = false;
-        toggle.setAttribute('aria-expanded', 'true');
+        setExpanded(true);
+        positionSettingsPanel(panel, activeToggle);
     };
 
-    if (!toggle.dataset.bound) {
+    toggles.forEach(toggle => {
+        if (toggle.dataset.bound) return;
         toggle.dataset.bound = '1';
         toggle.addEventListener('click', (e) => {
             e.stopPropagation();
-            if (panel.hidden) openPanel();
+            if (panel.hidden) openPanel(toggle);
             else closePanel();
         });
-    }
+    });
 
     if (!slider.dataset.bound) {
         slider.dataset.bound = '1';
@@ -138,12 +187,14 @@ function bindUiScaleSettings() {
         panel.dataset.bound = '1';
         document.addEventListener('click', (e) => {
             if (panel.hidden) return;
-            if (panel.contains(e.target) || toggle.contains(e.target)) return;
+            if (panel.contains(e.target) || toggles.some(btn => btn.contains(e.target))) return;
             closePanel();
         });
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && !panel.hidden) closePanel();
         });
+        window.addEventListener('resize', () => positionSettingsPanel(panel, activeToggle));
+        window.addEventListener('scroll', () => positionSettingsPanel(panel, activeToggle), true);
     }
 
     window.addEventListener('uiScaleChanged', syncPanel);

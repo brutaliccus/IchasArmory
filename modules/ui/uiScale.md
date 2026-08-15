@@ -23,9 +23,10 @@
 
 ## UI
 
-- **Settings cog** in the top nav (`#ui-scale-settings-btn`, top-right in `#user-controls`)
-- Panel: slider (70%–130%), effective scale readout, reset button
-- Dispatches `uiScaleChanged` on apply; `app.js` repositions the item picker when scale changes.
+- **Settings control** in the top nav: bold white **UI** label in a gold-bordered `dropdown-btn` (after inbox when logged in; guest copy before login when logged out)
+- Panel is **`position: fixed`** and anchored to the active toggle via `positionSettingsPanel()` so it does not shift when `body` zoom changes during slider drag
+- Effective / auto / manual scale shown in a fixed-height grid (no layout jump from text reflow)
+- Dispatches `uiScaleChanged` on apply; `app.js` repositions the item picker when scale changes
 
 ## CSS
 
