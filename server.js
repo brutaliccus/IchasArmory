@@ -627,6 +627,66 @@ app.delete('/inbox/:messageId', requireAuth, (req, res) => {
     }
 });
 
+// User cloud gear plans (authenticated)
+app.get('/user-gear-plans', requireAuth, (req, res) => {
+    try {
+        const userFile = path.join(usersDir, `${req.user.id}.json`);
+        const user = JSON.parse(fs.readFileSync(userFile, 'utf-8'));
+        res.set('Cache-Control', 'no-store');
+        res.json({ success: true, gearPlans: user.gearPlans || [] });
+    } catch (error) {
+        console.error('Error fetching gear plans:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+app.post('/user-gear-plans', requireAuth, (req, res) => {
+    try {
+        const { plan } = req.body;
+        if (!plan || plan.kind !== 'gearPlan') {
+            return res.status(400).json({ success: false, error: 'Invalid gear plan' });
+        }
+        const userFile = path.join(usersDir, `${req.user.id}.json`);
+        const user = JSON.parse(fs.readFileSync(userFile, 'utf-8'));
+        if (!user.gearPlans) user.gearPlans = [];
+
+        const now = new Date().toISOString();
+        let saved;
+        if (plan.id) {
+            const idx = user.gearPlans.findIndex(p => String(p.id) === String(plan.id));
+            if (idx >= 0) {
+                user.gearPlans[idx] = { ...plan, updatedAt: now };
+                saved = user.gearPlans[idx];
+            } else {
+                saved = { ...plan, id: plan.id, createdAt: now, updatedAt: now };
+                user.gearPlans.push(saved);
+            }
+        } else {
+            saved = { ...plan, id: `gp_${Date.now()}`, createdAt: now, updatedAt: now };
+            user.gearPlans.push(saved);
+        }
+        fs.writeFileSync(userFile, JSON.stringify(user, null, 2));
+        res.json({ success: true, plan: saved });
+    } catch (error) {
+        console.error('Error saving gear plan:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+app.delete('/user-gear-plans/:id', requireAuth, (req, res) => {
+    try {
+        const { id } = req.params;
+        const userFile = path.join(usersDir, `${req.user.id}.json`);
+        const user = JSON.parse(fs.readFileSync(userFile, 'utf-8'));
+        user.gearPlans = (user.gearPlans || []).filter(p => String(p.id) !== String(id));
+        fs.writeFileSync(userFile, JSON.stringify(user, null, 2));
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error deleting gear plan:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 } // End if (authEnabled)
 
 // =======================
@@ -956,66 +1016,6 @@ app.get('/gear-plans/:planId', (req, res) => {
         res.json({ success: true, plan });
     } catch (error) {
         console.error('[GearPlans] Error loading:', error);
-        res.status(500).json({ success: false, error: error.message });
-    }
-});
-
-// User cloud gear plans (authenticated)
-app.get('/user-gear-plans', requireAuth, (req, res) => {
-    try {
-        const userFile = path.join(usersDir, `${req.user.id}.json`);
-        const user = JSON.parse(fs.readFileSync(userFile, 'utf-8'));
-        res.set('Cache-Control', 'no-store');
-        res.json({ success: true, gearPlans: user.gearPlans || [] });
-    } catch (error) {
-        console.error('Error fetching gear plans:', error);
-        res.status(500).json({ success: false, error: error.message });
-    }
-});
-
-app.post('/user-gear-plans', requireAuth, (req, res) => {
-    try {
-        const { plan } = req.body;
-        if (!plan || plan.kind !== 'gearPlan') {
-            return res.status(400).json({ success: false, error: 'Invalid gear plan' });
-        }
-        const userFile = path.join(usersDir, `${req.user.id}.json`);
-        const user = JSON.parse(fs.readFileSync(userFile, 'utf-8'));
-        if (!user.gearPlans) user.gearPlans = [];
-
-        const now = new Date().toISOString();
-        let saved;
-        if (plan.id) {
-            const idx = user.gearPlans.findIndex(p => String(p.id) === String(plan.id));
-            if (idx >= 0) {
-                user.gearPlans[idx] = { ...plan, updatedAt: now };
-                saved = user.gearPlans[idx];
-            } else {
-                saved = { ...plan, id: plan.id, createdAt: now, updatedAt: now };
-                user.gearPlans.push(saved);
-            }
-        } else {
-            saved = { ...plan, id: `gp_${Date.now()}`, createdAt: now, updatedAt: now };
-            user.gearPlans.push(saved);
-        }
-        fs.writeFileSync(userFile, JSON.stringify(user, null, 2));
-        res.json({ success: true, plan: saved });
-    } catch (error) {
-        console.error('Error saving gear plan:', error);
-        res.status(500).json({ success: false, error: error.message });
-    }
-});
-
-app.delete('/user-gear-plans/:id', requireAuth, (req, res) => {
-    try {
-        const { id } = req.params;
-        const userFile = path.join(usersDir, `${req.user.id}.json`);
-        const user = JSON.parse(fs.readFileSync(userFile, 'utf-8'));
-        user.gearPlans = (user.gearPlans || []).filter(p => String(p.id) !== String(id));
-        fs.writeFileSync(userFile, JSON.stringify(user, null, 2));
-        res.json({ success: true });
-    } catch (error) {
-        console.error('Error deleting gear plan:', error);
         res.status(500).json({ success: false, error: error.message });
     }
 });

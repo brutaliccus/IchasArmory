@@ -1071,6 +1071,7 @@ Press Ctrl+C to stop all servers.
 - **GET /inbox** - Get inbox messages
 - **PATCH /inbox/:id** - Mark message as read
 - **DELETE /inbox/:id** - Delete inbox message
+- **GET/POST /user-gear-plans**, **DELETE /user-gear-plans/:id** - Cloud gear plan storage (must be registered inside the `if (authEnabled)` block in `server.js` because they use `requireAuth`)
 
 Profile JSON responses on `server.js` (`GET/POST/PATCH` profile success and `DELETE` profile success) set `Cache-Control: no-store` so intermediaries and browsers do not serve stale build lists after saves.
 
