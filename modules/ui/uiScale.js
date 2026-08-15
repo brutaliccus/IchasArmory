@@ -7,9 +7,6 @@ export const USER_SCALE_MIN = 0.7;
 export const USER_SCALE_MAX = 1.3;
 export const USER_SCALE_DEFAULT = 1;
 
-const PANEL_GAP = 8;
-const PANEL_MARGIN = 12;
-
 /**
  * Scale down to fit the design baseline (2560×1440) in both width and height.
  * Never scales above 1.
@@ -47,6 +44,10 @@ export function getEffectiveScale() {
     return computeAutoScale() * getUserScale();
 }
 
+function getScaledRoot() {
+    return document.getElementById('ichacalc-scaled-root');
+}
+
 function syncScaleCssVars(auto, user, total) {
     const root = document.documentElement;
     root.style.setProperty('--ui-auto-scale', String(auto));
@@ -55,7 +56,7 @@ function syncScaleCssVars(auto, user, total) {
 }
 
 /**
- * Apply combined auto × user scale via CSS zoom (matches legacy layout behavior).
+ * Apply scale only to #ichacalc-scaled-root. Nav + UI settings panel stay at zoom 1.
  */
 export function applyUiScale() {
     const auto = computeAutoScale();
@@ -63,10 +64,15 @@ export function applyUiScale() {
     const total = auto * user;
     syncScaleCssVars(auto, user, total);
 
-    if (document.body) {
-        document.body.style.zoom = String(total);
+    const scaled = getScaledRoot();
+    if (scaled) {
+        scaled.style.zoom = String(total);
     }
-    document.documentElement.style.zoom = String(total);
+
+    document.documentElement.style.zoom = '';
+    if (document.body) {
+        document.body.style.zoom = '';
+    }
 
     window.dispatchEvent(new CustomEvent('uiScaleChanged', {
         detail: { auto, user, total }
@@ -77,34 +83,22 @@ function formatPercent(fraction) {
     return `${Math.round(fraction * 100)}%`;
 }
 
-function getActiveToggle(toggles) {
-    for (const btn of toggles) {
-        if (btn && btn.offsetParent !== null) return btn;
-    }
-    return toggles[0] || null;
-}
+function syncPanelValues() {
+    const slider = document.getElementById('ui-scale-slider');
+    const valueEl = document.getElementById('ui-scale-value');
+    const effectiveEl = document.getElementById('ui-scale-effective');
+    const autoEl = document.getElementById('ui-scale-auto');
+    const manualEl = document.getElementById('ui-scale-manual');
+    if (!slider) return;
 
-function positionSettingsPanel(panel, toggle) {
-    if (!panel || !toggle || panel.hidden) return;
-
-    const rect = toggle.getBoundingClientRect();
-    const panelW = panel.offsetWidth || 280;
-    const panelH = panel.offsetHeight || 200;
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-
-    let left = rect.right - panelW;
-    let top = rect.bottom + PANEL_GAP;
-
-    if (left < PANEL_MARGIN) left = PANEL_MARGIN;
-    if (left + panelW > vw - PANEL_MARGIN) left = vw - panelW - PANEL_MARGIN;
-    if (top + panelH > vh - PANEL_MARGIN) {
-        top = rect.top - panelH - PANEL_GAP;
-    }
-    if (top < PANEL_MARGIN) top = PANEL_MARGIN;
-
-    panel.style.left = `${Math.round(left)}px`;
-    panel.style.top = `${Math.round(top)}px`;
+    const user = getUserScale();
+    const auto = computeAutoScale();
+    const total = auto * user;
+    slider.value = String(user);
+    if (valueEl) valueEl.textContent = formatPercent(user);
+    if (effectiveEl) effectiveEl.textContent = formatPercent(total);
+    if (autoEl) autoEl.textContent = formatPercent(auto);
+    if (manualEl) manualEl.textContent = formatPercent(user);
 }
 
 function bindUiScaleSettings() {
@@ -114,28 +108,9 @@ function bindUiScaleSettings() {
     ].filter(Boolean);
     const panel = document.getElementById('ui-scale-settings-panel');
     const slider = document.getElementById('ui-scale-slider');
-    const valueEl = document.getElementById('ui-scale-value');
-    const effectiveEl = document.getElementById('ui-scale-effective');
-    const autoEl = document.getElementById('ui-scale-auto');
-    const manualEl = document.getElementById('ui-scale-manual');
     const resetBtn = document.getElementById('ui-scale-reset-btn');
 
     if (!toggles.length || !panel || !slider) return;
-
-    let activeToggle = getActiveToggle(toggles);
-
-    const syncPanel = () => {
-        const user = getUserScale();
-        const auto = computeAutoScale();
-        const total = auto * user;
-        slider.value = String(user);
-        if (valueEl) valueEl.textContent = formatPercent(user);
-        if (effectiveEl) effectiveEl.textContent = formatPercent(total);
-        if (autoEl) autoEl.textContent = formatPercent(auto);
-        if (manualEl) manualEl.textContent = formatPercent(user);
-        activeToggle = getActiveToggle(toggles);
-        positionSettingsPanel(panel, activeToggle);
-    };
 
     const setExpanded = (open) => {
         toggles.forEach(btn => btn.setAttribute('aria-expanded', open ? 'true' : 'false'));
@@ -146,12 +121,10 @@ function bindUiScaleSettings() {
         setExpanded(false);
     };
 
-    const openPanel = (toggle) => {
-        activeToggle = toggle || getActiveToggle(toggles);
-        syncPanel();
+    const openPanel = () => {
+        syncPanelValues();
         panel.hidden = false;
         setExpanded(true);
-        positionSettingsPanel(panel, activeToggle);
     };
 
     toggles.forEach(toggle => {
@@ -159,7 +132,7 @@ function bindUiScaleSettings() {
         toggle.dataset.bound = '1';
         toggle.addEventListener('click', (e) => {
             e.stopPropagation();
-            if (panel.hidden) openPanel(toggle);
+            if (panel.hidden) openPanel();
             else closePanel();
         });
     });
@@ -171,7 +144,7 @@ function bindUiScaleSettings() {
         slider.step = '0.05';
         slider.addEventListener('input', () => {
             setUserScale(parseFloat(slider.value));
-            syncPanel();
+            syncPanelValues();
         });
     }
 
@@ -179,7 +152,7 @@ function bindUiScaleSettings() {
         resetBtn.dataset.bound = '1';
         resetBtn.addEventListener('click', () => {
             setUserScale(USER_SCALE_DEFAULT);
-            syncPanel();
+            syncPanelValues();
         });
     }
 
@@ -193,12 +166,10 @@ function bindUiScaleSettings() {
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && !panel.hidden) closePanel();
         });
-        window.addEventListener('resize', () => positionSettingsPanel(panel, activeToggle));
-        window.addEventListener('scroll', () => positionSettingsPanel(panel, activeToggle), true);
     }
 
-    window.addEventListener('uiScaleChanged', syncPanel);
-    syncPanel();
+    window.addEventListener('uiScaleChanged', syncPanelValues);
+    syncPanelValues();
 }
 
 let resizeTimer = null;
@@ -216,11 +187,10 @@ export function initUiScale() {
     bindUiScaleSettings();
 }
 
-/** Early boot (inline in index.html) — sets zoom before first paint when possible */
+/** Early boot (inline in index.html) — CSS vars only */
 export function applyUiScaleEarly() {
     const auto = computeAutoScale();
     const user = getUserScale();
     const total = auto * user;
     syncScaleCssVars(auto, user, total);
-    document.documentElement.style.zoom = String(total);
 }

@@ -13,6 +13,7 @@
     padding: 0 20px;
     z-index: 2000;
     transition: all 0.3s ease;
+    zoom: 1 !important;
 }
 
 /* Add background and shadow when scrolled */
@@ -132,11 +133,12 @@
     user-select: none;
 }
 
-/* Panel is fixed to viewport so body zoom does not shift it while dragging the slider */
+/* Static viewport panel — never zoomed; never repositioned by JS */
 .ui-scale-settings-panel {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 68px;
+    right: 16px;
+    left: auto;
     width: 280px;
     padding: 14px 16px;
     background: var(--card-bg);
@@ -145,6 +147,7 @@
     box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
     z-index: 3500;
     box-sizing: border-box;
+    zoom: 1 !important;
     contain: layout style;
 }
 

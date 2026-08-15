@@ -3881,7 +3881,7 @@ html {
     --ui-user-scale: 1;
     --ui-scale: 1;
 }
-body {
+.ichacalc-scaled-root {
     zoom: var(--ui-scale);
 }
 

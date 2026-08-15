@@ -68,7 +68,6 @@
                 root.style.setProperty('--ui-auto-scale', String(auto));
                 root.style.setProperty('--ui-user-scale', String(user));
                 root.style.setProperty('--ui-scale', String(total));
-                root.style.zoom = String(total);
             } catch (e) { /* ignore */ }
         })();
     </script>
@@ -299,6 +298,7 @@
         <button type="button" id="ui-scale-reset-btn" class="ui-scale-reset-btn">Reset to 100%</button>
     </div>
 
+    <div id="ichacalc-scaled-root" class="ichacalc-scaled-root">
     <!-- Class / race: left of main, in document flow (scrolls off with page; not inside gear card) -->
     <div class="app-scroll-layout">
     <aside class="class-race-sidebar" id="class-race-sidebar" aria-label="Class and race" data-selected-class="warrior" data-selected-race="human">
@@ -1225,6 +1225,7 @@
             </div>
         </div>
     </div>
+    </div><!-- /#ichacalc-scaled-root -->
 
     <!-- Service Worker Registration -->
     <script>

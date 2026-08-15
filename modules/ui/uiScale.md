@@ -24,13 +24,14 @@
 ## UI
 
 - **Settings control** in the top nav: bold white **UI** label in a gold-bordered `dropdown-btn` (after inbox when logged in; guest copy before login when logged out)
-- Panel is **`position: fixed`** and anchored to the active toggle via `positionSettingsPanel()` so it does not shift when `body` zoom changes during slider drag
+- Panel is **`position: fixed`** at `top: 68px; right: 16px` — **not zoomed** and **not repositioned** when scale changes
+- Zoom applies only to `#ichacalc-scaled-root` (main app content), not `html`/`body`/nav/panel
 - Effective / auto / manual scale shown in a fixed-height grid (no layout jump from text reflow)
 - Dispatches `uiScaleChanged` on apply; `app.js` repositions the item picker when scale changes
 
 ## CSS
 
-`style.css` sets `body { zoom: var(--ui-scale); }`. Legacy width-only media-query zoom rules were removed in favor of this module.
+`style.css` sets `.ichacalc-scaled-root { zoom: var(--ui-scale); }`. Top nav and settings panel stay at `zoom: 1`.
 
 ## Consumers
 
