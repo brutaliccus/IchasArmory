@@ -1060,6 +1060,7 @@ function resetFilters() {
     savedFilters.ilvlMax = REQ_LEVEL_MAX;
     savedFilters.instances = [];
     document.querySelectorAll('input.instance-filter-cb').forEach(cb => { cb.checked = false; });
+    updateInstanceFilterLabel();
 
     // Reset sort buttons
     sortByDpsActive = false;
@@ -1117,6 +1118,11 @@ function resetFilters() {
 /** Minimum gap from viewport left / top */
 const ITEM_PICKER_MARGIN_LEFT = 12;
 const ITEM_PICKER_MARGIN_TOP = 12;
+
+function getItemPickerMarginTop() {
+    const scale = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--ui-scale')) || 1;
+    return Math.max(ITEM_PICKER_MARGIN_TOP, 8 / scale);
+}
 /** Visible breathing room above the browser chrome / bottom edge */
 const ITEM_PICKER_MARGIN_BOTTOM = 28;
 /** Fallback gap from viewport right when right gear column is missing */
@@ -1263,8 +1269,8 @@ export function positionItemPickerPanel(anchorEl) {
         if (top + h > vh - ITEM_PICKER_MARGIN_BOTTOM) {
             top = vh - h - ITEM_PICKER_MARGIN_BOTTOM;
         }
-        if (top < ITEM_PICKER_MARGIN_TOP) {
-            top = ITEM_PICKER_MARGIN_TOP;
+        if (top < getItemPickerMarginTop()) {
+            top = getItemPickerMarginTop();
         }
 
         panel.style.left = `${Math.round(left)}px`;
@@ -1279,8 +1285,8 @@ export function positionItemPickerPanel(anchorEl) {
         if (top + h > vh - ITEM_PICKER_MARGIN_BOTTOM) {
             top = vh - h - ITEM_PICKER_MARGIN_BOTTOM;
         }
-        if (top < ITEM_PICKER_MARGIN_TOP) {
-            top = ITEM_PICKER_MARGIN_TOP;
+        if (top < getItemPickerMarginTop()) {
+            top = getItemPickerMarginTop();
         }
         panel.style.left = `${left}px`;
         panel.style.top = `${top}px`;
@@ -1300,45 +1306,56 @@ export function repositionItemPickerIfOpen() {
 
 let instanceFilterUiReady = false;
 
+const INSTANCE_FILTER_MENUS = [
+    { key: 'dungeons', menuId: 'instances-dungeons-dropdown', labelId: 'instance-filter-label-dungeons', title: 'Dungeons' },
+    { key: 'raids', menuId: 'instances-raids-dropdown', labelId: 'instance-filter-label-raids', title: 'Raids' },
+    { key: 'worldBosses', menuId: 'instances-worldbosses-dropdown', labelId: 'instance-filter-label-worldbosses', title: 'World Bosses' },
+    { key: 'other', menuId: 'instances-other-dropdown', labelId: 'instance-filter-label-other', title: 'Other' },
+];
+
+function updateInstanceFilterLabel() {
+    for (const { menuId, labelId, title } of INSTANCE_FILTER_MENUS) {
+        const label = document.getElementById(labelId);
+        const menu = document.getElementById(menuId);
+        if (!label || !menu) continue;
+        const count = menu.querySelectorAll('input.instance-filter-cb:checked').length;
+        label.textContent = count > 0 ? `${title} (${count})` : title;
+    }
+}
+
+function fillInstanceFilterMenu(menu, list) {
+    menu.innerHTML = '';
+    for (const inst of list) {
+        const id = `inst-filter-${inst.id}`;
+        const row = document.createElement('label');
+        row.innerHTML = `<input type="checkbox" class="instance-filter-cb" id="${id}" value="${inst.id}"><span>${inst.name}</span>`;
+        const cb = row.querySelector('input');
+        cb.checked = savedFilters.instances.includes(inst.id);
+        cb.addEventListener('change', () => {
+            updateInstanceFilterLabel();
+            document.dispatchEvent(new CustomEvent('filterChanged'));
+        });
+        menu.appendChild(row);
+    }
+}
+
 async function setupInstanceFilterUI() {
-    const host = document.getElementById('instance-filter-container');
-    if (!host) return;
     await ensureItemSourcesLoaded();
     if (instanceFilterUiReady) {
-        host.querySelectorAll('input.instance-filter-cb').forEach(cb => {
+        document.querySelectorAll('input.instance-filter-cb').forEach(cb => {
             cb.checked = savedFilters.instances.includes(cb.value);
         });
+        updateInstanceFilterLabel();
         return;
     }
     const groups = getInstanceFilterGroups();
-    const sections = [
-        { key: 'dungeons', title: 'Dungeons' },
-        { key: 'raids', title: 'Raids' },
-        { key: 'worldBosses', title: 'World Bosses' },
-        { key: 'other', title: 'Other' },
-    ];
-    host.innerHTML = '<div class="instance-filter-groups"></div>';
-    const grid = host.querySelector('.instance-filter-groups');
-    for (const { key, title } of sections) {
-        const list = groups[key] || [];
-        if (!list.length) continue;
-        const group = document.createElement('div');
-        group.className = 'instance-filter-group';
-        group.innerHTML = `<h5>${title}</h5>`;
-        for (const inst of list) {
-            const id = `inst-filter-${inst.id}`;
-            const label = document.createElement('label');
-            label.innerHTML = `<input type="checkbox" class="instance-filter-cb" id="${id}" value="${inst.id}"> ${inst.name}`;
-            const cb = label.querySelector('input');
-            cb.checked = savedFilters.instances.includes(inst.id);
-            cb.addEventListener('change', () => {
-                document.dispatchEvent(new CustomEvent('filterChanged'));
-            });
-            group.appendChild(label);
-        }
-        grid.appendChild(group);
+    for (const { key, menuId } of INSTANCE_FILTER_MENUS) {
+        const menu = document.getElementById(menuId);
+        if (!menu) continue;
+        fillInstanceFilterMenu(menu, groups[key] || []);
     }
     instanceFilterUiReady = true;
+    updateInstanceFilterLabel();
 }
 
 /**

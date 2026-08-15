@@ -1708,8 +1708,12 @@ input, select {
 /* --- Item picker (anchored panel, not centered modal) --- */
 .item-picker-root {
     position: fixed;
-    inset: 0;
-    z-index: 2000;
+    /* Clear the unscaled 60px top nav while this overlay lives inside zoomed root */
+    top: calc(60px / var(--ui-scale, 1));
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2100;
     display: none;
     pointer-events: none;
 }
@@ -1769,11 +1773,8 @@ input, select {
     overflow: hidden;
 }
 .item-picker-filters.modal-filters {
-    flex-shrink: 1;
-    min-height: 0;
-    max-height: min(42vh, 400px);
-    overflow-x: hidden;
-    overflow-y: auto;
+    flex-shrink: 0;
+    overflow: visible;
 }
 .item-picker-search {
     width: 100%;
@@ -1786,13 +1787,24 @@ input, select {
     border-radius: 8px;
     color: var(--text-color);
 }
-/* One row: search + armor|weapon + primary + secondary + defense + quality (equal sixths) */
+/* One row: search + armor|weapon + primary + secondary + defense + quality */
 .item-picker-filters-primary-row {
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 8px;
     margin-bottom: 10px;
     align-items: stretch;
+}
+.item-picker-instance-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 10px;
+    align-items: stretch;
+}
+.item-picker-instance-row .stat-dropdown-container {
+    min-width: 0;
+    position: relative;
 }
 .item-picker-search.item-picker-search--inline {
     margin-bottom: 0;
@@ -1813,18 +1825,40 @@ input, select {
     min-width: 0;
     flex: 1;
 }
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
     .item-picker-filters-primary-row {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
     .item-picker-search.item-picker-search--inline {
         grid-column: 1 / -1;
     }
+    .item-picker-instance-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 @media (max-width: 640px) {
     .item-picker-filters-primary-row {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+}
+.item-picker-panel .instance-filter-dropdown-menu {
+    min-width: 100%;
+    max-height: 220px;
+    overflow-y: auto;
+    z-index: 2200;
+}
+.instance-filter-section-title {
+    padding: 8px 12px 4px;
+    font-size: 0.72rem;
+    font-weight: bold;
+    color: #c9a227;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-top: 1px solid var(--border-color);
+}
+.instance-filter-dropdown-menu .instance-filter-section-title:first-child {
+    border-top: none;
+    padding-top: 4px;
 }
 .item-picker-dd-header.stat-dropdown-header {
     padding: 6px 8px;
@@ -2083,9 +2117,6 @@ input, select {
     .item-picker-panel {
         height: min(96vh, calc(100dvh - 8px));
         max-height: min(96vh, calc(100dvh - 8px));
-    }
-    .item-picker-filters.modal-filters {
-        max-height: min(36vh, 280px);
     }
     .item-picker-list.modal-item-list {
         min-height: 100px;

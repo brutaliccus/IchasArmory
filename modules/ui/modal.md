@@ -34,7 +34,7 @@ Opens the **anchored item picker** (not a centered fullscreen modal): `#item-mod
 - `anchorEl` (HTMLElement | null, optional): Gear slot frame; defaults to `document.getElementById('icon_frame_' + slotId)`
 
 **Filter UI:**
-1. **Primary row** (`.item-picker-filters-primary-row`): six equal columns — search (`#modal-search-input`, `.item-picker-search--inline`), **type** cell (`.item-picker-type-cell`: `#armor-type-container` *or* `#weapon-type-container` by slot), Primary, Secondary, Defensive, Quality. Below ~1100px width the grid goes to three columns with the search spanning full width; below ~640px, two columns.
+1. **Primary row** (`.item-picker-filters-primary-row`): six equal columns — search, **type**, Primary, Secondary, Defensive, Quality. Second row (`.item-picker-instance-row`): four compact checkbox dropdowns — Dungeons, Raids, World Bosses, Other (same UX as Quality).
 2. **Toolbar**: **min / max** required level — `.item-picker-req-axis` + dual-thumb range (`#ilvl-min-slider` / `#ilvl-max-slider`, 1–60), **Can equip** (`#can-equip-toggle`), **DPS** / **Tank** sort buttons (larger tap targets), **Reset**.
 
 **Panel layout (CSS):** `#item-modal-panel` is wider (`min(96vw, 1320px)`), height capped at `min(94vh, 100dvh - 16px)` with `overflow: hidden` so the flex column bounds correctly. Filters scroll inside `max-height: min(42vh, 400px)` when tall; `#modal-item-list` keeps at least **140px** height and scrolls. UI-wide scale is handled by `modules/ui/uiScale.js` (2560×1440 auto-fit + manual cog in top nav).
@@ -393,7 +393,7 @@ Each class can only wear certain armor types:
 
 ## Loot Source / Instance Filter
 
-Multiselect checkboxes in `#instance-filter-container` (grouped: Dungeons, Raids, World Bosses, Other). Data from `/data/loot/` via `modules/gear/itemSources.js`.
+Four compact **dropdowns** on `.item-picker-instance-row` (`#instances-dungeons-dropdown`, `#instances-raids-dropdown`, `#instances-worldbosses-dropdown`, `#instances-other-dropdown`). Open the header, check instances, close — menus are `max-height: 220px` with overflow scroll so they do not fill the screen. Labels show a count when filters are active (`Raids (2)`). Data from `/data/loot/` via `modules/gear/itemSources.js`.
 
 - **OR semantics**: item shown if any source matches a selected instance id
 - **Empty selection**: no instance filter (all items)

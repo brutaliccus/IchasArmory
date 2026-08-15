@@ -1076,6 +1076,36 @@
                             </div>
                         </div>
                     </div>
+                    <div class="item-picker-instance-row" id="instance-filter-container">
+                        <div class="stat-dropdown-container">
+                            <div class="stat-dropdown-header item-picker-dd-header" data-dropdown="instances-dungeons">
+                                <span id="instance-filter-label-dungeons">Dungeons</span>
+                                <span class="dropdown-arrow">▼</span>
+                            </div>
+                            <div class="stat-dropdown-menu instance-filter-dropdown-menu" id="instances-dungeons-dropdown" style="display: none;" aria-label="Dungeon filter"></div>
+                        </div>
+                        <div class="stat-dropdown-container">
+                            <div class="stat-dropdown-header item-picker-dd-header" data-dropdown="instances-raids">
+                                <span id="instance-filter-label-raids">Raids</span>
+                                <span class="dropdown-arrow">▼</span>
+                            </div>
+                            <div class="stat-dropdown-menu instance-filter-dropdown-menu" id="instances-raids-dropdown" style="display: none;" aria-label="Raid filter"></div>
+                        </div>
+                        <div class="stat-dropdown-container">
+                            <div class="stat-dropdown-header item-picker-dd-header" data-dropdown="instances-worldbosses">
+                                <span id="instance-filter-label-worldbosses">World Bosses</span>
+                                <span class="dropdown-arrow">▼</span>
+                            </div>
+                            <div class="stat-dropdown-menu instance-filter-dropdown-menu" id="instances-worldbosses-dropdown" style="display: none;" aria-label="World boss filter"></div>
+                        </div>
+                        <div class="stat-dropdown-container">
+                            <div class="stat-dropdown-header item-picker-dd-header" data-dropdown="instances-other">
+                                <span id="instance-filter-label-other">Other</span>
+                                <span class="dropdown-arrow">▼</span>
+                            </div>
+                            <div class="stat-dropdown-menu instance-filter-dropdown-menu" id="instances-other-dropdown" style="display: none;" aria-label="Other source filter"></div>
+                        </div>
+                    </div>
                     <div class="item-picker-toolbar">
                         <div class="item-picker-req-level">
                             <div class="item-picker-req-axis" aria-hidden="true">
@@ -1108,7 +1138,6 @@
                         </div>
                         <button type="button" id="reset-filters-btn" class="item-picker-reset-btn">Reset</button>
                     </div>
-                    <div class="item-picker-instance-filter" id="instance-filter-container" aria-label="Loot source filter"></div>
                 </div>
                 <div id="modal-item-list" class="modal-item-list item-picker-list"></div>
             </div>

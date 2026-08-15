@@ -254,7 +254,7 @@
     max-width: none;
     margin: 0;
     box-sizing: border-box;
-    padding-top: 60px;
+    padding-top: calc(60px / var(--ui-scale, 1));
 }
 
 .main-content {
@@ -594,7 +594,7 @@
     }
 
     .app-scroll-layout {
-        padding-top: 70px; /* Extra padding for wrapped nav */
+        padding-top: calc(70px / var(--ui-scale, 1)); /* Extra padding for wrapped nav */
     }
 
     .main-content {
