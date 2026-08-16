@@ -7,6 +7,7 @@
 **File Size:** 3,888 lines of code
 **Type:** ES6 Module (uses import/export)
 **Dependencies:** 22 imported modules
+**Vite entry:** `index.html` must include `<script type="module" src="/app.js"></script>` before `</body>`. Without it, `vite build` emits CSS-only `dist/` and the site never loads.
 
 ---
 
