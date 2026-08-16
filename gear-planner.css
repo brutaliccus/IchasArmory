@@ -600,6 +600,19 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     border-radius: 4px;
 }
 
+.gp-name-enchant {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    min-width: 0;
+    flex: 0 1 auto;
+}
+
+.gp-slot-card--right .gp-name-enchant {
+    margin-left: auto;
+    flex-direction: row-reverse;
+}
+
 .gp-enchant-chrome {
     display: flex;
     align-items: center;
@@ -679,7 +692,7 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
 }
 
 .gp-item-meta {
-    flex: 1;
+    flex: 0 1 auto;
     min-width: 0;
 }
 
@@ -709,7 +722,7 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
 }
 
 .gp-empty-label {
-    flex: 1;
+    flex: 0 1 auto;
     font-size: 0.85rem;
 }
 

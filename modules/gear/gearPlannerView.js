@@ -1354,12 +1354,14 @@ function renderSlotCard(slotId, side) {
     const showEnchant = gpSlotShowsEnchant(slotId, primaryItem);
     const enchantChrome = showEnchant ? gpEnchantChromeHtml(slotId, side) : '';
 
+    const nameEnchant = `<div class="gp-name-enchant">${empty
+        ? `<span class="gp-empty-label">${escapeHtml(label)}</span>`
+        : renderItemMeta(primaryItem)}${enchantChrome}</div>`;
     const primaryInner = empty
-        ? `<div class="gp-empty-primary"><span class="gp-empty-label">${escapeHtml(label)}</span>${enchantChrome}</div>`
+        ? `<div class="gp-empty-primary">${nameEnchant}</div>`
         : `<div class="gp-primary-row" data-slot="${slotId}" data-item-id="${primaryItem.id}" data-gp-role="primary">
                 <span class="gp-slot-icon-frame gp-drag-handle gp-item-tip" draggable="${editMode ? 'true' : 'false'}" data-slot="${slotId}" data-gp-role="primary" data-item-id="${primaryItem.id}">${itemIconHtml(primaryItem)}</span>
-                ${renderItemMeta(primaryItem)}
-                ${enchantChrome}
+                ${nameEnchant}
                 <button type="button" class="gp-toggle-alts" data-slot="${slotId}" aria-expanded="${expanded}" title="Alternatives">▾</button>
                 <button type="button" class="gp-clear-primary" data-slot="${slotId}" title="Clear"${editMode ? '' : ' hidden'}>×</button>
            </div>`;
