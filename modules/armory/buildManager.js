@@ -463,7 +463,9 @@ export async function importGearPlanFromURL({ setGearPlan, setAppMode }) {
             window.notify?.error('Failed to load gear plan', 5000, 'Gear Planner');
             return;
         }
-        setGearPlan(result.plan);
+        // Await setGearPlan so itemLoader + loot sources resolve before first paint
+        // (avoids "Item #####" / empty locations until edit mode re-renders).
+        await Promise.resolve(setGearPlan(result.plan));
         if (typeof setAppMode === 'function') setAppMode('gearPlanner');
         window.notify?.success('Gear plan loaded!', 3000, 'Gear Planner');
     } catch (error) {

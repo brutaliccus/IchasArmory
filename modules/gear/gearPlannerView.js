@@ -33,6 +33,7 @@ import {
     formatItemSourceLine,
     getInstanceFilterGroups,
 } from './itemSources.js';
+import { itemLoader } from './itemLoader.js';
 
 const LEFT_SLOTS = ['head', 'neck', 'shoulder', 'back', 'chest', 'wrist', 'mainhand', 'offhand'];
 const RIGHT_SLOTS = ['hands', 'waist', 'legs', 'feet', 'ring1', 'ring2', 'trinket1', 'trinket2', 'ranged'];
@@ -111,8 +112,49 @@ export function initGearPlannerView(cbs) {
     wireRaceDrawer();
     wireBuffsView();
     wireSaveOverwriteDialog();
-    ensureItemSourcesLoaded().then(() => renderGearPlanner()).catch(() => {});
-    renderGearPlanner();
+    refreshGearPlannerWhenItemsReady();
+}
+
+/**
+ * Slot JSON files needed so getItemById resolves plan primaries/alts.
+ * Offhand may hold 1H weapons that only exist in mainhand.json.
+ */
+function slotsNeededForPlan(plan) {
+    const needed = new Set();
+    for (const slotId of GEAR_PLAN_SLOTS) {
+        const slot = plan?.slots?.[slotId];
+        if (!slot) continue;
+        const hasItems = slot.primary != null || (slot.alternatives?.length > 0);
+        if (!hasItems) continue;
+        needed.add(slotId);
+        if (slotId === 'offhand') needed.add('mainhand');
+    }
+    return [...needed];
+}
+
+/** Await loot sources + itemLoader caches for occupied plan slots. */
+export async function ensureGearPlanItemsReady(plan = currentPlan) {
+    const slots = slotsNeededForPlan(plan);
+    await Promise.all([
+        ensureItemSourcesLoaded(),
+        ...slots.map((slotId) => itemLoader.loadSlot(slotId)),
+    ]);
+}
+
+let itemsReadyToken = 0;
+
+/** Load plan item data then render (locations + modified stats included). */
+function refreshGearPlannerWhenItemsReady(plan = currentPlan) {
+    const token = ++itemsReadyToken;
+    return ensureGearPlanItemsReady(plan)
+        .then(() => {
+            if (token !== itemsReadyToken) return;
+            renderGearPlanner();
+        })
+        .catch((err) => {
+            console.error('[Gear Planner] Item preload failed', err);
+            if (token === itemsReadyToken) renderGearPlanner();
+        });
 }
 
 export function getCurrentGearPlan() {
@@ -124,7 +166,7 @@ export function setGearPlan(plan) {
     currentPlan = getGearPlanData(plan);
     editMode = !currentPlan.id;
     persistSession();
-    renderGearPlanner();
+    return refreshGearPlannerWhenItemsReady(currentPlan);
 }
 
 export function handleGearPlanItemSelected(item) {
@@ -1728,8 +1770,8 @@ function loadPlanIntoView(plan) {
     if (plan.id) currentPlan.id = plan.id;
     editMode = false;
     persistSession();
-    renderGearPlanner();
     closeGearPlansDropdown();
+    return refreshGearPlannerWhenItemsReady(currentPlan);
 }
 
 async function openLoadDropdown() {
