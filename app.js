@@ -4401,7 +4401,7 @@ async function init() {
     initBuildTabs();
     scheduleClassRaceSidebarTopSync();
 
-    // Run onboarding for first-time visitors (skipped if URL has ?b= or ?build= param).
+    // Run onboarding for first-time visitors (skipped if URL has ?b= / ?build= / ?gp= or path /gear-planner / /gp).
     // Returns true if onboarding finished the wizard OR the default cloud build was applied (skip handleClassChange in both cases).
     const onboardingRan = await runOnboarding({
         getCurrentClass: () => getCurrentClass(),

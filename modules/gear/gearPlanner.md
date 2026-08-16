@@ -31,7 +31,7 @@ Items and per-slot **primary enchants** (`enchant` = index into `enchantDatabase
 | `ichacalc_gp_tankStatWeights` | Tank EHP/mit weights generated on the Gear Planner tab |
 | `ichacalc_gp_statWeights` / `_aoe` | Shaman DPS/TPS weights generated on the Gear Planner tab |
 
-Cloud saves: `user.gearPlans[]` via profiles API (see `profiles.md`).
+Cloud saves: `user.gearPlans[]` via profiles API (see `profiles.md`). Guests are not gated: Save uses `loadLocalGearPlans` / `saveLocalGearPlans` when `profileManager.user` is absent.
 
 ## Exports
 

@@ -21,9 +21,11 @@ export async function runOnboarding(deps) {
 
     // --- Skip conditions ---
 
-    // 1. Always skip for share links (?b= or ?build=)
+    // 1. Always skip for share links (?b=, ?build=, ?gp=) and Gear Planner routes
     const params = new URLSearchParams(location.search);
-    if (params.has('b') || params.has('build')) return false;
+    if (params.has('b') || params.has('build') || params.has('gp')) return false;
+    const path = (location.pathname || '/').replace(/\/+$/, '') || '/';
+    if (path === '/gear-planner' || path === '/gp') return false;
 
     // 2. Logged-in Discord users with a default build: load it, skip onboarding (return true so init does not run handleClassChange and wipe the load).
     let discordUser = null;
@@ -235,6 +237,9 @@ export async function runOnboarding(deps) {
             }
         });
         document.getElementById('onboarding-skip-import-btn').addEventListener('click', () => resolve());
+        document.getElementById('onboarding-gear-planner-btn')?.addEventListener('click', () => {
+            window.location.assign('/gear-planner');
+        });
     });
 
     // STEP 2 (conditional): Class selection — only for custom chars (armory import sets class automatically)
