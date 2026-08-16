@@ -7,7 +7,7 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 - `#gp-locations-sidebar` is **outside** `#ichacalc-scaled-root`: `position: fixed; left: 0; top: 60px` (below the unscaled nav), docked to the **screen** left. Hidden unless `body[data-app-mode="gearPlanner"]`.
 - `#gear-planner-shell` is viewport-centered (`margin: 0 auto`); the locations dock overlays the left and does **not** pad the shell by sidebar width.
 - Nested item names use quality classes (`span.q0`–`q5`) from `getItemById`.
-- Built from the current plan’s **primary and alternative** item IDs via `getPreferredSourcesForItem` (`itemSources.js`). Unique dungeon/raid/worldboss instances (not Collections when an instance source exists). Nested indented item names under each location; click opens octowow DB. Hover highlights **item name text** only (`.gp-item-name--location-hl`).
+- Built from the current plan’s **primary and alternative** item IDs via `getPreferredSourcesForItem` (`itemSources.js`). Unique dungeon/raid/worldboss instances (not Collections when an instance source exists). Nested indented item names under each location; click opens octowow DB. Hovering a location adds `.gp-location-hovering` on `#gear-planner-shell`, `.gp-row--location-hl` on matching primary/alt rows, and `.gp-item-name--location-hl` on the inner `.gp-item-name-text` span only (not the card).
 - Dungeons follow the same high-level-first order as the item-modal instance filter (`getInstanceFilterGroups`). Other groups are alphabetical.
 - `renderLocationsSidebar()` runs on every `renderGearPlanner()` so add/remove/clear updates live. Empty plan: “No locations yet”.
 - Larger type in `gear-planner.css` (~1rem instance names, gold headings); independent scroll if the list is long.

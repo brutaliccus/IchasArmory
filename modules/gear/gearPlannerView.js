@@ -358,6 +358,8 @@ function renderLocationsSidebar() {
 
 function clearLocationHighlights() {
     document.querySelectorAll('.gp-item-name--location-hl').forEach(el => el.classList.remove('gp-item-name--location-hl'));
+    document.querySelectorAll('.gp-row--location-hl').forEach(el => el.classList.remove('gp-row--location-hl'));
+    document.getElementById('gear-planner-shell')?.classList.remove('gp-location-hovering');
 }
 
 function itemMatchesLocationHover(itemId, instanceId, instanceName) {
@@ -373,10 +375,12 @@ function itemMatchesLocationHover(itemId, instanceId, instanceName) {
 
 function applyLocationHighlights(instanceId, instanceName) {
     clearLocationHighlights();
+    document.getElementById('gear-planner-shell')?.classList.add('gp-location-hovering');
     document.querySelectorAll('#gear-planner-shell .gp-primary-row[data-item-id], #gear-planner-shell .gp-alt-row[data-item-id]').forEach(el => {
         const itemId = Number(el.dataset.itemId);
         if (!itemId || !itemMatchesLocationHover(itemId, instanceId, instanceName)) return;
-        el.querySelector('.gp-item-name')?.classList.add('gp-item-name--location-hl');
+        el.classList.add('gp-row--location-hl');
+        el.querySelector('.gp-item-name-text')?.classList.add('gp-item-name--location-hl');
     });
 }
 
@@ -411,7 +415,7 @@ function renderItemMeta(item) {
     const q = item.quality ?? 0;
     const source = formatPlannerSourceLine(item.id);
     return `<div class="gp-item-meta">
-        <div class="gp-item-name q${q}">${escapeHtml(item.name || `Item ${item.id}`)}</div>
+        <div class="gp-item-name q${q}"><span class="gp-item-name-text">${escapeHtml(item.name || `Item ${item.id}`)}</span></div>
         ${source ? `<div class="gp-item-source">${escapeHtml(source)}</div>` : ''}
     </div>`;
 }
@@ -473,7 +477,7 @@ function renderSlotCard(slotId, side) {
         return `<div class="gp-alt-row" data-slot="${slotId}" data-gp-role="alt" data-alt-index="${i}" data-item-id="${id}">
             <div class="gp-alt-icon gp-drag-handle gp-item-tip" draggable="${editMode ? 'true' : 'false'}" data-slot="${slotId}" data-gp-role="alt" data-alt-index="${i}" data-item-id="${id}">${icon}</div>
             <div class="gp-item-meta">
-                <div class="gp-item-name q${q}">${escapeHtml(name)}</div>
+                <div class="gp-item-name q${q}"><span class="gp-item-name-text">${escapeHtml(name)}</span></div>
                 ${source ? `<div class="gp-item-source">${escapeHtml(source)}</div>` : ''}
             </div>
             <button type="button" class="gp-remove-alt" data-slot="${slotId}" data-alt-index="${i}" title="Remove"${editMode ? '' : ' hidden'}>×</button>
