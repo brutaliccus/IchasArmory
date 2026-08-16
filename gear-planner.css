@@ -600,38 +600,53 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     border-radius: 4px;
 }
 
-.gp-enchant-btn.enchant-btn {
-    position: absolute;
-    top: -5px;
-    width: 18px;
-    height: 18px;
+.gp-enchant-chrome {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 0 0 auto;
+    min-width: 0;
+    pointer-events: none;
+}
+
+.gp-slot-card--right .gp-enchant-chrome {
+    flex-direction: row-reverse;
+}
+
+.gp-enchant-chrome .gp-enchant-btn.enchant-btn {
+    pointer-events: all;
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    width: 24px;
+    height: 24px;
     z-index: 5;
     transform: none;
+}
+
+.gp-enchant-chrome .gp-enchant-btn.enchant-btn:hover {
+    transform: scale(1.15);
+}
+
+.gp-enchant-chrome .gp-enchant-btn.is-enchanted {
+    background-image: url('https://wow.zamimg.com/images/wow/icons/medium/inv_scroll_05.jpg');
+    border-color: #ffd700;
+    box-shadow: 0 0 8px #ffd700;
     filter: none;
     opacity: 1;
-    background-image: url('https://wow.zamimg.com/images/wow/icons/medium/inv_scroll_05.jpg');
-    background-size: cover;
-    border: 1px solid #6a6040;
-    box-shadow: 0 0 4px #000;
 }
 
-.gp-enchant-btn.enchant-btn:hover {
-    transform: scale(1.12);
-}
-
-.gp-enchant-btn[data-side="left"] {
-    left: -5px;
-    right: auto;
-}
-
-.gp-enchant-btn[data-side="right"] {
-    right: -5px;
-    left: auto;
-}
-
-.gp-enchant-btn.is-enchanted {
-    border-color: #ffd700;
-    box-shadow: 0 0 6px #ffd700;
+.gp-enchant-name {
+    color: #ffd700;
+    font-size: 11px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px #000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+    opacity: 1;
 }
 
 .gp-drag-handle {

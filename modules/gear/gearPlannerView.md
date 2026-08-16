@@ -27,7 +27,7 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 
 - `#gear-planner-shell`, `#gp-locations-sidebar`, `#gp-class-sidebar`, `#gp-slots-left`, `#gp-slots-right`
 - Header: `#gp-plan-name` (left, slick fade borders); icon buttons Save / **Edit mode** / **My Gear Plans** dropdown (`#gear-plans-dropdown`, same classes as My Builds: share/delete/favorite) / Share
-- `#gp-quick-sim-wrap`: dismissible info banner only (no action buttons). Dismiss X stores `ichacalc_gp_sim_hint_dismissed` in localStorage
+- `#gp-quick-sim-btn`: Shaman-only header icon (sword SVG, `.gp-btn-icon`, same size as other GP header icons). Result text in `#gp-quick-sim-result`. `#gp-quick-sim-wrap`: dismissible info banner only. Dismiss X stores `ichacalc_gp_sim_hint_dismissed` in localStorage
 - Class drawer: `#gp-cr-drawer-class` uses `.is-open` (same as character `#cr-drawer-class`) so `#gp-class-drawer-toggle` expands `#gp-class-drawer-panel`
 
 ## Edit mode
@@ -48,7 +48,7 @@ Each card:
 - Collapsed by default (`plan.ui.collapsed[slotId] !== false`); session-persisted
 - Icon on the **outer** edge; name + `Zone: Dungeon – Boss` source line
 - Middle-click icon opens `https://octowow.st/db/?item=` (same as item modal)
-- Enchantable slots (same as Character Planner `getEnchantableSlots`): a small **scroll** `.gp-enchant-btn` sits on the **item icon** when filled, or on the empty-slot **add** icon. Top-left on left-column cards, top-right on right-column. Click opens the existing enchant picker with the plan primary as `itemOverride`. Stored as `slots[slot].enchant` (database index). Included in Modified stats and Shaman quick sim (snapshot/restore Character Planner enchants).
+- Enchantable slots (same as Character Planner `getEnchantableSlots`): `.gp-enchant-chrome` (`.enchant-btn` + optional gold `.gp-enchant-name`) sits on the **name/text column**, not the paperdoll add icon. Left column: inner end of the name line (scroll, then name toward center). Right column: inner start of the name line (name toward center, then scroll). Empty uses the desaturated Character Planner scroll; selected uses full-color gold glow. Click opens the existing enchant picker with the plan primary as `itemOverride`. Stored as `slots[slot].enchant` (database index). Included in Modified stats and Shaman quick sim (snapshot/restore Character Planner enchants).
 - Click card or chevron to expand alternatives (icon, name, source; remove/add only in edit mode)
 - Right-column cards reverse the **primary/alt rows** so the icon stays on the outer edge; `.gp-alts-panel` stays a column so **Add alternative** is full-width under the alt list (not beside the primary X)
 - Item tooltips (`#item-tooltip` via `createItemTooltipHTML` / `positionItemTooltipOnIcon`) fire **only on the item icon** (`.gp-item-tip` on `.gp-slot-icon-frame` / `.gp-alt-icon`). Left-column cards grow left+down from the icon’s top-left; right-column cards grow right+down from top-right. They do not follow the cursor.

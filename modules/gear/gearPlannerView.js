@@ -903,9 +903,25 @@ function gpSlotShowsEnchant(slotId, primaryItem) {
     return true;
 }
 
-function gpEnchantButtonHtml(slotId, side, enchanted) {
+function gpEnchantDisplayName(slotId) {
+    const idx = currentPlan.slots[slotId]?.enchant;
+    if (idx == null) return '';
+    const enchant = enchantDatabase[slotId]?.[idx];
+    if (!enchant || enchant.name === 'None') return '';
+    return enchant.name;
+}
+
+function gpEnchantChromeHtml(slotId, side) {
+    const name = gpEnchantDisplayName(slotId);
+    const enchanted = !!name;
     const title = enchanted ? 'Change enchant' : 'Select enchant';
-    return `<button type="button" class="gp-enchant-btn enchant-btn${enchanted ? ' is-enchanted' : ''}" data-slot="${slotId}" data-side="${side}" title="${escapeHtml(title)}" aria-label="${escapeHtml(title)}"></button>`;
+    const nameHtml = enchanted
+        ? `<span class="gp-enchant-name">${escapeHtml(name)}</span>`
+        : '';
+    return `<span class="gp-enchant-chrome${enchanted ? ' is-enchanted' : ''}" data-side="${side}">
+        <button type="button" class="gp-enchant-btn enchant-btn${enchanted ? ' is-enchanted' : ''}" data-slot="${slotId}" data-side="${side}" title="${escapeHtml(title)}" aria-label="${escapeHtml(title)}"></button>
+        ${nameHtml}
+    </span>`;
 }
 
 function aggregatePrimaryGearStats(plan) {
@@ -1298,15 +1314,11 @@ function gpSlotAddButtonHtml(slotId, hasPrimary, side) {
     const url = getEmptySlotPlaceholderUrl(slotId, getGpClassId());
     const label = SLOT_LABELS[slotId] || slotId;
     const title = hasPrimary ? `Add ${label} alternative` : `Add ${label}`;
-    const showEnchant = !hasPrimary && gpSlotShowsEnchant(slotId, null);
-    const enchanted = currentPlan.slots[slotId]?.enchant != null;
-    const enchantBtn = showEnchant ? gpEnchantButtonHtml(slotId, side, enchanted) : '';
     return `<div class="gp-slot-add-wrap">
         <button type="button" class="gp-slot-add" data-slot="${slotId}" title="${escapeHtml(title)}" aria-label="${escapeHtml(title)}"${editMode ? '' : ' disabled'}>
             <img src="${url}" alt="">
             <span class="gp-slot-add-plus" aria-hidden="true">+</span>
         </button>
-        ${enchantBtn}
     </div>`;
 }
 
@@ -1339,15 +1351,15 @@ function renderSlotCard(slotId, side) {
         </div>`;
     }).join('');
 
-    const enchanted = slot?.enchant != null;
-    const showEnchantOnIcon = !empty && gpSlotShowsEnchant(slotId, primaryItem);
-    const enchantOnIcon = showEnchantOnIcon ? gpEnchantButtonHtml(slotId, side, enchanted) : '';
+    const showEnchant = gpSlotShowsEnchant(slotId, primaryItem);
+    const enchantChrome = showEnchant ? gpEnchantChromeHtml(slotId, side) : '';
 
     const primaryInner = empty
-        ? `<div class="gp-empty-primary"><span class="gp-empty-label">${escapeHtml(label)}</span></div>`
+        ? `<div class="gp-empty-primary"><span class="gp-empty-label">${escapeHtml(label)}</span>${enchantChrome}</div>`
         : `<div class="gp-primary-row" data-slot="${slotId}" data-item-id="${primaryItem.id}" data-gp-role="primary">
-                <span class="gp-slot-icon-frame gp-drag-handle gp-item-tip" draggable="${editMode ? 'true' : 'false'}" data-slot="${slotId}" data-gp-role="primary" data-item-id="${primaryItem.id}">${itemIconHtml(primaryItem)}${enchantOnIcon}</span>
+                <span class="gp-slot-icon-frame gp-drag-handle gp-item-tip" draggable="${editMode ? 'true' : 'false'}" data-slot="${slotId}" data-gp-role="primary" data-item-id="${primaryItem.id}">${itemIconHtml(primaryItem)}</span>
                 ${renderItemMeta(primaryItem)}
+                ${enchantChrome}
                 <button type="button" class="gp-toggle-alts" data-slot="${slotId}" aria-expanded="${expanded}" title="Alternatives">▾</button>
                 <button type="button" class="gp-clear-primary" data-slot="${slotId}" title="Clear"${editMode ? '' : ' hidden'}>×</button>
            </div>`;
@@ -1779,7 +1791,7 @@ async function shareCurrentPlan() {
 async function runQuickSim() {
     const resultEl = document.getElementById('gp-quick-sim-result');
     const btn = document.getElementById('gp-quick-sim-btn');
-    if (btn) { btn.disabled = true; btn.textContent = 'Running…'; }
+    if (btn) { btn.disabled = true; btn.setAttribute('aria-busy', 'true'); }
     try {
         const result = await runGearPlanQuickSim(getGearPlanData(currentPlan));
         if (resultEl) {
@@ -1788,6 +1800,6 @@ async function runQuickSim() {
                 : (result?.error || 'Sim failed');
         }
     } finally {
-        if (btn) { btn.disabled = false; btn.textContent = 'Quick DPS Sim'; }
+        if (btn) { btn.disabled = false; btn.removeAttribute('aria-busy'); }
     }
 }
