@@ -8,6 +8,37 @@ import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, parseSpellStrikeSourcesF
 
 // Icon constants
 export const PLACEHOLDER_ICON_URL = 'https://wow.zamimg.com/images/wow/icons/large/inventoryslot_';
+const RELIC_CLASSES = new Set(['druid', 'shaman', 'paladin']);
+const RELIC_PLACEHOLDER_URL = 'https://wow.zamimg.com/images/wow/icons/large/inventoryslot_relic.jpg';
+
+/** Empty paperdoll icon URL. Druid/shaman/paladin ranged uses relic, not bow. */
+export function getEmptySlotPlaceholderUrl(slotId, classId) {
+    if (slotId === 'ranged' && RELIC_CLASSES.has(classId)) {
+        return RELIC_PLACEHOLDER_URL;
+    }
+    const iconFileName = slotIconMap[slotId];
+    return iconFileName ? `${PLACEHOLDER_ICON_URL}${iconFileName}.jpg` : '';
+}
+
+function resolvePlaceholderClassId(classId) {
+    if (classId) return classId;
+    return document.getElementById('class-race-sidebar')?.dataset?.selectedClass || 'warrior';
+}
+
+/** Refresh empty character-planner slot icons (skip slots that already have an item). */
+export function refreshEmptySlotPlaceholders(classId) {
+    const cls = resolvePlaceholderClassId(classId);
+    document.querySelectorAll('.icon-image-container').forEach(container => {
+        const frame = container.parentElement;
+        const slotId = frame?.id?.replace('icon_frame_', '');
+        if (!slotId || equippedGear[slotId]) return;
+        const url = getEmptySlotPlaceholderUrl(slotId, cls);
+        if (url) {
+            container.innerHTML = `<img src="${url}" class="placeholder-icon" alt="${slotId}">`;
+        }
+    });
+}
+
 export const slotIconMap = {
     head: 'head',
     neck: 'neck',
@@ -222,8 +253,10 @@ export function clearItem(slotId) {
     const iconFileName = slotIconMap[slotId];
 
     if (imgContainer && iconFileName) {
-        const url = `${PLACEHOLDER_ICON_URL}${iconFileName}.jpg`;
-        imgContainer.innerHTML = `<img src="${url}" class="placeholder-icon" alt="${slotId}">`;
+        const url = getEmptySlotPlaceholderUrl(slotId, resolvePlaceholderClassId());
+        imgContainer.innerHTML = url
+            ? `<img src="${url}" class="placeholder-icon" alt="${slotId}">`
+            : '';
     } else if (imgContainer) {
         imgContainer.innerHTML = '';
     }

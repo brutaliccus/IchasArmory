@@ -237,8 +237,9 @@
     border-color: var(--primary-color);
 }
 
-/* Logged-out guest trigger: hide when user menu is visible */
-.user-controls:has(#user-info:not([style*="display: none"])) .planner-mode-toggle--guest {
+/* Logged-out guest triggers: hide when user menu is visible (avoid duplicate UI / planners) */
+.user-controls:has(#user-info:not([style*="display: none"])) .planner-mode-toggle--guest,
+.user-controls:has(#user-info:not([style*="display: none"])) .ui-scale-settings-wrap--guest {
     display: none;
 }
 

@@ -3,7 +3,7 @@
 import './notifications.js';
 import './profiles.js';
 
-import { getItemsForSlot, getItemById, generateGearSlots, getGearStats, getEnchantStats, equipItem, clearItem, clearAllItems, updateStatDisplay, getCurrentlyEquippedItem, ICON_BASE_URL, ICON_BASE_URL_BACKUP, PLACEHOLDER_ICON_URL, slotIconMap, getEnchantableSlots, applyEnchant, updateEnchantDisplay, getAppliedEnchant, createIconImage, getEquippedGear, getEquippedGearObjects, setEquippedGear, getSelectedEnchants, setSelectedEnchants, isRangedWeaponEnchantable, getRangedWeaponType, getMeleeWeaponType, getAllSpellStrikeSources } from './modules/gear/gear.js';
+import { getItemsForSlot, getItemById, generateGearSlots, getGearStats, getEnchantStats, equipItem, clearItem, clearAllItems, updateStatDisplay, getCurrentlyEquippedItem, ICON_BASE_URL, ICON_BASE_URL_BACKUP, PLACEHOLDER_ICON_URL, slotIconMap, refreshEmptySlotPlaceholders, getEnchantableSlots, applyEnchant, updateEnchantDisplay, getAppliedEnchant, createIconImage, getEquippedGear, getEquippedGearObjects, setEquippedGear, getSelectedEnchants, setSelectedEnchants, isRangedWeaponEnchantable, getRangedWeaponType, getMeleeWeaponType, getAllSpellStrikeSources } from './modules/gear/gear.js';
 import { enchantDatabase } from './modules/gear/enchants.js';
 import { findEnchantIndexByEffectId } from './modules/gear/enchantEffectIds.js';
 import { generateBuffIcons, getActiveBuffs, handleBuffExclusivity, applyBuffListToDom, clearAllBuffsDebuffsInDom } from './modules/character/buffs.js';
@@ -1184,14 +1184,7 @@ function getRacePickerEntries(className) {
 }
 
 function generatePlaceholderIcons() {
-    document.querySelectorAll('.icon-image-container').forEach(container => {
-        const slotId = container.parentElement.id.replace('icon_frame_', '');
-        const iconFileName = slotIconMap[slotId];
-        if (iconFileName) {
-            const url = `${PLACEHOLDER_ICON_URL}${iconFileName}.jpg`;
-            container.innerHTML = `<img src="${url}" class="placeholder-icon" alt="${slotId}">`;
-        }
-    });
+    refreshEmptySlotPlaceholders(getCurrentClass());
 }
 
 function addEnchantButtons() {
@@ -1389,6 +1382,8 @@ async function handleClassChange(update = true) {
     if (shamanBuffConsumeTools) {
         shamanBuffConsumeTools.style.display = selectedClass === 'shaman' ? 'flex' : 'none';
     }
+
+    refreshEmptySlotPlaceholders(selectedClass);
 }
 
 /**

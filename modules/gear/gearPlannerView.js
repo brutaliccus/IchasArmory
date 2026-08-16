@@ -9,7 +9,7 @@ import {
     saveLocalGearPlans,
     applyGearPlanItemMove,
 } from './gearPlanner.js';
-import { ICON_BASE_URL } from './gear.js';
+import { ICON_BASE_URL, getEmptySlotPlaceholderUrl } from './gear.js';
 import { runGearPlanQuickSim } from '../shaman/dps.js';
 import { createItemTooltipHTML } from '../ui/tooltips.js';
 import { positionItemTooltipOnIcon } from '../ui/itemTooltipPosition.js';
@@ -202,7 +202,7 @@ function generateGpClassIcons() {
             persistSession();
             updateQuickSimVisibility();
             closeGpClassDrawer();
-            generateGpClassIcons();
+            renderGearPlanner();
         });
     });
 }
@@ -308,7 +308,9 @@ function collectLocationGroups(plan) {
         const itemName = item?.name || `Item ${itemId}`;
         if (!sources.length) {
             const entry = ensureEntry('other', '__other__', 'Other / Unknown');
-            if (!entry.items.some(i => i.id === itemId)) entry.items.push({ id: itemId, name: itemName });
+            if (!entry.items.some(i => i.id === itemId)) {
+                entry.items.push({ id: itemId, name: itemName, quality: item?.quality ?? 0 });
+            }
             continue;
         }
         for (const s of sources) {
@@ -316,7 +318,9 @@ function collectLocationGroups(plan) {
             const id = s.instanceId || s.instanceName || '__other__';
             const name = s.instanceName || s.tableTitle || id;
             const entry = ensureEntry(kind, id, name);
-            if (!entry.items.some(i => i.id === itemId)) entry.items.push({ id: itemId, name: itemName });
+            if (!entry.items.some(i => i.id === itemId)) {
+                entry.items.push({ id: itemId, name: itemName, quality: item?.quality ?? 0 });
+            }
         }
     }
     return LOCATION_KIND_ORDER
@@ -342,9 +346,10 @@ function renderLocationsSidebar() {
             <h4 class="gp-locations-group-heading">${escapeHtml(g.label)}</h4>
             <ul>${g.entries.map(e => `<li class="gp-location-entry" data-instance-id="${escapeHtml(e.id)}" data-instance-name="${escapeHtml(e.name)}">
                 <span class="gp-location-name">${escapeHtml(e.name)}</span>
-                <ul class="gp-location-items">${(e.items || []).map(it =>
-                    `<li class="gp-location-item" data-item-id="${it.id}">${escapeHtml(it.name)}</li>`
-                ).join('')}</ul>
+                <ul class="gp-location-items">${(e.items || []).map(it => {
+                    const q = it.quality ?? callbacks.getItemById?.(it.id)?.quality ?? 0;
+                    return `<li class="gp-location-item" data-item-id="${it.id}"><span class="q${q}">${escapeHtml(it.name)}</span></li>`;
+                }).join('')}</ul>
             </li>`).join('')}</ul>
         </div>`).join('');
     bindLocationHoverHighlights();
@@ -432,6 +437,20 @@ export function renderGearPlanner() {
     persistSession();
 }
 
+function getGpClassId() {
+    return currentPlan.class || document.getElementById('gp-class-sidebar')?.dataset.selectedClass || 'warrior';
+}
+
+function gpSlotAddButtonHtml(slotId, hasPrimary) {
+    const url = getEmptySlotPlaceholderUrl(slotId, getGpClassId());
+    const label = SLOT_LABELS[slotId] || slotId;
+    const title = hasPrimary ? `Add ${label} alternative` : `Add ${label}`;
+    return `<button type="button" class="gp-slot-add" data-slot="${slotId}" title="${escapeHtml(title)}" aria-label="${escapeHtml(title)}"${editMode ? '' : ' disabled'}>
+        <img src="${url}" alt="">
+        <span class="gp-slot-add-plus" aria-hidden="true">+</span>
+    </button>`;
+}
+
 function renderSlotCard(slotId, side) {
     if (!currentPlan.ui) currentPlan.ui = { collapsed: {} };
     if (!currentPlan.ui.collapsed) currentPlan.ui.collapsed = {};
@@ -462,15 +481,7 @@ function renderSlotCard(slotId, side) {
     }).join('');
 
     const primaryInner = empty
-        ? (editMode
-            ? `<button type="button" class="gp-empty-primary" data-slot="${slotId}">
-                <span class="gp-slot-icon-frame gp-slot-icon-frame--dashed"><span class="gp-slot-empty">+</span></span>
-                <span class="gp-empty-label">Add ${escapeHtml(label)}</span>
-           </button>`
-            : `<div class="gp-empty-primary">
-                <span class="gp-slot-icon-frame gp-slot-icon-frame--dashed"><span class="gp-slot-empty">+</span></span>
-                <span class="gp-empty-label">${escapeHtml(label)}</span>
-           </div>`)
+        ? `<div class="gp-empty-primary"><span class="gp-empty-label">${escapeHtml(label)}</span></div>`
         : `<div class="gp-primary-row" data-slot="${slotId}" data-item-id="${primaryItem.id}" data-gp-role="primary">
                 <span class="gp-slot-icon-frame gp-drag-handle gp-item-tip" draggable="${editMode ? 'true' : 'false'}" data-slot="${slotId}" data-gp-role="primary" data-item-id="${primaryItem.id}">${itemIconHtml(primaryItem)}</span>
                 ${renderItemMeta(primaryItem)}
@@ -478,14 +489,17 @@ function renderSlotCard(slotId, side) {
                 <button type="button" class="gp-clear-primary" data-slot="${slotId}" title="Clear"${editMode ? '' : ' hidden'}>×</button>
            </div>`;
 
-    return `<article class="gp-slot-card gp-slot-card--${side}${empty ? ' gp-slot-card--empty' : ''}${expanded ? ' gp-slot-card--expanded' : ''}"
+    const card = `<article class="gp-slot-card gp-slot-card--${side}${empty ? ' gp-slot-card--empty' : ''}${expanded ? ' gp-slot-card--expanded' : ''}"
         data-slot="${slotId}" data-side="${side}" aria-expanded="${expanded}">
         <div class="gp-slot-card-header">${primaryInner}</div>
         <div class="gp-alts-panel" data-slot="${slotId}" ${expanded ? '' : 'hidden'}>
             ${altsHtml || '<div class="gp-alt-empty">No alternatives</div>'}
-            ${editMode ? `<button type="button" class="gp-add-alt" data-slot="${slotId}">+ Add alternative</button>` : ''}
         </div>
     </article>`;
+    const addBtn = gpSlotAddButtonHtml(slotId, !empty);
+    return side === 'right'
+        ? `<div class="gp-slot-row gp-slot-row--right">${card}${addBtn}</div>`
+        : `<div class="gp-slot-row gp-slot-row--left">${addBtn}${card}</div>`;
 }
 
 function toggleSlotCollapsed(slotId) {
@@ -500,7 +514,7 @@ function bindSlotEvents() {
     document.querySelectorAll('.gp-slot-card').forEach(card => {
         card.addEventListener('click', (e) => {
             if (gpDidDrag) return;
-            if (e.target.closest('.gp-empty-primary, .gp-add-alt, .gp-remove-alt, .gp-clear-primary, .gp-toggle-alts, .gp-drag-handle')) return;
+            if (e.target.closest('.gp-slot-add, .gp-empty-primary, .gp-remove-alt, .gp-clear-primary, .gp-toggle-alts, .gp-drag-handle')) return;
             const slotId = card.dataset.slot;
             if (!currentPlan.slots[slotId]?.primary) {
                 if (editMode) openPickerForSlot(slotId, false);
@@ -510,20 +524,14 @@ function bindSlotEvents() {
         });
     });
 
-    document.querySelectorAll('.gp-empty-primary').forEach(el => {
+    document.querySelectorAll('.gp-slot-add').forEach(el => {
         el.addEventListener('click', (e) => {
             e.stopPropagation();
             if (!editMode) return;
-            editingAltSlot = null;
-            openPickerForSlot(el.dataset.slot, false);
-        });
-    });
-
-    document.querySelectorAll('.gp-add-alt').forEach(el => {
-        el.addEventListener('click', (e) => {
-            e.stopPropagation();
-            editingAltSlot = el.dataset.slot;
-            openPickerForSlot(el.dataset.slot, true);
+            const slotId = el.dataset.slot;
+            const hasPrimary = !!currentPlan.slots[slotId]?.primary;
+            editingAltSlot = hasPrimary ? slotId : null;
+            openPickerForSlot(slotId, hasPrimary);
         });
     });
 

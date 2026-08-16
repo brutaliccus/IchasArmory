@@ -19,6 +19,8 @@ Gear management module — handles equipping/unequipping items, computing aggreg
 | `setVirtualStatWeightItem(item)` | Set a virtual item whose stats are included in `getGearStats()`. Used by stat weight sims. |
 | `clearVirtualStatWeightItem()` | Remove the virtual item. Always call after sim to avoid stale stats. |
 | `getAllSpellStrikeSources()` | Scan equipped gear + enchants for "Adds X damage to weapon attacks" sources. |
+| `getEmptySlotPlaceholderUrl(slotId, classId)` | Empty paperdoll icon URL. Ranged uses relic for druid/shaman/paladin; otherwise `inventoryslot_{slotIconMap}`. |
+| `refreshEmptySlotPlaceholders(classId)` | Rewrites empty character-planner slot imgs; skips slots with equipped items. |
 | `getItemById(itemId)` | Passthrough to `itemLoader.getItemById`. |
 | `applyEnchant(slotId, enchantIndex)` | Apply an enchant to a slot. |
 | `getAppliedEnchant(slotId)` | Get the enchant currently applied to a slot. |
