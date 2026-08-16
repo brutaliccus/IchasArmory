@@ -135,6 +135,8 @@ const GP_ICON_WEIGHTS = `<svg xmlns="http://www.w3.org/2000/svg" width="18" heig
 const GP_ICON_VOTE_UP = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 7l-7 9h14z"/></svg>`;
 const GP_ICON_VOTE_DOWN = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17l7-9H5z"/></svg>`;
 const GP_TANK_WEIGHT_CLASSES = new Set(['warrior', 'paladin', 'druid']);
+/** Classes that can meaningfully tank and DPS — show both stat-weight panels. */
+const GP_DUAL_ROLE_CLASSES = new Set(['warrior', 'paladin', 'druid', 'shaman']);
 const GP_ICON_HOME = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M25,21.5c0,-0.319 -0.152,-0.619 -0.409,-0.807c-0.258,-0.188 -0.589,-0.243 -0.893,-0.146l-7.698,2.44c-0,0 -7.698,-2.44 -7.698,-2.44c-0.304,-0.097 -0.635,-0.042 -0.893,0.146c-0.257,0.188 -0.409,0.488 -0.409,0.807l0,6c0,0.552 0.448,1 1,1l16,0c0.552,0 1,-0.448 1,-1l0,-6Zm-2,1.366l0,3.634l-14,0c0,-0 0,-3.634 0,-3.634c0,0 6.698,2.123 6.698,2.123c0.196,0.063 0.408,0.063 0.604,0l6.698,-2.123Zm-2.002,-14.31c0.02,-0.341 -0.137,-0.668 -0.414,-0.868c-0.278,-0.199 -0.638,-0.243 -0.955,-0.116l-2.5,1c-0.38,0.151 -0.629,0.519 -0.629,0.928l0,11c0,0.317 0.151,0.616 0.406,0.804c0.255,0.189 0.585,0.245 0.888,0.152l6.5,-2c0.42,-0.129 0.706,-0.517 0.706,-0.956l0,-6c0,-0.552 -0.448,-1 -1,-1c-0.892,0 -1.663,-0.246 -2.203,-0.739c-0.516,-0.472 -0.797,-1.166 -0.797,-2.02c0,-0.062 -0.005,-0.124 -0.002,-0.185Zm-8.627,-0.984c-0.317,-0.127 -0.677,-0.083 -0.955,0.116c-0.277,0.2 -0.434,0.527 -0.414,0.868c0.003,0.061 -0.002,0.123 -0.002,0.185c0,0.854 -0.281,1.548 -0.797,2.02c-0.54,0.493 -1.311,0.739 -2.203,0.739c-0.552,0 -1,0.448 -1,1l0,6c0,0.439 0.286,0.827 0.706,0.956l6.5,2c0.303,0.093 0.633,0.037 0.888,-0.152c0.255,-0.188 0.406,-0.487 0.406,-0.804l0,-11c0,-0.409 -0.249,-0.777 -0.629,-0.928l-2.5,-1Zm6.756,2.354c0.21,0.942 0.675,1.72 1.32,2.31c0.666,0.609 1.537,1.023 2.553,1.186c0,0 0,4.339 0,4.339c0,0 -4.5,1.385 -4.5,1.385c0,0 0,-8.969 0,-8.969l0.627,-0.251Zm-6.254,0l0.627,0.251c0,0 0,8.969 0,8.969c-0,0 -4.5,-1.385 -4.5,-1.385c0,0 0,-4.339 0,-4.339c1.016,-0.163 1.887,-0.577 2.553,-1.186c0.645,-0.59 1.11,-1.368 1.32,-2.31Zm-1.892,-5.23c0.058,-0.294 -0.018,-0.598 -0.208,-0.83c-0.19,-0.232 -0.473,-0.366 -0.773,-0.366c-1.611,0 -3.965,1.17 -5.569,2.638c-1.191,1.089 -1.931,2.354 -1.931,3.362c0,0.552 0.448,1 1,1l5.5,0l0.981,-0.804l1,-5Zm11.019,-1.196c-0.3,0 -0.583,0.134 -0.773,0.366c-0.19,0.232 -0.266,0.536 -0.208,0.83l1,5l0.981,0.804l5.5,0c0.552,0 1,-0.448 1,-1c-0,-1.008 -0.74,-2.273 -1.931,-3.362c-1.604,-1.468 -3.958,-2.638 -5.569,-2.638Zm-13.82,5l-3.216,0c0.222,-0.299 0.501,-0.598 0.816,-0.886c0.847,-0.775 1.944,-1.485 2.948,-1.852l-0.548,2.738Zm15.64,0l-0.548,-2.738c1.004,0.367 2.101,1.078 2.948,1.852c0.315,0.288 0.594,0.587 0.816,0.886l-3.216,0Z"/></svg>`;
 
 function planRoles() {
@@ -144,6 +146,7 @@ function planRoles() {
 function showTankWeightsUi() {
     const cls = String(currentPlan?.class || '').toLowerCase();
     if (!GP_TANK_CAPABLE.has(cls)) return false;
+    if (GP_DUAL_ROLE_CLASSES.has(cls)) return true;
     const roles = planRoles();
     if (roles.includes('tank')) return true;
     // Pre-save fallback: classic tanks still see tank SW before role is set
@@ -151,9 +154,11 @@ function showTankWeightsUi() {
 }
 
 function showDpsWeightsUi() {
+    const cls = String(currentPlan?.class || '').toLowerCase();
+    if (GP_DUAL_ROLE_CLASSES.has(cls)) return true;
     const roles = planRoles();
     if (roles.includes('dps')) return true;
-    return !roles.length && String(currentPlan?.class || '').toLowerCase() === 'shaman';
+    return !roles.length && cls === 'shaman';
 }
 
 function gpLocalWeightsStorageKey(planId = currentPlan?.id) {
@@ -338,6 +343,13 @@ function persistSession() {
     });
 }
 
+function syncGpPlanNameInputWidth(input = document.getElementById('gp-plan-name')) {
+    const sizer = input?.closest('.gp-plan-name-wrap')?.querySelector('.gp-plan-name-sizer');
+    if (!input || !sizer) return;
+    const text = input.value || input.placeholder || '';
+    sizer.textContent = text || '\u00a0';
+}
+
 function wireHeaderControls() {
     const nameInput = document.getElementById('gp-plan-name');
     if (nameInput) {
@@ -345,6 +357,7 @@ function wireHeaderControls() {
         const commitName = () => {
             const next = sanitizeGearPlanName(nameInput.value, 'Gear Plan');
             nameInput.value = next;
+            syncGpPlanNameInputWidth(nameInput);
             currentPlan.name = next;
             persistSession();
         };
@@ -352,9 +365,11 @@ function wireHeaderControls() {
             if (nameInput.value.length > GEAR_PLAN_NAME_MAX) {
                 nameInput.value = nameInput.value.slice(0, GEAR_PLAN_NAME_MAX);
             }
+            syncGpPlanNameInputWidth(nameInput);
         });
         nameInput.addEventListener('change', commitName);
         nameInput.addEventListener('blur', commitName);
+        syncGpPlanNameInputWidth(nameInput);
     }
 
     document.getElementById('gp-save-btn')?.addEventListener('click', () => requestSaveCurrentPlan());
@@ -1526,12 +1541,14 @@ function collectSaveWarnings(meta) {
         warnings.push('No consumables/buffs are selected.');
     }
     const roles = meta?.roles || planRoles();
-    if (roles.includes('dps') && !hasMeaningfulDpsWeights(resolveGpDpsWeights(false))) {
-        warnings.push('No DPS stat weights are set (role includes DPS).');
-    }
     const cls = String(currentPlan.class || '').toLowerCase();
-    if (roles.includes('tank') && GP_TANK_CAPABLE.has(cls) && !hasMeaningfulTankWeights(resolveGpTankWeights())) {
-        warnings.push('No tank stat weights are set (role includes Tank).');
+    const warnDps = roles.includes('dps') || GP_DUAL_ROLE_CLASSES.has(cls);
+    const warnTank = (roles.includes('tank') || GP_DUAL_ROLE_CLASSES.has(cls)) && GP_TANK_CAPABLE.has(cls);
+    if (warnDps && !hasMeaningfulDpsWeights(resolveGpDpsWeights(false))) {
+        warnings.push('No DPS stat weights are set.');
+    }
+    if (warnTank && !hasMeaningfulTankWeights(resolveGpTankWeights())) {
+        warnings.push('No tank stat weights are set.');
     }
     return warnings;
 }
@@ -2426,6 +2443,7 @@ export function renderGearPlanner() {
     const nameInput = document.getElementById('gp-plan-name');
     if (nameInput && nameInput !== document.activeElement) {
         nameInput.value = sanitizeGearPlanName(currentPlan.name, 'Gear Plan');
+        syncGpPlanNameInputWidth(nameInput);
     }
     generateGpClassIcons();
     generateGpRaceIcons();

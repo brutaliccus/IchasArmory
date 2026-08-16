@@ -1,5 +1,11 @@
 /* Gear Planner — DPS-sim themed panels, gold accents */
 
+:root {
+    --gp-dock-width: 260px;
+    /* Center column ~70% of viewport, capped by space between fixed location/stats docks */
+    --gp-center-width: min(70vw, calc(100vw - 2 * var(--gp-dock-width) - 32px));
+}
+
 body[data-app-mode="gearPlanner"] .app-scroll-layout {
     display: none !important;
 }
@@ -10,13 +16,17 @@ body[data-app-mode="character"] #gear-planner-shell {
 
 #gear-planner-shell {
     display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
     gap: 12px;
-    max-width: 1600px;
+    width: 100%;
+    max-width: none;
     margin: 0 auto;
     box-sizing: border-box;
     /* Nav is position:fixed + unscaled; this padding is inside CSS zoom */
-    /* Locations dock overlays the left; do not pad by sidebar width (keeps columns viewport-centered) */
-    padding: calc(68px / var(--ui-scale, 1)) 16px 32px 16px;
+    /* Locations/stats docks overlay screen edges; center column width is fixed via --gp-center-width */
+    padding: calc(68px / var(--ui-scale, 1)) 16px calc(52px + env(safe-area-inset-bottom, 0px)) 16px;
     min-height: calc(100vh / var(--ui-scale, 1));
 }
 
@@ -99,18 +109,6 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
     display: none;
 }
 
-#gear-planner-shell.gp-talents-open,
-#gear-planner-shell.gp-buffs-open,
-#gear-planner-shell.gp-stat-weights-open {
-    padding-left: calc(260px + 16px);
-    padding-right: calc(260px + 16px);
-}
-
-#gear-planner-shell.gp-talents-open {
-    max-width: none;
-    width: 100%;
-}
-
 #gear-planner-shell.gp-talents-open .gp-layout,
 #gear-planner-shell.gp-talents-open .gp-quick-sim-wrap,
 #gear-planner-shell.gp-talents-open .gp-st-rotation-row,
@@ -128,9 +126,6 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
 #gear-planner-shell.gp-stat-weights-open .gp-main {
     display: flex;
     flex-direction: column;
-    flex: 1 1 auto;
-    width: 100%;
-    min-width: 0;
     min-height: calc(100vh / var(--ui-scale, 1) - 80px);
 }
 
@@ -141,9 +136,12 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
     flex-direction: column;
     align-items: stretch;
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     position: relative;
     z-index: 5;
     pointer-events: auto;
+    overflow: hidden;
 }
 
 .gp-stat-weights-view {
@@ -151,6 +149,18 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
     min-height: 0;
     overflow: auto;
     padding: 8px 4px 24px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.gp-stat-weights-view .gp-weights-panel:not([hidden]) {
+    flex: 1 1 360px;
+    min-width: min(100%, 280px);
+    max-width: 640px;
+    box-sizing: border-box;
 }
 
 .gp-weights-panel h3 {
@@ -313,9 +323,10 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
 }
 
 .gp-buffs-view {
-    max-width: none;
+    max-width: 100%;
     margin: 0;
     pointer-events: auto;
+    overflow: auto;
 }
 
 #gp-buffs-list-slot,
@@ -476,13 +487,15 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
 }
 
 .gp-main {
-    flex: 1;
+    flex: 0 0 auto;
+    width: var(--gp-center-width);
+    max-width: var(--gp-center-width);
     min-width: 0;
 }
 
 .gp-header {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) auto auto;
+    grid-template-columns: minmax(0, max-content) 1fr auto;
     align-items: center;
     gap: 10px 14px;
     padding: 14px 18px;
@@ -498,16 +511,42 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     align-items: center;
     gap: 8px;
     min-width: 0;
-    width: 100%;
-    justify-self: stretch;
+    width: auto;
     max-width: 100%;
+    justify-self: start;
+}
+
+.gp-plan-name-wrap {
+    display: inline-grid;
+    align-items: center;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.gp-plan-name-wrap > .gp-plan-name-sizer,
+.gp-plan-name-wrap > .gp-plan-name-input {
+    grid-area: 1 / 1;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 1.05rem;
+    line-height: 1.35;
+    box-sizing: border-box;
+}
+
+.gp-plan-name-sizer {
+    visibility: hidden;
+    white-space: pre;
+    padding: 8px 12px;
+    border: 1px solid transparent;
+    min-width: 10ch;
+    max-width: 64ch;
+    overflow: hidden;
 }
 
 .gp-plan-name-input {
-    flex: 1 1 auto;
-    width: auto;
-    min-width: 140px;
-    max-width: none;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
     padding: 8px 12px;
     background: transparent;
     border: 1px solid transparent;

@@ -597,7 +597,7 @@ Use existing `.md` files as templates. Key sections to include:
 
 ## Contact & Support
 
-Site shell includes a shared **Buy me a coffee** footer (`.site-support-footer` in `index.html` / `style.css`) shown at the bottom of Character Planner and Gear Planner. Link: https://www.buymeacoffee.com/jeb32411u
+Site shell includes a shared **Buy me a coffee** control (`.site-support-footer` in `index.html` / `style.css`): **fixed to the viewport bottom** on Character Planner and Gear Planner (always visible; subtle dark-gold styling). Link: https://www.buymeacoffee.com/jeb32411u
 
 For questions about the documentation or codebase:
 1. Check this index for relevant documentation file
