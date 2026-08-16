@@ -63,7 +63,8 @@ export const OCTOWOW_ICON_BASE = 'https://octowow.st/db/images/icons';
 /** Second fallback when primary DB is down (same icon names, .jpg on Wowhead CDN) */
 export const ICON_CDN_ZAMIMG_LARGE = 'https://wow.zamimg.com/images/wow/icons/large/';
 export const ICON_CDN_ZAMIMG_MEDIUM = 'https://wow.zamimg.com/images/wow/icons/medium/';
-export const ICON_BASE_URL_BACKUP = 'https://database.turtle-wow.org/images/icons/large/';
+/** @deprecated Use resolveIconUrl / buildOctowowIconUrl; kept as octowow alias for legacy imports */
+export const ICON_BASE_URL_BACKUP = ICON_BASE_URL;
 
 /** Strip path/extension and return lowercase WoW icon basename. */
 export function normalizeIconBasename(iconRef) {
@@ -112,7 +113,7 @@ function _iconNameFromSrc(src) {
 }
 
 /**
- * Installs a single capture-phase listener so failed icon loads try octowow → zamimg → turtle DB.
+ * Installs a single capture-phase listener so failed icon loads retry octowow → zamimg.
  * Call once from app init (covers hardcoded innerHTML URLs as well as createIconImage).
  */
 export function installIconLoadFallbacks() {
@@ -132,10 +133,7 @@ export function installIconLoadFallbacks() {
             el.src = buildOctowowIconUrl(name, size);
         } else if (step === '1') {
             el.dataset.iconFb = '2';
-            el.src = `https://wow.zamimg.com/images/wow/icons/${size}/${name}.jpg`;
-        } else if (step === '2') {
-            el.dataset.iconFb = '3';
-            el.src = `https://database.turtle-wow.org/images/icons/${size}/${name}.png`;
+            el.src = `${ICON_CDN_ZAMIMG_LARGE}${name}.jpg`;
         } else {
             el.removeAttribute('data-icon-fb');
         }

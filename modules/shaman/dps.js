@@ -3,7 +3,7 @@
 import { shamanSpells } from './spells.js';
 import { ShamanStats, callOfThunderCritBonusFraction } from '../character/shamanTalents.js';
 import { calculateSpellDPS, calculateSpellDamage, formatDamage, formatDPS } from './damageCalc.js';
-import { getCurrentlyEquippedItem, getAllSpellStrikeSources, getEquippedGearObjects, getItemById, equipItem, clearItem, createIconImage, PLACEHOLDER_ICON_URL, slotIconMap, setVirtualStatWeightItem, clearVirtualStatWeightItem, applyEnchant, getSelectedEnchants, getEnchantableSlots } from '../gear/gear.js';
+import { getCurrentlyEquippedItem, getAllSpellStrikeSources, getEquippedGearObjects, getItemById, equipItem, clearItem, createIconImage, PLACEHOLDER_ICON_URL, slotIconMap, setVirtualStatWeightItem, clearVirtualStatWeightItem, applyEnchant, getSelectedEnchants, getEnchantableSlots, resolveIconUrl } from '../gear/gear.js';
 import { GEAR_PLAN_SLOTS } from '../gear/gearPlanner.js';
 import { enchantDatabase } from '../gear/enchants.js';
 import { openCustomRadialMenu, openRadialMenu, closeRadialMenu } from '../ui/radialMenu.js';
@@ -5054,16 +5054,20 @@ function ensureDpsSimConfigModalExists() {
 
     const container = document.getElementById('shaman-dps-simulation');
     if (container && container.querySelector('#sim-duration') && window.currentCalculatorTotals != null) {
-        renderDPSSimulation(
-            container,
-            window.currentCalculatorTotals,
-            window.currentTalentBonuses || {},
-            window.currentActiveBuffs || [],
-            null,
-            window.currentSetBonuses || {},
-            window.currentEquippedGear || null
-        );
-        return isDpsSimConfigModalReady();
+        try {
+            renderDPSSimulation(
+                container,
+                window.currentCalculatorTotals,
+                window.currentTalentBonuses || {},
+                window.currentActiveBuffs || [],
+                null,
+                window.currentSetBonuses || {},
+                window.currentEquippedGear || null
+            );
+            if (isDpsSimConfigModalReady()) return true;
+        } catch (err) {
+            console.warn('[DPS Sim] renderDPSSimulation bootstrap failed; using standalone modal', err);
+        }
     }
     return bootstrapDpsSimConfigModalStandalone();
 }
@@ -8898,15 +8902,7 @@ function normalizeAbilityConfig(config, defaultConfig) {
  * 3) Else proc.icon (http kept; relative basename → Turtle large).
  */
 function resolveOnUseTrinketIconForPriority(proc) {
-    const toLargeUrl = (raw) => {
-        if (raw == null || raw === '') return `${TURTLE_ICON_LARGE}/inv_misc_questionmark.png`;
-        const s = String(raw).trim();
-        if (s.startsWith('http://') || s.startsWith('https://')) return s;
-        if (s.startsWith('//')) return `https:${s}`;
-        if (s.startsWith('/')) return s;
-        const base = s.replace(/\.(png|jpg|jpeg|webp)$/i, '').toLowerCase();
-        return `${TURTLE_ICON_LARGE}/${base}.png`;
-    };
+    const toLargeUrl = (raw) => resolveIconUrl(raw, 'large');
 
     const id = proc.itemId != null ? (parseInt(proc.itemId, 10) || proc.itemId) : null;
     if (id != null) {

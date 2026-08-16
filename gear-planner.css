@@ -157,14 +157,17 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
     min-height: 0;
     overflow: auto;
     padding: 8px 4px 24px;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
+    flex-wrap: nowrap;
     gap: 20px;
-    align-items: flex-start;
-    justify-content: center;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 #gear-planner-shell.gp-dual-weights .gp-stat-weights-view {
+    flex-direction: row;
     flex-wrap: nowrap;
     justify-content: center;
     align-items: flex-start;
@@ -172,15 +175,17 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
 }
 
 #gear-planner-shell.gp-dual-weights .gp-stat-weights-view .gp-weights-panel:not([hidden]) {
-    flex: 1 1 0;
+    flex: 0 1 min(480px, calc(50% - 10px));
     min-width: min(100%, 280px);
     max-width: min(480px, calc(50% - 10px));
+    width: min(100%, 480px);
 }
 
 .gp-stat-weights-view .gp-weights-panel:not([hidden]) {
-    flex: 1 1 360px;
+    flex: 0 1 auto;
     min-width: min(100%, 280px);
     max-width: 640px;
+    width: min(100%, 640px);
     box-sizing: border-box;
 }
 
@@ -618,6 +623,10 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     gap: 4px;
     justify-self: end;
     min-width: 88px;
+}
+
+.gp-header-sim[hidden] {
+    display: none !important;
 }
 
 .gp-header-sim-label {

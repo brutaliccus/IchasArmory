@@ -1,6 +1,7 @@
 // modules/character/buffs.js
 import { createGenericTooltip } from '../ui/tooltips.js';
 import { KEY_MAP } from './stats.js';
+import { resolveIconUrl } from '../gear/gear.js';
 
 // no_slot.json has been removed — consumable tooltips use inline data only
 const noSlotData = [];
@@ -1228,7 +1229,7 @@ export async function generateBuffIcons(container, currentClass = null, talentSp
                 : '';
 
             // If buff has spellId, load icon and name from spells.json
-            let iconUrl = buff.icon;
+            let iconUrl = resolveIconUrl(buff.icon);
             let buffName = buff.name;
             
             if (buff.spellId) {
@@ -1240,8 +1241,7 @@ export async function generateBuffIcons(container, currentClass = null, talentSp
                     }
                     // Load icon from spell if not already set
                     if (!iconUrl && spell.icon) {
-                        // Convert icon name to URL format (e.g., "Spell_Nature_Regeneration" -> "spell_nature_regeneration.png")
-                        iconUrl = `https://octowow.st/db/images/icons/large/${spell.icon.toLowerCase()}.png`;
+                        iconUrl = resolveIconUrl(spell.icon);
                     }
                 }
             }
@@ -1253,7 +1253,7 @@ export async function generateBuffIcons(container, currentClass = null, talentSp
 
             // If still no icon, use a placeholder
             if (!iconUrl) {
-                iconUrl = 'https://octowow.st/db/images/icons/large/inv_misc_questionmark.png';
+                iconUrl = resolveIconUrl('inv_misc_questionmark');
             }
 
             return `
