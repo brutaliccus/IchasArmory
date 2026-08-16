@@ -858,111 +858,53 @@ class NoCacheHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(error_msg)
 
-        # Handle bug report screenshot requests - proxy to bug report server (must come before /bug-reports)
-        elif parsed_path.startswith('/bug-reports/') and parsed_path != '/bug-reports/':
+        # Bug-report status (public) + list/screenshots (admin session via Cookie)
+        # Must forward Cookie — urlopen without headers turned Node 403 into a fake 503.
+        elif parsed_path == '/bug-report-status' or parsed_path.startswith('/bug-reports'):
             br_process = self.get_bug_report_process()
             br_port = self.get_bug_report_port()
             if br_process and br_port and br_process.poll() is None:
                 try:
                     proxy_url = f'http://localhost:{br_port}{self.path}'
-                    print(f"[BUG REPORTS PROXY] Proxying screenshot request to {proxy_url}")
-                    with urllib.request.urlopen(proxy_url, timeout=10) as response:
-                        data = response.read()
-                        self.send_response(200)
-                        # Determine content type from file extension
-                        if self.path.endswith('.png'):
-                            self.send_header('Content-Type', 'image/png')
-                        elif self.path.endswith('.jpg') or self.path.endswith('.jpeg'):
-                            self.send_header('Content-Type', 'image/jpeg')
-                        elif self.path.endswith('.gif'):
-                            self.send_header('Content-Type', 'image/gif')
-                        elif self.path.endswith('.webp'):
-                            self.send_header('Content-Type', 'image/webp')
-                        else:
-                            self.send_header('Content-Type', 'application/octet-stream')
-                        self.send_header('Access-Control-Allow-Origin', '*')
-                        self.end_headers()
-                        self.wfile.write(data)
-                except urllib.error.HTTPError as e:
-                    self.send_response(e.code)
-                    self.end_headers()
-                except Exception as e:
-                    self.send_response(500)
-                    self.send_header('Content-Type', 'application/json')
-                    self.send_header('Access-Control-Allow-Origin', '*')
-                    self.end_headers()
-                    error_msg = json.dumps({
-                        'success': False,
-                        'error': f'Failed to fetch screenshot: {str(e)}'
-                    }).encode()
-                    self.wfile.write(error_msg)
-            else:
-                self.send_response(503)
-                self.end_headers()
-
-        # Proxy /bug-reports requests to the bug report server (list endpoint)
-        elif parsed_path == '/bug-reports' or parsed_path == '/bug-reports/':
-            br_process = self.get_bug_report_process()
-            br_port = self.get_bug_report_port()
-            if br_process and br_port and br_process.poll() is None:
-                try:
-                    # Preserve query parameters from original request
-                    query_string = self.path.split('?', 1)[1] if '?' in self.path else ''
-                    proxy_url = f'http://localhost:{br_port}/bug-reports' + (f'?{query_string}' if query_string else '')
                     print(f"[BUG REPORTS PROXY] Proxying to {proxy_url}")
-                    req = urllib.request.Request(proxy_url)
-                    with urllib.request.urlopen(req, timeout=10) as response:
-                        data = response.read()
-                        # Ensure we have valid data
-                        if data:
-                            try:
-                                # Try to parse as JSON to validate
-                                json.loads(data.decode('utf-8'))
-                                self.send_response(200)
-                                self.send_header('Content-Type', 'application/json; charset=utf-8')
-                                self.send_header('Access-Control-Allow-Origin', '*')
-                                self.send_header('Content-Length', str(len(data)))
-                                # Prevent caching of bug reports
-                                self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
-                                self.send_header('Pragma', 'no-cache')
-                                self.send_header('Expires', '0')
-                                self.end_headers()
-                                self.wfile.write(data)
-                            except json.JSONDecodeError as e:
-                                print(f"[BUG REPORTS PROXY ERROR] Invalid JSON from bug report server: {e}")
-                                print(f"[BUG REPORTS PROXY ERROR] Response data (first 200 chars): {data[:200]}")
-                                error_msg = json.dumps({
-                                    'success': False,
-                                    'error': 'Invalid response from bug report server'
-                                }).encode()
-                                self.send_response(500)
-                                self.send_header('Content-Type', 'application/json')
-                                self.send_header('Access-Control-Allow-Origin', '*')
-                                self.end_headers()
-                                self.wfile.write(error_msg)
+                    headers = self._proxy_headers_to_node()
+                    response = requests.get(
+                        proxy_url,
+                        headers=headers,
+                        timeout=30,
+                        allow_redirects=False
+                    )
+
+                    self.send_response(response.status_code)
+                    for header, value in response.headers.items():
+                        if header.lower() not in ['content-encoding', 'transfer-encoding', 'connection', 'content-length']:
+                            self.send_header(header, value)
+                    # Prefer explicit types when Node omits them
+                    if 'content-type' not in {h.lower() for h in response.headers.keys()}:
+                        if parsed_path.startswith('/bug-reports/') and not parsed_path.endswith('/status'):
+                            if parsed_path.endswith('.png'):
+                                self.send_header('Content-Type', 'image/png')
+                            elif parsed_path.endswith('.jpg') or parsed_path.endswith('.jpeg'):
+                                self.send_header('Content-Type', 'image/jpeg')
+                            elif parsed_path.endswith('.gif'):
+                                self.send_header('Content-Type', 'image/gif')
+                            elif parsed_path.endswith('.webp'):
+                                self.send_header('Content-Type', 'image/webp')
+                            else:
+                                self.send_header('Content-Type', 'application/octet-stream')
                         else:
-                            error_msg = json.dumps({
-                                'success': False,
-                                'error': 'Empty response from bug report server'
-                            }).encode()
-                            self.send_response(500)
-                            self.send_header('Content-Type', 'application/json')
-                            self.send_header('Access-Control-Allow-Origin', '*')
-                            self.end_headers()
-                            self.wfile.write(error_msg)
-                except urllib.error.URLError as e:
-                    print(f"[BUG REPORTS PROXY ERROR] Failed to connect to bug report server on port {br_port}: {e}")
-                    error_msg = json.dumps({
-                        'success': False,
-                        'error': f'Failed to connect to bug report server on port {br_port}: {str(e)}'
-                    }).encode()
-                    self.send_response(503)
-                    self.send_header('Content-Type', 'application/json')
+                            self.send_header('Content-Type', 'application/json; charset=utf-8')
                     self.send_header('Access-Control-Allow-Origin', '*')
+                    self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+                    self.send_header('Pragma', 'no-cache')
+                    self.send_header('Expires', '0')
+                    body = response.content or b''
+                    self.send_header('Content-Length', str(len(body)))
                     self.end_headers()
-                    self.wfile.write(error_msg)
+                    if body:
+                        self.wfile.write(body)
                 except Exception as e:
-                    print(f"[BUG REPORTS PROXY ERROR] Unexpected error: {e}")
+                    print(f"[BUG REPORTS PROXY ERROR] {e}")
                     error_msg = json.dumps({
                         'success': False,
                         'error': f'Failed to fetch bug reports: {str(e)}'
