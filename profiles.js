@@ -1800,10 +1800,12 @@ ProfileManager.prototype.fetchCommunityGearPlans = async function fetchCommunity
     }
 };
 
-ProfileManager.prototype.fetchCommunityGearPlan = async function fetchCommunityGearPlan(id) {
+ProfileManager.prototype.fetchCommunityGearPlan = async function fetchCommunityGearPlan(id, voterId) {
     if (!id) return null;
     try {
-        const res = await fetch(`/community-gear-plans/${encodeURIComponent(id)}`, { credentials: 'include' });
+        const vid = voterId || (this.user?.id ? `discord:${this.user.id}` : null);
+        const qs = vid ? `?voterId=${encodeURIComponent(vid)}` : '';
+        const res = await fetch(`/community-gear-plans/${encodeURIComponent(id)}${qs}`, { credentials: 'include' });
         const data = await res.json();
         return data.success ? (data.plan || null) : null;
     } catch (e) {

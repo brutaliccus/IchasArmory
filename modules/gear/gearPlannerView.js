@@ -16,8 +16,10 @@ import {
     normalizeGearPlanRoles,
     defaultIconForClassSpec,
     sanitizeGearPlanDescription,
+    sanitizeGearPlanName,
     formatGearPlanRoleLabel,
     GEAR_PLAN_DESCRIPTION_MAX,
+    GEAR_PLAN_NAME_MAX,
 } from './gearPlanner.js';
 import { ICON_BASE_URL, getEmptySlotPlaceholderUrl, getMeleeWeaponType, getEnchantableSlots } from './gear.js';
 import { enchantDatabase } from './enchants.js';
@@ -25,7 +27,7 @@ import { getEnchantCompactLabel } from './enchantStatLabels.js';
 import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, getItemType, filterEnchantsByItemType } from '../character/stats.js';
 import { baseStats, raceIconData, getSelectedRaceBonuses } from '../character/races.js';
 import { calculateEffectiveHealth } from '../ui/calculator.js';
-import { generateTalentInputs, updateTalentPoints, getTalentBonusesFromSpec, classTalents } from '../talents_new.js';
+import { generateTalentInputs, updateTalentPoints, updateAllTalentStates, getTalentBonusesFromSpec, classTalents } from '../talents_new.js';
 import { generateBuffIcons, applyBuffListToDom, getBuffsFromSavedList, handleBuffExclusivity } from '../character/buffs.js';
 import { getSetBonuses } from './setBonuses.js';
 import { runGearPlanQuickSim, runGearPlanStatWeightSimulations, mergeStatWeightsToTemplate, updateStatWeightsTable, sortStatWeightsTable, openDpsSimConfigModal } from '../shaman/dps.js';
@@ -39,6 +41,8 @@ import {
     getInstanceFilterGroups,
 } from './itemSources.js';
 import { itemLoader } from './itemLoader.js';
+import { SHAMAN_PRESET_SPEC_ICONS } from '../shaman/shamanConsumePresets.js';
+import { SHAMAN_TALENT_PRESETS, SHAMAN_TALENT_PRESET_NAMES } from '../shaman/shamanTalentPresets.js';
 
 /** Manual DPS weight keys used by item score tooltips. */
 const GP_MANUAL_DPS_WEIGHT_KEYS = [
@@ -220,6 +224,10 @@ export function initGearPlannerView(cbs) {
         if (session.plan.upvotes != null) currentPlan.upvotes = session.plan.upvotes;
         if (session.plan.downvotes != null) currentPlan.downvotes = session.plan.downvotes;
         if (session.plan.myVote) currentPlan.myVote = session.plan.myVote;
+        if (session.plan.sourceCommunityId) currentPlan.sourceCommunityId = String(session.plan.sourceCommunityId);
+        if (session.plan.community) currentPlan.community = true;
+        if (session.plan.authorId) currentPlan.authorId = String(session.plan.authorId);
+        if (session.plan.authorName) currentPlan.authorName = String(session.plan.authorName);
         if (session.plan.statWeights) currentPlan.statWeights = session.plan.statWeights;
         if (session.plan.statWeightsAoe) currentPlan.statWeightsAoe = session.plan.statWeightsAoe;
         if (session.plan.tankStatWeights) currentPlan.tankStatWeights = session.plan.tankStatWeights;
@@ -243,8 +251,10 @@ export function initGearPlannerView(cbs) {
     wireCommunitySearchDialog();
     wireIconPickerDialog();
     wireHeaderVotes();
+    wireGpTalentPresetMenu();
     wireGpTankBossSearch();
     refreshGearPlannerWhenItemsReady();
+    hydrateCommunityVoteMeta();
 }
 
 /**
@@ -296,8 +306,11 @@ export function getCurrentGearPlan() {
 export function setGearPlan(plan) {
     if (gpOverlay) closeGpTalentsModal();
     currentPlan = getGearPlanData(plan);
+    mergePlanCommunityFields(currentPlan, plan);
+    currentPlan.name = sanitizeGearPlanName(currentPlan.name, 'Gear Plan');
     editMode = !currentPlan.id;
     persistSession();
+    hydrateCommunityVoteMeta();
     return refreshGearPlannerWhenItemsReady(currentPlan);
 }
 
@@ -328,10 +341,20 @@ function persistSession() {
 function wireHeaderControls() {
     const nameInput = document.getElementById('gp-plan-name');
     if (nameInput) {
-        nameInput.addEventListener('change', () => {
-            currentPlan.name = nameInput.value.trim() || 'Gear Plan';
+        nameInput.setAttribute('maxlength', String(GEAR_PLAN_NAME_MAX));
+        const commitName = () => {
+            const next = sanitizeGearPlanName(nameInput.value, 'Gear Plan');
+            nameInput.value = next;
+            currentPlan.name = next;
             persistSession();
+        };
+        nameInput.addEventListener('input', () => {
+            if (nameInput.value.length > GEAR_PLAN_NAME_MAX) {
+                nameInput.value = nameInput.value.slice(0, GEAR_PLAN_NAME_MAX);
+            }
         });
+        nameInput.addEventListener('change', commitName);
+        nameInput.addEventListener('blur', commitName);
     }
 
     document.getElementById('gp-save-btn')?.addEventListener('click', () => requestSaveCurrentPlan());
@@ -445,8 +468,7 @@ function generateGpClassIcons() {
                     generateTalentInputs(host, currentPlan.class || 'warrior');
                     fitGpTalentTree();
                 }
-                const tools = document.getElementById('shaman-buffs-consume-tools');
-                if (tools) tools.style.display = currentPlan.class === 'shaman' ? 'flex' : 'none';
+                syncGpTalentPresetTools();
             }
             if (gpOverlay === 'buffs') refreshGpBuffsHost();
             if (gpOverlay === 'weights') renderGpStatWeightsPanels();
@@ -1112,11 +1134,10 @@ async function openGpTalentsView() {
     }
     gpOverlay = 'talents';
     syncGpOverlayUi();
-    parkConsumeTools('gp-talents-tools-slot');
-    const tools = document.getElementById('shaman-buffs-consume-tools');
-    if (tools) tools.style.display = currentPlan.class === 'shaman' ? 'flex' : 'none';
+    syncGpTalentPresetTools();
     generateTalentInputs(host, currentPlan.class || 'warrior');
     await applyTalentSpec(host, currentPlan.talents || {});
+    updateAllTalentStates(false);
     requestAnimationFrame(() => fitGpTalentTree());
 }
 
@@ -1198,12 +1219,9 @@ export async function closeGpTalentsModal() {
     syncGpOverlayUi();
     if (wasTalents) {
         unbindGpTalentFit();
+        closeGpTalentPresetDropdown();
         await restoreCharacterTalents(characterTalentSnapshot);
         characterTalentSnapshot = null;
-        restoreBuffsDomHome();
-        const tools = document.getElementById('shaman-buffs-consume-tools');
-        const charClass = document.getElementById('class-race-sidebar')?.dataset?.selectedClass;
-        if (tools) tools.style.display = charClass === 'shaman' ? 'flex' : 'none';
     }
     if (wasBuffs) {
         restoreBuffsDomHome();
@@ -1694,6 +1712,142 @@ function getCommunityVoterId() {
     }
 }
 
+/** Community plan id used for voting (favorites vote via sourceCommunityId). */
+function getCommunityVoteId(plan = currentPlan) {
+    if (!plan) return null;
+    const src = plan.sourceCommunityId ? String(plan.sourceCommunityId).trim() : '';
+    if (src) return src;
+    // Only community-published plans are votable by their own id (not personal copies via authorId alone).
+    if (plan.community && plan.id && !String(plan.id).startsWith('local_gp_')) {
+        return String(plan.id);
+    }
+    return null;
+}
+
+function mergePlanCommunityFields(target, source) {
+    if (!target || !source) return;
+    if (source.sourceCommunityId) target.sourceCommunityId = String(source.sourceCommunityId);
+    if (source.community) target.community = true;
+    if (source.authorId) target.authorId = String(source.authorId);
+    if (source.authorName) target.authorName = String(source.authorName);
+    if (source.favorite) target.favorite = true;
+    if (source.upvotes != null) target.upvotes = Number(source.upvotes) || 0;
+    if (source.downvotes != null) target.downvotes = Number(source.downvotes) || 0;
+    if (source.myVote === 'up' || source.myVote === 'down') target.myVote = source.myVote;
+    else if (source.myVote === null) target.myVote = null;
+}
+
+async function hydrateCommunityVoteMeta(plan = currentPlan) {
+    const voteId = getCommunityVoteId(plan);
+    if (!voteId) return;
+    const voterId = getCommunityVoterId();
+    let meta = null;
+    if (window.profileManager?.fetchCommunityGearPlan) {
+        meta = await window.profileManager.fetchCommunityGearPlan(voteId, voterId);
+    } else {
+        try {
+            const params = new URLSearchParams({ voterId });
+            const res = await fetch(`/community-gear-plans/${encodeURIComponent(voteId)}?${params}`, { credentials: 'include' });
+            const data = await res.json();
+            meta = data.success ? data.plan : null;
+        } catch (e) {
+            console.error('[Gear Planner] hydrate vote meta failed', e);
+        }
+    }
+    if (!meta) return;
+    currentPlan.upvotes = Number(meta.upvotes) || 0;
+    currentPlan.downvotes = Number(meta.downvotes) || 0;
+    currentPlan.myVote = meta.myVote === 'up' || meta.myVote === 'down' ? meta.myVote : null;
+    updateHeaderVotesUi();
+    persistSession();
+}
+
+function syncGpTalentPresetTools() {
+    const tools = document.getElementById('gp-talent-preset-tools');
+    if (!tools) return;
+    const show = gpOverlay === 'talents' && String(currentPlan?.class || '').toLowerCase() === 'shaman';
+    tools.hidden = !show;
+    tools.style.display = show ? 'flex' : 'none';
+}
+
+function closeGpTalentPresetDropdown() {
+    const btn = document.getElementById('gp-talent-preset-menu-btn');
+    const dropdown = document.getElementById('gp-talent-preset-dropdown');
+    if (!dropdown) return;
+    dropdown.style.display = 'none';
+    dropdown.setAttribute('aria-hidden', 'true');
+    btn?.setAttribute('aria-expanded', 'false');
+}
+
+async function applyGpShamanTalentPreset(presetName) {
+    const preset = SHAMAN_TALENT_PRESETS[presetName];
+    const host = document.getElementById('gp-talents-host');
+    if (!preset?.talents || !host) return;
+    host.querySelectorAll('.talent-icon-container').forEach((el) => updateTalentPoints(el, 0));
+    await applyTalentSpec(host, preset.talents);
+    updateAllTalentStates(true);
+    currentPlan.talents = serializeTalentSpec(host);
+    persistSession();
+    requestAnimationFrame(() => fitGpTalentTree());
+    closeGpTalentPresetDropdown();
+}
+
+function wireGpTalentPresetMenu() {
+    const btn = document.getElementById('gp-talent-preset-menu-btn');
+    const dropdown = document.getElementById('gp-talent-preset-dropdown');
+    if (!btn || !dropdown || btn.dataset.wired === '1') return;
+    btn.dataset.wired = '1';
+
+    const list = document.createElement('div');
+    list.className = 'gp-talent-preset-list';
+    for (const name of SHAMAN_TALENT_PRESET_NAMES) {
+        if (!SHAMAN_TALENT_PRESETS[name]) continue;
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'gp-talent-preset-item';
+        item.setAttribute('role', 'menuitem');
+        item.dataset.preset = name;
+        item.title = name;
+        const iconUrl = SHAMAN_PRESET_SPEC_ICONS[name];
+        if (iconUrl) {
+            const img = document.createElement('img');
+            img.src = iconUrl;
+            img.alt = '';
+            img.width = 36;
+            img.height = 36;
+            item.appendChild(img);
+        }
+        const label = document.createElement('span');
+        label.className = 'gp-talent-preset-item-label';
+        label.textContent = name;
+        item.appendChild(label);
+        item.addEventListener('click', (e) => {
+            e.stopPropagation();
+            applyGpShamanTalentPreset(name);
+        });
+        list.appendChild(item);
+    }
+    dropdown.appendChild(list);
+
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = dropdown.style.display !== 'none';
+        if (open) {
+            closeGpTalentPresetDropdown();
+            return;
+        }
+        dropdown.style.display = 'block';
+        dropdown.setAttribute('aria-hidden', 'false');
+        btn.setAttribute('aria-expanded', 'true');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target) && !btn.contains(e.target)) {
+            closeGpTalentPresetDropdown();
+        }
+    });
+}
+
 function formatTalentSpread(spread) {
     const arr = Array.isArray(spread) && spread.length
         ? spread.map((n) => Number(n) || 0)
@@ -1857,7 +2011,7 @@ async function voteCommunityPlan(id, direction) {
     }
     if (!updated) return;
     syncVoteUiEverywhere(updated, id);
-    if (String(currentPlan.id) === String(id)) {
+    if (planMatchesVoteId(currentPlan, id)) {
         currentPlan.upvotes = Number(updated.upvotes) || 0;
         currentPlan.downvotes = Number(updated.downvotes) || 0;
         currentPlan.myVote = updated.myVote === 'up' || updated.myVote === 'down' ? updated.myVote : null;
@@ -1880,11 +2034,16 @@ function applyVoteUi(updated, rootEl) {
     if (downBtn) downBtn.setAttribute('aria-pressed', my === 'down' ? 'true' : 'false');
 }
 
+function planMatchesVoteId(plan, id) {
+    if (!plan || !id) return false;
+    return String(getCommunityVoteId(plan)) === String(id);
+}
+
 /** Keep header votes and any open community-card votes in sync after a vote. */
 function syncVoteUiEverywhere(updated, id) {
     if (!updated || !id) return;
     const headerWrap = document.getElementById('gp-header-votes');
-    if (headerWrap && String(currentPlan?.id) === String(id)) {
+    if (headerWrap && planMatchesVoteId(currentPlan, id)) {
         applyVoteUi(updated, headerWrap);
         updateHeaderVotesUi();
     }
@@ -1896,7 +2055,7 @@ function syncVoteUiEverywhere(updated, id) {
 }
 
 function isCommunityPlanOpen() {
-    return !!(currentPlan?.id && (currentPlan.community || currentPlan.authorId));
+    return !!getCommunityVoteId();
 }
 
 function updateHeaderVotesUi() {
@@ -1928,8 +2087,9 @@ function wireHeaderVotes() {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
             e.preventDefault();
-            if (!isCommunityPlanOpen()) return;
-            voteCommunityPlan(currentPlan.id, btn.dataset.vote);
+            const voteId = getCommunityVoteId();
+            if (!voteId) return;
+            voteCommunityPlan(voteId, btn.dataset.vote);
         });
     });
 }
@@ -1988,11 +2148,13 @@ async function favoriteCommunityPlanById(id) {
 async function loadCommunityPlanById(id) {
     if (!id) return;
     let plan = null;
+    const voterId = getCommunityVoterId();
     if (window.profileManager?.fetchCommunityGearPlan) {
-        plan = await window.profileManager.fetchCommunityGearPlan(id);
+        plan = await window.profileManager.fetchCommunityGearPlan(id, voterId);
     } else {
         try {
-            const res = await fetch(`/community-gear-plans/${encodeURIComponent(id)}`, { credentials: 'include' });
+            const qs = voterId ? `?voterId=${encodeURIComponent(voterId)}` : '';
+            const res = await fetch(`/community-gear-plans/${encodeURIComponent(id)}${qs}`, { credentials: 'include' });
             const data = await res.json();
             plan = data.success ? data.plan : null;
         } catch (e) {
@@ -2003,6 +2165,8 @@ async function loadCommunityPlanById(id) {
         window.notify?.error?.('Could not load community gear plan', 4000, 'Gear Planner');
         return;
     }
+    plan.community = true;
+    if (!plan.id) plan.id = id;
     const dlg = document.getElementById('gp-community-search-dialog');
     if (dlg) dlg.style.display = 'none';
     await loadPlanIntoView(plan);
@@ -2261,7 +2425,7 @@ function renderItemMeta(item, enchantChrome = '') {
 export function renderGearPlanner() {
     const nameInput = document.getElementById('gp-plan-name');
     if (nameInput && nameInput !== document.activeElement) {
-        nameInput.value = currentPlan.name || 'Gear Plan';
+        nameInput.value = sanitizeGearPlanName(currentPlan.name, 'Gear Plan');
     }
     generateGpClassIcons();
     generateGpRaceIcons();
@@ -2587,6 +2751,8 @@ async function saveCurrentPlan(asNew = false) {
         return;
     }
     const plan = getGearPlanData(currentPlan);
+    plan.name = sanitizeGearPlanName(currentPlan.name || plan.name, 'Gear Plan');
+    currentPlan.name = plan.name;
     plan.updatedAt = new Date().toISOString();
     plan.role = normalizeGearPlanRoles(currentPlan.role);
     plan.spec = currentPlan.spec || '';
@@ -2707,13 +2873,12 @@ function loadPlanIntoView(plan) {
     if (!plan) return;
     const prevId = currentPlan?.id;
     currentPlan = getGearPlanData(plan);
+    mergePlanCommunityFields(currentPlan, plan);
     if (plan.id) currentPlan.id = plan.id;
-    if (plan.upvotes != null) currentPlan.upvotes = plan.upvotes;
-    if (plan.downvotes != null) currentPlan.downvotes = plan.downvotes;
-    if (plan.myVote) currentPlan.myVote = plan.myVote;
     if (plan.statWeights) currentPlan.statWeights = plan.statWeights;
     if (plan.statWeightsAoe) currentPlan.statWeightsAoe = plan.statWeightsAoe;
     if (plan.tankStatWeights) currentPlan.tankStatWeights = plan.tankStatWeights;
+    currentPlan.name = sanitizeGearPlanName(currentPlan.name, 'Gear Plan');
     // Reload from My Gear Plans / community overwrites local weight drafts for this plan id
     try {
         localStorage.removeItem(gpLocalWeightsStorageKey(plan.id || prevId));
@@ -2726,7 +2891,9 @@ function loadPlanIntoView(plan) {
     closeGearPlansDropdown();
     updateHeaderVotesUi();
     updateStatWeightsBtnVisibility();
-    return refreshGearPlannerWhenItemsReady(currentPlan);
+    const ready = refreshGearPlannerWhenItemsReady(currentPlan);
+    hydrateCommunityVoteMeta();
+    return ready;
 }
 
 async function openLoadDropdown() {

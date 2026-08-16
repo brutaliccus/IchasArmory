@@ -31,7 +31,7 @@ Gear plan data model and localStorage persistence for the Gear Planner page.
 }
 ```
 
-Helpers: `normalizeGearPlanRoles`, `defaultIconForClassSpec`, `sanitizeGearPlanDescription`, `formatGearPlanRoleLabel`, `DEFAULT_SPEC_ICONS`, `GEAR_PLAN_ROLES`, `GEAR_PLAN_DESCRIPTION_MAX`.
+Helpers: `normalizeGearPlanRoles`, `defaultIconForClassSpec`, `sanitizeGearPlanDescription`, `sanitizeGearPlanName`, `formatGearPlanRoleLabel`, `DEFAULT_SPEC_ICONS`, `GEAR_PLAN_ROLES`, `GEAR_PLAN_DESCRIPTION_MAX`, `GEAR_PLAN_NAME_MAX` (64).
 
 Items and per-slot **primary enchants** (`enchant` = index into `enchantDatabase[slot]`, or `null`). Alternatives are unenchanted. Independent of Character Planner `selectedEnchants`.
 

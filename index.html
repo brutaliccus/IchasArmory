@@ -916,7 +916,7 @@
         <div class="gp-main">
             <header class="gp-header">
                 <div class="gp-plan-title-row">
-                    <input type="text" id="gp-plan-name" class="gp-plan-name-input slick-input" value="New Gear Plan" aria-label="Plan name" />
+                    <input type="text" id="gp-plan-name" class="gp-plan-name-input slick-input" value="New Gear Plan" maxlength="64" aria-label="Plan name" />
                     <div id="gp-header-votes" class="gp-header-votes" hidden>
                         <button type="button" class="gp-vote-btn gp-vote-up" id="gp-header-vote-up" data-vote="up" title="Upvote" aria-label="Upvote" aria-pressed="false">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 7l-7 9h14z"/></svg>
@@ -1025,7 +1025,21 @@
                 <div class="gp-slot-column" id="gp-slots-right"></div>
             </div>
             <div id="gp-talents-view" class="gp-talents-view" hidden>
-                <div id="gp-talents-tools-slot" class="gp-overlay-tools-slot"></div>
+                <div id="gp-talents-tools-slot" class="gp-overlay-tools-slot">
+                    <div id="gp-talent-preset-tools" class="gp-talent-preset-tools" hidden>
+                        <div class="gp-talent-preset-slot">
+                            <div class="gp-talent-preset-anchor">
+                                <button type="button" id="gp-talent-preset-menu-btn" class="gp-talent-preset-menu-btn" title="Talent presets" aria-expanded="false" aria-haspopup="dialog" aria-controls="gp-talent-preset-dropdown">
+                                    <span class="shaman-hamburger-bar" aria-hidden="true"></span>
+                                    <span class="shaman-hamburger-bar" aria-hidden="true"></span>
+                                    <span class="shaman-hamburger-bar" aria-hidden="true"></span>
+                                </button>
+                                <span class="gp-talent-preset-label" aria-hidden="true">Presets</span>
+                            </div>
+                            <div id="gp-talent-preset-dropdown" class="gp-talent-preset-dropdown" style="display: none;" role="menu" aria-hidden="true"></div>
+                        </div>
+                    </div>
+                </div>
                 <div id="gp-talents-host" class="gp-talents-host"></div>
             </div>
             <div id="gp-buffs-view" class="gp-buffs-view" hidden>

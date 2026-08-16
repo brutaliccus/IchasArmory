@@ -120,6 +120,11 @@ function sanitizePlanDescription(desc) {
     return String(desc == null ? '' : desc).replace(/\s+/g, ' ').trim().slice(0, 180);
 }
 
+function sanitizePlanName(name, fallback = 'Gear Plan') {
+    const cleaned = String(name == null ? '' : name).replace(/\s+/g, ' ').trim().slice(0, 64);
+    return cleaned || fallback;
+}
+
 /** Resolve community author for an existing plan id (index or file). */
 function getCommunityPlanAuthorId(planId) {
     const id = sanitizeCommunityPlanId(planId);
@@ -237,7 +242,7 @@ function toCommunityEntry(plan, author, previous) {
     const { upvotes, downvotes } = recountVotes(prevVotes);
     return {
         id,
-        name: String(plan.name || 'Untitled').slice(0, 120),
+        name: String(plan.name || 'Untitled').slice(0, 64),
         class: String(plan.class || '').toLowerCase().slice(0, 32),
         role: roles,
         spec: String(plan.spec || '').slice(0, 64),
@@ -993,6 +998,7 @@ app.post('/user-gear-plans', requireAuth, (req, res) => {
             const now = new Date().toISOString();
             const icon = sanitizeIconKey(plan.icon) || 'inv_misc_questionmark';
             const description = sanitizePlanDescription(plan.description);
+            const planName = sanitizePlanName(plan.name, 'Gear Plan');
             const authorMeta = {
                 username: req.user.username || 'Anonymous',
                 id: String(req.user.id),
@@ -1017,6 +1023,7 @@ app.post('/user-gear-plans', requireAuth, (req, res) => {
             let saved;
             const base = {
                 ...plan,
+                name: planName,
                 role: roles,
                 spec,
                 icon,
@@ -1460,6 +1467,7 @@ app.post('/gear-plans', (req, res) => {
         }
         const withMeta = {
             ...planData,
+            name: sanitizePlanName(planData.name, 'Gear Plan'),
             _meta: { id: planId, createdAt: new Date().toISOString() },
         };
         fs.writeFileSync(planPath, JSON.stringify(withMeta, null, 2));

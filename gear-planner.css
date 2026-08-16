@@ -81,12 +81,12 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
     padding: 8px 12px 16px;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     width: 100%;
     overflow: hidden;
     box-sizing: border-box;
     flex: 1 1 auto;
-    min-height: 0;
+    min-height: calc(100vh / var(--ui-scale, 1) - 200px);
 }
 
 .gp-talents-host .talent-trees-wrapper {
@@ -106,6 +106,11 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
     padding-right: calc(260px + 16px);
 }
 
+#gear-planner-shell.gp-talents-open {
+    max-width: none;
+    width: 100%;
+}
+
 #gear-planner-shell.gp-talents-open .gp-layout,
 #gear-planner-shell.gp-talents-open .gp-quick-sim-wrap,
 #gear-planner-shell.gp-talents-open .gp-st-rotation-row,
@@ -123,6 +128,9 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
 #gear-planner-shell.gp-stat-weights-open .gp-main {
     display: flex;
     flex-direction: column;
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
     min-height: calc(100vh / var(--ui-scale, 1) - 80px);
 }
 
@@ -188,7 +196,7 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
 
 #gear-planner-shell.gp-talents-open .gp-talents-view {
     flex: 1 1 auto;
-    min-height: 0;
+    min-height: calc(100vh / var(--ui-scale, 1) - 140px);
 }
 
 .gp-overlay-tools-slot {
@@ -199,11 +207,109 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
     box-sizing: border-box;
     padding: 0 4px 8px;
     pointer-events: auto;
+    flex-shrink: 0;
 }
 
 .gp-overlay-tools-slot .shaman-buffs-consume-tools {
     justify-content: flex-end;
     margin-left: auto;
+}
+
+.gp-talent-preset-tools {
+    display: flex;
+    justify-content: flex-end;
+    margin-left: auto;
+}
+
+.gp-talent-preset-slot {
+    position: relative;
+}
+
+.gp-talent-preset-anchor {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gp-talent-preset-label {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    color: #c9a227;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.gp-talent-preset-menu-btn {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    width: 36px;
+    height: 36px;
+    padding: 8px;
+    border: 1px solid #5a4a20;
+    border-radius: 6px;
+    background: #1a1810;
+    cursor: pointer;
+}
+
+.gp-talent-preset-menu-btn:hover {
+    border-color: #c9a227;
+}
+
+.gp-talent-preset-dropdown {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 18px);
+    z-index: 40;
+    min-width: 220px;
+    max-width: min(360px, 90vw);
+    padding: 10px;
+    border: 1px solid #5a4a20;
+    border-radius: 8px;
+    background: linear-gradient(180deg, rgba(42, 38, 24, 0.98) 0%, rgba(24, 20, 12, 0.98) 100%);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.gp-talent-preset-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.gp-talent-preset-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-color, #e8e0c8);
+    cursor: pointer;
+    text-align: left;
+}
+
+.gp-talent-preset-item:hover {
+    border-color: rgba(255, 215, 0, 0.35);
+    background: rgba(255, 215, 0, 0.06);
+}
+
+.gp-talent-preset-item img {
+    width: 28px;
+    height: 28px;
+    image-rendering: pixelated;
+    flex-shrink: 0;
+}
+
+.gp-talent-preset-item-label {
+    font-size: 0.88rem;
+    font-weight: 600;
 }
 
 .gp-buffs-view {
@@ -376,7 +482,7 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
 
 .gp-header {
     display: grid;
-    grid-template-columns: minmax(200px, max-content) 1fr auto;
+    grid-template-columns: minmax(0, 1.4fr) auto auto;
     align-items: center;
     gap: 10px 14px;
     padding: 14px 18px;
@@ -392,15 +498,16 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     align-items: center;
     gap: 8px;
     min-width: 0;
-    justify-self: start;
+    width: 100%;
+    justify-self: stretch;
     max-width: 100%;
 }
 
 .gp-plan-name-input {
-    width: 100%;
-    max-width: 280px;
     flex: 1 1 auto;
-    min-width: 120px;
+    width: auto;
+    min-width: 140px;
+    max-width: none;
     padding: 8px 12px;
     background: transparent;
     border: 1px solid transparent;

@@ -299,6 +299,11 @@ This document provides an index of all documentation files created for the IchaC
 **File:** `modules/shaman/shamanConsumePresets.md`  
 **Source:** `modules/shaman/shamanConsumePresets.js`
 
+### 11b2a. modules/shaman/shamanTalentPresets.js — Shaman talent preset allocations
+**File:** `modules/shaman/shamanTalentPresets.md`  
+**Source:** `modules/shaman/shamanTalentPresets.js`  
+**Contents:** `SHAMAN_TALENT_PRESET_NAMES`, `SHAMAN_TALENT_PRESETS` — shared by onboarding, `app.js` `applyTalentPreset`, and Gear Planner talents hamburger.
+
 **Contents:** `getShamanConsumeBuffs(spec, tier)`, `SHAMAN_CONSUME_GRID_COLUMNS`, `SHAMAN_PRESET_SPEC_ICONS` (same URLs as DPS priority preset radial), `SHAMAN_CONSUME_TIERS` (tier coin icon URLs), `SHAMAN_CONSUME_SPEC_ORDER`; data in **`modules/shaman/data/onboardingConsumePresets.json`** (regenerate: `node scripts/extract-onboarding-consume-presets.mjs`). Used by onboarding consume step and Buffs tab preset grid (`app.js`); **`dps.js`** imports **`SHAMAN_PRESET_SPEC_ICONS`** for the radial menu.
 
 ### 11c. modules/shaman/data/dpsRaidBossStats.json — preloaded DPS raid bosses

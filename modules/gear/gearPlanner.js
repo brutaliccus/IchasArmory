@@ -49,8 +49,16 @@ export function defaultIconForClassSpec(classId, spec) {
 /** Max length for gear plan short description (community cards / save meta). */
 export const GEAR_PLAN_DESCRIPTION_MAX = 180;
 
+/** Max length for gear plan display name (header input + API). */
+export const GEAR_PLAN_NAME_MAX = 64;
+
 export function sanitizeGearPlanDescription(desc) {
     return String(desc == null ? '' : desc).replace(/\s+/g, ' ').trim().slice(0, GEAR_PLAN_DESCRIPTION_MAX);
+}
+
+export function sanitizeGearPlanName(name, fallback = 'Gear Plan') {
+    const cleaned = String(name == null ? '' : name).replace(/\s+/g, ' ').trim().slice(0, GEAR_PLAN_NAME_MAX);
+    return cleaned || fallback;
 }
 
 /** Display labels for role keys (store lowercase; UI title-case except DPS). */
@@ -70,7 +78,7 @@ export function createEmptyGearPlan(classId = 'warrior', name = 'New Gear Plan')
     return {
         schemaVersion: 1,
         kind: 'gearPlan',
-        name,
+        name: sanitizeGearPlanName(name, 'New Gear Plan'),
         class: classId,
         race: 'human',
         talents: {},
@@ -116,7 +124,7 @@ export function createEmptyGearPlan(classId = 'warrior', name = 'New Gear Plan')
 /** @returns {GearPlan} */
 export function getGearPlanData(plan) {
     if (!plan || plan.kind !== 'gearPlan') return createEmptyGearPlan();
-    const out = createEmptyGearPlan(plan.class || 'warrior', plan.name || 'Gear Plan');
+    const out = createEmptyGearPlan(plan.class || 'warrior', sanitizeGearPlanName(plan.name, 'Gear Plan'));
     out.schemaVersion = plan.schemaVersion || 1;
     if (plan.race) out.race = String(plan.race);
     if (plan.talents && typeof plan.talents === 'object') out.talents = { ...plan.talents };

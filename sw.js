@@ -1,5 +1,5 @@
 // Service Worker for IchaCalc
-const CACHE_VERSION = 'v171';
+const CACHE_VERSION = 'v173';
 const CACHE_NAME = `ichacalc-${CACHE_VERSION}`;
 
 // Vite handles JS/CSS caching via content-hashed filenames + immutable Cache-Control headers.
@@ -20,6 +20,7 @@ function shouldBypassServiceWorker(pathname) {
     if (pathname.startsWith('/builds')) return true;
     if (pathname.startsWith('/gear-plans')) return true;
     if (pathname.startsWith('/user-gear-plans')) return true;
+    if (pathname.startsWith('/community-gear-plans')) return true;
     if (pathname.startsWith('/bug-report')) return true;
     return false;
 }
