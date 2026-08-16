@@ -12,7 +12,10 @@ Builds the full HTML tooltip for an item, including:
 - Merged tooltip lines (Equip/Use/Set lines combined with their descriptions)
 - Set bonus highlighting (green for active, gray for inactive)
 - Slot + armor type on one line, weapon damage + speed on one line
-- **DPS score** (`~X DPS` in gold) appended at the bottom when stat weights are available
+- **DPS score** (`~X DPS` in gold) appended at the bottom when stat weights are available (Gear Planner mode uses GP-generated weights via `getActiveItemScoreWeights()`)
+
+### `getActiveItemScoreWeights()`
+Returns `{ dps, tank }` for tooltip/modal scores. In Gear Planner mode, reads `getGearPlannerDpsStatWeights` / `getGearPlannerTankStatWeights` only (does not fall back to Character Planner weights).
 
 ### `createEnchantTooltipHTML(enchant)`
 Builds a simpler tooltip for enchants, showing name, stat bonuses (via `formatEnchantStatsHTML` from `modules/gear/enchantStatLabels.js`), and source.

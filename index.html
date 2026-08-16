@@ -931,6 +931,14 @@
                             <path d="M7 15h10"></path>
                         </svg>
                     </button>
+                    <button type="button" id="gp-stat-weights-btn" class="gp-btn gp-btn-icon" title="Stat weights" aria-label="Stat weights" aria-pressed="false" hidden>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M16 8.2A2.22 2.22 0 0 1 13.8 6H9.4A2.2 2.2 0 0 1 8 2"></path>
+                            <path d="M12 2v20"></path>
+                            <path d="M3 10h7a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2H3"></path>
+                            <path d="M14 14h7a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-7"></path>
+                        </svg>
+                    </button>
                     <button type="button" id="gp-save-btn" class="gp-btn gp-btn-icon" title="Save" aria-label="Save">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
@@ -986,6 +994,33 @@
             <div id="gp-buffs-view" class="gp-buffs-view" hidden>
                 <div id="gp-buffs-tools-slot" class="gp-overlay-tools-slot"></div>
                 <div id="gp-buffs-list-slot"></div>
+            </div>
+            <div id="gp-stat-weights-view" class="gp-stat-weights-view" hidden>
+                <div id="gp-tank-weights-panel" class="gp-weights-panel" hidden>
+                    <h3>Tank stat weights</h3>
+                    <p class="gp-weights-hint">Uses this plan’s class, race, talents, buffs, primary items, and enchants. Select a boss on Character Planner tank sim first (or search below).</p>
+                    <div class="gp-weights-controls">
+                        <label>Boss <input type="text" id="gp-tank-boss-search" class="slick-input" placeholder="Boss name (uses last tank-sim boss if empty)" /></label>
+                        <label>Minutes <input type="number" id="gp-tank-time-min" value="3" min="0" max="60" /></label>
+                        <label>Seconds <input type="number" id="gp-tank-time-sec" value="0" min="0" max="59" /></label>
+                        <button type="button" id="gp-generate-tank-weights-btn" class="gp-btn gp-btn-primary">Generate</button>
+                    </div>
+                    <p id="gp-tank-weights-status" class="gp-weights-status"></p>
+                    <div class="stat-weights-grid gp-tank-weights-grid">
+                        <div class="stat-weight-item"><span class="weight-label">1% Avoidance</span><span class="weight-value" id="gp-sw-avoidance">-</span></div>
+                        <div class="stat-weight-item"><span class="weight-label">1 Stamina</span><span class="weight-value" id="gp-sw-stamina">-</span></div>
+                        <div class="stat-weight-item"><span class="weight-label">1 Defense</span><span class="weight-value" id="gp-sw-defense">-</span></div>
+                        <div class="stat-weight-item"><span class="weight-label">1 Armor</span><span class="weight-value" id="gp-sw-armor">-</span></div>
+                        <div class="stat-weight-item"><span class="weight-label">1 Block Value</span><span class="weight-value" id="gp-sw-blockvalue">-</span></div>
+                        <div class="stat-weight-item"><span class="weight-label">1% Block Chance</span><span class="weight-value" id="gp-sw-blockchance">-</span></div>
+                    </div>
+                </div>
+                <div id="gp-dps-weights-panel" class="gp-weights-panel" hidden>
+                    <h3>Shaman DPS stat weights</h3>
+                    <p class="gp-weights-hint">Same generator as Character Planner. Fight duration, iterations, rotation, and target stats come from the DPS sim page; gear/talents/buffs/enchants come from this plan.</p>
+                    <div id="gp-dps-weights-host"></div>
+                </div>
+                <p id="gp-weights-unsupported" class="gp-weights-hint" hidden>Stat weight generation is available for tank classes and Shaman.</p>
             </div>
         </div>
     </div>

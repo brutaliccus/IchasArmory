@@ -1,7 +1,7 @@
 // modules/ui/modal.js - Unified modal system for items and enchants
 // Consolidates duplicate modal logic
 
-import { createItemTooltipHTML, createEnchantTooltipHTML, calculateItemDpsScore, calculateItemTankScore } from './tooltips.js';
+import { createItemTooltipHTML, createEnchantTooltipHTML, calculateItemDpsScore, calculateItemTankScore, getActiveItemScoreWeights } from './tooltips.js';
 import { positionItemTooltipOnIcon } from './itemTooltipPosition.js';
 import { createIconImage, getCurrentlyEquippedItem } from '../gear/gear.js';
 import { getStatSearchTerms, getItemType, filterEnchantsByItemType, parseStatsFromTooltip, KEY_MAP } from '../character/stats.js';
@@ -719,7 +719,7 @@ export function filterAndRenderItems(allItems, filters, listElement) {
     
     // Sort by DPS score if toggle is active and stat weights exist
     if (sortByDpsActive) {
-        const sw = typeof window.getStoredStatWeights === 'function' ? window.getStoredStatWeights() : null;
+        const { dps: sw } = getActiveItemScoreWeights();
         if (sw) {
             filteredItems.sort((a, b) => {
                 const scoreA = calculateItemDpsScore(a, sw) || 0;
@@ -731,7 +731,7 @@ export function filterAndRenderItems(allItems, filters, listElement) {
 
     // Sort by Tank score if toggle is active and tank stat weights exist
     if (sortByTankActive) {
-        const tw = typeof window.getStoredTankStatWeights === 'function' ? window.getStoredTankStatWeights() : null;
+        const { tank: tw } = getActiveItemScoreWeights();
         if (tw) {
             filteredItems.sort((a, b) => {
                 const scoreA = calculateItemTankScore(a, tw)?.tankScore || 0;
@@ -804,8 +804,7 @@ function renderItems(items, listElement) {
     const selectedStats = getSelectedStatsFromDropdowns();
 
     // Pre-fetch stat weights and equipped item for this slot
-    const statWeights = typeof window.getStoredStatWeights === 'function' ? window.getStoredStatWeights() : null;
-    const tankWeights = typeof window.getStoredTankStatWeights === 'function' ? window.getStoredTankStatWeights() : null;
+    const { dps: statWeights, tank: tankWeights } = getActiveItemScoreWeights();
     const modal = document.getElementById('item-modal');
     const currentSlot = modal?.dataset.currentSlot || null;
     const equippedItem = currentSlot ? getCurrentlyEquippedItem(currentSlot) : null;
@@ -1556,14 +1555,14 @@ export function openItemModal(slotId, items, elements, anchorEl = null) {
     // Show Sort by DPS button only when DPS stat weights are available
     const dpsSortBtn = document.getElementById('sort-by-dps-btn');
     if (dpsSortBtn) {
-        const sw = typeof window.getStoredStatWeights === 'function' ? window.getStoredStatWeights() : null;
+        const { dps: sw } = getActiveItemScoreWeights();
         const hasWeights = sw && Array.isArray(sw) && sw.some(w => typeof w.statDps === 'number');
         dpsSortBtn.style.display = hasWeights ? '' : 'none';
     }
 
     const tankSortBtn = document.getElementById('sort-by-tank-btn');
     if (tankSortBtn) {
-        const tw = typeof window.getStoredTankStatWeights === 'function' ? window.getStoredTankStatWeights() : null;
+        const { tank: tw } = getActiveItemScoreWeights();
         const hasTankWeights = tw && typeof tw.stamina1EHP === 'number';
         tankSortBtn.style.display = hasTankWeights ? '' : 'none';
     }

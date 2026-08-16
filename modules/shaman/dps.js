@@ -3759,7 +3759,7 @@ function getBuildHash() {
  * Old localStorage entries from before a stat existed (e.g. Fortune) omit rows — the UI
  * would have no <tr data-stat-key="fortune"> so updates never show.
  */
-function mergeStatWeightsToTemplate(stored) {
+export function mergeStatWeightsToTemplate(stored) {
     const base = STAT_WEIGHT_DELTAS.map(({ key, stat }) => ({
         key,
         stat,
@@ -11929,6 +11929,197 @@ function renderItemBadge(item) {
  */
 export function getPriorityConfig(setBonuses = null) {
     return loadPriorityConfig(setBonuses);
+}
+
+function serializeTalentSpecFromRoot(root) {
+    const spec = {};
+    root?.querySelectorAll('.talent-icon-container').forEach(el => {
+        const points = parseInt(el.dataset.points, 10) || 0;
+        if (points <= 0) return;
+        const key = el.dataset.tree ? `${el.dataset.tree}-${el.dataset.talentId}` : el.dataset.talentId;
+        if (key) spec[key] = points;
+    });
+    return spec;
+}
+
+function serializeBuffSpecFromList(root) {
+    const spec = [];
+    root?.querySelectorAll('.buff-icon.active').forEach(el => {
+        if (!el.id) return;
+        spec.push({ id: el.id, improved: el.classList.contains('is-improved') });
+    });
+    return spec;
+}
+
+async function applyTalentSpecToRoot(root, spec) {
+    if (!root || !spec) return;
+    for (const [key, points] of Object.entries(spec)) {
+        let tree, talentId;
+        if (key.includes('-')) [tree, talentId] = key.split('-');
+        else talentId = key;
+        const selector = tree
+            ? `.talent-icon-container[data-tree="${tree}"][data-talent-id="${talentId}"]`
+            : `.talent-icon-container[data-talent-id="${talentId}"]`;
+        const talentEl = root.querySelector(selector);
+        if (talentEl) updateTalentPoints(talentEl, points);
+    }
+}
+
+function restorePlanEnchants(enchantSnap) {
+    for (const slot of getEnchantableSlots()) applyEnchant(slot, 0);
+    for (const [slot, ench] of Object.entries(enchantSnap || {})) {
+        const idx = (enchantDatabase[slot] || []).findIndex(e => e.name === ench?.name);
+        if (idx >= 0) applyEnchant(slot, idx);
+    }
+}
+
+/**
+ * Apply GP class/race/talents/buffs/primaries/enchants onto Character Planner state, run fn, restore.
+ */
+async function withGearPlanCharacterContext(gearPlan, fn) {
+    const sidebar = document.getElementById('class-race-sidebar');
+    const talentList = document.getElementById('talents-list');
+    const buffList = document.getElementById('buffs-list');
+    const classSnap = sidebar?.dataset?.selectedClass || 'warrior';
+    const raceSnap = sidebar?.dataset?.selectedRace || 'human';
+    const talentSnap = { classId: classSnap, spec: serializeTalentSpecFromRoot(talentList) };
+    const buffSnap = { classId: classSnap, spec: serializeBuffSpecFromList(buffList) };
+    const gearSnap = {};
+    for (const slot of GEAR_PLAN_SLOTS) gearSnap[slot] = getCurrentlyEquippedItem(slot);
+    const enchantSnap = getSelectedEnchants();
+
+    try {
+        if (sidebar) {
+            sidebar.dataset.selectedClass = gearPlan.class || 'shaman';
+            if (gearPlan.race) sidebar.dataset.selectedRace = gearPlan.race;
+        }
+        if (talentList) {
+            generateTalentInputs(talentList, gearPlan.class || 'shaman');
+            await applyTalentSpecToRoot(talentList, gearPlan.talents || {});
+        }
+        if (buffList) {
+            await generateBuffIcons(buffList, gearPlan.class || 'shaman', gearPlan.talents || {});
+            applyBuffListToDom(gearPlan.buffs || [], buffList);
+        }
+        for (const slot of GEAR_PLAN_SLOTS) {
+            const id = gearPlan.slots?.[slot]?.primary;
+            if (id) equipItem(id, slot);
+            else clearItem(slot);
+        }
+        for (const slot of getEnchantableSlots()) {
+            const idx = gearPlan.slots?.[slot]?.enchant;
+            applyEnchant(slot, idx == null ? 0 : idx);
+        }
+        return await fn();
+    } finally {
+        if (sidebar) {
+            sidebar.dataset.selectedClass = classSnap;
+            sidebar.dataset.selectedRace = raceSnap;
+        }
+        for (const slot of GEAR_PLAN_SLOTS) {
+            const prev = gearSnap[slot];
+            if (prev?.id) equipItem(prev.id, slot);
+            else clearItem(slot);
+        }
+        restorePlanEnchants(enchantSnap);
+        if (talentList) {
+            generateTalentInputs(talentList, talentSnap.classId);
+            await applyTalentSpecToRoot(talentList, talentSnap.spec);
+        }
+        if (buffList) {
+            await generateBuffIcons(buffList, buffSnap.classId, talentSnap.spec);
+            applyBuffListToDom(buffSnap.spec, buffList);
+        }
+    }
+}
+
+function captureShamanStatWeightSimOptions(isAoe = false) {
+    const durationMinInput = document.querySelector('#sim-duration-min');
+    const durationSecInput = document.querySelector('#sim-duration-sec');
+    const iterationsInput = document.querySelector('#sim-iterations');
+    const workersInput = document.querySelector('#sim-workers');
+    const mins = parseInt(durationMinInput?.value, 10) || 2;
+    const secs = parseInt(durationSecInput?.value, 10) || 0;
+    const duration = mins * 60 + secs || 120;
+    let iterations = parseInt(iterationsInput?.value, 10) || 2000;
+    const workers = (workersInput?.value !== '' && workersInput?.value != null)
+        ? Math.min(16, Math.max(1, parseInt(workersInput.value, 10) || 1))
+        : null;
+    const targetArmor = parseInt(document.querySelector('#target-armor')?.value, 10) || 0;
+    const targetNatureResist = parseInt(document.querySelector('#target-nature-resist')?.value, 10) || 0;
+    const targetFireResist = parseInt(document.querySelector('#target-fire-resist')?.value, 10) || 0;
+    const targetFrostResist = parseInt(document.querySelector('#target-frost-resist')?.value, 10) || 0;
+    return {
+        duration,
+        iterations,
+        workers,
+        isAoe,
+        targetArmor,
+        targetNatureResist,
+        targetFireResist,
+        targetFrostResist,
+        beingAttacked: document.querySelector('#config-being-attacked')?.checked || false,
+        wearingShield: document.querySelector('#config-wearing-shield')?.checked || false,
+        inFrontOfBoss: document.querySelector('#config-in-front')?.checked || false,
+        threatHold: document.querySelector('#config-threat-hold')?.checked || false,
+        threatHoldDuration: parseInt(document.querySelector('#config-threat-hold-duration')?.value, 10) || 5,
+        handOfEdwardSpell: document.querySelector('#config-hoteo-spell')?.value || 'lightningBolt',
+        jewelForcedOutcome: (document.querySelector('#config-jewel-forced-outcome')?.value || '').trim(),
+        enemySwingTimer: parseFloat(document.querySelector('#config-enemy-swing-timer')?.value) || 2.0,
+        aoeTargetCount: parseInt(document.querySelector('#config-aoe-target-count')?.value, 10) || 5,
+        casterMode: (typeof getSimModeFromTab === 'function' ? getSimModeFromTab() : {}).casterMode || false,
+    };
+}
+
+/**
+ * Gear Planner shaman stat weights: GP class/race/talents/buffs/primaries/enchants, existing formulas.
+ * @param {import('../gear/gearPlanner.js').GearPlan} gearPlan
+ */
+export async function runGearPlanStatWeightSimulations(gearPlan, options = {}, progressCallback = null) {
+    if (!gearPlan || gearPlan.class !== 'shaman') {
+        throw new Error('Shaman DPS stat weights are only available for Shaman gear plans.');
+    }
+    const captured = { ...captureShamanStatWeightSimOptions(!!options.isAoe), ...options };
+    return withGearPlanCharacterContext(gearPlan, async () => {
+        const freshStats = getFreshShamanStats();
+        freshStats.targetArmor = captured.targetArmor;
+        freshStats.natureResist = captured.targetNatureResist;
+        freshStats.fireResist = captured.targetFireResist;
+        freshStats.frostResist = captured.targetFrostResist;
+        freshStats.setCombatConfig('beingAttacked', captured.beingAttacked);
+        freshStats.setCombatConfig('wearingShield', captured.wearingShield);
+        freshStats.setCombatConfig('inFrontOfBoss', captured.inFrontOfBoss);
+        freshStats.setCombatConfig('threatHold', captured.threatHold);
+        freshStats.setCombatConfig('threatHoldDuration', captured.threatHoldDuration);
+        freshStats.setCombatConfig('handOfEdwardSpell', captured.handOfEdwardSpell);
+        freshStats.setCombatConfig('jewelForcedOutcome', captured.jewelForcedOutcome);
+        freshStats.setCombatConfig('enemySwingTimer', captured.enemySwingTimer);
+        freshStats.setCombatConfig('aoeEnabled', !!captured.isAoe);
+        freshStats.setCombatConfig('aoeTargetCount', captured.aoeTargetCount);
+        freshStats.setCombatConfig('casterMode', captured.casterMode);
+
+        const priorityConfig = loadPriorityConfig(freshStats.setBonuses || {});
+        syncSearingTotemCombatConfigFromPriority(freshStats, priorityConfig);
+        const currentActiveBuffs = getActiveBuffs(freshStats.talentBonuses || {});
+        const simOptions = {
+            maxWorkers: captured.workers || undefined,
+            nightfallEnabled: currentActiveBuffs.some(buff => buff && (buff.id === 'nightfall' || buff.name?.toLowerCase().includes('nightfall'))),
+            hemoEnabled: currentActiveBuffs.some(buff => buff && (buff.id === 'hemorrhage' || buff.name?.toLowerCase().includes('hemorrhage'))),
+            hemoImproved: currentActiveBuffs.some(buff => buff && buff.id === 'hemorrhage' && buff.isImproved),
+            corrosiveSpitEnabled: currentActiveBuffs.some(buff => buff && (buff.id === 'corrosiveSpit' || buff.name?.toLowerCase().includes('corrosive spit'))),
+            quickSim: true,
+            skipPersist: true,
+            isAoe: !!captured.isAoe,
+        };
+        return runStatWeightSimulations(
+            freshStats,
+            captured.duration,
+            priorityConfig,
+            captured.iterations,
+            simOptions,
+            progressCallback
+        );
+    });
 }
 
 /**

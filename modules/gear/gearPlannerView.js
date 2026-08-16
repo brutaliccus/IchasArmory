@@ -9,6 +9,10 @@ import {
     loadLocalGearPlans,
     saveLocalGearPlans,
     applyGearPlanItemMove,
+    saveGearPlannerTankStatWeights,
+    getGearPlannerTankStatWeights,
+    saveGearPlannerDpsStatWeights,
+    getGearPlannerDpsStatWeights,
 } from './gearPlanner.js';
 import { ICON_BASE_URL, getEmptySlotPlaceholderUrl, getMeleeWeaponType, getEnchantableSlots } from './gear.js';
 import { enchantDatabase } from './enchants.js';
@@ -18,7 +22,8 @@ import { calculateEffectiveHealth } from '../ui/calculator.js';
 import { generateTalentInputs, updateTalentPoints, getTalentBonusesFromSpec } from '../talents_new.js';
 import { generateBuffIcons, applyBuffListToDom, getBuffsFromSavedList, handleBuffExclusivity } from '../character/buffs.js';
 import { getSetBonuses } from './setBonuses.js';
-import { runGearPlanQuickSim } from '../shaman/dps.js';
+import { runGearPlanQuickSim, runGearPlanStatWeightSimulations, mergeStatWeightsToTemplate, updateStatWeightsTable, sortStatWeightsTable } from '../shaman/dps.js';
+import { runTankSimulation, getBossDatabase } from '../tank/tankSimulator.js';
 import { createItemTooltipHTML, createEnchantTooltipHTML } from '../ui/tooltips.js';
 import { positionItemTooltipOnIcon } from '../ui/itemTooltipPosition.js';
 import {
@@ -79,6 +84,8 @@ let consumeToolsHome = null;
 
 const GP_ICON_TALENTS = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>`;
 const GP_ICON_BUFFS = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v7.31L4.21 20.39A1 1 0 0 0 5.08 22h13.84a1 1 0 0 0 .87-1.61L14 9.31V2"/><path d="M8.5 2h7"/><path d="M7 15h10"/></svg>`;
+const GP_ICON_WEIGHTS = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8.2A2.22 2.22 0 0 1 13.8 6H9.4A2.2 2.2 0 0 1 8 2"/><path d="M12 2v20"/><path d="M3 10h7a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2H3"/><path d="M14 14h7a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-7"/></svg>`;
+const GP_TANK_WEIGHT_CLASSES = new Set(['warrior', 'paladin', 'druid']);
 const GP_ICON_HOME = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M25,21.5c0,-0.319 -0.152,-0.619 -0.409,-0.807c-0.258,-0.188 -0.589,-0.243 -0.893,-0.146l-7.698,2.44c-0,0 -7.698,-2.44 -7.698,-2.44c-0.304,-0.097 -0.635,-0.042 -0.893,0.146c-0.257,0.188 -0.409,0.488 -0.409,0.807l0,6c0,0.552 0.448,1 1,1l16,0c0.552,0 1,-0.448 1,-1l0,-6Zm-2,1.366l0,3.634l-14,0c0,-0 0,-3.634 0,-3.634c0,0 6.698,2.123 6.698,2.123c0.196,0.063 0.408,0.063 0.604,0l6.698,-2.123Zm-2.002,-14.31c0.02,-0.341 -0.137,-0.668 -0.414,-0.868c-0.278,-0.199 -0.638,-0.243 -0.955,-0.116l-2.5,1c-0.38,0.151 -0.629,0.519 -0.629,0.928l0,11c0,0.317 0.151,0.616 0.406,0.804c0.255,0.189 0.585,0.245 0.888,0.152l6.5,-2c0.42,-0.129 0.706,-0.517 0.706,-0.956l0,-6c0,-0.552 -0.448,-1 -1,-1c-0.892,0 -1.663,-0.246 -2.203,-0.739c-0.516,-0.472 -0.797,-1.166 -0.797,-2.02c0,-0.062 -0.005,-0.124 -0.002,-0.185Zm-8.627,-0.984c-0.317,-0.127 -0.677,-0.083 -0.955,0.116c-0.277,0.2 -0.434,0.527 -0.414,0.868c0.003,0.061 -0.002,0.123 -0.002,0.185c0,0.854 -0.281,1.548 -0.797,2.02c-0.54,0.493 -1.311,0.739 -2.203,0.739c-0.552,0 -1,0.448 -1,1l0,6c0,0.439 0.286,0.827 0.706,0.956l6.5,2c0.303,0.093 0.633,0.037 0.888,-0.152c0.255,-0.188 0.406,-0.487 0.406,-0.804l0,-11c0,-0.409 -0.249,-0.777 -0.629,-0.928l-2.5,-1Zm6.756,2.354c0.21,0.942 0.675,1.72 1.32,2.31c0.666,0.609 1.537,1.023 2.553,1.186c0,0 0,4.339 0,4.339c0,0 -4.5,1.385 -4.5,1.385c0,0 0,-8.969 0,-8.969l0.627,-0.251Zm-6.254,0l0.627,0.251c0,0 0,8.969 0,8.969c-0,0 -4.5,-1.385 -4.5,-1.385c0,0 0,-4.339 0,-4.339c1.016,-0.163 1.887,-0.577 2.553,-1.186c0.645,-0.59 1.11,-1.368 1.32,-2.31Zm-1.892,-5.23c0.058,-0.294 -0.018,-0.598 -0.208,-0.83c-0.19,-0.232 -0.473,-0.366 -0.773,-0.366c-1.611,0 -3.965,1.17 -5.569,2.638c-1.191,1.089 -1.931,2.354 -1.931,3.362c0,0.552 0.448,1 1,1l5.5,0l0.981,-0.804l1,-5Zm11.019,-1.196c-0.3,0 -0.583,0.134 -0.773,0.366c-0.19,0.232 -0.266,0.536 -0.208,0.83l1,5l0.981,0.804l5.5,0c0.552,0 1,-0.448 1,-1c-0,-1.008 -0.74,-2.273 -1.931,-3.362c-1.604,-1.468 -3.958,-2.638 -5.569,-2.638Zm-13.82,5l-3.216,0c0.222,-0.299 0.501,-0.598 0.816,-0.886c0.847,-0.775 1.944,-1.485 2.948,-1.852l-0.548,2.738Zm15.64,0l-0.548,-2.738c1.004,0.367 2.101,1.078 2.948,1.852c0.315,0.288 0.594,0.587 0.816,0.886l-3.216,0Z"/></svg>`;
 
 export function initGearPlannerView(cbs) {
@@ -154,6 +161,8 @@ function wireHeaderControls() {
     document.getElementById('gp-save-btn')?.addEventListener('click', () => requestSaveCurrentPlan());
     document.getElementById('gp-talents-btn')?.addEventListener('click', () => toggleGpTalentsView());
     document.getElementById('gp-buffs-btn')?.addEventListener('click', () => toggleGpBuffsView());
+    document.getElementById('gp-stat-weights-btn')?.addEventListener('click', () => toggleGpStatWeightsView());
+    document.getElementById('gp-generate-tank-weights-btn')?.addEventListener('click', () => generateGpTankStatWeights());
     document.getElementById('gp-edit-mode-btn')?.addEventListener('click', () => {
         editMode = !editMode;
         persistSession();
@@ -242,6 +251,7 @@ function generateGpClassIcons() {
             ensurePlanRace(true);
             persistSession();
             updateQuickSimVisibility();
+            updateStatWeightsBtnVisibility();
             closeGpClassDrawer();
             renderGearPlanner();
             if (gpOverlay === 'talents') {
@@ -254,6 +264,7 @@ function generateGpClassIcons() {
                 if (tools) tools.style.display = currentPlan.class === 'shaman' ? 'flex' : 'none';
             }
             if (gpOverlay === 'buffs') refreshGpBuffsHost();
+            if (gpOverlay === 'weights') renderGpStatWeightsPanels();
         });
     });
 }
@@ -413,22 +424,31 @@ function syncGpOverlayUi() {
     const shell = document.getElementById('gear-planner-shell');
     const talentsView = document.getElementById('gp-talents-view');
     const buffsView = document.getElementById('gp-buffs-view');
+    const weightsView = document.getElementById('gp-stat-weights-view');
     const talentsBtn = document.getElementById('gp-talents-btn');
     const buffsBtn = document.getElementById('gp-buffs-btn');
+    const weightsBtn = document.getElementById('gp-stat-weights-btn');
     const talentsOpen = gpOverlay === 'talents';
     const buffsOpen = gpOverlay === 'buffs';
+    const weightsOpen = gpOverlay === 'weights';
     shell?.classList.toggle('gp-talents-open', talentsOpen);
     shell?.classList.toggle('gp-buffs-open', buffsOpen);
+    shell?.classList.toggle('gp-stat-weights-open', weightsOpen);
     document.body.classList.toggle('gp-talents-open', talentsOpen);
     document.body.classList.toggle('gp-buffs-open', buffsOpen);
+    document.body.classList.toggle('gp-stat-weights-open', weightsOpen);
     if (talentsView) talentsView.hidden = !talentsOpen;
     if (buffsView) buffsView.hidden = !buffsOpen;
+    if (weightsView) weightsView.hidden = !weightsOpen;
     talentsBtn?.setAttribute('aria-pressed', talentsOpen ? 'true' : 'false');
     talentsBtn?.classList.toggle('is-active', talentsOpen);
     buffsBtn?.setAttribute('aria-pressed', buffsOpen ? 'true' : 'false');
     buffsBtn?.classList.toggle('is-active', buffsOpen);
+    weightsBtn?.setAttribute('aria-pressed', weightsOpen ? 'true' : 'false');
+    weightsBtn?.classList.toggle('is-active', weightsOpen);
     setHeaderBtnIcon(talentsBtn, talentsOpen ? GP_ICON_HOME : GP_ICON_TALENTS, talentsOpen ? 'Gear Planner' : 'Talents');
     setHeaderBtnIcon(buffsBtn, buffsOpen ? GP_ICON_HOME : GP_ICON_BUFFS, buffsOpen ? 'Gear Planner' : 'Buffs & consumables');
+    setHeaderBtnIcon(weightsBtn, weightsOpen ? GP_ICON_HOME : GP_ICON_WEIGHTS, weightsOpen ? 'Gear Planner' : 'Stat weights');
 }
 
 let gpTalentFitObserver = null;
@@ -514,13 +534,207 @@ function toggleGpTalentsView() {
     else openGpTalentsView();
 }
 
+function toggleGpStatWeightsView() {
+    if (gpOverlay === 'weights') closeGpTalentsModal();
+    else openGpStatWeightsView();
+}
+
+async function openGpStatWeightsView() {
+    if (gpOverlay === 'talents' || gpOverlay === 'buffs') await closeGpTalentsModal();
+    gpOverlay = 'weights';
+    syncGpOverlayUi();
+    renderGpStatWeightsPanels();
+}
+
+function gpClassSupportsStatWeights(classId = currentPlan.class) {
+    return GP_TANK_WEIGHT_CLASSES.has(classId) || classId === 'shaman';
+}
+
+function updateStatWeightsBtnVisibility() {
+    const btn = document.getElementById('gp-stat-weights-btn');
+    if (!btn) return;
+    const show = gpClassSupportsStatWeights();
+    btn.hidden = !show;
+    if (!show && gpOverlay === 'weights') closeGpTalentsModal();
+}
+
+function fillGpTankWeightDisplay(sw) {
+    const set = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = (val == null || Number.isNaN(Number(val))) ? '-' : Math.round(Number(val)).toLocaleString();
+    };
+    set('gp-sw-avoidance', sw?.avoidance1PercentEHP);
+    set('gp-sw-stamina', sw?.stamina1EHP);
+    set('gp-sw-defense', sw?.defense1EHP);
+    set('gp-sw-armor', sw?.armor1EHP);
+    set('gp-sw-blockvalue', sw?.blockValue1EHP);
+    set('gp-sw-blockchance', sw?.blockChance1PercentEHP);
+}
+
+function resolveGpTankBoss() {
+    const typed = document.getElementById('gp-tank-boss-search')?.value?.trim();
+    const charSearch = document.getElementById('boss-search');
+    if (charSearch?.dataset?.bossData) {
+        try { return JSON.parse(charSearch.dataset.bossData); } catch { /* ignore */ }
+    }
+    try {
+        const stored = localStorage.getItem('lastSelectedBoss');
+        if (stored) {
+            const boss = JSON.parse(stored);
+            if (!typed || String(boss.name || '').toLowerCase() === typed.toLowerCase()) return boss;
+        }
+    } catch { /* ignore */ }
+    if (typed) {
+        const bosses = getBossDatabase() || [];
+        return bosses.find(b => String(b.name || '').toLowerCase() === typed.toLowerCase()) || null;
+    }
+    return null;
+}
+
+async function generateGpTankStatWeights() {
+    const status = document.getElementById('gp-tank-weights-status');
+    const btn = document.getElementById('gp-generate-tank-weights-btn');
+    const boss = resolveGpTankBoss();
+    if (!boss) {
+        if (status) status.textContent = 'Select a tank-sim boss first (Character Planner) or type an exact boss name.';
+        return;
+    }
+    if (!boss.minDamage || !boss.maxDamage) {
+        if (status) status.textContent = 'Boss damage data is missing. Search the boss on Character Planner tank sim.';
+        return;
+    }
+    const minutes = parseInt(document.getElementById('gp-tank-time-min')?.value, 10) || 0;
+    const seconds = parseInt(document.getElementById('gp-tank-time-sec')?.value, 10) || 0;
+    const timeInSeconds = (minutes * 60) + seconds;
+    if (timeInSeconds <= 0) {
+        if (status) status.textContent = 'Enter a valid fight duration.';
+        return;
+    }
+    const plan = getGearPlanData(currentPlan);
+    const { equipped } = aggregatePrimaryGearStats(plan);
+    const characterData = buildGpCalcPayload(plan, { includeGear: true, includeTalents: true, includeBuffs: true });
+    characterData.equippedItems = Object.values(equipped).filter(Boolean);
+    if (btn) { btn.disabled = true; btn.textContent = 'Generating...'; }
+    if (status) status.textContent = `Simulating ${boss.name}…`;
+    try {
+        const results = await runTankSimulation(characterData, boss, timeInSeconds, 1000, { yieldEvery: 50 });
+        saveGearPlannerTankStatWeights(results?.statWeights || null);
+        fillGpTankWeightDisplay(results?.statWeights);
+        if (status) status.textContent = `Done (${boss.name}). Item scores now use these weights.`;
+    } catch (e) {
+        console.error('[GP tank stat weights]', e);
+        if (status) status.textContent = e.message || 'Simulation failed';
+    } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'Generate'; }
+    }
+}
+
+function gpStatWeightsTableHtml(weights, tableClass) {
+    let html = `<div class="stat-weights-table-wrap"><table class="stat-weights-table ${tableClass}" style="font-size: 12px;"><thead><tr>`;
+    html += '<th class="stat-weight-sortable" data-sort="stat" style="cursor: pointer; user-select: none; text-align: left; padding: 4px 6px;">Stat</th>';
+    html += '<th class="stat-weight-sortable stat-weight-value-col" data-sort="dps" style="cursor: pointer; user-select: none; text-align: right; padding: 4px 6px;"><span class="stat-weight-col-label">DPS</span></th>';
+    html += '<th class="stat-weight-sortable" data-sort="ap" style="cursor: pointer; user-select: none; text-align: right; padding: 4px 6px;">AP</th>';
+    html += '<th class="stat-weight-sortable" data-sort="sp" style="cursor: pointer; user-select: none; text-align: right; padding: 4px 6px;">SP</th>';
+    html += '</tr></thead><tbody>';
+    for (const row of weights) {
+        html += `<tr data-stat-key="${row.key || ''}">`;
+        html += `<td style="text-align: left; padding: 4px 6px;">${row.stat}</td>`;
+        html += `<td style="text-align: right; padding: 4px 6px;">${row.dps}</td>`;
+        html += `<td style="text-align: right; padding: 4px 6px;">${row.ap}</td>`;
+        html += `<td style="text-align: right; padding: 4px 6px;">${row.sp}</td></tr>`;
+    }
+    html += '</tbody></table></div>';
+    return html;
+}
+
+function bindGpDpsWeightGenerate(host, isAoe) {
+    const btnId = isAoe ? 'gp-generate-aoe-stat-weights-btn' : 'gp-generate-stat-weights-btn';
+    const btn = host.querySelector(`#${btnId}`);
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+        const original = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Generating...';
+        setTimeout(async () => {
+            try {
+                const weights = await runGearPlanStatWeightSimulations(
+                    getGearPlanData(currentPlan),
+                    { isAoe },
+                    (completed, total) => { btn.textContent = 'Generating... ' + Math.round(100 * completed / total) + '%'; }
+                );
+                saveGearPlannerDpsStatWeights(weights, isAoe);
+                const panel = isAoe
+                    ? host.querySelector('.stat-weights-aoe-panel')
+                    : host.querySelector('.stat-weights-panel:not(.stat-weights-aoe-panel)');
+                const table = panel?.querySelector('.stat-weights-table');
+                const tabType = panel?.querySelector('.stat-weights-tab-btn.active, .stat-weights-aoe-tab-btn.active')?.dataset.statWeightType || 'dps';
+                updateStatWeightsTable(weights, tabType, table);
+            } catch (e) {
+                console.error('[GP DPS stat weights]', e);
+                alert('Failed to generate stat weights: ' + (e.message || e));
+            } finally {
+                btn.disabled = false;
+                btn.textContent = original;
+            }
+        }, 50);
+    });
+}
+
+function renderGpDpsWeightsHost() {
+    const host = document.getElementById('gp-dps-weights-host');
+    if (!host) return;
+    const st = mergeStatWeightsToTemplate(getGearPlannerDpsStatWeights(false));
+    const aoe = mergeStatWeightsToTemplate(getGearPlannerDpsStatWeights(true));
+    host.innerHTML = `<div class="stat-weights-tab-content" style="padding: 8px 0; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+        <div class="stat-weights-panel" style="flex: 0 1 400px; min-width: 280px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <h4 style="margin:0;color:#ffd700;">Single target</h4>
+                <button type="button" id="gp-generate-stat-weights-btn" class="gp-btn gp-btn-primary">Generate</button>
+            </div>
+            ${gpStatWeightsTableHtml(st, 'gp-st-weights')}
+        </div>
+        <div class="stat-weights-aoe-panel stat-weights-panel" style="flex: 0 1 400px; min-width: 280px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <h4 style="margin:0;color:#ffd700;">AOE</h4>
+                <button type="button" id="gp-generate-aoe-stat-weights-btn" class="gp-btn gp-btn-primary">Generate</button>
+            </div>
+            ${gpStatWeightsTableHtml(aoe, 'gp-aoe-weights')}
+        </div>
+    </div>`;
+    bindGpDpsWeightGenerate(host, false);
+    bindGpDpsWeightGenerate(host, true);
+    host.querySelectorAll('.stat-weights-panel').forEach(panel => {
+        panel.querySelectorAll('th.stat-weight-sortable').forEach(header => {
+            header.addEventListener('click', () => {
+                const table = panel.querySelector('.stat-weights-table');
+                const column = header.dataset.sort;
+                if (table && column) sortStatWeightsTable(column, true, table);
+            });
+        });
+    });
+}
+
+function renderGpStatWeightsPanels() {
+    const cls = currentPlan.class || 'warrior';
+    const tankPanel = document.getElementById('gp-tank-weights-panel');
+    const dpsPanel = document.getElementById('gp-dps-weights-panel');
+    const unsupported = document.getElementById('gp-weights-unsupported');
+    const tank = GP_TANK_WEIGHT_CLASSES.has(cls);
+    const shaman = cls === 'shaman';
+    if (tankPanel) tankPanel.hidden = !tank;
+    if (dpsPanel) dpsPanel.hidden = !shaman;
+    if (unsupported) unsupported.hidden = tank || shaman;
+    if (tank) fillGpTankWeightDisplay(getGearPlannerTankStatWeights());
+    if (shaman) renderGpDpsWeightsHost();
+}
+
 function toggleGpBuffsView() {
     if (gpOverlay === 'buffs') closeGpTalentsModal();
     else openGpBuffsView();
 }
 
 async function openGpTalentsView() {
-    if (gpOverlay === 'buffs') await closeGpTalentsModal();
+    if (gpOverlay === 'buffs' || gpOverlay === 'weights') await closeGpTalentsModal();
     const host = document.getElementById('gp-talents-host');
     const charList = document.getElementById('talents-list');
     if (!host) return;
@@ -589,7 +803,7 @@ function restoreBuffsDomHome() {
 }
 
 async function openGpBuffsView() {
-    if (gpOverlay === 'talents') await closeGpTalentsModal();
+    if (gpOverlay === 'talents' || gpOverlay === 'weights') await closeGpTalentsModal();
     if (gpOverlay !== 'buffs') {
         characterBuffSnapshot = snapshotCharacterBuffs();
         parkBuffsDomInGp();
@@ -1060,6 +1274,7 @@ export function renderGearPlanner() {
     generateGpClassIcons();
     generateGpRaceIcons();
     updateQuickSimVisibility();
+    updateStatWeightsBtnVisibility();
     syncEditModeUi();
     renderLocationsSidebar();
     renderStatsSidebar();

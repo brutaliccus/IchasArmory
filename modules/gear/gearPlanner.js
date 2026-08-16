@@ -118,6 +118,11 @@ export function getGearPlannerDpsStatWeights(isAoe = false) {
     }
 }
 
+if (typeof window !== 'undefined') {
+    window.getGearPlannerTankStatWeights = getGearPlannerTankStatWeights;
+    window.getGearPlannerDpsStatWeights = getGearPlannerDpsStatWeights;
+}
+
 export function loadGearPlanData(raw) {
     if (!raw) return createEmptyGearPlan();
     if (typeof raw === 'string') {

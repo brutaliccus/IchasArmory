@@ -7,6 +7,26 @@ import { parseStatsFromTooltip } from '../character/stats.js';
 import { getCurrentlyEquippedItem } from '../gear/gear.js';
 import { formatEnchantStatsHTML } from '../gear/enchantStatLabels.js';
 
+function isGearPlannerAppMode() {
+    return document.body?.dataset?.appMode === 'gearPlanner';
+}
+
+/** DPS/tank weights for item scores: GP-generated when Gear Planner is active. */
+export function getActiveItemScoreWeights() {
+    if (isGearPlannerAppMode()) {
+        const dps = typeof window.getGearPlannerDpsStatWeights === 'function'
+            ? window.getGearPlannerDpsStatWeights()
+            : null;
+        const tank = typeof window.getGearPlannerTankStatWeights === 'function'
+            ? window.getGearPlannerTankStatWeights()
+            : null;
+        return { dps, tank };
+    }
+    const dps = typeof window.getStoredStatWeights === 'function' ? window.getStoredStatWeights() : null;
+    const tank = typeof window.getStoredTankStatWeights === 'function' ? window.getStoredTankStatWeights() : null;
+    return { dps, tank };
+}
+
 // Mapping from parseStatsFromTooltip keys to tank stat weight keys
 // Each entry is: { weight: <tankStatWeightsKey>, component: 'ehp' | 'mit' }
 const TOOLTIP_TO_TANK_WEIGHT = {
@@ -398,11 +418,10 @@ export function createItemTooltipHTML(item, equippedGear = null) {
         .join('');
 
     // Build bottom score line: DPS on the left, tank score on the right
-    const statWeights = typeof window.getStoredStatWeights === 'function' ? window.getStoredStatWeights() : null;
+    const { dps: statWeights, tank: tankWeights } = getActiveItemScoreWeights();
     const dpsScore = statWeights ? calculateItemDpsScore(item, statWeights) : null;
     const hasDps = dpsScore !== null && dpsScore > 0;
 
-    const tankWeights = typeof window.getStoredTankStatWeights === 'function' ? window.getStoredTankStatWeights() : null;
     const tankScore = tankWeights ? calculateItemTankScore(item, tankWeights) : null;
     const hasTank = tankScore !== null;
 

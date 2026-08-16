@@ -28,7 +28,8 @@ Items and per-slot **primary enchants** (`enchant` = index into `enchantDatabase
 | Key | Purpose |
 |-----|---------|
 | `ichacalc_gear_planner_session_v1` | Active plan + `editMode` + collapse while switching Character ↔ Gear Planner |
-| `ichacalc_local_gear_plans_v1` | Saved named plans (guest / local) |
+| `ichacalc_gp_tankStatWeights` | Tank EHP/mit weights generated on the Gear Planner tab |
+| `ichacalc_gp_statWeights` / `_aoe` | Shaman DPS/TPS weights generated on the Gear Planner tab |
 
 Cloud saves: `user.gearPlans[]` via profiles API (see `profiles.md`).
 
@@ -36,4 +37,5 @@ Cloud saves: `user.gearPlans[]` via profiles API (see `profiles.md`).
 
 - `GEAR_PLAN_SLOTS`, `createEmptyGearPlan`, `getGearPlanData`, `loadGearPlanData`
 - `saveGearPlannerSession`, `loadGearPlannerSession`
-- `applyGearPlanItemMove(plan, from, to)` — same-slot primary/alt swap and alt reorder
+- `saveGearPlannerTankStatWeights` / `getGearPlannerTankStatWeights`
+- `saveGearPlannerDpsStatWeights` / `getGearPlannerDpsStatWeights`

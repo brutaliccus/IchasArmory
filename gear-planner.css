@@ -100,7 +100,8 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
 }
 
 #gear-planner-shell.gp-talents-open,
-#gear-planner-shell.gp-buffs-open {
+#gear-planner-shell.gp-buffs-open,
+#gear-planner-shell.gp-stat-weights-open {
     padding-left: calc(260px + 16px);
     padding-right: calc(260px + 16px);
 }
@@ -108,19 +109,23 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
 #gear-planner-shell.gp-talents-open .gp-layout,
 #gear-planner-shell.gp-talents-open .gp-quick-sim-wrap,
 #gear-planner-shell.gp-buffs-open .gp-layout,
-#gear-planner-shell.gp-buffs-open .gp-quick-sim-wrap {
+#gear-planner-shell.gp-buffs-open .gp-quick-sim-wrap,
+#gear-planner-shell.gp-stat-weights-open .gp-layout,
+#gear-planner-shell.gp-stat-weights-open .gp-quick-sim-wrap {
     display: none;
 }
 
 #gear-planner-shell.gp-talents-open .gp-main,
-#gear-planner-shell.gp-buffs-open .gp-main {
+#gear-planner-shell.gp-buffs-open .gp-main,
+#gear-planner-shell.gp-stat-weights-open .gp-main {
     display: flex;
     flex-direction: column;
     min-height: calc(100vh / var(--ui-scale, 1) - 80px);
 }
 
 #gear-planner-shell.gp-talents-open .gp-talents-view,
-#gear-planner-shell.gp-buffs-open .gp-buffs-view {
+#gear-planner-shell.gp-buffs-open .gp-buffs-view,
+#gear-planner-shell.gp-stat-weights-open .gp-stat-weights-view {
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -128,6 +133,54 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
     position: relative;
     z-index: 5;
     pointer-events: auto;
+}
+
+.gp-stat-weights-view {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    padding: 8px 4px 24px;
+}
+
+.gp-weights-panel h3 {
+    color: #ffd700;
+    margin: 0 0 8px;
+}
+
+.gp-weights-hint {
+    color: #aaa;
+    font-size: 12px;
+    margin: 0 0 12px;
+}
+
+.gp-weights-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-end;
+    margin-bottom: 12px;
+}
+
+.gp-weights-controls label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    color: #ccc;
+}
+
+.gp-weights-controls input[type="number"] {
+    width: 72px;
+}
+
+.gp-weights-status {
+    min-height: 1.2em;
+    font-size: 12px;
+    color: #ccc;
+}
+
+.gp-tank-weights-grid {
+    max-width: 640px;
 }
 
 #gear-planner-shell.gp-talents-open .gp-talents-view {
