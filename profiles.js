@@ -1775,6 +1775,35 @@ ProfileManager.prototype.setGearPlanFavorite = async function setGearPlanFavorit
     }
 };
 
+ProfileManager.prototype.fetchCommunityGearPlans = async function fetchCommunityGearPlans(filters = {}) {
+    try {
+        const params = new URLSearchParams();
+        if (filters.q) params.set('q', filters.q);
+        if (filters.class) params.set('class', filters.class);
+        if (filters.role) params.set('role', filters.role);
+        if (filters.spec) params.set('spec', filters.spec);
+        const qs = params.toString();
+        const res = await fetch(`/community-gear-plans${qs ? `?${qs}` : ''}`, { credentials: 'include' });
+        const data = await res.json();
+        return data.success ? (data.plans || []) : [];
+    } catch (e) {
+        console.error('[Profiles] fetchCommunityGearPlans:', e);
+        return [];
+    }
+};
+
+ProfileManager.prototype.fetchCommunityGearPlan = async function fetchCommunityGearPlan(id) {
+    if (!id) return null;
+    try {
+        const res = await fetch(`/community-gear-plans/${encodeURIComponent(id)}`, { credentials: 'include' });
+        const data = await res.json();
+        return data.success ? (data.plan || null) : null;
+    } catch (e) {
+        console.error('[Profiles] fetchCommunityGearPlan:', e);
+        return null;
+    }
+};
+
 ProfileManager.prototype.shareGearPlan = async function shareGearPlan(plan, recipientId, message = '') {
     const buildDataToShare = { ...plan, profileName: plan.name };
     const response = await fetch('/share', {

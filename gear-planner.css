@@ -992,3 +992,85 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     width: 18px;
     height: 18px;
 }
+
+/* Community build browser + save metadata */
+.gp-required { color: #e07070; }
+.gp-save-meta-dialog .save-profile-dialog-body { max-width: 420px; }
+.gp-save-meta-fields { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+.gp-save-meta-fieldset {
+    border: 1px solid #5a4a20;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin: 0;
+}
+.gp-save-meta-fieldset legend { padding: 0 6px; color: #c9a227; font-size: 0.85rem; }
+.gp-role-check { display: inline-flex; align-items: center; gap: 6px; margin-right: 12px; font-size: 0.9rem; cursor: pointer; }
+.gp-save-meta-label { display: flex; flex-direction: column; gap: 6px; font-size: 0.9rem; color: var(--text-color); }
+.gp-save-select { width: 100%; }
+.gp-save-icon-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.gp-save-icon-btn {
+    width: 44px; height: 44px; padding: 2px; border-radius: 6px;
+    border: 1px solid #5a4a20; background: #1a1810; cursor: pointer;
+}
+.gp-save-icon-btn:hover { border-color: var(--accent-color, #ffd700); }
+.gp-save-icon-btn img { display: block; width: 36px; height: 36px; image-rendering: pixelated; }
+.gp-save-icon-name { font-size: 0.75rem; color: #a09070; word-break: break-all; }
+.gp-save-meta-error { color: #e07070; font-size: 0.85rem; margin: 0; }
+
+.gp-community-modal { width: min(640px, 94vw); max-height: 85vh; display: flex; flex-direction: column; }
+.gp-community-body { display: flex; flex-direction: column; gap: 12px; padding: 12px 16px 16px; min-height: 0; }
+.gp-community-filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+.gp-community-filters #gp-community-q { grid-column: 1 / -1; }
+.gp-community-filters #gp-community-search-go { grid-column: 1 / -1; }
+@media (min-width: 560px) {
+    .gp-community-filters {
+        grid-template-columns: 1.4fr 1fr 0.9fr 1fr auto;
+    }
+    .gp-community-filters #gp-community-q { grid-column: auto; }
+    .gp-community-filters #gp-community-search-go { grid-column: auto; }
+}
+.gp-community-results {
+    overflow: auto;
+    max-height: min(50vh, 420px);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border: 1px solid #3a3420;
+    border-radius: 6px;
+    padding: 6px;
+    background: rgba(0,0,0,0.2);
+}
+.gp-community-empty { padding: 16px; text-align: center; color: #a09070; font-size: 0.9rem; }
+.gp-community-result {
+    display: flex; align-items: center; gap: 12px; text-align: left;
+    padding: 8px 10px; border-radius: 6px; border: 1px solid transparent;
+    background: transparent; color: var(--text-color); cursor: pointer; width: 100%;
+}
+.gp-community-result:hover { background: rgba(255, 215, 0, 0.08); border-color: #5a4a20; }
+.gp-community-result-icon { width: 40px; height: 40px; border-radius: 4px; image-rendering: pixelated; flex-shrink: 0; }
+.gp-community-result-info { min-width: 0; flex: 1; }
+.gp-community-result-name { font-weight: 600; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gp-community-result-meta,
+.gp-community-result-author { font-size: 0.78rem; color: #a09070; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.gp-icon-picker-modal { width: min(560px, 94vw); max-height: 80vh; display: flex; flex-direction: column; }
+.gp-icon-picker-body { padding: 12px 16px 16px; display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+.gp-icon-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+    gap: 6px;
+    overflow: auto;
+    max-height: min(50vh, 400px);
+    padding: 4px;
+}
+.gp-icon-pick {
+    width: 44px; height: 44px; padding: 2px; border-radius: 4px;
+    border: 1px solid #3a3420; background: #1a1810; cursor: pointer;
+}
+.gp-icon-pick img { width: 36px; height: 36px; display: block; image-rendering: pixelated; }
+.gp-icon-pick:hover,
+.gp-icon-pick.is-selected { border-color: var(--accent-color, #ffd700); box-shadow: 0 0 6px rgba(255, 215, 0, 0.35); }

@@ -9,6 +9,43 @@ export const SESSION_STORAGE_KEY = 'ichacalc_gear_planner_session_v1';
 export const LOCAL_GEAR_PLANS_KEY = 'ichacalc_local_gear_plans_v1';
 
 /** @returns {import('./gearPlanner.js').GearPlan} */
+/** Canonical role tags for community / save metadata. */
+export const GEAR_PLAN_ROLES = ['dps', 'tank', 'healer'];
+
+/**
+ * Default Vanilla icon keys per class + talent-tree display name.
+ * Keys match `classTalents[class].*.name` (case-sensitive display names).
+ */
+export const DEFAULT_SPEC_ICONS = {
+    warrior: { Arms: 'ability_rogue_ambush', Fury: 'spell_nature_purge', Protection: 'ability_racial_bloodrage' },
+    paladin: { Holy: 'ability_golemthunderclap', Protection: 'spell_holy_devotionaura', Retribution: 'spell_holy_spiritualguidence' },
+    hunter: { 'Beast Mastery': 'spell_nature_ravenform', Marksmanship: 'spell_frost_stun', Survival: 'spell_holy_prayerofhealing' },
+    rogue: { Assassination: 'ability_rogue_eviscerate', Combat: 'ability_warrior_warcry', Subtlety: 'ability_stealth' },
+    priest: { Discipline: 'inv_wand_01', Holy: 'spell_holy_renew', Shadow: 'spell_shadow_requiem' },
+    shaman: { Elemental: 'spell_nature_lightning', Enhancement: 'spell_nature_lightningshield', Restoration: 'spell_nature_healingwavegreater' },
+    mage: { Arcane: 'spell_holy_dispelmagic', Fire: 'spell_fire_flamebolt', Frost: 'spell_frost_frostward' },
+    warlock: { Affliction: 'spell_shadow_unsummonbuilding', Demonology: 'inv_stone_04', Destruction: 'spell_shadow_shadowbolt' },
+    druid: { Balance: 'spell_nature_abolishmagic', 'Feral Combat': 'ability_hunter_pet_hyena', Restoration: 'spell_nature_regeneration' },
+};
+
+export function normalizeGearPlanRoles(roles) {
+    const arr = Array.isArray(roles) ? roles : (roles != null && roles !== '' ? [roles] : []);
+    const out = [];
+    for (const r of arr) {
+        const key = String(r).toLowerCase().trim();
+        if (GEAR_PLAN_ROLES.includes(key) && !out.includes(key)) out.push(key);
+    }
+    return out;
+}
+
+export function defaultIconForClassSpec(classId, spec) {
+    const cls = String(classId || 'warrior').toLowerCase();
+    const map = DEFAULT_SPEC_ICONS[cls] || {};
+    if (spec && map[spec]) return map[spec];
+    const first = Object.values(map)[0];
+    return first || 'inv_misc_questionmark';
+}
+
 export function createEmptyGearPlan(classId = 'warrior', name = 'New Gear Plan') {
     const slots = {};
     for (const slot of GEAR_PLAN_SLOTS) {
@@ -24,6 +61,10 @@ export function createEmptyGearPlan(classId = 'warrior', name = 'New Gear Plan')
         buffs: [],
         slots,
         ui: { collapsed: {}, stRotation: 'enhSt' },
+        role: [],
+        spec: '',
+        icon: defaultIconForClassSpec(classId, ''),
+        community: false,
     };
 }
 
@@ -45,6 +86,12 @@ export function createEmptyGearPlan(classId = 'warrior', name = 'New Gear Plan')
  * @property {Array<{ id: string, improved?: boolean }>} buffs
  * @property {Record<string, GearPlanSlot>} slots
  * @property {{ collapsed?: Record<string, boolean>, stRotation?: 'enhSt'|'eleSt' }} ui
+ * @property {Array<'dps'|'tank'|'healer'>} [role]
+ * @property {string} [spec]
+ * @property {string} [icon] Vanilla icon basename (e.g. spell_nature_lightning)
+ * @property {boolean} [community]
+ * @property {string} [authorName]
+ * @property {string} [authorId]
  */
 
 /** @returns {GearPlan} */
@@ -75,6 +122,22 @@ export function getGearPlanData(plan) {
     }
     if (plan.id) out.id = plan.id;
     if (plan.favorite) out.favorite = true;
+
+    out.role = normalizeGearPlanRoles(plan.role);
+    out.spec = plan.spec != null ? String(plan.spec) : '';
+    const iconRaw = plan.icon != null ? String(plan.icon).trim() : '';
+    const iconKey = iconRaw
+        .replace(/^https?:\/\/[^/]+\/.*\//i, '')
+        .replace(/\.(jpg|png|blp)$/i, '')
+        .toLowerCase();
+    out.icon = /^[a-z0-9_]+$/.test(iconKey)
+        ? iconKey
+        : defaultIconForClassSpec(out.class, out.spec);
+    out.community = !!plan.community;
+    if (plan.authorName) out.authorName = String(plan.authorName);
+    if (plan.authorId) out.authorId = String(plan.authorId);
+    if (plan.createdAt) out.createdAt = plan.createdAt;
+    if (plan.updatedAt) out.updatedAt = plan.updatedAt;
     return out;
 }
 

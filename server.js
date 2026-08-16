@@ -66,12 +66,123 @@ const inboxDir = path.join(dataDir, 'inbox');
 const sessionsDir = path.join(dataDir, 'sessions');
 const buildsDir = path.join(__dirname, 'builds');
 const gearPlansDir = path.join(__dirname, 'gear-plans');
+const communityGearPlansDir = path.join(dataDir, 'community-gear-plans');
 
-[dataDir, usersDir, inboxDir, sessionsDir, buildsDir, gearPlansDir].forEach(dir => {
+[dataDir, usersDir, inboxDir, sessionsDir, buildsDir, gearPlansDir, communityGearPlansDir].forEach(dir => {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
     }
 });
+
+const communityIndexPath = path.join(communityGearPlansDir, 'index.json');
+
+function readCommunityIndex() {
+    try {
+        if (!fs.existsSync(communityIndexPath)) return [];
+        const raw = JSON.parse(fs.readFileSync(communityIndexPath, 'utf-8'));
+        return Array.isArray(raw) ? raw : [];
+    } catch {
+        return [];
+    }
+}
+
+function writeCommunityIndex(entries) {
+    fs.writeFileSync(communityIndexPath, JSON.stringify(entries, null, 2));
+}
+
+function sanitizeCommunityPlanId(id) {
+    const s = String(id || '');
+    return /^[A-Za-z0-9_-]{1,64}$/.test(s) ? s : null;
+}
+
+function normalizeRoles(roles) {
+    const allowed = new Set(['dps', 'tank', 'healer']);
+    const arr = Array.isArray(roles) ? roles : (roles != null && roles !== '' ? [roles] : []);
+    const out = [];
+    for (const r of arr) {
+        const key = String(r).toLowerCase().trim();
+        if (allowed.has(key) && !out.includes(key)) out.push(key);
+    }
+    return out;
+}
+
+function sanitizeIconKey(icon) {
+    if (icon == null) return '';
+    const key = String(icon)
+        .replace(/^https?:\/\/[^/]+\/.*\//i, '')
+        .replace(/\.(jpg|png|blp)$/i, '')
+        .toLowerCase()
+        .trim();
+    return /^[a-z0-9_]+$/.test(key) ? key : '';
+}
+
+/** Public community listing + stored plan (no session secrets). */
+function toCommunityEntry(plan, author) {
+    const id = sanitizeCommunityPlanId(plan.id);
+    if (!id) return null;
+    const roles = normalizeRoles(plan.role);
+    const icon = sanitizeIconKey(plan.icon) || 'inv_misc_questionmark';
+    const authorName = (author && author.username)
+        ? String(author.username)
+        : (plan.authorName ? String(plan.authorName) : 'Anonymous');
+    const authorId = (author && author.id)
+        ? String(author.id)
+        : (plan.authorId ? String(plan.authorId) : undefined);
+    return {
+        id,
+        name: String(plan.name || 'Untitled').slice(0, 120),
+        class: String(plan.class || '').toLowerCase().slice(0, 32),
+        role: roles,
+        spec: String(plan.spec || '').slice(0, 64),
+        icon,
+        authorName: authorName.slice(0, 64),
+        authorId,
+        updatedAt: plan.updatedAt || new Date().toISOString(),
+        createdAt: plan.createdAt || plan.updatedAt || new Date().toISOString(),
+        favoriteCount: Number(plan.favoriteCount) || 0,
+    };
+}
+
+function publishCommunityGearPlan(plan, author) {
+    const entry = toCommunityEntry(plan, author);
+    if (!entry) return null;
+    const fullPath = path.join(communityGearPlansDir, `${entry.id}.json`);
+    const sanitizedPlan = {
+        ...plan,
+        id: entry.id,
+        role: entry.role,
+        spec: entry.spec,
+        icon: entry.icon,
+        community: true,
+        authorName: entry.authorName,
+        authorId: entry.authorId,
+        updatedAt: entry.updatedAt,
+        createdAt: entry.createdAt,
+    };
+    // Never persist session/auth fields if somehow present
+    delete sanitizedPlan.session;
+    delete sanitizedPlan.token;
+    delete sanitizedPlan.accessToken;
+    delete sanitizedPlan.refreshToken;
+    fs.writeFileSync(fullPath, JSON.stringify(sanitizedPlan, null, 2));
+
+    const index = readCommunityIndex().filter(e => String(e.id) !== String(entry.id));
+    index.unshift(entry);
+    // Keep newest first
+    index.sort((a, b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')));
+    writeCommunityIndex(index);
+    return entry;
+}
+
+function unpublishCommunityGearPlan(planId) {
+    const id = sanitizeCommunityPlanId(planId);
+    if (!id) return;
+    const fullPath = path.join(communityGearPlansDir, `${id}.json`);
+    if (fs.existsSync(fullPath)) {
+        try { fs.unlinkSync(fullPath); } catch (_) { /* ignore */ }
+    }
+    writeCommunityIndex(readCommunityIndex().filter(e => String(e.id) !== String(id)));
+}
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -659,37 +770,70 @@ app.get('/user-gear-plans', requireAuth, (req, res) => {
 });
 
 app.post('/user-gear-plans', requireAuth, (req, res) => {
-    try {
-        const { plan } = req.body;
-        if (!plan || plan.kind !== 'gearPlan') {
-            return res.status(400).json({ success: false, error: 'Invalid gear plan' });
-        }
-        const userFile = path.join(usersDir, `${req.user.id}.json`);
-        const user = JSON.parse(fs.readFileSync(userFile, 'utf-8'));
-        if (!user.gearPlans) user.gearPlans = [];
+        try {
+            const { plan } = req.body;
+            if (!plan || plan.kind !== 'gearPlan') {
+                return res.status(400).json({ success: false, error: 'Invalid gear plan' });
+            }
+            const roles = normalizeRoles(plan.role);
+            const spec = String(plan.spec || '').trim();
+            if (!roles.length || !spec) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Gear plans require at least one role and a talent-tree focus (spec)',
+                });
+            }
+            const userFile = path.join(usersDir, `${req.user.id}.json`);
+            const user = JSON.parse(fs.readFileSync(userFile, 'utf-8'));
+            if (!user.gearPlans) user.gearPlans = [];
 
-        const now = new Date().toISOString();
-        let saved;
-        if (plan.id) {
-            const idx = user.gearPlans.findIndex(p => String(p.id) === String(plan.id));
-            if (idx >= 0) {
-                user.gearPlans[idx] = { ...plan, updatedAt: now };
-                saved = user.gearPlans[idx];
+            const now = new Date().toISOString();
+            const icon = sanitizeIconKey(plan.icon) || 'inv_misc_questionmark';
+            const authorMeta = {
+                username: req.user.username || 'Anonymous',
+                id: String(req.user.id),
+            };
+            let saved;
+            const base = {
+                ...plan,
+                role: roles,
+                spec,
+                icon,
+                community: true,
+                authorName: authorMeta.username,
+                authorId: authorMeta.id,
+            };
+            if (plan.id) {
+                const idx = user.gearPlans.findIndex(p => String(p.id) === String(plan.id));
+                if (idx >= 0) {
+                    user.gearPlans[idx] = {
+                        ...base,
+                        id: plan.id,
+                        createdAt: user.gearPlans[idx].createdAt || now,
+                        updatedAt: now,
+                        favorite: !!user.gearPlans[idx].favorite,
+                    };
+                    saved = user.gearPlans[idx];
+                } else {
+                    saved = { ...base, id: plan.id, createdAt: now, updatedAt: now };
+                    user.gearPlans.push(saved);
+                }
             } else {
-                saved = { ...plan, id: plan.id, createdAt: now, updatedAt: now };
+                saved = { ...base, id: `gp_${Date.now()}`, createdAt: now, updatedAt: now };
                 user.gearPlans.push(saved);
             }
-        } else {
-            saved = { ...plan, id: `gp_${Date.now()}`, createdAt: now, updatedAt: now };
-            user.gearPlans.push(saved);
+            fs.writeFileSync(userFile, JSON.stringify(user, null, 2));
+            try {
+                publishCommunityGearPlan(saved, authorMeta);
+            } catch (pubErr) {
+                console.error('[CommunityGearPlans] publish failed:', pubErr);
+            }
+            res.json({ success: true, plan: saved });
+        } catch (error) {
+            console.error('Error saving gear plan:', error);
+            res.status(500).json({ success: false, error: error.message });
         }
-        fs.writeFileSync(userFile, JSON.stringify(user, null, 2));
-        res.json({ success: true, plan: saved });
-    } catch (error) {
-        console.error('Error saving gear plan:', error);
-        res.status(500).json({ success: false, error: error.message });
-    }
-});
+    });
 
 app.patch('/user-gear-plans/:id/favorite', requireAuth, (req, res) => {
     try {
@@ -714,18 +858,23 @@ app.patch('/user-gear-plans/:id/favorite', requireAuth, (req, res) => {
 });
 
 app.delete('/user-gear-plans/:id', requireAuth, (req, res) => {
-    try {
-        const { id } = req.params;
-        const userFile = path.join(usersDir, `${req.user.id}.json`);
-        const user = JSON.parse(fs.readFileSync(userFile, 'utf-8'));
-        user.gearPlans = (user.gearPlans || []).filter(p => String(p.id) !== String(id));
-        fs.writeFileSync(userFile, JSON.stringify(user, null, 2));
-        res.json({ success: true });
-    } catch (error) {
-        console.error('Error deleting gear plan:', error);
-        res.status(500).json({ success: false, error: error.message });
-    }
-});
+        try {
+            const { id } = req.params;
+            const userFile = path.join(usersDir, `${req.user.id}.json`);
+            const user = JSON.parse(fs.readFileSync(userFile, 'utf-8'));
+            user.gearPlans = (user.gearPlans || []).filter(p => String(p.id) !== String(id));
+            fs.writeFileSync(userFile, JSON.stringify(user, null, 2));
+            try {
+                unpublishCommunityGearPlan(id);
+            } catch (unpubErr) {
+                console.error('[CommunityGearPlans] unpublish failed:', unpubErr);
+            }
+            res.json({ success: true });
+        } catch (error) {
+            console.error('Error deleting gear plan:', error);
+            res.status(500).json({ success: false, error: error.message });
+        }
+    });
 
 } // End if (authEnabled)
 
@@ -1077,6 +1226,61 @@ app.get('/gear-plans/:planId', (req, res) => {
         res.json({ success: true, plan });
     } catch (error) {
         console.error('[GearPlans] Error loading:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// Community gear plan browser (public — guests + logged-in)
+app.get('/community-gear-plans', (req, res) => {
+    try {
+        const q = String(req.query.q || '').trim().toLowerCase();
+        const classFilter = String(req.query.class || '').trim().toLowerCase();
+        const roleFilter = String(req.query.role || '').trim().toLowerCase();
+        const specFilter = String(req.query.spec || '').trim().toLowerCase();
+        let entries = readCommunityIndex();
+        if (classFilter) {
+            entries = entries.filter(e => String(e.class || '').toLowerCase() === classFilter);
+        }
+        if (roleFilter) {
+            entries = entries.filter(e => normalizeRoles(e.role).includes(roleFilter));
+        }
+        if (specFilter) {
+            entries = entries.filter(e => String(e.spec || '').toLowerCase() === specFilter);
+        }
+        if (q) {
+            entries = entries.filter(e => {
+                const name = String(e.name || '').toLowerCase();
+                const author = String(e.authorName || '').toLowerCase();
+                return name.includes(q) || author.includes(q);
+            });
+        }
+        res.set('Cache-Control', 'no-store');
+        res.json({ success: true, plans: entries.slice(0, 200) });
+    } catch (error) {
+        console.error('[CommunityGearPlans] list error:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+app.get('/community-gear-plans/:id', (req, res) => {
+    try {
+        const id = sanitizeCommunityPlanId(req.params.id);
+        if (!id) {
+            return res.status(400).json({ success: false, error: 'Invalid plan ID' });
+        }
+        const planPath = path.join(communityGearPlansDir, `${id}.json`);
+        if (!fs.existsSync(planPath)) {
+            return res.status(404).json({ success: false, error: 'Community gear plan not found' });
+        }
+        const plan = JSON.parse(fs.readFileSync(planPath, 'utf-8'));
+        delete plan.session;
+        delete plan.token;
+        delete plan.accessToken;
+        delete plan.refreshToken;
+        res.set('Cache-Control', 'no-store');
+        res.json({ success: true, plan });
+    } catch (error) {
+        console.error('[CommunityGearPlans] get error:', error);
         res.status(500).json({ success: false, error: error.message });
     }
 });

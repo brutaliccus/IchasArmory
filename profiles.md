@@ -981,10 +981,20 @@ this.editingProfileId = null;       // Clear when creating new build
 
 ---
 
+## Gear Planner cloud + community APIs
+
+- `fetchGearPlans()` / `saveGearPlan(plan)` / `deleteGearPlan(id)` / `setGearPlanFavorite(id)` — authenticated `/user-gear-plans` CRUD. Saves require `role[]` + `spec`; server publishes to the community pool.
+- `fetchCommunityGearPlans(filters)` — `GET /community-gear-plans?q&class&role&spec` (public; guests OK).
+- `fetchCommunityGearPlan(id)` — `GET /community-gear-plans/:id` full plan for `setGearPlan`.
+- `shareGearPlan(plan, recipientId, message)` — Discord inbox share (`kind: gearPlan`).
+
+---
+
 ## Related Files
 
-- **server.js** - Node.js backend for profiles, auth, sharing
+- **server.js** - Node.js backend for profiles, auth, sharing, community gear plans
 - **buildManager.js** - `getBuildData()` and `loadBuildData()` functions
 - **app.js** - Exports `window.buildManager` for profiles.js to use
 - **notify.js** - Toast notifications for success/error messages
+- **modules/gear/gearPlannerView.js** - Gear Planner UI (save tags, community search)
 - **index.html** - DOM structure for dropdowns, modals, buttons

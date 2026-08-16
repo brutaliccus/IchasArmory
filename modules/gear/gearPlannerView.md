@@ -12,7 +12,8 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 - Nested item names use quality classes (`span.q0`–`q5`) from `getItemById`.
 - Built from the current plan’s **primary and alternative** item IDs via `getPreferredSourcesForItem` (`itemSources.js`). Unique dungeon/raid/worldboss instances (not Collections when an instance source exists). Nested indented item names under each location; click opens octowow DB. Hovering a location adds `.gp-location-hovering` on `#gear-planner-shell`, `.gp-row--location-hl` on matching primary/alt rows, and `.gp-item-name--location-hl` on the inner `.gp-item-name-text` span only (not the card).
 - Dungeons follow the same high-level-first order as the item-modal instance filter (`getInstanceFilterGroups`). Other groups are alphabetical.
-- Save: unsaved plans save immediately; loaded/saved plans prompt overwrite vs save-as-new (`#gp-save-overwrite-dialog`).
+- Save: always opens `#gp-save-overwrite-dialog` with **role** (multi-select DPS/TANK/HEALER), **spec** (class talent-tree names from `classTalents`), and **icon** picker (defaults to spec tree icon; catalog `data/wow-icons.json` via zamimg/octowow CDN). Existing plans show Overwrite / Save as New; new plans show Save. Role + spec required. Cloud (logged-in) saves publish to community; local guest saves do not.
+- **Community browser:** `#gp-community-search-btn` (magnifying glass) opens `#gp-community-search-dialog` — search name/author, filters class/role/spec; click a result loads via `setGearPlan` + `ensureGearPlanItemsReady` (same as My Gear Plans / `?gp=`). Works for guests.
 - Empty alternatives: no “No alternatives” placeholder.
 - Larger type in `gear-planner.css` (~1rem instance names, gold headings); independent scroll if the list is long.
 
@@ -27,7 +28,7 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 ## UI elements (index.html)
 
 - `#gear-planner-shell`, `#gp-locations-sidebar`, `#gp-class-sidebar`, `#gp-slots-left`, `#gp-slots-right`
-- Header: `#gp-plan-name` (left, slick fade borders); icon buttons Save / **Edit mode** / **My Gear Plans** dropdown (`#gear-plans-dropdown`, same classes as My Builds: share/delete/favorite) / Share
+- Header: `#gp-plan-name` (left, slick fade borders); icon buttons Save / **Edit mode** / **My Gear Plans** dropdown (`#gear-plans-dropdown`, same classes as My Builds: share/delete/favorite) / **Community search** (`#gp-community-search-btn`) / Share
 - `#gp-quick-sim-btn`: Shaman-only header icon (sword SVG, `.gp-btn-icon`, same size as other GP header icons). Result text in `#gp-quick-sim-result`. `#gp-sim-settings-btn`: shaman-only cog that opens `#dps-sim-config-modal` via `openDpsSimConfigModal()` (same fight settings as Character Planner DPS). `#gp-st-rotation-row`: Enhance ST / Elemental ST only; stored as `plan.ui.stRotation`. `#gp-quick-sim-wrap`: dismissible info banner only. Dismiss X stores `ichacalc_gp_sim_hint_dismissed` in localStorage
 - `#gp-stat-weights-btn`: spinning-sword SVG (SVG Repo 499402), same `.gp-btn-icon` size as other header buttons. Quick DPS Sim keeps its own sword.
 - Class drawer: `#gp-cr-drawer-class` uses `.is-open` (same as character `#cr-drawer-class`) so `#gp-class-drawer-toggle` expands `#gp-class-drawer-panel`

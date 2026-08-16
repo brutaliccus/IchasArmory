@@ -13,6 +13,8 @@ import {
     getGearPlannerTankStatWeights,
     saveGearPlannerDpsStatWeights,
     getGearPlannerDpsStatWeights,
+    normalizeGearPlanRoles,
+    defaultIconForClassSpec,
 } from './gearPlanner.js';
 import { ICON_BASE_URL, getEmptySlotPlaceholderUrl, getMeleeWeaponType, getEnchantableSlots } from './gear.js';
 import { enchantDatabase } from './enchants.js';
@@ -20,7 +22,7 @@ import { getEnchantCompactLabel } from './enchantStatLabels.js';
 import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, getItemType, filterEnchantsByItemType } from '../character/stats.js';
 import { baseStats, raceIconData, getSelectedRaceBonuses } from '../character/races.js';
 import { calculateEffectiveHealth } from '../ui/calculator.js';
-import { generateTalentInputs, updateTalentPoints, getTalentBonusesFromSpec } from '../talents_new.js';
+import { generateTalentInputs, updateTalentPoints, getTalentBonusesFromSpec, classTalents } from '../talents_new.js';
 import { generateBuffIcons, applyBuffListToDom, getBuffsFromSavedList, handleBuffExclusivity } from '../character/buffs.js';
 import { getSetBonuses } from './setBonuses.js';
 import { runGearPlanQuickSim, runGearPlanStatWeightSimulations, mergeStatWeightsToTemplate, updateStatWeightsTable, sortStatWeightsTable, openDpsSimConfigModal } from '../shaman/dps.js';
@@ -34,6 +36,20 @@ import {
     getInstanceFilterGroups,
 } from './itemSources.js';
 import { itemLoader } from './itemLoader.js';
+
+function wowIconUrl(iconKey) {
+    const key = String(iconKey || 'inv_misc_questionmark')
+        .replace(/^.*\//, '')
+        .replace(/\.(jpg|png|blp)$/i, '')
+        .toLowerCase();
+    return `${ICON_BASE_URL}${key}.png`;
+}
+
+function specsForClass(classId) {
+    const trees = classTalents[String(classId || '').toLowerCase()];
+    if (!trees) return [];
+    return Object.values(trees).map((t) => ({ name: t.name, icon: t.icon }));
+}
 
 const LEFT_SLOTS = ['head', 'neck', 'shoulder', 'back', 'chest', 'wrist', 'mainhand', 'offhand'];
 const RIGHT_SLOTS = ['hands', 'waist', 'legs', 'feet', 'ring1', 'ring2', 'trinket1', 'trinket2', 'ranged'];
@@ -112,6 +128,8 @@ export function initGearPlannerView(cbs) {
     wireRaceDrawer();
     wireBuffsView();
     wireSaveOverwriteDialog();
+    wireCommunitySearchDialog();
+    wireIconPickerDialog();
     refreshGearPlannerWhenItemsReady();
 }
 
@@ -216,6 +234,7 @@ function wireHeaderControls() {
         e.stopPropagation();
         openLoadDropdown();
     });
+    document.getElementById('gp-community-search-btn')?.addEventListener('click', () => openCommunitySearchDialog());
     document.getElementById('gp-share-btn')?.addEventListener('click', () => shareCurrentPlan());
     document.getElementById('gp-quick-sim-btn')?.addEventListener('click', () => runQuickSim());
     document.getElementById('gp-sim-settings-btn')?.addEventListener('click', () => {
@@ -1103,32 +1122,327 @@ function renderStatsSidebar() {
     list.innerHTML = cards || '<p class="gp-locations-empty">No modified stats yet</p>';
 }
 
+function hideSaveDialog() {
+    const el = document.getElementById('gp-save-overwrite-dialog');
+    if (el) el.style.display = 'none';
+}
+
+function fillSaveSpecOptions(classId, selectedSpec) {
+    const sel = document.getElementById('gp-save-spec');
+    if (!sel) return;
+    const specs = specsForClass(classId);
+    sel.innerHTML = specs.map((s) =>
+        `<option value="${escapeHtml(s.name)}">${escapeHtml(s.name)}</option>`
+    ).join('');
+    if (selectedSpec && specs.some((s) => s.name === selectedSpec)) {
+        sel.value = selectedSpec;
+    } else if (specs[0]) {
+        sel.value = specs[0].name;
+    }
+}
+
+function setSaveIconPreview(iconKey) {
+    const key = iconKey || defaultIconForClassSpec(currentPlan.class, currentPlan.spec);
+    const img = document.getElementById('gp-save-icon-preview');
+    const hidden = document.getElementById('gp-save-icon-value');
+    const nameEl = document.getElementById('gp-save-icon-name');
+    if (hidden) hidden.value = key;
+    if (img) {
+        img.src = wowIconUrl(key);
+        img.alt = key;
+    }
+    if (nameEl) nameEl.textContent = key;
+}
+
+function readSaveMetaFromDialog() {
+    const roles = [...document.querySelectorAll('input[name="gp-save-role"]:checked')]
+        .map((el) => el.value);
+    const spec = document.getElementById('gp-save-spec')?.value || '';
+    const icon = document.getElementById('gp-save-icon-value')?.value
+        || defaultIconForClassSpec(currentPlan.class, spec);
+    return { roles: normalizeGearPlanRoles(roles), spec, icon };
+}
+
+function applySaveMetaToPlan(meta) {
+    currentPlan.role = meta.roles;
+    currentPlan.spec = meta.spec;
+    currentPlan.icon = meta.icon || defaultIconForClassSpec(currentPlan.class, meta.spec);
+    persistSession();
+}
+
+function validateSaveMeta(meta) {
+    const err = document.getElementById('gp-save-meta-error');
+    const ok = meta.roles.length > 0 && !!String(meta.spec || '').trim();
+    if (err) err.hidden = ok;
+    return ok;
+}
+
+function populateSaveDialogFields() {
+    const roles = normalizeGearPlanRoles(currentPlan.role);
+    document.querySelectorAll('input[name="gp-save-role"]').forEach((el) => {
+        el.checked = roles.includes(el.value);
+    });
+    fillSaveSpecOptions(currentPlan.class, currentPlan.spec);
+    const spec = document.getElementById('gp-save-spec')?.value || currentPlan.spec || '';
+    const icon = currentPlan.icon || defaultIconForClassSpec(currentPlan.class, spec);
+    setSaveIconPreview(icon);
+    const err = document.getElementById('gp-save-meta-error');
+    if (err) err.hidden = true;
+}
+
 function wireSaveOverwriteDialog() {
-    const hide = () => {
-        const el = document.getElementById('gp-save-overwrite-dialog');
-        if (el) el.style.display = 'none';
-    };
+    const hide = () => hideSaveDialog();
     document.getElementById('gp-save-overwrite-close')?.addEventListener('click', hide);
     document.getElementById('gp-save-overwrite-cancel')?.addEventListener('click', hide);
+    document.getElementById('gp-save-cancel')?.addEventListener('click', hide);
     document.getElementById('gp-save-overwrite-confirm')?.addEventListener('click', () => {
+        const meta = readSaveMetaFromDialog();
+        if (!validateSaveMeta(meta)) return;
+        applySaveMetaToPlan(meta);
         hide();
         saveCurrentPlan(false);
     });
     document.getElementById('gp-save-new-confirm')?.addEventListener('click', () => {
+        const meta = readSaveMetaFromDialog();
+        if (!validateSaveMeta(meta)) return;
+        applySaveMetaToPlan(meta);
         hide();
         saveCurrentPlan(true);
     });
+    document.getElementById('gp-save-confirm')?.addEventListener('click', () => {
+        const meta = readSaveMetaFromDialog();
+        if (!validateSaveMeta(meta)) return;
+        applySaveMetaToPlan(meta);
+        hide();
+        saveCurrentPlan(false);
+    });
+    document.getElementById('gp-save-spec')?.addEventListener('change', () => {
+        const spec = document.getElementById('gp-save-spec')?.value || '';
+        const currentIcon = document.getElementById('gp-save-icon-value')?.value;
+        const prevDefault = defaultIconForClassSpec(currentPlan.class, currentPlan.spec);
+        // If user hasn't customized icon (still default for previous/current), update to new spec default
+        if (!currentIcon || currentIcon === prevDefault || currentIcon === currentPlan.icon) {
+            setSaveIconPreview(defaultIconForClassSpec(currentPlan.class, spec));
+        }
+    });
+    document.getElementById('gp-save-icon-btn')?.addEventListener('click', () => openIconPickerDialog());
 }
 
 function requestSaveCurrentPlan() {
-    if (currentPlan.id) {
-        const msg = document.getElementById('gp-save-overwrite-msg');
-        if (msg) msg.textContent = `"${currentPlan.name || 'This plan'}" is already saved. Overwrite it or save as a new plan?`;
-        const dlg = document.getElementById('gp-save-overwrite-dialog');
-        if (dlg) dlg.style.display = 'flex';
+    populateSaveDialogFields();
+    const existing = !!currentPlan.id;
+    const msg = document.getElementById('gp-save-overwrite-msg');
+    if (msg) {
+        msg.textContent = existing
+            ? `"${currentPlan.name || 'This plan'}" is already saved. Choose role & spec, then overwrite or save as new.`
+            : (window.profileManager?.user
+                ? 'Choose role & talent focus. Cloud saves are published to the community browser.'
+                : 'Choose role & talent focus. Local saves stay on this device (not published to community).');
+    }
+    const existingActions = document.getElementById('gp-save-actions-existing');
+    const newActions = document.getElementById('gp-save-actions-new');
+    if (existingActions) existingActions.hidden = !existing;
+    if (newActions) newActions.hidden = existing;
+    const dlg = document.getElementById('gp-save-overwrite-dialog');
+    if (dlg) dlg.style.display = 'flex';
+}
+
+let wowIconsCache = null;
+
+async function loadWowIconsList() {
+    if (wowIconsCache) return wowIconsCache;
+    try {
+        const res = await fetch('/data/wow-icons.json');
+        const data = await res.json();
+        wowIconsCache = Array.isArray(data) ? data : [];
+    } catch (e) {
+        console.warn('[Gear Planner] wow-icons load failed', e);
+        wowIconsCache = Object.values(DEFAULT_SPEC_ICONS_FLAT());
+    }
+    return wowIconsCache;
+}
+
+function DEFAULT_SPEC_ICONS_FLAT() {
+    const out = {};
+    for (const [cls, map] of Object.entries(classTalents)) {
+        for (const tree of Object.values(map)) {
+            if (tree.icon) out[`${cls}:${tree.name}`] = tree.icon;
+        }
+    }
+    return out;
+}
+
+function wireIconPickerDialog() {
+    const hide = () => {
+        const el = document.getElementById('gp-icon-picker-dialog');
+        if (el) el.style.display = 'none';
+    };
+    document.getElementById('gp-icon-picker-close')?.addEventListener('click', hide);
+    document.getElementById('gp-icon-picker-dialog')?.addEventListener('click', (e) => {
+        if (e.target.id === 'gp-icon-picker-dialog') hide();
+    });
+    let filterTimer = null;
+    document.getElementById('gp-icon-picker-q')?.addEventListener('input', () => {
+        clearTimeout(filterTimer);
+        filterTimer = setTimeout(() => renderIconPickerGrid(), 120);
+    });
+}
+
+async function openIconPickerDialog() {
+    const dlg = document.getElementById('gp-icon-picker-dialog');
+    const q = document.getElementById('gp-icon-picker-q');
+    if (q) q.value = '';
+    if (dlg) dlg.style.display = 'flex';
+    await loadWowIconsList();
+    renderIconPickerGrid();
+}
+
+function renderIconPickerGrid() {
+    const grid = document.getElementById('gp-icon-picker-grid');
+    if (!grid) return;
+    const q = String(document.getElementById('gp-icon-picker-q')?.value || '').trim().toLowerCase();
+    const all = wowIconsCache || [];
+    const filtered = (q ? all.filter((n) => n.includes(q)) : all).slice(0, 400);
+    const selected = document.getElementById('gp-save-icon-value')?.value || '';
+    grid.innerHTML = filtered.map((name) =>
+        `<button type="button" class="gp-icon-pick ${name === selected ? 'is-selected' : ''}" data-icon="${escapeHtml(name)}" title="${escapeHtml(name)}">
+            <img src="${wowIconUrl(name)}" alt="" loading="lazy" width="36" height="36" />
+        </button>`
+    ).join('') || '<p class="gp-locations-empty">No icons match</p>';
+    grid.querySelectorAll('.gp-icon-pick').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            setSaveIconPreview(btn.dataset.icon);
+            const el = document.getElementById('gp-icon-picker-dialog');
+            if (el) el.style.display = 'none';
+        });
+    });
+}
+
+function fillCommunitySpecFilter(classId) {
+    const sel = document.getElementById('gp-community-spec');
+    if (!sel) return;
+    const prev = sel.value;
+    const specs = classId ? specsForClass(classId) : [];
+    const allSpecs = classId
+        ? specs
+        : Object.keys(classTalents).flatMap((c) => specsForClass(c));
+    const uniq = [...new Map(allSpecs.map((s) => [s.name, s])).values()];
+    sel.innerHTML = `<option value="">All specs</option>` + uniq.map((s) =>
+        `<option value="${escapeHtml(s.name)}">${escapeHtml(s.name)}</option>`
+    ).join('');
+    if (prev && uniq.some((s) => s.name === prev)) sel.value = prev;
+}
+
+function wireCommunitySearchDialog() {
+    const hide = () => {
+        const el = document.getElementById('gp-community-search-dialog');
+        if (el) el.style.display = 'none';
+    };
+    document.getElementById('gp-community-search-close')?.addEventListener('click', hide);
+    document.getElementById('gp-community-search-dialog')?.addEventListener('click', (e) => {
+        if (e.target.id === 'gp-community-search-dialog') hide();
+    });
+    document.getElementById('gp-community-search-go')?.addEventListener('click', () => runCommunitySearch());
+    document.getElementById('gp-community-q')?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') runCommunitySearch();
+    });
+    document.getElementById('gp-community-class')?.addEventListener('change', () => {
+        fillCommunitySpecFilter(document.getElementById('gp-community-class')?.value || '');
+    });
+}
+
+function openCommunitySearchDialog() {
+    fillCommunitySpecFilter(document.getElementById('gp-community-class')?.value || '');
+    const dlg = document.getElementById('gp-community-search-dialog');
+    if (dlg) dlg.style.display = 'flex';
+    runCommunitySearch();
+}
+
+async function runCommunitySearch() {
+    const results = document.getElementById('gp-community-results');
+    if (results) results.innerHTML = '<div class="gp-community-empty">Searching…</div>';
+    const filters = {
+        q: document.getElementById('gp-community-q')?.value || '',
+        class: document.getElementById('gp-community-class')?.value || '',
+        role: document.getElementById('gp-community-role')?.value || '',
+        spec: document.getElementById('gp-community-spec')?.value || '',
+    };
+    let plans = [];
+    if (window.profileManager?.fetchCommunityGearPlans) {
+        plans = await window.profileManager.fetchCommunityGearPlans(filters);
+    } else {
+        try {
+            const params = new URLSearchParams();
+            Object.entries(filters).forEach(([k, v]) => { if (v) params.set(k, v); });
+            const qs = params.toString();
+            const res = await fetch(`/community-gear-plans${qs ? `?${qs}` : ''}`);
+            const data = await res.json();
+            plans = data.success ? (data.plans || []) : [];
+        } catch (e) {
+            console.error('[Gear Planner] community search failed', e);
+        }
+    }
+    renderCommunityResults(plans);
+}
+
+function formatCommunityDate(iso) {
+    if (!iso) return '';
+    try {
+        const d = new Date(iso);
+        if (Number.isNaN(d.getTime())) return '';
+        return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+    } catch {
+        return '';
+    }
+}
+
+function renderCommunityResults(plans) {
+    const list = document.getElementById('gp-community-results');
+    if (!list) return;
+    if (!plans.length) {
+        list.innerHTML = '<div class="gp-community-empty">No community builds found.</div>';
         return;
     }
-    saveCurrentPlan(false);
+    list.innerHTML = plans.map((p) => {
+        const roles = normalizeGearPlanRoles(p.role).map((r) => r.toUpperCase()).join(', ');
+        const cls = p.class ? String(p.class).charAt(0).toUpperCase() + String(p.class).slice(1) : '';
+        const date = formatCommunityDate(p.updatedAt || p.createdAt);
+        return `<button type="button" class="gp-community-result" data-id="${escapeHtml(p.id || '')}" role="listitem">
+            <img class="gp-community-result-icon" src="${wowIconUrl(p.icon)}" alt="" width="40" height="40" loading="lazy" />
+            <div class="gp-community-result-info">
+                <div class="gp-community-result-name">${escapeHtml(p.name || 'Untitled')}</div>
+                <div class="gp-community-result-meta">${escapeHtml([cls, roles, p.spec].filter(Boolean).join(' · '))}</div>
+                <div class="gp-community-result-author">${escapeHtml(p.authorName || 'Anonymous')}${date ? ` · ${escapeHtml(date)}` : ''}</div>
+            </div>
+        </button>`;
+    }).join('');
+    list.querySelectorAll('.gp-community-result').forEach((btn) => {
+        btn.addEventListener('click', () => loadCommunityPlanById(btn.dataset.id));
+    });
+}
+
+async function loadCommunityPlanById(id) {
+    if (!id) return;
+    let plan = null;
+    if (window.profileManager?.fetchCommunityGearPlan) {
+        plan = await window.profileManager.fetchCommunityGearPlan(id);
+    } else {
+        try {
+            const res = await fetch(`/community-gear-plans/${encodeURIComponent(id)}`);
+            const data = await res.json();
+            plan = data.success ? data.plan : null;
+        } catch (e) {
+            console.error('[Gear Planner] load community plan failed', e);
+        }
+    }
+    if (!plan) {
+        window.notify?.error?.('Could not load community gear plan', 4000, 'Gear Planner');
+        return;
+    }
+    const dlg = document.getElementById('gp-community-search-dialog');
+    if (dlg) dlg.style.display = 'none';
+    await loadPlanIntoView(plan);
+    window.notify?.success?.(`Loaded "${plan.name || 'community plan'}"`, 3000, 'Gear Planner');
 }
 
 function ensurePlanStRotation() {
@@ -1684,22 +1998,37 @@ async function openPickerForSlot(slotId, isAlt) {
 async function saveCurrentPlan(asNew = false) {
     const plan = getGearPlanData(currentPlan);
     plan.updatedAt = new Date().toISOString();
+    plan.role = normalizeGearPlanRoles(currentPlan.role);
+    plan.spec = currentPlan.spec || '';
+    plan.icon = currentPlan.icon || defaultIconForClassSpec(plan.class, plan.spec);
+    if (!plan.role.length || !plan.spec) {
+        window.notify?.error?.('Role and talent tree focus are required to save', 4000, 'Gear Planner');
+        requestSaveCurrentPlan();
+        return;
+    }
     if (asNew) delete plan.id;
 
     if (window.profileManager?.user) {
+        plan.community = true;
         const saved = await window.profileManager.saveGearPlan(plan);
         if (saved) {
             const id = saved.id || plan.id;
             if (id) currentPlan.id = id;
             if (saved.favorite) currentPlan.favorite = true;
+            if (saved.role) currentPlan.role = normalizeGearPlanRoles(saved.role);
+            if (saved.spec) currentPlan.spec = saved.spec;
+            if (saved.icon) currentPlan.icon = saved.icon;
             editMode = false;
             persistSession();
             renderGearPlanner();
-            window.notify?.success('Gear plan saved to cloud', 3000, 'Gear Planner');
+            window.notify?.success('Gear plan saved to cloud (community)', 3000, 'Gear Planner');
+        } else {
+            window.notify?.error?.('Cloud save failed — check role/spec and try again', 4000, 'Gear Planner');
         }
         return;
     }
 
+    plan.community = false;
     const local = loadLocalGearPlans();
     if (asNew || !plan.id) plan.id = `local_gp_${Date.now()}`;
     const existing = local.findIndex(p => p.id === plan.id);

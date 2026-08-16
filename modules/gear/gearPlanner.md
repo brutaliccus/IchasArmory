@@ -17,9 +17,17 @@ Gear plan data model and localStorage persistence for the Gear Planner page.
   slots: {
     [slotId]: { primary: number|null, alternatives: number[], enchant: number|null }
   },
-  ui: { collapsed: { [slotId]: boolean }, stRotation?: 'enhSt'|'eleSt' }
+  ui: { collapsed: { [slotId]: boolean }, stRotation?: 'enhSt'|'eleSt' },
+  role: Array<'dps'|'tank'|'healer'>,  // multi-select; required before save
+  spec: string,           // talent-tree display name (e.g. Enhancement)
+  icon: string,           // vanilla icon basename (e.g. spell_nature_lightning)
+  community?: boolean,    // true for cloud/authenticated publishes
+  authorName?: string,
+  authorId?: string
 }
 ```
+
+Helpers: `normalizeGearPlanRoles`, `defaultIconForClassSpec`, `DEFAULT_SPEC_ICONS`, `GEAR_PLAN_ROLES`.
 
 Items and per-slot **primary enchants** (`enchant` = index into `enchantDatabase[slot]`, or `null`). Alternatives are unenchanted. Independent of Character Planner `selectedEnchants`.
 
@@ -31,11 +39,12 @@ Items and per-slot **primary enchants** (`enchant` = index into `enchantDatabase
 | `ichacalc_gp_tankStatWeights` | Tank EHP/mit weights generated on the Gear Planner tab |
 | `ichacalc_gp_statWeights` / `_aoe` | Shaman DPS/TPS weights generated on the Gear Planner tab |
 
-Cloud saves: `user.gearPlans[]` via profiles API (see `profiles.md`). Guests are not gated: Save uses `loadLocalGearPlans` / `saveLocalGearPlans` when `profileManager.user` is absent.
+Cloud saves: `user.gearPlans[]` via profiles API (see `profiles.md`). Guests are not gated: Save uses `loadLocalGearPlans` / `saveLocalGearPlans` when `profileManager.user` is absent (local saves are **not** published to community). Logged-in cloud saves publish to `GET /community-gear-plans`.
 
 ## Exports
 
-- `GEAR_PLAN_SLOTS`, `createEmptyGearPlan`, `getGearPlanData`, `loadGearPlanData`
+- `GEAR_PLAN_SLOTS`, `GEAR_PLAN_ROLES`, `DEFAULT_SPEC_ICONS`, `createEmptyGearPlan`, `getGearPlanData`, `loadGearPlanData`
+- `normalizeGearPlanRoles`, `defaultIconForClassSpec`
 - `saveGearPlannerSession`, `loadGearPlannerSession`
 - `saveGearPlannerTankStatWeights` / `getGearPlannerTankStatWeights`
 - `saveGearPlannerDpsStatWeights` / `getGearPlannerDpsStatWeights`
