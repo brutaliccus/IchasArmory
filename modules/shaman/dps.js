@@ -5026,11 +5026,71 @@ function closeDpsSimConfigModalInternal() {
     document.getElementById('config-sim-run-mode-trigger')?.setAttribute('aria-expanded', 'false');
 }
 
+function getDefaultDpsCombatConfig() {
+    return {
+        wearingShield: false,
+        inFrontOfBoss: false,
+        beingAttacked: false,
+        waterShield: false,
+        threatHold: false,
+        threatHoldDuration: 5,
+        handOfEdwardSpell: 'lightningBolt',
+        jewelForcedOutcome: '',
+        enemySwingTimer: 2.0,
+        aoeEnabled: false,
+        aoeTargetCount: 5,
+        casterMode: false,
+        searingTotemEnabled: true,
+    };
+}
+
+/** Safe combat config for modal HTML when stats may be missing (Gear Planner standalone bootstrap). */
+function resolveDpsCombatConfigForModal(stats, forceDefaultBoss = false) {
+    const combatConfig = { ...getDefaultDpsCombatConfig(), ...(stats?.combatConfig || {}) };
+    if (forceDefaultBoss) return combatConfig;
+    const durationInput = document.getElementById('sim-duration');
+    if (!durationInput) return combatConfig;
+    const beingAttackedEl = document.querySelector('#config-being-attacked');
+    const wearingShieldEl = document.querySelector('#config-wearing-shield');
+    const inFrontEl = document.querySelector('#config-in-front');
+    const threatHoldEl = document.querySelector('#config-threat-hold');
+    const threatHoldDurEl = document.querySelector('#config-threat-hold-duration');
+    const aoeCountEl = document.querySelector('#config-aoe-target-count');
+    const hoteoEl = document.querySelector('#config-hoteo-spell');
+    const jewelEl = document.querySelector('#config-jewel-forced-outcome');
+    if (beingAttackedEl) combatConfig.beingAttacked = beingAttackedEl.checked;
+    if (wearingShieldEl) combatConfig.wearingShield = wearingShieldEl.checked;
+    if (inFrontEl) combatConfig.inFrontOfBoss = inFrontEl.checked;
+    if (threatHoldEl) combatConfig.threatHold = threatHoldEl.checked;
+    if (threatHoldDurEl?.value) {
+        const d = parseInt(threatHoldDurEl.value, 10);
+        if (Number.isFinite(d)) combatConfig.threatHoldDuration = d;
+    }
+    if (aoeCountEl?.value) {
+        const n = parseInt(aoeCountEl.value, 10);
+        if (Number.isFinite(n)) combatConfig.aoeTargetCount = n;
+    }
+    if (hoteoEl?.value) combatConfig.handOfEdwardSpell = hoteoEl.value;
+    if (jewelEl) combatConfig.jewelForcedOutcome = jewelEl.value || '';
+    return combatConfig;
+}
+
+function resolveBootstrapStatsForSimConfigModal() {
+    try {
+        const fresh = getFreshShamanStats();
+        if (fresh && typeof fresh === 'object') return fresh;
+    } catch (err) {
+        console.warn('[DPS Sim] getFreshShamanStats unavailable for standalone modal; using defaults', err);
+    }
+    return { combatConfig: getDefaultDpsCombatConfig() };
+}
+
 function bootstrapDpsSimConfigModalStandalone() {
     if (isDpsSimConfigModalReady()) return true;
     document.getElementById('dps-sim-config-modal')?.remove();
     const wrap = document.createElement('div');
-    wrap.innerHTML = generateSimConfigModalHTML(null, {}, true);
+    const bootstrapStats = resolveBootstrapStatsForSimConfigModal();
+    wrap.innerHTML = generateSimConfigModalHTML(null, bootstrapStats, true);
     const modal = wrap.querySelector('#dps-sim-config-modal');
     if (!modal) return false;
     document.body.appendChild(modal);
@@ -5183,6 +5243,7 @@ function setupSimConfigModal(container) {
  * Full simulation settings UI in a modal (target, duration, combat toggles). Same field IDs as before.
  */
 function generateSimConfigModalHTML(containerElement, stats, forceDefaultBoss = false) {
+    const combatConfig = resolveDpsCombatConfigForModal(stats, forceDefaultBoss);
     const durationInput = document.getElementById('sim-duration');
     const armorInput = document.querySelector('#target-armor');
     const iterationsInput = document.getElementById('sim-iterations');
@@ -5370,24 +5431,24 @@ function generateSimConfigModalHTML(containerElement, stats, forceDefaultBoss = 
     html += '<div style="font-size: 9px; color: #666; text-align: center; line-height: 1.15;">tank / threat</div>';
     html += '<div class="dps-sim-config-combat-icons-grid" style="display: grid; grid-template-columns: 52px 52px; grid-template-rows: 52px 52px; gap: 6px; justify-content: center;">';
     html += `<div id="config-toggle-tanking" class="combat-config-icon" data-config="beingAttacked" data-tooltip-title="Tanking" data-tooltip-desc="Simulates being attacked by the boss." style="width: 52px; height: 52px; cursor: pointer; transition: filter 0.15s, opacity 0.15s;">`;
-    html += `<img src="assets/icons/tanking.png" loading="eager" decoding="sync" style="width: 52px; height: 52px; border-radius: 8px; filter: ${stats.combatConfig.beingAttacked ? 'none' : 'grayscale(100%)'}; opacity: ${stats.combatConfig.beingAttacked ? '1' : '0.6'};">`;
+    html += `<img src="assets/icons/tanking.png" loading="eager" decoding="sync" style="width: 52px; height: 52px; border-radius: 8px; filter: ${combatConfig.beingAttacked ? 'none' : 'grayscale(100%)'}; opacity: ${combatConfig.beingAttacked ? '1' : '0.6'};">`;
     html += '</div>';
     html += `<div id="config-toggle-shield" class="combat-config-icon" data-config="wearingShield" data-tooltip-title="Shield Equipped" data-tooltip-desc="Enables shield-specific abilities and procs." style="width: 52px; height: 52px; cursor: pointer; transition: filter 0.15s, opacity 0.15s;">`;
-    html += `<img src="assets/icons/wearingashield.png" loading="eager" decoding="sync" style="width: 52px; height: 52px; border-radius: 8px; filter: ${stats.combatConfig.wearingShield ? 'none' : 'grayscale(100%)'}; opacity: ${stats.combatConfig.wearingShield ? '1' : '0.6'};">`;
+    html += `<img src="assets/icons/wearingashield.png" loading="eager" decoding="sync" style="width: 52px; height: 52px; border-radius: 8px; filter: ${combatConfig.wearingShield ? 'none' : 'grayscale(100%)'}; opacity: ${combatConfig.wearingShield ? '1' : '0.6'};">`;
     html += '</div>';
     html += `<div id="config-toggle-infront" class="combat-config-icon" data-config="inFrontOfBoss" data-tooltip-title="Infront of Boss" data-tooltip-desc="Standing in front of the boss where you can be parried." style="width: 52px; height: 52px; cursor: pointer; transition: filter 0.15s, opacity 0.15s;">`;
-    html += `<img src="assets/icons/standinginfront.png" loading="eager" decoding="sync" style="width: 52px; height: 52px; border-radius: 8px; filter: ${stats.combatConfig.inFrontOfBoss ? 'none' : 'grayscale(100%)'}; opacity: ${stats.combatConfig.inFrontOfBoss ? '1' : '0.6'};">`;
+    html += `<img src="assets/icons/standinginfront.png" loading="eager" decoding="sync" style="width: 52px; height: 52px; border-radius: 8px; filter: ${combatConfig.inFrontOfBoss ? 'none' : 'grayscale(100%)'}; opacity: ${combatConfig.inFrontOfBoss ? '1' : '0.6'};">`;
     html += '</div>';
-    html += `<div id="config-toggle-threathold" class="combat-config-icon" data-config="threatHold" data-tooltip-title="Threat Hold (${stats.combatConfig.threatHoldDuration || 5}s)" data-tooltip-desc="Delays rotation for tank threat. Right-click to set duration." style="width: 52px; height: 52px; cursor: pointer; transition: filter 0.15s, opacity 0.15s; position: relative;">`;
-    html += `<img src="assets/icons/threathold.png" loading="eager" decoding="sync" style="width: 52px; height: 52px; border-radius: 8px; filter: ${stats.combatConfig.threatHold ? 'none' : 'grayscale(100%)'}; opacity: ${stats.combatConfig.threatHold ? '1' : '0.6'};">`;
-    if (stats.combatConfig.threatHold) {
-        html += `<span style="position: absolute; bottom: 2px; right: 4px; background: rgba(0,0,0,0.75); color: #ffd700; font-size: 11px; font-weight: bold; padding: 0 3px; border-radius: 3px; pointer-events: none;">${stats.combatConfig.threatHoldDuration || 5}s</span>`;
+    html += `<div id="config-toggle-threathold" class="combat-config-icon" data-config="threatHold" data-tooltip-title="Threat Hold (${combatConfig.threatHoldDuration || 5}s)" data-tooltip-desc="Delays rotation for tank threat. Right-click to set duration." style="width: 52px; height: 52px; cursor: pointer; transition: filter 0.15s, opacity 0.15s; position: relative;">`;
+    html += `<img src="assets/icons/threathold.png" loading="eager" decoding="sync" style="width: 52px; height: 52px; border-radius: 8px; filter: ${combatConfig.threatHold ? 'none' : 'grayscale(100%)'}; opacity: ${combatConfig.threatHold ? '1' : '0.6'};">`;
+    if (combatConfig.threatHold) {
+        html += `<span style="position: absolute; bottom: 2px; right: 4px; background: rgba(0,0,0,0.75); color: #ffd700; font-size: 11px; font-weight: bold; padding: 0 3px; border-radius: 3px; pointer-events: none;">${combatConfig.threatHoldDuration || 5}s</span>`;
     }
     html += '</div>';
     html += '</div>'; // combat-icons-grid
     html += '<div id="aoe-config-container" style="width: 100%; margin-top: 2px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.12); display: flex; flex-direction: column; align-items: center; gap: 4px;">';
     html += '<span style="font-size: 9px; color: #666; text-align: center; line-height: 1.1;">AoE targets</span>';
-    html += `<input type="number" min="1" max="20" id="config-aoe-target-count" value="${stats.combatConfig.aoeTargetCount ?? 5}" class="sim-slick-input" style="width: 40px; padding: 4px 2px; font-size: 13px; text-align: center; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; color: #ccc; box-sizing: border-box;">`;
+    html += `<input type="number" min="1" max="20" id="config-aoe-target-count" value="${combatConfig.aoeTargetCount ?? 5}" class="sim-slick-input" style="width: 40px; padding: 4px 2px; font-size: 13px; text-align: center; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; color: #ccc; box-sizing: border-box;">`;
     html += '</div>';
     html += `<div id="dps-sim-run-mode-wrap" class="dps-sim-run-mode-wrap" style="margin-top: 4px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.12);">`;
     html += `<input type="hidden" id="sim-run-mode" value="${savedSimRunMode}">`;
@@ -5417,7 +5478,7 @@ function generateSimConfigModalHTML(containerElement, stats, forceDefaultBoss = 
         if (pw?.attackSpeed != null) baseSwingNumModal = parseFloat(pw.attackSpeed);
     }
     if (!Number.isFinite(baseSwingNumModal)) {
-        baseSwingNumModal = parseFloat(savedEnemySwingTimer) || Number(stats.combatConfig.enemySwingTimer) || 2.0;
+        baseSwingNumModal = parseFloat(savedEnemySwingTimer) || Number(combatConfig.enemySwingTimer) || 2.0;
     }
     const pinnedBaseSwingStr = String(Number.isFinite(parseFloat(savedBaseEnemySwing)) ? parseFloat(savedBaseEnemySwing) : baseSwingNumModal);
     const effSwingModal = computeEffectiveEnemySwingSec(baseSwingNumModal, getActiveBuffs());
@@ -5427,7 +5488,7 @@ function generateSimConfigModalHTML(containerElement, stats, forceDefaultBoss = 
     html += '<div id="combat-config-section" class="dps-sim-config-lower" style="padding-top: 14px; margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.12);">';
     html += generateDpsBossPickerHTML(true);
     html += '<div class="dps-sim-config-swing-row" style="display: flex; justify-content: center; align-items: center; margin-top: 12px;">';
-    html += `<div id="enemy-swing-timer-container" style="display: ${stats.combatConfig.beingAttacked ? 'flex' : 'none'}; justify-content: center; align-items: center; gap: 8px;">`;
+    html += `<div id="enemy-swing-timer-container" style="display: ${combatConfig.beingAttacked ? 'flex' : 'none'}; justify-content: center; align-items: center; gap: 8px;">`;
     html += '<label style="color: #aaa; font-size: 12px;">Boss Swing:</label>';
     html += `<input type="text" inputmode="decimal" id="config-enemy-swing-timer" value="${swingInputValueStr}" data-base-enemy-swing="${baseSwingAttrEsc}" class="sim-slick-input" style="width: 40px; padding: 2px 4px; background: transparent; border: none; box-shadow: none; outline: none; color: #ccc; font-size: 13px; text-align: center; cursor: pointer;" onfocus="this.style.background='rgba(255,215,0,0.08)';this.style.color='#fff';this.style.cursor='text'" onblur="this.style.background='transparent';this.style.color='#ccc';this.style.cursor='pointer'">`;
     html += '<span style="color: #888; font-size: 11px;">sec</span>';
@@ -5436,13 +5497,13 @@ function generateSimConfigModalHTML(containerElement, stats, forceDefaultBoss = 
     html += '</div>'; // combat-config-section
 
     // Hidden inputs for backward compatibility
-    html += `<input type="checkbox" id="config-being-attacked" style="display:none" ${stats.combatConfig.beingAttacked ? 'checked' : ''}>`;
-    html += `<input type="checkbox" id="config-wearing-shield" style="display:none" ${stats.combatConfig.wearingShield ? 'checked' : ''}>`;
-    html += `<input type="checkbox" id="config-in-front" style="display:none" ${stats.combatConfig.inFrontOfBoss ? 'checked' : ''}>`;
-    html += `<input type="checkbox" id="config-threat-hold" style="display:none" ${stats.combatConfig.threatHold ? 'checked' : ''}>`;
-    html += `<input type="hidden" id="config-threat-hold-duration" value="${stats.combatConfig.threatHoldDuration || 5}">`;
-    html += `<input type="hidden" id="config-hoteo-spell" value="${stats.combatConfig.handOfEdwardSpell || 'lightningBolt'}">`;
-    html += `<input type="hidden" id="config-jewel-forced-outcome" value="${(stats.combatConfig.jewelForcedOutcome || '')}">`;
+    html += `<input type="checkbox" id="config-being-attacked" style="display:none" ${combatConfig.beingAttacked ? 'checked' : ''}>`;
+    html += `<input type="checkbox" id="config-wearing-shield" style="display:none" ${combatConfig.wearingShield ? 'checked' : ''}>`;
+    html += `<input type="checkbox" id="config-in-front" style="display:none" ${combatConfig.inFrontOfBoss ? 'checked' : ''}>`;
+    html += `<input type="checkbox" id="config-threat-hold" style="display:none" ${combatConfig.threatHold ? 'checked' : ''}>`;
+    html += `<input type="hidden" id="config-threat-hold-duration" value="${combatConfig.threatHoldDuration || 5}">`;
+    html += `<input type="hidden" id="config-hoteo-spell" value="${combatConfig.handOfEdwardSpell || 'lightningBolt'}">`;
+    html += `<input type="hidden" id="config-jewel-forced-outcome" value="${(combatConfig.jewelForcedOutcome || '')}">`;
     html += `<input type="hidden" id="sim-workers" value="7">`;
     html += `<input type="hidden" id="sim-duration" value="${durationSeconds}">`;
 
