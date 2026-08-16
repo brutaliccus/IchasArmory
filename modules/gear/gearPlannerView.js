@@ -7,12 +7,18 @@ import {
     loadGearPlannerSession,
     loadLocalGearPlans,
     saveLocalGearPlans,
+    applyGearPlanItemMove,
 } from './gearPlanner.js';
 import { ICON_BASE_URL } from './gear.js';
 import { runGearPlanQuickSim } from '../shaman/dps.js';
 import { createItemTooltipHTML } from '../ui/tooltips.js';
 import { positionItemTooltipOnIcon } from '../ui/itemTooltipPosition.js';
-import { ensureItemSourcesLoaded, getSourcesForItem, getPrimarySourceLabel, getInstanceFilterGroups } from './itemSources.js';
+import {
+    ensureItemSourcesLoaded,
+    getPreferredSourcesForItem,
+    formatItemSourceLine,
+    getInstanceFilterGroups,
+} from './itemSources.js';
 
 const LEFT_SLOTS = ['head', 'neck', 'shoulder', 'back', 'chest', 'wrist', 'mainhand', 'offhand'];
 const RIGHT_SLOTS = ['hands', 'waist', 'legs', 'feet', 'ring1', 'ring2', 'trinket1', 'trinket2', 'ranged'];
@@ -118,7 +124,10 @@ function wireHeaderControls() {
         persistSession();
         renderGearPlanner();
     });
-    document.getElementById('gp-load-btn')?.addEventListener('click', () => openLoadDropdown());
+    document.getElementById('gp-load-btn')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openLoadDropdown();
+    });
     document.getElementById('gp-share-btn')?.addEventListener('click', () => shareCurrentPlan());
     document.getElementById('gp-quick-sim-btn')?.addEventListener('click', () => runQuickSim());
     document.getElementById('gp-configure-sim-btn')?.addEventListener('click', () => {
@@ -245,14 +254,7 @@ function escapeHtml(str) {
 }
 
 function formatPlannerSourceLine(itemId) {
-    const sources = getSourcesForItem(itemId);
-    if (!sources.length) return getPrimarySourceLabel(itemId) || '';
-    const primary = sources[0];
-    const inst = primary.instanceName || '';
-    let boss = primary.tableTitle || '';
-    if (inst && boss.startsWith(`${inst} - `)) boss = boss.slice(inst.length + 3);
-    if (inst && boss && boss !== inst) return `${inst} · ${boss}`;
-    return inst || boss || getPrimarySourceLabel(itemId) || '';
+    return formatItemSourceLine(itemId);
 }
 
 const LOCATION_KIND_ORDER = [
@@ -296,17 +298,25 @@ function collectLocationGroups(plan) {
         worldboss: new Map(),
         other: new Map(),
     };
+    const ensureEntry = (kind, id, name) => {
+        if (!byKind[kind].has(id)) byKind[kind].set(id, { id, name, items: [] });
+        return byKind[kind].get(id);
+    };
     for (const itemId of collectPlanItemIds(plan)) {
-        const sources = getSourcesForItem(itemId);
+        const sources = getPreferredSourcesForItem(itemId);
+        const item = callbacks.getItemById?.(itemId);
+        const itemName = item?.name || `Item ${itemId}`;
         if (!sources.length) {
-            byKind.other.set('__other__', 'Other / Unknown');
+            const entry = ensureEntry('other', '__other__', 'Other / Unknown');
+            if (!entry.items.some(i => i.id === itemId)) entry.items.push({ id: itemId, name: itemName });
             continue;
         }
         for (const s of sources) {
             const kind = (s.kind === 'dungeon' || s.kind === 'raid' || s.kind === 'worldboss') ? s.kind : 'other';
             const id = s.instanceId || s.instanceName || '__other__';
             const name = s.instanceName || s.tableTitle || id;
-            if (!byKind[kind].has(id)) byKind[kind].set(id, name);
+            const entry = ensureEntry(kind, id, name);
+            if (!entry.items.some(i => i.id === itemId)) entry.items.push({ id: itemId, name: itemName });
         }
     }
     return LOCATION_KIND_ORDER
@@ -314,7 +324,7 @@ function collectLocationGroups(plan) {
         .map(([kind, label]) => ({
             kind,
             label,
-            entries: sortLocationEntries(kind, [...byKind[kind].entries()].map(([id, name]) => ({ id, name }))),
+            entries: sortLocationEntries(kind, [...byKind[kind].values()]),
         }));
 }
 
@@ -330,17 +340,23 @@ function renderLocationsSidebar() {
     list.innerHTML = groups.map(g => `
         <div class="gp-locations-group" data-kind="${escapeHtml(g.kind)}">
             <h4 class="gp-locations-group-heading">${escapeHtml(g.label)}</h4>
-            <ul>${g.entries.map(e => `<li class="gp-location-entry" data-instance-id="${escapeHtml(e.id)}" data-instance-name="${escapeHtml(e.name)}">${escapeHtml(e.name)}</li>`).join('')}</ul>
+            <ul>${g.entries.map(e => `<li class="gp-location-entry" data-instance-id="${escapeHtml(e.id)}" data-instance-name="${escapeHtml(e.name)}">
+                <span class="gp-location-name">${escapeHtml(e.name)}</span>
+                <ul class="gp-location-items">${(e.items || []).map(it =>
+                    `<li class="gp-location-item" data-item-id="${it.id}">${escapeHtml(it.name)}</li>`
+                ).join('')}</ul>
+            </li>`).join('')}</ul>
         </div>`).join('');
     bindLocationHoverHighlights();
+    bindLocationItemClicks();
 }
 
 function clearLocationHighlights() {
-    document.querySelectorAll('.gp-item--location-hl').forEach(el => el.classList.remove('gp-item--location-hl'));
+    document.querySelectorAll('.gp-item-name--location-hl').forEach(el => el.classList.remove('gp-item-name--location-hl'));
 }
 
 function itemMatchesLocationHover(itemId, instanceId, instanceName) {
-    const sources = getSourcesForItem(itemId);
+    const sources = getPreferredSourcesForItem(itemId);
     if (!sources.length) {
         return instanceId === '__other__' || instanceName === 'Other / Unknown';
     }
@@ -355,8 +371,7 @@ function applyLocationHighlights(instanceId, instanceName) {
     document.querySelectorAll('#gear-planner-shell .gp-primary-row[data-item-id], #gear-planner-shell .gp-alt-row[data-item-id]').forEach(el => {
         const itemId = Number(el.dataset.itemId);
         if (!itemId || !itemMatchesLocationHover(itemId, instanceId, instanceName)) return;
-        el.classList.add('gp-item--location-hl');
-        el.closest('.gp-slot-card')?.classList.add('gp-item--location-hl');
+        el.querySelector('.gp-item-name')?.classList.add('gp-item-name--location-hl');
     });
 }
 
@@ -368,6 +383,16 @@ function bindLocationHoverHighlights() {
             applyLocationHighlights(li.dataset.instanceId || '', li.dataset.instanceName || '');
         });
         li.addEventListener('mouseleave', () => clearLocationHighlights());
+    });
+}
+
+function bindLocationItemClicks() {
+    document.querySelectorAll('#gp-locations-list .gp-location-item').forEach(el => {
+        el.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = el.dataset.itemId;
+            if (id) window.open('https://octowow.st/db/?item=' + id, '_blank');
+        });
     });
 }
 
@@ -426,7 +451,7 @@ function renderSlotCard(slotId, side) {
         const name = it?.name || `Item ${id}`;
         const source = it ? formatPlannerSourceLine(it.id) : '';
         const icon = it ? itemIconHtml(it) : '';
-        return `<div class="gp-alt-row" data-slot="${slotId}" data-alt-index="${i}" data-item-id="${id}">
+        return `<div class="gp-alt-row" data-slot="${slotId}" data-gp-role="alt" data-alt-index="${i}" data-item-id="${id}">
             <div class="gp-alt-icon gp-drag-handle gp-item-tip" draggable="${editMode ? 'true' : 'false'}" data-slot="${slotId}" data-gp-role="alt" data-alt-index="${i}" data-item-id="${id}">${icon}</div>
             <div class="gp-item-meta">
                 <div class="gp-item-name q${q}">${escapeHtml(name)}</div>
@@ -446,10 +471,8 @@ function renderSlotCard(slotId, side) {
                 <span class="gp-slot-icon-frame gp-slot-icon-frame--dashed"><span class="gp-slot-empty">+</span></span>
                 <span class="gp-empty-label">${escapeHtml(label)}</span>
            </div>`)
-        : `<div class="gp-primary-row" data-item-id="${primaryItem.id}">
-                <button type="button" class="gp-pick-primary" data-slot="${slotId}" title="${editMode ? `Change ${escapeHtml(label)}` : escapeHtml(label)}">
-                    <span class="gp-slot-icon-frame gp-drag-handle gp-item-tip" draggable="${editMode ? 'true' : 'false'}" data-slot="${slotId}" data-gp-role="primary" data-item-id="${primaryItem.id}">${itemIconHtml(primaryItem)}</span>
-                </button>
+        : `<div class="gp-primary-row" data-slot="${slotId}" data-item-id="${primaryItem.id}" data-gp-role="primary">
+                <span class="gp-slot-icon-frame gp-drag-handle gp-item-tip" draggable="${editMode ? 'true' : 'false'}" data-slot="${slotId}" data-gp-role="primary" data-item-id="${primaryItem.id}">${itemIconHtml(primaryItem)}</span>
                 ${renderItemMeta(primaryItem)}
                 <button type="button" class="gp-toggle-alts" data-slot="${slotId}" aria-expanded="${expanded}" title="Alternatives">▾</button>
                 <button type="button" class="gp-clear-primary" data-slot="${slotId}" title="Clear"${editMode ? '' : ' hidden'}>×</button>
@@ -477,7 +500,7 @@ function bindSlotEvents() {
     document.querySelectorAll('.gp-slot-card').forEach(card => {
         card.addEventListener('click', (e) => {
             if (gpDidDrag) return;
-            if (e.target.closest('.gp-pick-primary, .gp-empty-primary, .gp-add-alt, .gp-remove-alt, .gp-clear-primary, .gp-toggle-alts')) return;
+            if (e.target.closest('.gp-empty-primary, .gp-add-alt, .gp-remove-alt, .gp-clear-primary, .gp-toggle-alts, .gp-drag-handle')) return;
             const slotId = card.dataset.slot;
             if (!currentPlan.slots[slotId]?.primary) {
                 if (editMode) openPickerForSlot(slotId, false);
@@ -487,7 +510,7 @@ function bindSlotEvents() {
         });
     });
 
-    document.querySelectorAll('.gp-empty-primary, .gp-pick-primary').forEach(el => {
+    document.querySelectorAll('.gp-empty-primary').forEach(el => {
         el.addEventListener('click', (e) => {
             e.stopPropagation();
             if (!editMode) return;
@@ -531,6 +554,7 @@ function bindSlotEvents() {
 
     bindPlannerTooltips();
     bindPlannerDragDrop();
+    bindPlannerMiddleClick();
 }
 
 function bindPlannerTooltips() {
@@ -550,9 +574,36 @@ function bindPlannerTooltips() {
     });
 }
 
+function bindPlannerMiddleClick() {
+    document.querySelectorAll('#gear-planner-shell .gp-item-tip').forEach(el => {
+        el.addEventListener('mousedown', (e) => {
+            if (e.button !== 1) return;
+            e.preventDefault();
+            e.stopPropagation();
+            const itemId = el.dataset.itemId;
+            if (itemId) window.open('https://octowow.st/db/?item=' + itemId, '_blank');
+        });
+    });
+}
+
+function parseDropTarget(el) {
+    const handle = el.closest?.('.gp-drag-handle');
+    const row = el.closest?.('.gp-primary-row, .gp-alt-row');
+    const node = handle || row;
+    if (!node) return null;
+    return {
+        slot: node.dataset.slot,
+        role: node.dataset.gpRole || (node.classList.contains('gp-primary-row') ? 'primary' : 'alt'),
+        altIndex: node.dataset.altIndex != null ? parseInt(node.dataset.altIndex, 10) : null,
+    };
+}
+
 function bindPlannerDragDrop() {
     if (!editMode) return;
-    document.querySelectorAll('#gear-planner-shell .gp-drag-handle').forEach(el => {
+    const handles = document.querySelectorAll('#gear-planner-shell .gp-drag-handle');
+    const dropRows = document.querySelectorAll('#gear-planner-shell .gp-primary-row, #gear-planner-shell .gp-alt-row');
+
+    handles.forEach(el => {
         el.addEventListener('dragstart', (e) => {
             e.stopPropagation();
             gpDidDrag = true;
@@ -563,6 +614,7 @@ function bindPlannerDragDrop() {
                 itemId: Number(el.dataset.itemId),
             };
             e.dataTransfer.setData('application/json', JSON.stringify(payload));
+            e.dataTransfer.setData('text/plain', JSON.stringify(payload));
             e.dataTransfer.effectAllowed = 'move';
             el.classList.add('gp-dragging');
             const tooltip = document.getElementById('item-tooltip');
@@ -573,6 +625,19 @@ function bindPlannerDragDrop() {
             document.querySelectorAll('.gp-drop-target').forEach(n => n.classList.remove('gp-drop-target'));
             setTimeout(() => { gpDidDrag = false; }, 0);
         });
+        el.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (gpDidDrag) {
+                e.preventDefault();
+                return;
+            }
+            if (!editMode || el.dataset.gpRole !== 'primary') return;
+            editingAltSlot = null;
+            openPickerForSlot(el.dataset.slot, false);
+        });
+    });
+
+    const bindDropZone = (el) => {
         el.addEventListener('dragover', (e) => {
             e.preventDefault();
             e.dataTransfer.dropEffect = 'move';
@@ -585,61 +650,16 @@ function bindPlannerDragDrop() {
             el.classList.remove('gp-drop-target');
             let payload;
             try {
-                payload = JSON.parse(e.dataTransfer.getData('application/json') || '{}');
+                payload = JSON.parse(e.dataTransfer.getData('application/json') || e.dataTransfer.getData('text/plain') || '{}');
             } catch {
                 return;
             }
-            applyPlannerItemMove(payload, {
-                slot: el.dataset.slot,
-                role: el.dataset.gpRole,
-                altIndex: el.dataset.altIndex != null ? parseInt(el.dataset.altIndex, 10) : null,
-            });
+            const to = parseDropTarget(el);
+            if (applyGearPlanItemMove(currentPlan, payload, to)) renderGearPlanner();
         });
-        el.addEventListener('click', (e) => {
-            if (gpDidDrag) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-        });
-    });
-}
-
-function applyPlannerItemMove(from, to) {
-    if (!from?.slot || !to?.slot || from.slot !== to.slot) return;
-    const slot = currentPlan.slots[from.slot];
-    if (!slot) return;
-    const alts = slot.alternatives || [];
-
-    if (from.role === 'alt' && to.role === 'primary') {
-        const idx = Number.isInteger(from.altIndex) ? from.altIndex : alts.indexOf(from.itemId);
-        if (idx < 0 || idx >= alts.length) return;
-        const moving = alts[idx];
-        const oldPrimary = slot.primary;
-        slot.primary = moving;
-        if (oldPrimary) alts[idx] = oldPrimary;
-        else alts.splice(idx, 1);
-        renderGearPlanner();
-        return;
-    }
-
-    if (from.role === 'primary' && to.role === 'alt') {
-        const idx = Number.isInteger(to.altIndex) ? to.altIndex : 0;
-        if (idx < 0 || idx >= alts.length || !slot.primary) return;
-        const oldAlt = alts[idx];
-        alts[idx] = slot.primary;
-        slot.primary = oldAlt;
-        renderGearPlanner();
-        return;
-    }
-
-    if (from.role === 'alt' && to.role === 'alt') {
-        const fromIdx = Number.isInteger(from.altIndex) ? from.altIndex : alts.indexOf(from.itemId);
-        const toIdx = Number.isInteger(to.altIndex) ? to.altIndex : 0;
-        if (fromIdx < 0 || toIdx < 0 || fromIdx >= alts.length || toIdx >= alts.length || fromIdx === toIdx) return;
-        const [moved] = alts.splice(fromIdx, 1);
-        alts.splice(toIdx, 0, moved);
-        renderGearPlanner();
-    }
+    };
+    handles.forEach(bindDropZone);
+    dropRows.forEach(bindDropZone);
 }
 
 async function openPickerForSlot(slotId, isAlt) {
@@ -665,9 +685,11 @@ async function saveCurrentPlan() {
     plan.updatedAt = new Date().toISOString();
 
     if (window.profileManager?.user) {
-        const ok = await window.profileManager.saveGearPlan(plan);
-        if (ok) {
-            if (plan.id) currentPlan.id = plan.id;
+        const saved = await window.profileManager.saveGearPlan(plan);
+        if (saved) {
+            const id = saved.id || plan.id;
+            if (id) currentPlan.id = id;
+            if (saved.favorite) currentPlan.favorite = true;
             editMode = false;
             persistSession();
             renderGearPlanner();
@@ -679,7 +701,7 @@ async function saveCurrentPlan() {
     const local = loadLocalGearPlans();
     if (!plan.id) plan.id = `local_gp_${Date.now()}`;
     const existing = local.findIndex(p => p.id === plan.id);
-    if (existing >= 0) local[existing] = plan;
+    if (existing >= 0) local[existing] = { ...local[existing], ...plan };
     else local.push(plan);
     saveLocalGearPlans(local);
     currentPlan.id = plan.id;
@@ -689,45 +711,156 @@ async function saveCurrentPlan() {
     window.notify?.success('Gear plan saved locally', 3000, 'Gear Planner');
 }
 
-function openLoadDropdown() {
-    const modal = document.getElementById('gp-load-modal');
-    const list = document.getElementById('gp-load-list');
-    if (!modal || !list) return;
-
-    const renderList = async () => {
-        let plans = loadLocalGearPlans();
-        if (window.profileManager?.user) {
-            const cloud = await window.profileManager.fetchGearPlans?.();
-            if (cloud?.length) {
-                plans = [...cloud, ...plans.filter(lp => !cloud.some(c => c.id === lp.id))];
-            }
-        }
-        if (!plans.length) {
-            list.innerHTML = '<p class="gp-load-empty">No saved gear plans yet.</p>';
-            return;
-        }
-        list.innerHTML = plans.map(p => `
-            <button type="button" class="gp-load-item" data-id="${p.id || ''}">${p.name || 'Untitled'}
-                <span class="gp-load-meta">${p.class || ''}</span></button>`).join('');
-        list.querySelectorAll('.gp-load-item').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const plan = plans.find(p => String(p.id) === btn.dataset.id);
-                if (plan) {
-                    currentPlan = getGearPlanData(plan);
-                    if (plan.id) currentPlan.id = plan.id;
-                    editMode = false;
-                    persistSession();
-                    renderGearPlanner();
-                    modal.style.display = 'none';
-                }
-            });
-        });
-    };
-
-    renderList();
-    modal.style.display = 'flex';
-    modal.querySelector('.gp-load-close')?.addEventListener('click', () => { modal.style.display = 'none'; }, { once: true });
+function closeGearPlansDropdown() {
+    document.getElementById('gear-plans-dropdown')?.classList.remove('open');
 }
+
+function starBtnHtml(plan, isLocal) {
+    const on = !!plan.favorite;
+    return `<button class="builds-dropdown-action-btn default-btn ${on ? 'is-default' : ''}" data-id="${plan.id || ''}" data-local="${isLocal ? '1' : ''}" title="${on ? 'Unfavorite' : 'Favorite'}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="${on ? '#ffd700' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+    </button>`;
+}
+
+function shareBtnHtml(plan) {
+    return `<button class="builds-dropdown-action-btn share-btn" data-id="${plan.id || ''}" title="Share">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+        </svg>
+    </button>`;
+}
+
+function gearPlanRowHtml(plan, isLocal) {
+    const cls = plan.class ? String(plan.class).charAt(0).toUpperCase() + String(plan.class).slice(1) : '';
+    const favBadge = plan.favorite ? '<span class="default-badge">favorite</span>' : '';
+    const localBadge = isLocal ? '<span class="default-badge local-device-badge">local</span>' : '';
+    return `<div class="builds-dropdown-item" data-id="${plan.id || ''}" data-local="${isLocal ? '1' : ''}">
+        <div class="builds-dropdown-item-info">
+            <div class="builds-dropdown-item-name">${escapeHtml(plan.name || 'Untitled')}${favBadge}${localBadge}</div>
+            ${cls ? `<div class="builds-dropdown-item-details">${escapeHtml(cls)}</div>` : ''}
+        </div>
+        <div class="builds-dropdown-item-actions">
+            ${starBtnHtml(plan, isLocal)}
+            ${shareBtnHtml(plan)}
+            <button class="builds-dropdown-action-btn delete-btn" data-id="${plan.id || ''}" data-local="${isLocal ? '1' : ''}" title="Delete">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+            </button>
+        </div>
+    </div>`;
+}
+
+function sortPlansFavFirst(plans) {
+    return [...plans].sort((a, b) => Number(!!b.favorite) - Number(!!a.favorite) || String(a.name || '').localeCompare(String(b.name || '')));
+}
+
+function loadPlanIntoView(plan) {
+    if (!plan) return;
+    currentPlan = getGearPlanData(plan);
+    if (plan.id) currentPlan.id = plan.id;
+    editMode = false;
+    persistSession();
+    renderGearPlanner();
+    closeGearPlansDropdown();
+}
+
+async function openLoadDropdown() {
+    const dropdown = document.getElementById('gear-plans-dropdown');
+    const list = document.getElementById('gear-plans-dropdown-list');
+    if (!dropdown || !list) return;
+
+    if (dropdown.classList.contains('open')) {
+        closeGearPlansDropdown();
+        return;
+    }
+
+    let cloud = [];
+    if (window.profileManager?.user) {
+        cloud = await window.profileManager.fetchGearPlans?.() || [];
+    }
+    const local = loadLocalGearPlans();
+    const localOnly = local.filter(lp => !cloud.some(c => String(c.id) === String(lp.id)));
+
+    if (!cloud.length && !localOnly.length) {
+        list.innerHTML = '<div class="builds-dropdown-empty">No saved gear plans yet.<br>Click Save to keep this plan.</div>';
+    } else {
+        const parts = [];
+        if (cloud.length) parts.push(...sortPlansFavFirst(cloud).map(p => gearPlanRowHtml(p, false)));
+        if (localOnly.length) {
+            if (cloud.length) parts.push('<div class="builds-dropdown-divider" role="separator"></div>');
+            parts.push('<div class="builds-dropdown-section-label">Local plans</div>');
+            parts.push(...sortPlansFavFirst(localOnly).map(p => gearPlanRowHtml(p, true)));
+        }
+        list.innerHTML = parts.join('');
+    }
+
+    const allPlans = [...cloud, ...localOnly];
+    list.querySelectorAll('.builds-dropdown-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            if (e.target.closest('.builds-dropdown-action-btn')) return;
+            const plan = allPlans.find(p => String(p.id) === item.dataset.id);
+            loadPlanIntoView(plan);
+        });
+        item.querySelector('.default-btn')?.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const id = e.currentTarget.dataset.id;
+            const isLocal = item.dataset.local === '1';
+            if (isLocal) {
+                const plans = loadLocalGearPlans();
+                const p = plans.find(x => String(x.id) === String(id));
+                if (p) {
+                    p.favorite = !p.favorite;
+                    saveLocalGearPlans(plans);
+                }
+            } else if (window.profileManager?.setGearPlanFavorite) {
+                await window.profileManager.setGearPlanFavorite(id);
+            }
+            closeGearPlansDropdown();
+            openLoadDropdown();
+        });
+        item.querySelector('.share-btn')?.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const plan = allPlans.find(p => String(p.id) === item.dataset.id);
+            closeGearPlansDropdown();
+            if (window.profileManager?.user && window.profileManager.openShareModal && plan) {
+                window.profileManager.openShareModal({ id: plan.id, name: plan.name, kind: 'gearPlan', buildData: plan });
+            } else if (plan && callbacks.exportGearPlanToURL) {
+                await callbacks.exportGearPlanToURL(getGearPlanData(plan));
+            }
+        });
+        item.querySelector('.delete-btn')?.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const id = e.currentTarget.dataset.id;
+            const plan = allPlans.find(p => String(p.id) === String(id));
+            if (!plan || !confirm(`Delete gear plan "${plan.name || 'Untitled'}"?`)) return;
+            if (item.dataset.local === '1') {
+                saveLocalGearPlans(loadLocalGearPlans().filter(p => String(p.id) !== String(id)));
+            } else if (window.profileManager?.deleteGearPlan) {
+                await window.profileManager.deleteGearPlan(id);
+            }
+            closeGearPlansDropdown();
+            openLoadDropdown();
+        });
+    });
+
+    dropdown.classList.add('open');
+}
+
+document.addEventListener('click', (e) => {
+    const dd = document.getElementById('gear-plans-dropdown');
+    const btn = document.getElementById('gp-load-btn');
+    if (!dd?.classList.contains('open')) return;
+    if (dd.contains(e.target) || btn?.contains(e.target)) return;
+    closeGearPlansDropdown();
+});
 
 async function shareCurrentPlan() {
     if (callbacks.exportGearPlanToURL) {

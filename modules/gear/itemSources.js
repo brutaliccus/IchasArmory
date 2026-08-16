@@ -20,7 +20,7 @@ export async function ensureItemSourcesLoaded() {
 
     loadPromise = Promise.all([
         fetchJson('/data/loot/instances-index.json'),
-        fetchJson('/data/loot/item-sources-lite.json').catch(() => fetchJson('/data/loot/item-sources.json')),
+        fetchJson('/data/loot/item-sources.json').catch(() => fetchJson('/data/loot/item-sources-lite.json')),
     ]).then(([indexData, sourcesData]) => {
         instancesIndex = indexData;
         if (sourcesData.schemaVersion === 2 || sourcesData.lite) {
@@ -28,8 +28,8 @@ export async function ensureItemSourcesLoaded() {
             sourcesByItemId = {};
             for (const [id, rows] of Object.entries(raw)) {
                 sourcesByItemId[id] = rows.map(r => Array.isArray(r)
-                    ? { instanceId: r[0], instanceName: r[1], kind: r[2] }
-                    : { instanceId: r.id || r.instanceId, instanceName: r.n || r.instanceName, kind: r.k || r.kind });
+                    ? { instanceId: r[0], instanceName: r[1], kind: r[2], tableTitle: r[3] }
+                    : { instanceId: r.id || r.instanceId, instanceName: r.n || r.instanceName, kind: r.k || r.kind, tableTitle: r.t || r.tableTitle });
             }
         } else {
             sourcesByItemId = sourcesData.sources || sourcesData;
@@ -52,14 +52,50 @@ export function getSourcesForItem(itemId) {
     return sourcesByItemId[String(itemId)] || [];
 }
 
-/**
- * Short label for item row subline (primary source).
- */
-export function getPrimarySourceLabel(itemId) {
+const PREFERRED_SOURCE_KINDS = new Set(['dungeon', 'raid', 'worldboss']);
+
+function uniqueSources(sources) {
+    const seen = new Set();
+    const out = [];
+    for (const s of sources || []) {
+        const id = s.instanceId || s.instanceName || '';
+        if (!id || seen.has(id)) continue;
+        seen.add(id);
+        out.push(s);
+    }
+    return out;
+}
+
+/** Dungeon/raid/worldboss sources first (unique instance). Falls back to other/collections. */
+export function getPreferredSourcesForItem(itemId) {
     const sources = getSourcesForItem(itemId);
+    const preferred = uniqueSources(sources.filter(s => PREFERRED_SOURCE_KINDS.has(s.kind)));
+    if (preferred.length) return preferred;
+    return uniqueSources(sources);
+}
+
+export function getPrimarySourceLabel(itemId) {
+    const sources = getPreferredSourcesForItem(itemId);
     if (!sources.length) return '';
     const primary = sources[0];
     return primary.instanceName || primary.tableTitle || '';
+}
+
+/**
+ * Planner/card source line: `Zone: Dungeon – Boss` or `Molten Core – Ragnaros`.
+ * Omits the dash part when there is no boss title.
+ */
+export function formatItemSourceLine(itemId) {
+    const sources = getPreferredSourcesForItem(itemId);
+    if (!sources.length) return getPrimarySourceLabel(itemId) || '';
+    const primary = sources[0];
+    const inst = String(primary.instanceName || '').trim();
+    let boss = String(primary.tableTitle || '').trim();
+    if (inst && boss.startsWith(`${inst} - `)) boss = boss.slice(inst.length + 3).trim();
+    if (inst && boss.startsWith(`${inst} – `)) boss = boss.slice(inst.length + 3).trim();
+    if (boss && inst && boss === inst) boss = '';
+    if (inst && boss) return `${inst} – ${boss}`;
+    return inst || boss || '';
 }
 
 /**

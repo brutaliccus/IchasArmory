@@ -33,4 +33,4 @@ Cloud saves: `user.gearPlans[]` via profiles API (see `profiles.md`).
 
 - `GEAR_PLAN_SLOTS`, `createEmptyGearPlan`, `getGearPlanData`, `loadGearPlanData`
 - `saveGearPlannerSession`, `loadGearPlannerSession`
-- `loadLocalGearPlans`, `saveLocalGearPlans`
+- `applyGearPlanItemMove(plan, from, to)` — same-slot primary/alt swap and alt reorder

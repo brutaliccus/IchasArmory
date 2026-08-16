@@ -1185,6 +1185,7 @@ class ProfileManager {
         input.value = '';
         messageInput.value = '';
         modal.dataset.profileId = profile.id;
+        modal.dataset.kind = profile.kind === 'gearPlan' ? 'gearPlan' : 'build';
         modal.style.display = 'flex';
         input.focus();
     }
@@ -1192,6 +1193,7 @@ class ProfileManager {
     async shareBuild() {
         const modal = document.getElementById('share-modal');
         const profileId = modal.dataset.profileId;
+        const shareKind = modal.dataset.kind;
         const recipientId = document.getElementById('recipient-id-input').value.trim();
         const message = document.getElementById('share-message-input').value.trim();
         const status = document.getElementById('share-status');
@@ -1200,6 +1202,39 @@ class ProfileManager {
             status.textContent = 'Please enter a recipient username or Discord ID';
             status.style.display = 'block';
             status.style.backgroundColor = '#ff4444';
+            return;
+        }
+
+        if (shareKind === 'gearPlan') {
+            try {
+                const plans = await this.fetchGearPlans();
+                const plan = plans.find(p => String(p.id) === String(profileId));
+                if (!plan) {
+                    status.textContent = 'Gear plan not found';
+                    status.style.display = 'block';
+                    status.style.backgroundColor = '#ff4444';
+                    return;
+                }
+                const data = await this.shareGearPlan(plan, recipientId, message);
+                if (data.success) {
+                    status.textContent = 'Gear plan shared successfully!';
+                    status.style.display = 'block';
+                    status.style.backgroundColor = '#44ff44';
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                        status.style.display = 'none';
+                    }, 2000);
+                } else {
+                    status.textContent = 'Failed to share: ' + (data.error || 'unknown');
+                    status.style.display = 'block';
+                    status.style.backgroundColor = '#ff4444';
+                }
+            } catch (error) {
+                console.error('Error sharing gear plan:', error);
+                status.textContent = 'Failed to share gear plan';
+                status.style.display = 'block';
+                status.style.backgroundColor = '#ff4444';
+            }
             return;
         }
 
@@ -1682,7 +1717,7 @@ ProfileManager.prototype.fetchGearPlans = async function fetchGearPlans() {
 };
 
 ProfileManager.prototype.saveGearPlan = async function saveGearPlan(plan) {
-    if (!this.user) return false;
+    if (!this.user) return null;
     try {
         const res = await fetch('/user-gear-plans', {
             method: 'POST',
@@ -1691,9 +1726,39 @@ ProfileManager.prototype.saveGearPlan = async function saveGearPlan(plan) {
             body: JSON.stringify({ plan }),
         });
         const data = await res.json();
-        return !!data.success;
+        return data.success ? (data.plan || plan) : null;
     } catch (e) {
         console.error('[Profiles] saveGearPlan:', e);
+        return null;
+    }
+};
+
+ProfileManager.prototype.deleteGearPlan = async function deleteGearPlan(id) {
+    if (!this.user || !id) return false;
+    try {
+        const res = await fetch(`/user-gear-plans/${encodeURIComponent(id)}`, {
+            method: 'DELETE',
+            credentials: 'include',
+        });
+        const data = await res.json();
+        return !!data.success;
+    } catch (e) {
+        console.error('[Profiles] deleteGearPlan:', e);
+        return false;
+    }
+};
+
+ProfileManager.prototype.setGearPlanFavorite = async function setGearPlanFavorite(id) {
+    if (!this.user || !id) return false;
+    try {
+        const res = await fetch(`/user-gear-plans/${encodeURIComponent(id)}/favorite`, {
+            method: 'PATCH',
+            credentials: 'include',
+        });
+        const data = await res.json();
+        return !!data.success;
+    } catch (e) {
+        console.error('[Profiles] setGearPlanFavorite:', e);
         return false;
     }
 };

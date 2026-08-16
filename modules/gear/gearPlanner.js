@@ -55,6 +55,7 @@ export function getGearPlanData(plan) {
     }
     if (plan.ui?.collapsed) out.ui.collapsed = { ...plan.ui.collapsed };
     if (plan.id) out.id = plan.id;
+    if (plan.favorite) out.favorite = true;
     return out;
 }
 
@@ -102,4 +103,49 @@ export function saveLocalGearPlans(plans) {
     } catch (e) {
         console.warn('[gearPlanner] local plans save failed:', e);
     }
+}
+
+/**
+ * Reorder/swap primary vs alternatives in one slot.
+ * @param {GearPlan} plan
+ * @param {{ slot: string, role: 'primary'|'alt', altIndex?: number, itemId?: number }} from
+ * @param {{ slot: string, role: 'primary'|'alt', altIndex?: number }} to
+ */
+export function applyGearPlanItemMove(plan, from, to) {
+    if (!plan || !from?.slot || !to?.slot || from.slot !== to.slot) return false;
+    const slot = plan.slots?.[from.slot];
+    if (!slot) return false;
+    if (!Array.isArray(slot.alternatives)) slot.alternatives = [];
+    const alts = slot.alternatives;
+
+    if (from.role === 'alt' && to.role === 'primary') {
+        const idx = Number.isInteger(from.altIndex) ? from.altIndex : alts.indexOf(from.itemId);
+        if (idx < 0 || idx >= alts.length) return false;
+        const moving = alts[idx];
+        const oldPrimary = slot.primary;
+        slot.primary = moving;
+        if (oldPrimary) alts[idx] = oldPrimary;
+        else alts.splice(idx, 1);
+        return true;
+    }
+
+    if (from.role === 'primary' && to.role === 'alt') {
+        const idx = Number.isInteger(to.altIndex) ? to.altIndex : 0;
+        if (idx < 0 || idx >= alts.length || !slot.primary) return false;
+        const oldAlt = alts[idx];
+        alts[idx] = slot.primary;
+        slot.primary = oldAlt;
+        return true;
+    }
+
+    if (from.role === 'alt' && to.role === 'alt') {
+        const fromIdx = Number.isInteger(from.altIndex) ? from.altIndex : alts.indexOf(from.itemId);
+        const toIdx = Number.isInteger(to.altIndex) ? to.altIndex : 0;
+        if (fromIdx < 0 || toIdx < 0 || fromIdx >= alts.length || toIdx >= alts.length || fromIdx === toIdx) return false;
+        const [moved] = alts.splice(fromIdx, 1);
+        alts.splice(toIdx, 0, moved);
+        return true;
+    }
+
+    return false;
 }

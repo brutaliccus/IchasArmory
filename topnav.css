@@ -120,8 +120,9 @@
 .ui-scale-settings-btn {
     min-width: 38px;
     min-height: 38px;
+    box-sizing: border-box;
     justify-content: center;
-    padding: 8px 10px !important;
+    padding: 10px !important;
 }
 
 .ui-scale-settings-label-text {
@@ -237,7 +238,7 @@
 }
 
 /* Logged-out guest trigger: hide when user menu is visible */
-.user-controls:has(#user-info:not([style*="display: none"])) .ui-scale-settings-wrap--guest {
+.user-controls:has(#user-info:not([style*="display: none"])) .planner-mode-toggle--guest {
     display: none;
 }
 

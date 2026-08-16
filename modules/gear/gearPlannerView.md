@@ -6,8 +6,7 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 
 - `#gp-locations-sidebar` is **outside** `#ichacalc-scaled-root`: `position: fixed; left: 0; top: 60px` (below the unscaled nav), docked to the **screen** left. Hidden unless `body[data-app-mode="gearPlanner"]`.
 - `#gear-planner-shell` uses extra **left padding** (`260px / --ui-scale`) so planner content is not under the dock.
-- Built from the current plan’s **primary and alternative** item IDs via `getSourcesForItem` (`itemSources.js`). Unique instance names are grouped under **Dungeons**, **Raids**, **World Bosses**, and **Other** (only categories that appear). List entries store `data-instance-id` / `data-instance-name`.
-- Hovering a location highlights matching slot rows/cards with `.gp-item--location-hl` (source `instanceId` / `instanceName`). Highlight clears on mouseleave.
+- Built from the current plan’s **primary and alternative** item IDs via `getPreferredSourcesForItem` (`itemSources.js`). Unique dungeon/raid/worldboss instances (not Collections when an instance source exists). Nested indented item names under each location; click opens octowow DB. Hover highlights **item name text** only (`.gp-item-name--location-hl`).
 - Dungeons follow the same high-level-first order as the item-modal instance filter (`getInstanceFilterGroups`). Other groups are alphabetical.
 - `renderLocationsSidebar()` runs on every `renderGearPlanner()` so add/remove/clear updates live. Empty plan: “No locations yet”.
 - Larger type in `gear-planner.css` (~1rem instance names, gold headings); independent scroll if the list is long.
@@ -20,7 +19,7 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 ## UI elements (index.html)
 
 - `#gear-planner-shell`, `#gp-locations-sidebar`, `#gp-class-sidebar`, `#gp-slots-left`, `#gp-slots-right`
-- Header: `#gp-plan-name`; icon buttons Save / **Edit mode** (`#gp-edit-mode-btn`, pencil, `aria-pressed`) / Load / Share; Shaman-only **Configure Sim** and **Quick DPS Sim** (plus `#gp-quick-sim-result`) in the same header
+- Header: `#gp-plan-name` (left, slick fade borders); icon buttons Save / **Edit mode** / **My Gear Plans** dropdown (`#gear-plans-dropdown`, same classes as My Builds: share/delete/favorite) / Share
 - `#gp-quick-sim-wrap`: dismissible info banner only (no action buttons). Dismiss X stores `ichacalc_gp_sim_hint_dismissed` in localStorage
 - Class drawer: `#gp-cr-drawer-class` uses `.is-open` (same as character `#cr-drawer-class`) so `#gp-class-drawer-toggle` expands `#gp-class-drawer-panel`
 
@@ -40,7 +39,8 @@ Paperdoll order (same as `#gear-icons-left` / `#gear-icons-right`):
 Each card:
 
 - Collapsed by default (`plan.ui.collapsed[slotId] !== false`); session-persisted
-- Icon on the **outer** edge; name + `instance · boss` flow toward center
+- Icon on the **outer** edge; name + `Zone: Dungeon – Boss` source line
+- Middle-click icon opens `https://octowow.st/db/?item=` (same as item modal)
 - Empty slot: dashed add-primary control opens the item modal
 - Click card or chevron to expand alternatives (icon, name, source; remove/add only in edit mode)
 - Right-column cards reverse the **primary/alt rows** so the icon stays on the outer edge; `.gp-alts-panel` stays a column so **Add alternative** is full-width under the alt list (not beside the primary X)

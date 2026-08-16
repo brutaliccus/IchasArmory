@@ -168,8 +168,10 @@ export function setAppMode(mode) {
     if (next === appMode) return;
     appMode = next;
     document.body.dataset.appMode = next;
-    document.getElementById('mode-character-btn')?.classList.toggle('active', next === 'character');
-    document.getElementById('mode-gear-planner-btn')?.classList.toggle('active', next === 'gearPlanner');
+    document.querySelectorAll('.planner-mode-btn').forEach(btn => {
+        const mode = btn.dataset.mode || (btn.id === 'mode-gear-planner-btn' ? 'gearPlanner' : 'character');
+        btn.classList.toggle('active', mode === next);
+    });
     const locSidebar = document.getElementById('gp-locations-sidebar');
     if (locSidebar) locSidebar.hidden = next !== 'gearPlanner';
     if (next === 'gearPlanner') {
@@ -4877,8 +4879,12 @@ async function init() {
     initStatus.domReady = true;
     initStatus.uiReady = true;
 
-    document.getElementById('mode-character-btn')?.addEventListener('click', () => setAppMode('character'));
-    document.getElementById('mode-gear-planner-btn')?.addEventListener('click', () => setAppMode('gearPlanner'));
+    document.querySelectorAll('.planner-mode-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const mode = btn.dataset.mode || (btn.id === 'mode-gear-planner-btn' ? 'gearPlanner' : 'character');
+            setAppMode(mode);
+        });
+    });
 
     // Local /data/loot + /data/items (gzip from same origin). Do not block the loading screen.
     ensureItemSourcesLoaded().catch(() => {});

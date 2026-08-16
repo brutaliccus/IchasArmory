@@ -30,7 +30,8 @@
 /* Builds + inbox triggers: orange ring = clickable (logout stays neutral) */
 #profiles-btn.dropdown-btn,
 #inbox-btn.dropdown-btn,
-.ui-scale-settings-btn.dropdown-btn {
+.ui-scale-settings-btn.dropdown-btn,
+.planner-mode-btn.dropdown-btn {
     border-color: var(--ichacalc-ui-orange, #FFA500);
 }
 

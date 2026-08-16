@@ -673,6 +673,28 @@ app.post('/user-gear-plans', requireAuth, (req, res) => {
     }
 });
 
+app.patch('/user-gear-plans/:id/favorite', requireAuth, (req, res) => {
+    try {
+        const { id } = req.params;
+        const userFile = path.join(usersDir, `${req.user.id}.json`);
+        const user = JSON.parse(fs.readFileSync(userFile, 'utf-8'));
+        const plans = user.gearPlans || [];
+        const target = plans.find(p => String(p.id) === String(id));
+        if (!target) {
+            return res.status(404).json({ success: false, error: 'Gear plan not found' });
+        }
+        const next = !target.favorite;
+        for (const p of plans) p.favorite = false;
+        target.favorite = next;
+        user.gearPlans = plans;
+        fs.writeFileSync(userFile, JSON.stringify(user, null, 2));
+        res.json({ success: true, gearPlans: plans });
+    } catch (error) {
+        console.error('Error toggling gear plan favorite:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 app.delete('/user-gear-plans/:id', requireAuth, (req, res) => {
     try {
         const { id } = req.params;
