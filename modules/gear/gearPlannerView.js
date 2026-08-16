@@ -1333,6 +1333,31 @@ function fillCommunitySpecFilter(classId) {
     if (prev && uniq.some((s) => s.name === prev)) sel.value = prev;
 }
 
+function getCommunityVoterId() {
+    if (window.profileManager?.user?.id) return `discord:${window.profileManager.user.id}`;
+    const key = 'ichacalc_gp_voter_id';
+    try {
+        let id = localStorage.getItem(key);
+        if (!id) {
+            id = `anon_${(typeof crypto !== 'undefined' && crypto.randomUUID)
+                ? crypto.randomUUID().replace(/-/g, '').slice(0, 16)
+                : `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 10)}`}`;
+            localStorage.setItem(key, id);
+        }
+        return id;
+    } catch {
+        return `anon_${Date.now()}`;
+    }
+}
+
+function formatTalentSpread(spread) {
+    const arr = Array.isArray(spread) && spread.length
+        ? spread.map((n) => Number(n) || 0)
+        : [0, 0, 0];
+    while (arr.length < 3) arr.push(0);
+    return arr.slice(0, 3).join('/');
+}
+
 function wireCommunitySearchDialog() {
     const hide = () => {
         const el = document.getElementById('gp-community-search-dialog');
@@ -1349,6 +1374,7 @@ function wireCommunitySearchDialog() {
     document.getElementById('gp-community-class')?.addEventListener('change', () => {
         fillCommunitySpecFilter(document.getElementById('gp-community-class')?.value || '');
     });
+    document.getElementById('gp-community-sort')?.addEventListener('change', () => runCommunitySearch());
 }
 
 function openCommunitySearchDialog() {
@@ -1366,6 +1392,8 @@ async function runCommunitySearch() {
         class: document.getElementById('gp-community-class')?.value || '',
         role: document.getElementById('gp-community-role')?.value || '',
         spec: document.getElementById('gp-community-spec')?.value || '',
+        sort: document.getElementById('gp-community-sort')?.value || 'popular',
+        voterId: getCommunityVoterId(),
     };
     let plans = [];
     if (window.profileManager?.fetchCommunityGearPlans) {
@@ -1375,7 +1403,7 @@ async function runCommunitySearch() {
             const params = new URLSearchParams();
             Object.entries(filters).forEach(([k, v]) => { if (v) params.set(k, v); });
             const qs = params.toString();
-            const res = await fetch(`/community-gear-plans${qs ? `?${qs}` : ''}`);
+            const res = await fetch(`/community-gear-plans${qs ? `?${qs}` : ''}`, { credentials: 'include' });
             const data = await res.json();
             plans = data.success ? (data.plans || []) : [];
         } catch (e) {
@@ -1407,18 +1435,82 @@ function renderCommunityResults(plans) {
         const roles = normalizeGearPlanRoles(p.role).map((r) => r.toUpperCase()).join(', ');
         const cls = p.class ? String(p.class).charAt(0).toUpperCase() + String(p.class).slice(1) : '';
         const date = formatCommunityDate(p.updatedAt || p.createdAt);
-        return `<button type="button" class="gp-community-result" data-id="${escapeHtml(p.id || '')}" role="listitem">
-            <img class="gp-community-result-icon" src="${wowIconUrl(p.icon)}" alt="" width="40" height="40" loading="lazy" />
-            <div class="gp-community-result-info">
-                <div class="gp-community-result-name">${escapeHtml(p.name || 'Untitled')}</div>
-                <div class="gp-community-result-meta">${escapeHtml([cls, roles, p.spec].filter(Boolean).join(' · '))}</div>
-                <div class="gp-community-result-author">${escapeHtml(p.authorName || 'Anonymous')}${date ? ` · ${escapeHtml(date)}` : ''}</div>
+        const spread = formatTalentSpread(p.talentSpread);
+        const up = Number(p.upvotes) || 0;
+        const down = Number(p.downvotes) || 0;
+        const my = p.myVote === 'up' || p.myVote === 'down' ? p.myVote : '';
+        return `<article class="gp-community-card" data-id="${escapeHtml(p.id || '')}" role="listitem" tabindex="0">
+            <img class="gp-community-card-icon" src="${wowIconUrl(p.icon)}" alt="" width="48" height="48" loading="lazy" />
+            <div class="gp-community-card-body">
+                <div class="gp-community-card-title">${escapeHtml(p.name || 'Untitled')}</div>
+                <div class="gp-community-card-spread" title="Talent tree points">${escapeHtml(spread)}</div>
+                <div class="gp-community-card-meta">${escapeHtml([cls, roles, p.spec].filter(Boolean).join(' · '))}</div>
+                <div class="gp-community-card-author">${escapeHtml(p.authorName || 'Anonymous')}${date ? ` · ${escapeHtml(date)}` : ''}</div>
             </div>
-        </button>`;
+            <div class="gp-community-card-votes" data-stop="1">
+                <button type="button" class="gp-vote-btn gp-vote-up ${my === 'up' ? 'is-active' : ''}" data-vote="up" data-id="${escapeHtml(p.id || '')}" title="Upvote" aria-label="Upvote" aria-pressed="${my === 'up' ? 'true' : 'false'}">
+                    <span aria-hidden="true">▲</span><span class="gp-vote-count" data-up-count>${up}</span>
+                </button>
+                <button type="button" class="gp-vote-btn gp-vote-down ${my === 'down' ? 'is-active' : ''}" data-vote="down" data-id="${escapeHtml(p.id || '')}" title="Downvote" aria-label="Downvote" aria-pressed="${my === 'down' ? 'true' : 'false'}">
+                    <span aria-hidden="true">▼</span><span class="gp-vote-count" data-down-count>${down}</span>
+                </button>
+            </div>
+        </article>`;
     }).join('');
-    list.querySelectorAll('.gp-community-result').forEach((btn) => {
-        btn.addEventListener('click', () => loadCommunityPlanById(btn.dataset.id));
+
+    list.querySelectorAll('.gp-community-card').forEach((card) => {
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('[data-stop]')) return;
+            loadCommunityPlanById(card.dataset.id);
+        });
+        card.addEventListener('keydown', (e) => {
+            if (e.key !== 'Enter' && e.key !== ' ') return;
+            if (e.target.closest('[data-stop]')) return;
+            e.preventDefault();
+            loadCommunityPlanById(card.dataset.id);
+        });
     });
+    list.querySelectorAll('.gp-vote-btn').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            voteCommunityPlan(btn.dataset.id, btn.dataset.vote, btn.closest('.gp-community-card'));
+        });
+    });
+}
+
+async function voteCommunityPlan(id, direction, cardEl) {
+    if (!id || (direction !== 'up' && direction !== 'down')) return;
+    const voterId = getCommunityVoterId();
+    let updated = null;
+    if (window.profileManager?.voteCommunityGearPlan) {
+        updated = await window.profileManager.voteCommunityGearPlan(id, direction, voterId);
+    } else {
+        try {
+            const res = await fetch(`/community-gear-plans/${encodeURIComponent(id)}/vote`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ direction, voterId }),
+            });
+            const data = await res.json();
+            updated = data.success ? data.plan : null;
+        } catch (e) {
+            console.error('[Gear Planner] vote failed', e);
+        }
+    }
+    if (!updated || !cardEl) return;
+    const upBtn = cardEl.querySelector('.gp-vote-up');
+    const downBtn = cardEl.querySelector('.gp-vote-down');
+    const upCount = cardEl.querySelector('[data-up-count]');
+    const downCount = cardEl.querySelector('[data-down-count]');
+    if (upCount) upCount.textContent = String(Number(updated.upvotes) || 0);
+    if (downCount) downCount.textContent = String(Number(updated.downvotes) || 0);
+    const my = updated.myVote === 'up' || updated.myVote === 'down' ? updated.myVote : '';
+    upBtn?.classList.toggle('is-active', my === 'up');
+    downBtn?.classList.toggle('is-active', my === 'down');
+    if (upBtn) upBtn.setAttribute('aria-pressed', my === 'up' ? 'true' : 'false');
+    if (downBtn) downBtn.setAttribute('aria-pressed', my === 'down' ? 'true' : 'false');
 }
 
 async function loadCommunityPlanById(id) {
@@ -1428,7 +1520,7 @@ async function loadCommunityPlanById(id) {
         plan = await window.profileManager.fetchCommunityGearPlan(id);
     } else {
         try {
-            const res = await fetch(`/community-gear-plans/${encodeURIComponent(id)}`);
+            const res = await fetch(`/community-gear-plans/${encodeURIComponent(id)}`, { credentials: 'include' });
             const data = await res.json();
             plan = data.success ? data.plan : null;
         } catch (e) {

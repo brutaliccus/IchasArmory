@@ -1782,6 +1782,8 @@ ProfileManager.prototype.fetchCommunityGearPlans = async function fetchCommunity
         if (filters.class) params.set('class', filters.class);
         if (filters.role) params.set('role', filters.role);
         if (filters.spec) params.set('spec', filters.spec);
+        if (filters.sort) params.set('sort', filters.sort);
+        if (filters.voterId) params.set('voterId', filters.voterId);
         const qs = params.toString();
         const res = await fetch(`/community-gear-plans${qs ? `?${qs}` : ''}`, { credentials: 'include' });
         const data = await res.json();
@@ -1800,6 +1802,23 @@ ProfileManager.prototype.fetchCommunityGearPlan = async function fetchCommunityG
         return data.success ? (data.plan || null) : null;
     } catch (e) {
         console.error('[Profiles] fetchCommunityGearPlan:', e);
+        return null;
+    }
+};
+
+ProfileManager.prototype.voteCommunityGearPlan = async function voteCommunityGearPlan(id, direction, voterId) {
+    if (!id) return null;
+    try {
+        const res = await fetch(`/community-gear-plans/${encodeURIComponent(id)}/vote`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ direction, voterId }),
+        });
+        const data = await res.json();
+        return data.success ? (data.plan || null) : null;
+    } catch (e) {
+        console.error('[Profiles] voteCommunityGearPlan:', e);
         return null;
     }
 };

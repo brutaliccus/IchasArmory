@@ -984,8 +984,9 @@ this.editingProfileId = null;       // Clear when creating new build
 ## Gear Planner cloud + community APIs
 
 - `fetchGearPlans()` / `saveGearPlan(plan)` / `deleteGearPlan(id)` / `setGearPlanFavorite(id)` — authenticated `/user-gear-plans` CRUD. Saves require `role[]` + `spec`; server publishes to the community pool.
-- `fetchCommunityGearPlans(filters)` — `GET /community-gear-plans?q&class&role&spec` (public; guests OK).
+- `fetchCommunityGearPlans(filters)` — `GET /community-gear-plans?q&class&role&spec&sort&voterId` (public; guests OK; default sort popular).
 - `fetchCommunityGearPlan(id)` — `GET /community-gear-plans/:id` full plan for `setGearPlan`.
+- `voteCommunityGearPlan(id, direction, voterId)` — `POST /community-gear-plans/:id/vote` with `{ direction: 'up'|'down'|null, voterId }`.
 - `shareGearPlan(plan, recipientId, message)` — Discord inbox share (`kind: gearPlan`).
 
 ---

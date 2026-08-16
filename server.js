@@ -116,8 +116,93 @@ function sanitizeIconKey(icon) {
     return /^[a-z0-9_]+$/.test(key) ? key : '';
 }
 
+/** Talent tree key order matches classTalents Object.keys for each class. */
+const CLASS_TALENT_TREE_KEYS = {
+    warrior: ['arms', 'fury', 'protection'],
+    paladin: ['holy', 'protection', 'retribution'],
+    hunter: ['beastmastery', 'marksmanship', 'survival'],
+    rogue: ['assassination', 'combat', 'subtlety'],
+    priest: ['discipline', 'holy', 'shadow'],
+    shaman: ['elemental', 'enhancement', 'restoration'],
+    mage: ['arcane', 'fire', 'frost'],
+    warlock: ['affliction', 'demonology', 'destruction'],
+    druid: ['balance', 'feralCombat', 'restoration'],
+};
+
+function computeTalentSpread(plan) {
+    const talents = plan?.talents && typeof plan.talents === 'object' ? plan.talents : {};
+    const cls = String(plan?.class || '').toLowerCase();
+    let trees = CLASS_TALENT_TREE_KEYS[cls];
+    if (!trees) {
+        const prefixes = new Set();
+        for (const key of Object.keys(talents)) {
+            const i = key.indexOf('-');
+            if (i > 0) prefixes.add(key.slice(0, i));
+        }
+        trees = [...prefixes].sort();
+        if (!trees.length) return [0, 0, 0];
+    }
+    return trees.map((tk) => {
+        let n = 0;
+        for (const [key, val] of Object.entries(talents)) {
+            if (key === tk || key.startsWith(`${tk}-`)) n += Number(val) || 0;
+        }
+        return n;
+    });
+}
+
+function sanitizeVoterId(raw) {
+    const s = String(raw || '').trim().slice(0, 80);
+    return /^[A-Za-z0-9_.:-]{4,80}$/.test(s) ? s : null;
+}
+
+function recountVotes(votes) {
+    let upvotes = 0;
+    let downvotes = 0;
+    if (votes && typeof votes === 'object') {
+        for (const dir of Object.values(votes)) {
+            if (dir === 'up') upvotes += 1;
+            else if (dir === 'down') downvotes += 1;
+        }
+    }
+    return { upvotes, downvotes };
+}
+
+function loadCommunityPlanFile(id) {
+    const planPath = path.join(communityGearPlansDir, `${id}.json`);
+    if (!fs.existsSync(planPath)) return null;
+    return { planPath, plan: JSON.parse(fs.readFileSync(planPath, 'utf-8')) };
+}
+
+function publicCommunityEntry(entry, voterId) {
+    const upvotes = Number(entry.upvotes) || 0;
+    const downvotes = Number(entry.downvotes) || 0;
+    const out = {
+        id: entry.id,
+        name: entry.name,
+        class: entry.class,
+        role: normalizeRoles(entry.role),
+        spec: entry.spec || '',
+        icon: entry.icon || 'inv_misc_questionmark',
+        authorName: entry.authorName || 'Anonymous',
+        authorId: entry.authorId,
+        updatedAt: entry.updatedAt,
+        createdAt: entry.createdAt,
+        upvotes,
+        downvotes,
+        score: upvotes - downvotes,
+        talentSpread: Array.isArray(entry.talentSpread) ? entry.talentSpread : [0, 0, 0],
+    };
+    if (voterId && entry.votes && typeof entry.votes === 'object' && entry.votes[voterId]) {
+        out.myVote = entry.votes[voterId];
+    } else {
+        out.myVote = null;
+    }
+    return out;
+}
+
 /** Public community listing + stored plan (no session secrets). */
-function toCommunityEntry(plan, author) {
+function toCommunityEntry(plan, author, previous) {
     const id = sanitizeCommunityPlanId(plan.id);
     if (!id) return null;
     const roles = normalizeRoles(plan.role);
@@ -128,6 +213,10 @@ function toCommunityEntry(plan, author) {
     const authorId = (author && author.id)
         ? String(author.id)
         : (plan.authorId ? String(plan.authorId) : undefined);
+    const prevVotes = (previous && previous.votes && typeof previous.votes === 'object')
+        ? previous.votes
+        : {};
+    const { upvotes, downvotes } = recountVotes(prevVotes);
     return {
         id,
         name: String(plan.name || 'Untitled').slice(0, 120),
@@ -138,13 +227,35 @@ function toCommunityEntry(plan, author) {
         authorName: authorName.slice(0, 64),
         authorId,
         updatedAt: plan.updatedAt || new Date().toISOString(),
-        createdAt: plan.createdAt || plan.updatedAt || new Date().toISOString(),
-        favoriteCount: Number(plan.favoriteCount) || 0,
+        createdAt: (previous && previous.createdAt) || plan.createdAt || plan.updatedAt || new Date().toISOString(),
+        upvotes,
+        downvotes,
+        votes: prevVotes,
+        talentSpread: computeTalentSpread(plan),
     };
 }
 
 function publishCommunityGearPlan(plan, author) {
-    const entry = toCommunityEntry(plan, author);
+    const prevId = sanitizeCommunityPlanId(plan.id);
+    let previous = null;
+    if (prevId) {
+        const existing = readCommunityIndex().find(e => String(e.id) === String(prevId));
+        if (existing) previous = existing;
+        else {
+            try {
+                const loaded = loadCommunityPlanFile(prevId);
+                if (loaded?.plan) {
+                    previous = {
+                        votes: loaded.plan.votes || {},
+                        upvotes: loaded.plan.upvotes,
+                        downvotes: loaded.plan.downvotes,
+                        createdAt: loaded.plan.createdAt,
+                    };
+                }
+            } catch (_) { /* ignore */ }
+        }
+    }
+    const entry = toCommunityEntry(plan, author, previous);
     if (!entry) return null;
     const fullPath = path.join(communityGearPlansDir, `${entry.id}.json`);
     const sanitizedPlan = {
@@ -158,8 +269,11 @@ function publishCommunityGearPlan(plan, author) {
         authorId: entry.authorId,
         updatedAt: entry.updatedAt,
         createdAt: entry.createdAt,
+        upvotes: entry.upvotes,
+        downvotes: entry.downvotes,
+        votes: entry.votes,
+        talentSpread: entry.talentSpread,
     };
-    // Never persist session/auth fields if somehow present
     delete sanitizedPlan.session;
     delete sanitizedPlan.token;
     delete sanitizedPlan.accessToken;
@@ -167,11 +281,62 @@ function publishCommunityGearPlan(plan, author) {
     fs.writeFileSync(fullPath, JSON.stringify(sanitizedPlan, null, 2));
 
     const index = readCommunityIndex().filter(e => String(e.id) !== String(entry.id));
-    index.unshift(entry);
-    // Keep newest first
-    index.sort((a, b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')));
+    index.unshift({ ...entry });
+    index.sort((a, b) => {
+        const scoreA = (Number(a.upvotes) || 0) - (Number(a.downvotes) || 0);
+        const scoreB = (Number(b.upvotes) || 0) - (Number(b.downvotes) || 0);
+        if (scoreB !== scoreA) return scoreB - scoreA;
+        return String(b.updatedAt || '').localeCompare(String(a.updatedAt || ''));
+    });
     writeCommunityIndex(index);
     return entry;
+}
+
+function applyCommunityVote(planId, voterId, direction) {
+    const id = sanitizeCommunityPlanId(planId);
+    if (!id || !voterId) return null;
+    const loaded = loadCommunityPlanFile(id);
+    if (!loaded) return null;
+    const { planPath, plan } = loaded;
+    const votes = (plan.votes && typeof plan.votes === 'object') ? { ...plan.votes } : {};
+    if (direction === null || direction === 'null' || direction === '') {
+        delete votes[voterId];
+    } else if (direction === 'up' || direction === 'down') {
+        if (votes[voterId] === direction) delete votes[voterId]; // toggle off
+        else votes[voterId] = direction;
+    } else {
+        return null;
+    }
+    const { upvotes, downvotes } = recountVotes(votes);
+    plan.votes = votes;
+    plan.upvotes = upvotes;
+    plan.downvotes = downvotes;
+    if (!Array.isArray(plan.talentSpread)) plan.talentSpread = computeTalentSpread(plan);
+    fs.writeFileSync(planPath, JSON.stringify(plan, null, 2));
+
+    const index = readCommunityIndex();
+    const idx = index.findIndex(e => String(e.id) === String(id));
+    if (idx >= 0) {
+        index[idx] = {
+            ...index[idx],
+            upvotes,
+            downvotes,
+            votes,
+            talentSpread: plan.talentSpread,
+        };
+    } else {
+        index.push(toCommunityEntry(plan, { username: plan.authorName, id: plan.authorId }, {
+            votes, upvotes, downvotes, createdAt: plan.createdAt,
+        }));
+    }
+    writeCommunityIndex(index);
+    const entry = index.find(e => String(e.id) === String(id));
+    return publicCommunityEntry(entry || {
+        id, name: plan.name, class: plan.class, role: plan.role, spec: plan.spec,
+        icon: plan.icon, authorName: plan.authorName, authorId: plan.authorId,
+        updatedAt: plan.updatedAt, createdAt: plan.createdAt,
+        upvotes, downvotes, votes, talentSpread: plan.talentSpread,
+    }, voterId);
 }
 
 function unpublishCommunityGearPlan(planId) {
@@ -1237,6 +1402,8 @@ app.get('/community-gear-plans', (req, res) => {
         const classFilter = String(req.query.class || '').trim().toLowerCase();
         const roleFilter = String(req.query.role || '').trim().toLowerCase();
         const specFilter = String(req.query.spec || '').trim().toLowerCase();
+        const sort = String(req.query.sort || 'popular').trim().toLowerCase();
+        const voterId = sanitizeVoterId(req.query.voterId);
         let entries = readCommunityIndex();
         if (classFilter) {
             entries = entries.filter(e => String(e.class || '').toLowerCase() === classFilter);
@@ -1254,8 +1421,22 @@ app.get('/community-gear-plans', (req, res) => {
                 return name.includes(q) || author.includes(q);
             });
         }
+        entries = [...entries].sort((a, b) => {
+            if (sort === 'recent') {
+                return String(b.updatedAt || '').localeCompare(String(a.updatedAt || ''));
+            }
+            const scoreA = (Number(a.upvotes) || 0) - (Number(a.downvotes) || 0);
+            const scoreB = (Number(b.upvotes) || 0) - (Number(b.downvotes) || 0);
+            if (scoreB !== scoreA) return scoreB - scoreA;
+            const upDiff = (Number(b.upvotes) || 0) - (Number(a.upvotes) || 0);
+            if (upDiff !== 0) return upDiff;
+            return String(b.updatedAt || '').localeCompare(String(a.updatedAt || ''));
+        });
         res.set('Cache-Control', 'no-store');
-        res.json({ success: true, plans: entries.slice(0, 200) });
+        res.json({
+            success: true,
+            plans: entries.slice(0, 200).map(e => publicCommunityEntry(e, voterId)),
+        });
     } catch (error) {
         console.error('[CommunityGearPlans] list error:', error);
         res.status(500).json({ success: false, error: error.message });
@@ -1277,10 +1458,51 @@ app.get('/community-gear-plans/:id', (req, res) => {
         delete plan.token;
         delete plan.accessToken;
         delete plan.refreshToken;
+        // Do not leak full vote map to clients
+        const voterId = sanitizeVoterId(req.query.voterId);
+        const myVote = (voterId && plan.votes && plan.votes[voterId]) ? plan.votes[voterId] : null;
+        delete plan.votes;
+        plan.upvotes = Number(plan.upvotes) || 0;
+        plan.downvotes = Number(plan.downvotes) || 0;
+        plan.myVote = myVote;
+        if (!Array.isArray(plan.talentSpread)) plan.talentSpread = computeTalentSpread(plan);
         res.set('Cache-Control', 'no-store');
         res.json({ success: true, plan });
     } catch (error) {
         console.error('[CommunityGearPlans] get error:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+app.post('/community-gear-plans/:id/vote', (req, res) => {
+    try {
+        const id = sanitizeCommunityPlanId(req.params.id);
+        if (!id) {
+            return res.status(400).json({ success: false, error: 'Invalid plan ID' });
+        }
+        let voterId = null;
+        try {
+            if (typeof req.isAuthenticated === 'function' && req.isAuthenticated() && req.user?.id) {
+                voterId = sanitizeVoterId(`discord:${req.user.id}`);
+            }
+        } catch (_) { /* ignore */ }
+        if (!voterId) voterId = sanitizeVoterId(req.body?.voterId);
+        if (!voterId) {
+            return res.status(400).json({ success: false, error: 'voterId required' });
+        }
+        let direction = req.body?.direction;
+        if (direction === undefined) direction = null;
+        if (direction !== 'up' && direction !== 'down' && direction !== null) {
+            return res.status(400).json({ success: false, error: 'direction must be up, down, or null' });
+        }
+        const result = applyCommunityVote(id, voterId, direction);
+        if (!result) {
+            return res.status(404).json({ success: false, error: 'Community gear plan not found' });
+        }
+        res.set('Cache-Control', 'no-store');
+        res.json({ success: true, plan: result });
+    } catch (error) {
+        console.error('[CommunityGearPlans] vote error:', error);
         res.status(500).json({ success: false, error: error.message });
     }
 });
