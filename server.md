@@ -1074,7 +1074,7 @@ Press Ctrl+C to stop all servers.
 - **GET/POST /user-gear-plans**, **DELETE /user-gear-plans/:id**, **PATCH /user-gear-plans/:id/favorite** - Cloud gear plan storage (must be registered inside the `if (authEnabled)` block in `server.js` because they use `requireAuth`). Authenticated **POST** requires `role` (one or more of `dps`/`tank`/`healer`) and `spec` (talent-tree focus); sets `community: true`, stamps Discord `authorName`/`authorId`, and publishes a sanitized copy under `data/community-gear-plans/`. **DELETE** also unpublishes from the community index.
 - **GET /community-gear-plans** — Public list/search (`q`, `class`, `role`, `spec` query params). Returns metadata only (id, name, authorName, class, role, spec, icon, updatedAt). Guests allowed.
 - **GET /community-gear-plans/:id** — Public full gear plan load (sanitized; no session secrets). IDs restricted to `[A-Za-z0-9_-]{1,64}`.
-- Storage: `data/community-gear-plans/index.json` + `data/community-gear-plans/{id}.json`. Icon catalog: `data/wow-icons.json` (served as static file).
+- Storage: `data/community-gear-plans/index.json` + `data/community-gear-plans/{id}.json`. Icon catalog: `data/wow-icons.json` (Node static + `server.py` explicit serve from project `data/` because production static root is `dist/`).
 
 Profile JSON responses on `server.js` (`GET/POST/PATCH` profile success and `DELETE` profile success) set `Cache-Control: no-store` so intermediaries and browsers do not serve stale build lists after saves.
 
