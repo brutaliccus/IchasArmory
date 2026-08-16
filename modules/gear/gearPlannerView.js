@@ -69,7 +69,7 @@ let editingAltSlot = null;
 let pickCallback = null;
 let editMode = true;
 let gpDidDrag = false;
-let gpTalentModalOpen = false;
+let gpTalentsViewOpen = false;
 let characterTalentSnapshot = null;
 
 export function initGearPlannerView(cbs) {
@@ -90,7 +90,7 @@ export function initGearPlannerView(cbs) {
     wireHeaderControls();
     wireClassDrawer();
     wireRaceDrawer();
-    wireTalentModal();
+    wireTalentsView();
     wireSaveOverwriteDialog();
     ensureItemSourcesLoaded().then(() => renderGearPlanner()).catch(() => {});
     renderGearPlanner();
@@ -101,6 +101,7 @@ export function getCurrentGearPlan() {
 }
 
 export function setGearPlan(plan) {
+    if (gpTalentsViewOpen) closeGpTalentsModal();
     currentPlan = getGearPlanData(plan);
     editMode = !currentPlan.id;
     persistSession();
@@ -132,7 +133,7 @@ function wireHeaderControls() {
     }
 
     document.getElementById('gp-save-btn')?.addEventListener('click', () => requestSaveCurrentPlan());
-    document.getElementById('gp-talents-btn')?.addEventListener('click', () => openGpTalentsModal());
+    document.getElementById('gp-talents-btn')?.addEventListener('click', () => toggleGpTalentsView());
     document.getElementById('gp-edit-mode-btn')?.addEventListener('click', () => {
         editMode = !editMode;
         persistSession();
@@ -223,6 +224,10 @@ function generateGpClassIcons() {
             updateQuickSimVisibility();
             closeGpClassDrawer();
             renderGearPlanner();
+            if (gpTalentsViewOpen) {
+                const host = document.getElementById('gp-talents-host');
+                if (host) generateTalentInputs(host, currentPlan.class || 'warrior');
+            }
         });
     });
 }
@@ -349,41 +354,58 @@ async function restoreCharacterTalents(snap) {
     await applyTalentSpec(list, snap.spec);
 }
 
-function wireTalentModal() {
-    document.getElementById('gp-talents-modal-close')?.addEventListener('click', () => closeGpTalentsModal());
-    document.getElementById('gp-talents-modal')?.addEventListener('click', (e) => {
-        if (e.target?.id === 'gp-talents-modal') closeGpTalentsModal();
-    });
+function syncGpTalentsViewUi() {
+    const shell = document.getElementById('gear-planner-shell');
+    const view = document.getElementById('gp-talents-view');
+    const btn = document.getElementById('gp-talents-btn');
+    shell?.classList.toggle('gp-talents-open', gpTalentsViewOpen);
+    document.body.classList.toggle('gp-talents-open', gpTalentsViewOpen);
+    if (view) view.hidden = !gpTalentsViewOpen;
+    btn?.setAttribute('aria-pressed', gpTalentsViewOpen ? 'true' : 'false');
+    btn?.classList.toggle('is-active', gpTalentsViewOpen);
+    if (document.body.dataset.appMode === 'gearPlanner') {
+        const loc = document.getElementById('gp-locations-sidebar');
+        const stats = document.getElementById('gp-stats-sidebar');
+        if (loc) loc.hidden = gpTalentsViewOpen;
+        if (stats) stats.hidden = gpTalentsViewOpen;
+    }
 }
 
-async function openGpTalentsModal() {
-    const modal = document.getElementById('gp-talents-modal');
+function wireTalentsView() {
+    document.getElementById('gp-talents-done-btn')?.addEventListener('click', () => closeGpTalentsModal());
+}
+
+function toggleGpTalentsView() {
+    if (gpTalentsViewOpen) closeGpTalentsModal();
+    else openGpTalentsView();
+}
+
+async function openGpTalentsView() {
     const host = document.getElementById('gp-talents-host');
     const charList = document.getElementById('talents-list');
-    if (!modal || !host) return;
-    if (!gpTalentModalOpen) {
+    if (!host) return;
+    if (!gpTalentsViewOpen) {
         characterTalentSnapshot = snapshotCharacterTalents();
         if (charList) charList.innerHTML = '';
     }
-    gpTalentModalOpen = true;
+    gpTalentsViewOpen = true;
+    syncGpTalentsViewUi();
     generateTalentInputs(host, currentPlan.class || 'warrior');
     await applyTalentSpec(host, currentPlan.talents || {});
-    modal.style.display = 'flex';
 }
 
 export async function closeGpTalentsModal() {
-    const modal = document.getElementById('gp-talents-modal');
     const host = document.getElementById('gp-talents-host');
-    if (host) {
+    if (host && gpTalentsViewOpen) {
         currentPlan.talents = serializeTalentSpec(host);
         host.innerHTML = '';
     }
     persistSession();
-    gpTalentModalOpen = false;
-    if (modal) modal.style.display = 'none';
+    gpTalentsViewOpen = false;
+    syncGpTalentsViewUi();
     await restoreCharacterTalents(characterTalentSnapshot);
     characterTalentSnapshot = null;
-    renderStatsSidebar();
+    if (document.body.dataset.appMode === 'gearPlanner') renderStatsSidebar();
 }
 
 function emptyStatTemplate() {
@@ -473,12 +495,13 @@ const GP_STAT_GROUPS = [
         ['blockValue', 'Block Value'],
     ]},
     { title: 'Damage Reduction', rows: [
-        ['fireDR', 'Fire', 'pct'], ['natureDR', 'Nature', 'pct'], ['frostDR', 'Frost', 'pct'],
-        ['shadowDR', 'Shadow', 'pct'], ['arcaneDR', 'Arcane', 'pct'], ['holyDR', 'Holy', 'pct'],
+        ['fireDR', 'Fire', 'frac'], ['natureDR', 'Nature', 'frac'], ['frostDR', 'Frost', 'frac'],
+        ['shadowDR', 'Shadow', 'frac'], ['arcaneDR', 'Arcane', 'frac'], ['holyDR', 'Holy', 'frac'],
     ]},
 ];
 
 function formatGpStatValue(value, kind) {
+    if (kind === 'frac') return `${(Number(value) * 100).toFixed(2)}%`;
     if (kind === 'pct') return `${Number(value).toFixed(2)}%`;
     if (Number.isInteger(value)) return String(value);
     return Number(value).toFixed(1);
@@ -490,20 +513,19 @@ function renderStatsSidebar() {
     ensurePlanRace();
     const plan = getGearPlanData(currentPlan);
     const hasPrimary = GEAR_PLAN_SLOTS.some(s => plan.slots?.[s]?.primary != null);
-    const talentBonuses = getTalentBonusesFromSpec(plan.class || 'warrior', plan.talents || {});
-    const hasTalents = Object.values(talentBonuses).some(v => typeof v === 'number' && v !== 0);
-    if (!hasPrimary && !hasTalents) {
+    if (!hasPrimary) {
         list.innerHTML = '<p class="gp-locations-empty">No modified stats yet</p>';
         return;
     }
     const full = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: true, includeTalents: true }));
-    const base = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: false, includeTalents: false }));
+    const ungeared = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: false, includeTalents: true }));
     const cards = GP_STAT_GROUPS.map(group => {
         const rows = group.rows.map(([key, label, kind]) => {
-            const delta = (Number(full[key]) || 0) - (Number(base[key]) || 0);
-            if (Math.abs(delta) < 0.005) return '';
-            const sign = delta > 0 ? '+' : '';
-            return `<div class="gp-stat-item"><span>${escapeHtml(label)}</span><strong>${sign}${formatGpStatValue(delta, kind)}</strong></div>`;
+            const total = Number(full[key]) || 0;
+            const gearBonus = total - (Number(ungeared[key]) || 0);
+            if (Math.abs(gearBonus) < 0.005) return '';
+            const bonusSign = gearBonus > 0 ? '+' : '';
+            return `<div class="gp-stat-item"><span>${escapeHtml(label)}</span><strong>${formatGpStatValue(total, kind)} (${bonusSign}${formatGpStatValue(gearBonus, kind)})</strong></div>`;
         }).filter(Boolean).join('');
         if (!rows) return '';
         return `<div class="gp-stat-card"><h4 class="gp-locations-group-heading">${escapeHtml(group.title)}</h4>${rows}</div>`;
