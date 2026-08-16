@@ -1066,6 +1066,10 @@ class NoCacheHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                             print(f"[Server] Error serving gzip file {gz_path}: {e}")
                             # Fall through to normal serving
 
+            # SPA routes: /gear-planner and /gp serve the same shell as /
+            if parsed_path in ('/gear-planner', '/gp', '/gear-planner/', '/gp/'):
+                self.path = '/index.html'
+
             # Serve all static files (including JSON) through SimpleHTTPRequestHandler.
             # This sets proper Content-Length, streams efficiently, and handles MIME types.
             # Check dist/ first (Vite production build), fall back to project root.

@@ -116,14 +116,16 @@
     gap: 8px;
 }
 
-.logout-btn {
-    background: rgba(255, 68, 68, 0.1);
-    border-color: rgba(255, 68, 68, 0.3);
+#logout-btn.logout-btn {
+    background: transparent;
+    border: none;
+    box-shadow: none;
 }
 
-.logout-btn:hover {
-    background: rgba(255, 68, 68, 0.2);
-    border-color: #ff4444;
+#logout-btn.logout-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    transform: none;
 }
 
 /* Modal Styles */

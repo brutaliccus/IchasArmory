@@ -439,7 +439,7 @@ export async function exportGearPlanToURL({ plan }) {
         });
         const result = await response.json();
         if (!result.success) throw new Error(result.error || 'Save failed');
-        const newURL = `${window.location.origin}${window.location.pathname}?gp=${result.planId}`;
+        const newURL = `${window.location.origin}/gear-planner?gp=${result.planId}`;
         await navigator.clipboard.writeText(newURL);
         window.notify?.success('Gear plan URL copied to clipboard!', 3000, 'Share Gear Plan');
     } catch (error) {

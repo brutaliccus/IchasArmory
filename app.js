@@ -163,25 +163,44 @@ export function getCurrentRace() {
 
 let appMode = 'character';
 
+function isGearPlannerPath(pathname = window.location.pathname) {
+    const path = pathname.replace(/\/+$/, '') || '/';
+    return path === '/gear-planner' || path === '/gp';
+}
+
+function syncPlannerPath(mode) {
+    const url = new URL(window.location.href);
+    const onGpPath = isGearPlannerPath(url.pathname);
+    if (mode === 'gearPlanner' && !onGpPath) {
+        url.pathname = '/gear-planner';
+        history.replaceState({}, '', url);
+    } else if (mode !== 'gearPlanner' && onGpPath) {
+        url.pathname = '/';
+        history.replaceState({}, '', url);
+    }
+}
+
 export function setAppMode(mode) {
     const next = mode === 'gearPlanner' ? 'gearPlanner' : 'character';
-    if (next === appMode) return;
-    appMode = next;
-    document.body.dataset.appMode = next;
-    document.querySelectorAll('.planner-mode-btn').forEach(btn => {
-        const mode = btn.dataset.mode || (btn.id === 'mode-gear-planner-btn' ? 'gearPlanner' : 'character');
-        btn.classList.toggle('active', mode === next);
-    });
-    const locSidebar = document.getElementById('gp-locations-sidebar');
-    const statsSidebar = document.getElementById('gp-stats-sidebar');
-    if (locSidebar) locSidebar.hidden = next !== 'gearPlanner';
-    if (statsSidebar) statsSidebar.hidden = next !== 'gearPlanner';
-    if (next !== 'gearPlanner') {
-        closeGpTalentsModal();
+    if (next !== appMode) {
+        appMode = next;
+        document.body.dataset.appMode = next;
+        document.querySelectorAll('.planner-mode-btn').forEach(btn => {
+            const mode = btn.dataset.mode || (btn.id === 'mode-gear-planner-btn' ? 'gearPlanner' : 'character');
+            btn.classList.toggle('active', mode === next);
+        });
+        const locSidebar = document.getElementById('gp-locations-sidebar');
+        const statsSidebar = document.getElementById('gp-stats-sidebar');
+        if (locSidebar) locSidebar.hidden = next !== 'gearPlanner';
+        if (statsSidebar) statsSidebar.hidden = next !== 'gearPlanner';
+        if (next !== 'gearPlanner') {
+            closeGpTalentsModal();
+        }
+        if (next === 'gearPlanner') {
+            renderGearPlanner();
+        }
     }
-    if (next === 'gearPlanner') {
-        renderGearPlanner();
-    }
+    syncPlannerPath(next);
 }
 
 window.setAppMode = setAppMode;
@@ -4896,6 +4915,8 @@ async function init() {
         openItemModalForGearPlan,
         exportGearPlanToURL,
     });
+
+    if (isGearPlannerPath()) setAppMode('gearPlanner');
 
     const gpParam = new URLSearchParams(window.location.search).get('gp');
     if (gpParam) {

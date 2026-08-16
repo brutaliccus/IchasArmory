@@ -36,6 +36,8 @@ export default defineConfig({
         },
     },
 
+    appType: 'spa',
+
     // Dev server – proxy API routes to the Python server (port 6100)
     server: {
         port: 5173,

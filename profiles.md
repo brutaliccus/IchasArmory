@@ -106,7 +106,7 @@ async init() {
 
 **Purpose:** Handle Discord OAuth login/logout and session verification
 
-**Session persistence:** `server.js` stores Express sessions on disk (`data/sessions/` via `session-file-store`), not in memory. Deploy restarts (`systemctl restart ehp-calculator`) reload `server.js` but keep the `ichacalc.sid` cookie valid for up to 7 days. Users are only logged out on explicit logout, cookie expiry, or if `SESSION_SECRET` in `discord.env` changes. The service worker does **not** cache `/user`, `/auth/*`, or `/profiles*` (see `public/sw.js`).
+**Logout button:** `#logout-btn` is icon-only (no red fill or border); hover tints the SVG area. Click goes to `/auth/logout`.
 
 **Key Functions:**
 

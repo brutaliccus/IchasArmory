@@ -1081,6 +1081,13 @@ app.get('/gear-plans/:planId', (req, res) => {
     }
 });
 
+// SPA: Gear Planner deep links serve the same index.html as /
+app.get(['/gear-planner', '/gp', '/gear-planner/', '/gp/'], (req, res) => {
+    const distIndex = path.join(__dirname, 'dist', 'index.html');
+    const rootIndex = path.join(__dirname, 'index.html');
+    res.sendFile(fs.existsSync(distIndex) ? distIndex : rootIndex);
+});
+
 // Error handling middleware
 app.use((error, req, res, next) => {
     if (error instanceof multer.MulterError) {

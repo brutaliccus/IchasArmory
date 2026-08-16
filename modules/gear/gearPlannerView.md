@@ -17,6 +17,7 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 
 ## Integration (app.js)
 
+- Direct URL `/gear-planner` (alias `/gp`) calls `setAppMode('gearPlanner')`. Character planner stays `/`. Share copies `origin/gear-planner?gp=<id>` (`?b=` character builds are unchanged).
 - `initGearPlannerView({ setAppMode, getItemById, openItemModalForGearPlan, exportGearPlanToURL })`
 - Item picks from modal call `handleGearPlanItemSelected(item)` when `data-gear-plan-pick` is set on modal.
 

@@ -1,5 +1,5 @@
 // Service Worker for IchaCalc
-const CACHE_VERSION = 'v154';
+const CACHE_VERSION = 'v155';
 const CACHE_NAME = `ichacalc-${CACHE_VERSION}`;
 
 // Vite handles JS/CSS caching via content-hashed filenames + immutable Cache-Control headers.
@@ -95,7 +95,9 @@ self.addEventListener('fetch', event => {
     }
 
     // Network-first for HTML (index.html / '/'), cache as offline fallback
-    if (url.pathname.endsWith('.html') || url.pathname === '/') {
+    if (url.pathname.endsWith('.html') || url.pathname === '/' ||
+        url.pathname === '/gear-planner' || url.pathname === '/gp' ||
+        url.pathname === '/gear-planner/' || url.pathname === '/gp/') {
         event.respondWith(
             fetch(event.request)
                 .then(response => {
