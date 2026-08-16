@@ -21,6 +21,7 @@ export function createEmptyGearPlan(classId = 'warrior', name = 'New Gear Plan')
         class: classId,
         race: 'human',
         talents: {},
+        buffs: [],
         slots,
         ui: { collapsed: {} },
     };
@@ -40,6 +41,7 @@ export function createEmptyGearPlan(classId = 'warrior', name = 'New Gear Plan')
  * @property {string} class
  * @property {string} race
  * @property {Record<string, number>} talents
+ * @property {Array<{ id: string, improved?: boolean }>} buffs
  * @property {Record<string, GearPlanSlot>} slots
  * @property {{ collapsed?: Record<string, boolean> }} ui
  */
@@ -51,6 +53,11 @@ export function getGearPlanData(plan) {
     out.schemaVersion = plan.schemaVersion || 1;
     if (plan.race) out.race = String(plan.race);
     if (plan.talents && typeof plan.talents === 'object') out.talents = { ...plan.talents };
+    if (Array.isArray(plan.buffs)) {
+        out.buffs = plan.buffs
+            .filter(b => b && b.id)
+            .map(b => ({ id: String(b.id), improved: !!b.improved }));
+    }
     for (const slot of GEAR_PLAN_SLOTS) {
         const s = plan.slots?.[slot];
         if (!s) continue;

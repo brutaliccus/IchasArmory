@@ -525,7 +525,7 @@ const filterByClass = (buffs) => buffs.filter(buff => {
 
 ## UI Rendering
 
-The `generateBuffIcons(container, currentClass)` function renders all buff icons organized by category.
+The `generateBuffIcons(container, currentClass, talentSpec?)` function renders all buff icons organized by category. Optional `talentSpec` (GP `tree-id` map) is used instead of the Character Planner talent DOM. `applyBuffListToDom(list, root?)` / `clearAllBuffsDebuffsInDom(root?)` accept an optional root (default `#buffs-list`). `getBuffsFromSavedList` resolves `{id, improved}[]` for the calculator without reading the DOM.
 
 ### Layout Structure
 

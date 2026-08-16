@@ -13,6 +13,7 @@ Gear plan data model and localStorage persistence for the Gear Planner page.
   class: string,
   race: string,           // independent of Character Planner
   talents: {},            // same `tree-talentId` → points map as character builds
+  buffs: [],              // `{ id, improved? }[]` independent of Character Planner
   slots: {
     [slotId]: { primary: number|null, alternatives: number[] }
   },

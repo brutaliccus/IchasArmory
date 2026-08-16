@@ -1212,7 +1212,7 @@ function createBuffTooltipHTML(buff, isImproved = false) {
 }
 
 // Generate buff icons organized by category
-export async function generateBuffIcons(container, currentClass = null) {
+export async function generateBuffIcons(container, currentClass = null, talentSpec = null) {
     if (!container) return;
 
     // Load item and spell data for tooltips
@@ -1276,6 +1276,10 @@ export async function generateBuffIcons(container, currentClass = null) {
 
     // Helper function to check if a talent is learned
     const hasTalent = (tree, talentId, minRanks = 1) => {
+        if (talentSpec && typeof talentSpec === 'object') {
+            const pts = talentSpec[`${tree}-${talentId}`] ?? talentSpec[talentId] ?? 0;
+            return Number(pts) >= minRanks;
+        }
         const talentElement = document.querySelector(`.talent-icon-container[data-tree="${tree}"][data-talent-id="${talentId}"]`);
         if (!talentElement) return false;
         const currentPoints = parseInt(talentElement.getAttribute('data-points')) || 0;
@@ -1475,8 +1479,7 @@ function attachBuffTooltips(container) {
 /**
  * Deactivate every buff and debuff toggle in `#buffs-list` (raid buffs, consumables, personal buffs, boss debuffs, etc.).
  */
-export function clearAllBuffsDebuffsInDom() {
-    const root = document.getElementById('buffs-list');
+export function clearAllBuffsDebuffsInDom(root = document.getElementById('buffs-list')) {
     if (!root) return;
     root.querySelectorAll('.buff-icon').forEach((icon) => {
         icon.classList.remove('active', 'is-improved');
@@ -1488,15 +1491,14 @@ export function clearAllBuffsDebuffsInDom() {
  * Calls handleBuffExclusivity after each activation so flask/elixir groups stay consistent.
  * @param {Array<{ id: string, improved?: boolean }>} buffList
  */
-export function applyBuffListToDom(buffList) {
-    const root = document.getElementById('buffs-list');
+export function applyBuffListToDom(buffList, root = document.getElementById('buffs-list')) {
     if (!root) return;
 
-    clearAllBuffsDebuffsInDom();
+    clearAllBuffsDebuffsInDom(root);
 
     for (const b of buffList || []) {
         if (!b || !b.id) continue;
-        const el = document.getElementById(b.id);
+        const el = root.querySelector(`[id="${CSS.escape(b.id)}"]`) || document.getElementById(b.id);
         if (!el) continue;
         el.classList.add('active');
         if (b.improved) el.classList.add('is-improved');
@@ -1713,5 +1715,47 @@ export function getActiveBuffs(talentBonuses = {}) {
             });
         }
     });
+    return activeBuffs;
+}
+
+/** Resolve a saved `{ id, improved }[]` list to calculator buff objects (no DOM). */
+export function getBuffsFromSavedList(savedList, talentBonuses = {}) {
+    const activeBuffs = [];
+    for (const entry of savedList || []) {
+        if (!entry?.id) continue;
+        const buff = buffs.find(b => b.id === entry.id);
+        if (!buff) continue;
+        const isImproved = !!(buff.improved_stats && entry.improved);
+        const stats = isImproved ? buff.improved_stats : buff.base_stats;
+        let talentBonusStats = {};
+        if (buff.getTalentBonus && typeof buff.getTalentBonus === 'function') {
+            talentBonusStats = buff.getTalentBonus(talentBonuses) || {};
+        }
+        const resistanceNormalization = {
+            fireResistance: 'fireResist',
+            natureResistance: 'natureResist',
+            frostResistance: 'frostResist',
+            shadowResistance: 'shadowResist',
+            arcaneResistance: 'arcaneResist',
+            stamina: 'sta',
+            agility: 'agi',
+            strength: 'str',
+            intellect: 'int',
+            spirit: 'spi'
+        };
+        const normalizedStats = {};
+        const mergedStats = { ...stats, ...talentBonusStats };
+        Object.keys(mergedStats).forEach(key => {
+            const normalizedKey = resistanceNormalization[key] || key;
+            normalizedStats[normalizedKey] = mergedStats[key];
+        });
+        activeBuffs.push({
+            name: buff.name,
+            id: buff.id,
+            isImproved,
+            weaponTypes: buff.weaponTypes,
+            ...normalizedStats
+        });
+    }
     return activeBuffs;
 }

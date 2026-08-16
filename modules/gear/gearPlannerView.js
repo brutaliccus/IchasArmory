@@ -15,6 +15,7 @@ import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip } from '../character/stat
 import { baseStats, raceIconData, getSelectedRaceBonuses } from '../character/races.js';
 import { calculateEffectiveHealth } from '../ui/calculator.js';
 import { generateTalentInputs, updateTalentPoints, getTalentBonusesFromSpec } from '../talents_new.js';
+import { generateBuffIcons, applyBuffListToDom, getBuffsFromSavedList } from '../character/buffs.js';
 import { getSetBonuses } from './setBonuses.js';
 import { runGearPlanQuickSim } from '../shaman/dps.js';
 import { createItemTooltipHTML } from '../ui/tooltips.js';
@@ -69,8 +70,15 @@ let editingAltSlot = null;
 let pickCallback = null;
 let editMode = true;
 let gpDidDrag = false;
-let gpTalentsViewOpen = false;
+let gpOverlay = null;
 let characterTalentSnapshot = null;
+let characterBuffSnapshot = null;
+let buffsListHome = null;
+let consumeToolsHome = null;
+
+const GP_ICON_TALENTS = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>`;
+const GP_ICON_BUFFS = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v7.31L4.21 20.39A1 1 0 0 0 5.08 22h13.84a1 1 0 0 0 .87-1.61L14 9.31V2"/><path d="M8.5 2h7"/><path d="M7 15h10"/></svg>`;
+const GP_ICON_HOME = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M25,21.5c0,-0.319 -0.152,-0.619 -0.409,-0.807c-0.258,-0.188 -0.589,-0.243 -0.893,-0.146l-7.698,2.44c-0,0 -7.698,-2.44 -7.698,-2.44c-0.304,-0.097 -0.635,-0.042 -0.893,0.146c-0.257,0.188 -0.409,0.488 -0.409,0.807l0,6c0,0.552 0.448,1 1,1l16,0c0.552,0 1,-0.448 1,-1l0,-6Zm-2,1.366l0,3.634l-14,0c0,-0 0,-3.634 0,-3.634c0,0 6.698,2.123 6.698,2.123c0.196,0.063 0.408,0.063 0.604,0l6.698,-2.123Zm-2.002,-14.31c0.02,-0.341 -0.137,-0.668 -0.414,-0.868c-0.278,-0.199 -0.638,-0.243 -0.955,-0.116l-2.5,1c-0.38,0.151 -0.629,0.519 -0.629,0.928l0,11c0,0.317 0.151,0.616 0.406,0.804c0.255,0.189 0.585,0.245 0.888,0.152l6.5,-2c0.42,-0.129 0.706,-0.517 0.706,-0.956l0,-6c0,-0.552 -0.448,-1 -1,-1c-0.892,0 -1.663,-0.246 -2.203,-0.739c-0.516,-0.472 -0.797,-1.166 -0.797,-2.02c0,-0.062 -0.005,-0.124 -0.002,-0.185Zm-8.627,-0.984c-0.317,-0.127 -0.677,-0.083 -0.955,0.116c-0.277,0.2 -0.434,0.527 -0.414,0.868c0.003,0.061 -0.002,0.123 -0.002,0.185c0,0.854 -0.281,1.548 -0.797,2.02c-0.54,0.493 -1.311,0.739 -2.203,0.739c-0.552,0 -1,0.448 -1,1l0,6c0,0.439 0.286,0.827 0.706,0.956l6.5,2c0.303,0.093 0.633,0.037 0.888,-0.152c0.255,-0.188 0.406,-0.487 0.406,-0.804l0,-11c0,-0.409 -0.249,-0.777 -0.629,-0.928l-2.5,-1Zm6.756,2.354c0.21,0.942 0.675,1.72 1.32,2.31c0.666,0.609 1.537,1.023 2.553,1.186c0,0 0,4.339 0,4.339c0,0 -4.5,1.385 -4.5,1.385c0,0 0,-8.969 0,-8.969l0.627,-0.251Zm-6.254,0l0.627,0.251c0,0 0,8.969 0,8.969c-0,0 -4.5,-1.385 -4.5,-1.385c0,0 0,-4.339 0,-4.339c1.016,-0.163 1.887,-0.577 2.553,-1.186c0.645,-0.59 1.11,-1.368 1.32,-2.31Zm-1.892,-5.23c0.058,-0.294 -0.018,-0.598 -0.208,-0.83c-0.19,-0.232 -0.473,-0.366 -0.773,-0.366c-1.611,0 -3.965,1.17 -5.569,2.638c-1.191,1.089 -1.931,2.354 -1.931,3.362c0,0.552 0.448,1 1,1l5.5,0l0.981,-0.804l1,-5Zm11.019,-1.196c-0.3,0 -0.583,0.134 -0.773,0.366c-0.19,0.232 -0.266,0.536 -0.208,0.83l1,5l0.981,0.804l5.5,0c0.552,0 1,-0.448 1,-1c-0,-1.008 -0.74,-2.273 -1.931,-3.362c-1.604,-1.468 -3.958,-2.638 -5.569,-2.638Zm-13.82,5l-3.216,0c0.222,-0.299 0.501,-0.598 0.816,-0.886c0.847,-0.775 1.944,-1.485 2.948,-1.852l-0.548,2.738Zm15.64,0l-0.548,-2.738c1.004,0.367 2.101,1.078 2.948,1.852c0.315,0.288 0.594,0.587 0.816,0.886l-3.216,0Z"/></svg>`;
 
 export function initGearPlannerView(cbs) {
     callbacks = cbs || {};
@@ -87,10 +95,12 @@ export function initGearPlannerView(cbs) {
     }
     ensurePlanRace();
     if (!currentPlan.talents) currentPlan.talents = {};
+    if (!currentPlan.buffs) currentPlan.buffs = [];
     wireHeaderControls();
     wireClassDrawer();
     wireRaceDrawer();
     wireTalentsView();
+    wireBuffsView();
     wireSaveOverwriteDialog();
     ensureItemSourcesLoaded().then(() => renderGearPlanner()).catch(() => {});
     renderGearPlanner();
@@ -101,7 +111,7 @@ export function getCurrentGearPlan() {
 }
 
 export function setGearPlan(plan) {
-    if (gpTalentsViewOpen) closeGpTalentsModal();
+    if (gpOverlay) closeGpTalentsModal();
     currentPlan = getGearPlanData(plan);
     editMode = !currentPlan.id;
     persistSession();
@@ -134,6 +144,7 @@ function wireHeaderControls() {
 
     document.getElementById('gp-save-btn')?.addEventListener('click', () => requestSaveCurrentPlan());
     document.getElementById('gp-talents-btn')?.addEventListener('click', () => toggleGpTalentsView());
+    document.getElementById('gp-buffs-btn')?.addEventListener('click', () => toggleGpBuffsView());
     document.getElementById('gp-edit-mode-btn')?.addEventListener('click', () => {
         editMode = !editMode;
         persistSession();
@@ -224,10 +235,11 @@ function generateGpClassIcons() {
             updateQuickSimVisibility();
             closeGpClassDrawer();
             renderGearPlanner();
-            if (gpTalentsViewOpen) {
+            if (gpOverlay === 'talents') {
                 const host = document.getElementById('gp-talents-host');
                 if (host) generateTalentInputs(host, currentPlan.class || 'warrior');
             }
+            if (gpOverlay === 'buffs') refreshGpBuffsHost();
         });
     });
 }
@@ -354,57 +366,183 @@ async function restoreCharacterTalents(snap) {
     await applyTalentSpec(list, snap.spec);
 }
 
-function syncGpTalentsViewUi() {
+function serializeBuffSpec(root) {
+    const spec = [];
+    root?.querySelectorAll('.buff-icon.active').forEach(el => {
+        if (!el.id) return;
+        spec.push({ id: el.id, improved: el.classList.contains('is-improved') });
+    });
+    return spec;
+}
+
+function snapshotCharacterBuffs() {
+    const list = document.getElementById('buffs-list');
+    const classId = document.getElementById('class-race-sidebar')?.dataset?.selectedClass || 'warrior';
+    return { classId, spec: serializeBuffSpec(list) };
+}
+
+async function restoreCharacterBuffs(snap) {
+    const list = document.getElementById('buffs-list');
+    if (!list || !snap) return;
+    await generateBuffIcons(list, snap.classId);
+    applyBuffListToDom(snap.spec, list);
+}
+
+function setHeaderBtnIcon(btn, svg, title) {
+    if (!btn) return;
+    btn.innerHTML = svg;
+    btn.title = title;
+    btn.setAttribute('aria-label', title);
+}
+
+function syncGpOverlayUi() {
     const shell = document.getElementById('gear-planner-shell');
-    const view = document.getElementById('gp-talents-view');
-    const btn = document.getElementById('gp-talents-btn');
-    shell?.classList.toggle('gp-talents-open', gpTalentsViewOpen);
-    document.body.classList.toggle('gp-talents-open', gpTalentsViewOpen);
-    if (view) view.hidden = !gpTalentsViewOpen;
-    btn?.setAttribute('aria-pressed', gpTalentsViewOpen ? 'true' : 'false');
-    btn?.classList.toggle('is-active', gpTalentsViewOpen);
+    const talentsView = document.getElementById('gp-talents-view');
+    const buffsView = document.getElementById('gp-buffs-view');
+    const talentsBtn = document.getElementById('gp-talents-btn');
+    const buffsBtn = document.getElementById('gp-buffs-btn');
+    const talentsOpen = gpOverlay === 'talents';
+    const buffsOpen = gpOverlay === 'buffs';
+    shell?.classList.toggle('gp-talents-open', talentsOpen);
+    shell?.classList.toggle('gp-buffs-open', buffsOpen);
+    document.body.classList.toggle('gp-talents-open', talentsOpen);
+    document.body.classList.toggle('gp-buffs-open', buffsOpen);
+    if (talentsView) talentsView.hidden = !talentsOpen;
+    if (buffsView) buffsView.hidden = !buffsOpen;
+    talentsBtn?.setAttribute('aria-pressed', talentsOpen ? 'true' : 'false');
+    talentsBtn?.classList.toggle('is-active', talentsOpen);
+    buffsBtn?.setAttribute('aria-pressed', buffsOpen ? 'true' : 'false');
+    buffsBtn?.classList.toggle('is-active', buffsOpen);
+    setHeaderBtnIcon(talentsBtn, talentsOpen ? GP_ICON_HOME : GP_ICON_TALENTS, talentsOpen ? 'Gear Planner' : 'Talents');
+    setHeaderBtnIcon(buffsBtn, buffsOpen ? GP_ICON_HOME : GP_ICON_BUFFS, buffsOpen ? 'Gear Planner' : 'Buffs & consumables');
     if (document.body.dataset.appMode === 'gearPlanner') {
         const loc = document.getElementById('gp-locations-sidebar');
         const stats = document.getElementById('gp-stats-sidebar');
-        if (loc) loc.hidden = gpTalentsViewOpen;
-        if (stats) stats.hidden = gpTalentsViewOpen;
+        if (loc) loc.hidden = !!gpOverlay;
+        if (stats) stats.hidden = talentsOpen;
     }
 }
 
-function wireTalentsView() {
-    document.getElementById('gp-talents-done-btn')?.addEventListener('click', () => closeGpTalentsModal());
+function wireTalentsView() {}
+
+function wireBuffsView() {
+    document.getElementById('gp-buffs-view')?.addEventListener('click', () => {
+        if (gpOverlay !== 'buffs') return;
+        const list = document.getElementById('buffs-list');
+        currentPlan.buffs = serializeBuffSpec(list);
+        persistSession();
+        renderStatsSidebar();
+    });
 }
 
 function toggleGpTalentsView() {
-    if (gpTalentsViewOpen) closeGpTalentsModal();
+    if (gpOverlay === 'talents') closeGpTalentsModal();
     else openGpTalentsView();
 }
 
+function toggleGpBuffsView() {
+    if (gpOverlay === 'buffs') closeGpTalentsModal();
+    else openGpBuffsView();
+}
+
 async function openGpTalentsView() {
+    if (gpOverlay === 'buffs') await closeGpTalentsModal();
     const host = document.getElementById('gp-talents-host');
     const charList = document.getElementById('talents-list');
     if (!host) return;
-    if (!gpTalentsViewOpen) {
+    if (gpOverlay !== 'talents') {
         characterTalentSnapshot = snapshotCharacterTalents();
         if (charList) charList.innerHTML = '';
     }
-    gpTalentsViewOpen = true;
-    syncGpTalentsViewUi();
+    gpOverlay = 'talents';
+    syncGpOverlayUi();
     generateTalentInputs(host, currentPlan.class || 'warrior');
     await applyTalentSpec(host, currentPlan.talents || {});
 }
 
+async function refreshGpBuffsHost() {
+    const list = document.getElementById('buffs-list');
+    if (!list) return;
+    await generateBuffIcons(list, currentPlan.class || 'warrior', currentPlan.talents || {});
+    applyBuffListToDom(currentPlan.buffs || [], list);
+    const tools = document.getElementById('shaman-buffs-consume-tools');
+    if (tools) tools.style.display = currentPlan.class === 'shaman' ? 'flex' : 'none';
+}
+
+function parkBuffsDomInGp() {
+    const list = document.getElementById('buffs-list');
+    const tools = document.getElementById('shaman-buffs-consume-tools');
+    const listSlot = document.getElementById('gp-buffs-list-slot');
+    const toolsSlot = document.getElementById('gp-buffs-tools-slot');
+    if (list && listSlot && list.parentElement !== listSlot) {
+        buffsListHome = { parent: list.parentElement, next: list.nextSibling };
+        listSlot.appendChild(list);
+    }
+    if (tools && toolsSlot && tools.parentElement !== toolsSlot) {
+        consumeToolsHome = { parent: tools.parentElement, next: tools.nextSibling };
+        toolsSlot.appendChild(tools);
+    }
+}
+
+function restoreBuffsDomHome() {
+    const list = document.getElementById('buffs-list');
+    const tools = document.getElementById('shaman-buffs-consume-tools');
+    if (list && buffsListHome?.parent) {
+        if (buffsListHome.next && buffsListHome.next.parentNode === buffsListHome.parent) {
+            buffsListHome.parent.insertBefore(list, buffsListHome.next);
+        } else {
+            buffsListHome.parent.appendChild(list);
+        }
+    }
+    if (tools && consumeToolsHome?.parent) {
+        if (consumeToolsHome.next && consumeToolsHome.next.parentNode === consumeToolsHome.parent) {
+            consumeToolsHome.parent.insertBefore(tools, consumeToolsHome.next);
+        } else {
+            consumeToolsHome.parent.appendChild(tools);
+        }
+    }
+    buffsListHome = null;
+    consumeToolsHome = null;
+}
+
+async function openGpBuffsView() {
+    if (gpOverlay === 'talents') await closeGpTalentsModal();
+    if (gpOverlay !== 'buffs') {
+        characterBuffSnapshot = snapshotCharacterBuffs();
+        parkBuffsDomInGp();
+    }
+    gpOverlay = 'buffs';
+    syncGpOverlayUi();
+    await refreshGpBuffsHost();
+}
+
 export async function closeGpTalentsModal() {
-    const host = document.getElementById('gp-talents-host');
-    if (host && gpTalentsViewOpen) {
-        currentPlan.talents = serializeTalentSpec(host);
-        host.innerHTML = '';
+    const talentHost = document.getElementById('gp-talents-host');
+    const list = document.getElementById('buffs-list');
+    if (gpOverlay === 'talents' && talentHost) {
+        currentPlan.talents = serializeTalentSpec(talentHost);
+        talentHost.innerHTML = '';
+    }
+    if (gpOverlay === 'buffs' && list) {
+        currentPlan.buffs = serializeBuffSpec(list);
     }
     persistSession();
-    gpTalentsViewOpen = false;
-    syncGpTalentsViewUi();
-    await restoreCharacterTalents(characterTalentSnapshot);
-    characterTalentSnapshot = null;
+    const wasBuffs = gpOverlay === 'buffs';
+    const wasTalents = gpOverlay === 'talents';
+    gpOverlay = null;
+    syncGpOverlayUi();
+    if (wasTalents) {
+        await restoreCharacterTalents(characterTalentSnapshot);
+        characterTalentSnapshot = null;
+    }
+    if (wasBuffs) {
+        restoreBuffsDomHome();
+        await restoreCharacterBuffs(characterBuffSnapshot);
+        characterBuffSnapshot = null;
+        const tools = document.getElementById('shaman-buffs-consume-tools');
+        const charClass = document.getElementById('class-race-sidebar')?.dataset?.selectedClass;
+        if (tools) tools.style.display = charClass === 'shaman' ? 'flex' : 'none';
+    }
     if (document.body.dataset.appMode === 'gearPlanner') renderStatsSidebar();
 }
 
@@ -441,7 +579,7 @@ function aggregatePrimaryGearStats(plan) {
     return { gearStats: total, equipped };
 }
 
-function buildGpCalcPayload(plan, { includeGear, includeTalents }) {
+function buildGpCalcPayload(plan, { includeGear, includeTalents, includeBuffs }) {
     const cls = plan.class || 'warrior';
     const race = plan.race || 'human';
     const { gearStats, equipped } = includeGear ? aggregatePrimaryGearStats(plan) : { gearStats: emptyStatTemplate(), equipped: {} };
@@ -449,14 +587,15 @@ function buildGpCalcPayload(plan, { includeGear, includeTalents }) {
     const oh = equipped.offhand;
     const mhType = getMeleeWeaponType(mh);
     const ohType = getMeleeWeaponType(oh);
+    const talentBonuses = includeTalents ? getTalentBonusesFromSpec(cls, plan.talents || {}) : {};
     return {
         selectedClass: cls,
         selectedRace: race,
         attackerLevel: 63,
         gearStats,
-        talentBonuses: includeTalents ? getTalentBonusesFromSpec(cls, plan.talents || {}) : {},
+        talentBonuses,
         racialBonuses: getSelectedRaceBonuses(race),
-        activeBuffs: [],
+        activeBuffs: includeBuffs ? getBuffsFromSavedList(plan.buffs || [], talentBonuses) : [],
         enchantStats: emptyStatTemplate(),
         offhandArmor: oh?.stats?.armor || 0,
         setBonuses: includeGear ? getSetBonuses(equipped, false) : {},
@@ -513,19 +652,26 @@ function renderStatsSidebar() {
     ensurePlanRace();
     const plan = getGearPlanData(currentPlan);
     const hasPrimary = GEAR_PLAN_SLOTS.some(s => plan.slots?.[s]?.primary != null);
-    if (!hasPrimary) {
+    const hasBuffs = Array.isArray(plan.buffs) && plan.buffs.length > 0;
+    const hasTalents = plan.talents && Object.values(plan.talents).some(v => Number(v) > 0);
+    if (!hasPrimary && !hasBuffs && !hasTalents) {
         list.innerHTML = '<p class="gp-locations-empty">No modified stats yet</p>';
         return;
     }
-    const full = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: true, includeTalents: true }));
-    const ungeared = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: false, includeTalents: true }));
+    const full = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: true, includeTalents: true, includeBuffs: true }));
+    const ungeared = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: false, includeTalents: true, includeBuffs: true }));
+    const naked = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: false, includeTalents: false, includeBuffs: false }));
     const cards = GP_STAT_GROUPS.map(group => {
         const rows = group.rows.map(([key, label, kind]) => {
             const total = Number(full[key]) || 0;
             const gearBonus = total - (Number(ungeared[key]) || 0);
-            if (Math.abs(gearBonus) < 0.005) return '';
+            const vsNaked = total - (Number(naked[key]) || 0);
+            if (Math.abs(gearBonus) < 0.005 && Math.abs(vsNaked) < 0.005) return '';
             const bonusSign = gearBonus > 0 ? '+' : '';
-            return `<div class="gp-stat-item"><span>${escapeHtml(label)}</span><strong>${formatGpStatValue(total, kind)} (${bonusSign}${formatGpStatValue(gearBonus, kind)})</strong></div>`;
+            const bonusHtml = Math.abs(gearBonus) >= 0.005
+                ? ` (${bonusSign}${formatGpStatValue(gearBonus, kind)})`
+                : '';
+            return `<div class="gp-stat-item"><span>${escapeHtml(label)}</span><strong>${formatGpStatValue(total, kind)}${bonusHtml}</strong></div>`;
         }).filter(Boolean).join('');
         if (!rows) return '';
         return `<div class="gp-stat-card"><h4 class="gp-locations-group-heading">${escapeHtml(group.title)}</h4>${rows}</div>`;
