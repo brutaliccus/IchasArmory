@@ -5833,3 +5833,45 @@ html {
     border-color: #7cb342;
     background: #263818;
 }
+
+/* Site-wide Buy Me a Coffee footer (Character + Gear Planner) */
+.site-support-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 18px 12px 28px;
+    margin-top: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.bmc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid color-mix(in srgb, var(--accent-color, #ffd700) 35%, var(--border-color, #35353d));
+    background: color-mix(in srgb, var(--card-bg, #1c1c20) 88%, #2a2410);
+    color: color-mix(in srgb, var(--accent-color, #ffd700) 78%, #c9a227);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    opacity: 0.85;
+    transition: opacity 0.15s ease, border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.bmc-link:hover,
+.bmc-link:focus-visible {
+    opacity: 1;
+    color: var(--accent-color, #ffd700);
+    border-color: color-mix(in srgb, var(--accent-color, #ffd700) 55%, var(--border-color, #35353d));
+    background: color-mix(in srgb, var(--card-bg, #1c1c20) 70%, #3a3018);
+    outline: none;
+}
+
+.bmc-link .bmc-icon {
+    flex-shrink: 0;
+    opacity: 0.9;
+}

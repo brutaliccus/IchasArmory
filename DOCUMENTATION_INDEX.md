@@ -592,6 +592,8 @@ Use existing `.md` files as templates. Key sections to include:
 
 ## Contact & Support
 
+Site shell includes a shared **Buy me a coffee** footer (`.site-support-footer` in `index.html` / `style.css`) shown at the bottom of Character Planner and Gear Planner. Update the `bmc-link` href with your Buy Me a Coffee username when ready.
+
 For questions about the documentation or codebase:
 1. Check this index for relevant documentation file
 2. Read the corresponding `.md` file thoroughly
@@ -600,7 +602,7 @@ For questions about the documentation or codebase:
 
 ---
 
-**Last Updated:** January 2026
+**Last Updated:** August 2026
 **Documentation Version:** 1.0
 **Total Documentation Files:** 15+ major files
 **Codebase Coverage:** 26,843+ LOC documented (core systems)
