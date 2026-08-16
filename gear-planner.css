@@ -40,7 +40,7 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
     background: linear-gradient(145deg, #1a1a1f 0%, #121218 100%);
     border: 1px solid #3d3520;
     border-right: none;
-    border-radius: 10px 0 0 10px;
+    border-radius: 0;
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.4);
     box-sizing: border-box;
     zoom: 1 !important;
@@ -81,19 +81,28 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
     padding: 8px 12px 16px;
     display: flex;
     justify-content: center;
+    align-items: flex-start;
     width: 100%;
-    overflow: auto;
-    zoom: 2;
-    transform-origin: top center;
+    overflow: hidden;
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    min-height: 0;
 }
 
 .gp-talents-host .talent-trees-wrapper {
     justify-content: center;
+    flex-wrap: nowrap;
 }
 
 .gp-talents-view,
 .gp-buffs-view {
     display: none;
+}
+
+#gear-planner-shell.gp-talents-open,
+#gear-planner-shell.gp-buffs-open {
+    padding-left: calc(260px + 16px);
+    padding-right: calc(260px + 16px);
 }
 
 #gear-planner-shell.gp-talents-open .gp-layout,
@@ -103,24 +112,55 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
     display: none;
 }
 
+#gear-planner-shell.gp-talents-open .gp-main,
+#gear-planner-shell.gp-buffs-open .gp-main {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh / var(--ui-scale, 1) - 80px);
+}
+
 #gear-planner-shell.gp-talents-open .gp-talents-view,
 #gear-planner-shell.gp-buffs-open .gp-buffs-view {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     width: 100%;
+    position: relative;
+    z-index: 5;
+    pointer-events: auto;
+}
+
+#gear-planner-shell.gp-talents-open .gp-talents-view {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.gp-overlay-tools-slot {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 4px 8px;
+    pointer-events: auto;
+}
+
+.gp-overlay-tools-slot .shaman-buffs-consume-tools {
+    justify-content: flex-end;
+    margin-left: auto;
 }
 
 .gp-buffs-view {
-    align-items: stretch;
-    max-width: 1100px;
-    margin: 0 auto;
+    max-width: none;
+    margin: 0;
+    pointer-events: auto;
 }
 
-body.gp-talents-open .gp-locations-sidebar,
-body.gp-talents-open .gp-stats-sidebar,
-body.gp-buffs-open .gp-locations-sidebar {
-    display: none !important;
+#gp-buffs-list-slot,
+#gp-buffs-list-slot #buffs-list {
+    pointer-events: auto;
+    position: relative;
+    z-index: 1;
 }
 
 body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
@@ -138,7 +178,7 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     background: linear-gradient(145deg, #1a1a1f 0%, #121218 100%);
     border: 1px solid #3d3520;
     border-left: none;
-    border-radius: 0 10px 10px 0;
+    border-radius: 0;
     box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
     box-sizing: border-box;
     zoom: 1 !important;

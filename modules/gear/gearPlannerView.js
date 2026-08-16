@@ -15,7 +15,7 @@ import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip } from '../character/stat
 import { baseStats, raceIconData, getSelectedRaceBonuses } from '../character/races.js';
 import { calculateEffectiveHealth } from '../ui/calculator.js';
 import { generateTalentInputs, updateTalentPoints, getTalentBonusesFromSpec } from '../talents_new.js';
-import { generateBuffIcons, applyBuffListToDom, getBuffsFromSavedList } from '../character/buffs.js';
+import { generateBuffIcons, applyBuffListToDom, getBuffsFromSavedList, handleBuffExclusivity } from '../character/buffs.js';
 import { getSetBonuses } from './setBonuses.js';
 import { runGearPlanQuickSim } from '../shaman/dps.js';
 import { createItemTooltipHTML } from '../ui/tooltips.js';
@@ -99,7 +99,6 @@ export function initGearPlannerView(cbs) {
     wireHeaderControls();
     wireClassDrawer();
     wireRaceDrawer();
-    wireTalentsView();
     wireBuffsView();
     wireSaveOverwriteDialog();
     ensureItemSourcesLoaded().then(() => renderGearPlanner()).catch(() => {});
@@ -237,7 +236,12 @@ function generateGpClassIcons() {
             renderGearPlanner();
             if (gpOverlay === 'talents') {
                 const host = document.getElementById('gp-talents-host');
-                if (host) generateTalentInputs(host, currentPlan.class || 'warrior');
+                if (host) {
+                    generateTalentInputs(host, currentPlan.class || 'warrior');
+                    fitGpTalentTree();
+                }
+                const tools = document.getElementById('shaman-buffs-consume-tools');
+                if (tools) tools.style.display = currentPlan.class === 'shaman' ? 'flex' : 'none';
             }
             if (gpOverlay === 'buffs') refreshGpBuffsHost();
         });
@@ -415,20 +419,80 @@ function syncGpOverlayUi() {
     buffsBtn?.classList.toggle('is-active', buffsOpen);
     setHeaderBtnIcon(talentsBtn, talentsOpen ? GP_ICON_HOME : GP_ICON_TALENTS, talentsOpen ? 'Gear Planner' : 'Talents');
     setHeaderBtnIcon(buffsBtn, buffsOpen ? GP_ICON_HOME : GP_ICON_BUFFS, buffsOpen ? 'Gear Planner' : 'Buffs & consumables');
-    if (document.body.dataset.appMode === 'gearPlanner') {
-        const loc = document.getElementById('gp-locations-sidebar');
-        const stats = document.getElementById('gp-stats-sidebar');
-        if (loc) loc.hidden = !!gpOverlay;
-        if (stats) stats.hidden = talentsOpen;
+}
+
+let gpTalentFitObserver = null;
+let gpTalentFitLock = false;
+let gpTalentLastScale = 0;
+
+function onGpTalentHostResize() {
+    gpTalentLastScale = 0;
+    fitGpTalentTree();
+}
+
+function unbindGpTalentFit() {
+    gpTalentFitObserver?.disconnect();
+    gpTalentFitObserver = null;
+    gpTalentLastScale = 0;
+    window.removeEventListener('resize', onGpTalentHostResize);
+}
+
+function fitGpTalentTree() {
+    const host = document.getElementById('gp-talents-host');
+    const tree = host?.querySelector('.talent-main-container') || host?.querySelector('.talent-trees-wrapper');
+    if (!host || !tree || gpOverlay !== 'talents' || gpTalentFitLock) return;
+
+    tree.style.transform = 'none';
+    tree.style.marginBottom = '0';
+    tree.style.width = '';
+
+    const treeW = Math.max(tree.scrollWidth, tree.offsetWidth, 1);
+    const treeH = Math.max(tree.scrollHeight, tree.offsetHeight, 1);
+    const boxW = Math.max(host.clientWidth, 1);
+    const boxH = Math.max(host.clientHeight, 1);
+    const scale = Math.min(boxW / treeW, boxH / treeH);
+    if (!Number.isFinite(scale) || scale <= 0) return;
+    if (Math.abs(scale - gpTalentLastScale) < 0.002) return;
+
+    gpTalentFitLock = true;
+    gpTalentLastScale = scale;
+    tree.style.transformOrigin = 'top center';
+    tree.style.transform = `scale(${scale})`;
+    tree.style.width = `${treeW}px`;
+    tree.style.margin = `0 auto ${Math.round(treeH * (scale - 1))}px`;
+    gpTalentFitLock = false;
+
+    if (!gpTalentFitObserver) {
+        const view = document.getElementById('gp-talents-view');
+        gpTalentFitObserver = new ResizeObserver(() => {
+            window.requestAnimationFrame(onGpTalentHostResize);
+        });
+        if (view) gpTalentFitObserver.observe(view);
+        window.addEventListener('resize', onGpTalentHostResize);
     }
 }
 
-function wireTalentsView() {}
-
 function wireBuffsView() {
-    document.getElementById('gp-buffs-view')?.addEventListener('click', () => {
+    document.getElementById('gp-buffs-view')?.addEventListener('click', (event) => {
         if (gpOverlay !== 'buffs') return;
         const list = document.getElementById('buffs-list');
+        const upgradeToggle = event.target.closest('.buff-upgrade-toggle');
+        const buffIcon = event.target.closest('.buff-icon');
+        if (buffIcon && list?.contains(buffIcon)) {
+            if (upgradeToggle) {
+                event.stopPropagation();
+                buffIcon.classList.toggle('is-improved');
+            } else {
+                const wasActive = buffIcon.classList.contains('active');
+                buffIcon.classList.toggle('active');
+                if (!wasActive && buffIcon.classList.contains('active')) {
+                    handleBuffExclusivity(buffIcon.id);
+                }
+                if (!buffIcon.classList.contains('active')) {
+                    buffIcon.classList.remove('is-improved');
+                }
+            }
+        }
         currentPlan.buffs = serializeBuffSpec(list);
         persistSession();
         renderStatsSidebar();
@@ -456,8 +520,12 @@ async function openGpTalentsView() {
     }
     gpOverlay = 'talents';
     syncGpOverlayUi();
+    parkConsumeTools('gp-talents-tools-slot');
+    const tools = document.getElementById('shaman-buffs-consume-tools');
+    if (tools) tools.style.display = currentPlan.class === 'shaman' ? 'flex' : 'none';
     generateTalentInputs(host, currentPlan.class || 'warrior');
     await applyTalentSpec(host, currentPlan.talents || {});
+    requestAnimationFrame(() => fitGpTalentTree());
 }
 
 async function refreshGpBuffsHost() {
@@ -469,19 +537,24 @@ async function refreshGpBuffsHost() {
     if (tools) tools.style.display = currentPlan.class === 'shaman' ? 'flex' : 'none';
 }
 
+function parkConsumeTools(toolsSlotId) {
+    const tools = document.getElementById('shaman-buffs-consume-tools');
+    const toolsSlot = document.getElementById(toolsSlotId);
+    if (!tools || !toolsSlot) return;
+    if (!consumeToolsHome) {
+        consumeToolsHome = { parent: tools.parentElement, next: tools.nextSibling };
+    }
+    if (tools.parentElement !== toolsSlot) toolsSlot.appendChild(tools);
+}
+
 function parkBuffsDomInGp() {
     const list = document.getElementById('buffs-list');
-    const tools = document.getElementById('shaman-buffs-consume-tools');
     const listSlot = document.getElementById('gp-buffs-list-slot');
-    const toolsSlot = document.getElementById('gp-buffs-tools-slot');
     if (list && listSlot && list.parentElement !== listSlot) {
         buffsListHome = { parent: list.parentElement, next: list.nextSibling };
         listSlot.appendChild(list);
     }
-    if (tools && toolsSlot && tools.parentElement !== toolsSlot) {
-        consumeToolsHome = { parent: tools.parentElement, next: tools.nextSibling };
-        toolsSlot.appendChild(tools);
-    }
+    parkConsumeTools('gp-buffs-tools-slot');
 }
 
 function restoreBuffsDomHome() {
@@ -532,8 +605,13 @@ export async function closeGpTalentsModal() {
     gpOverlay = null;
     syncGpOverlayUi();
     if (wasTalents) {
+        unbindGpTalentFit();
         await restoreCharacterTalents(characterTalentSnapshot);
         characterTalentSnapshot = null;
+        restoreBuffsDomHome();
+        const tools = document.getElementById('shaman-buffs-consume-tools');
+        const charClass = document.getElementById('class-race-sidebar')?.dataset?.selectedClass;
+        if (tools) tools.style.display = charClass === 'shaman' ? 'flex' : 'none';
     }
     if (wasBuffs) {
         restoreBuffsDomHome();
