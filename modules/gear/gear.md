@@ -22,6 +22,10 @@ Gear management module — handles equipping/unequipping items, computing aggreg
 | `getEmptySlotPlaceholderUrl(slotId, classId)` | Empty paperdoll icon URL. Ranged uses relic for druid/shaman/paladin; otherwise `inventoryslot_{slotIconMap}`. |
 | `refreshEmptySlotPlaceholders(classId)` | Rewrites empty character-planner slot imgs; skips slots with equipped items. |
 | `getItemById(itemId)` | Passthrough to `itemLoader.getItemById`. |
+| `buildOctowowIconUrl(iconRef, size?)` | Builds `https://octowow.st/db/images/icons/{large\|medium}/{basename}.png` from a basename or legacy URL. |
+| `resolveIconUrl(iconRef, size?)` | Preferred icon URL for items/UI: octowow.st for game icons; passes through `assets/` paths. |
+| `createIconImage(iconName, altText)` | Creates `<img>` using `resolveIconUrl` (fallback chain via `installIconLoadFallbacks`). |
+| `installIconLoadFallbacks()` | Global capture-phase `error` listener: failed icons retry octowow → zamimg → turtle DB. |
 | `applyEnchant(slotId, enchantIndex)` | Apply an enchant to a slot. |
 | `getAppliedEnchant(slotId)` | Get the enchant currently applied to a slot. |
 

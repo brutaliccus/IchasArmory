@@ -59,16 +59,60 @@ export const slotIconMap = {
     ranged: 'ranged'
 };
 export const ICON_BASE_URL = 'https://octowow.st/db/images/icons/large/';
+export const OCTOWOW_ICON_BASE = 'https://octowow.st/db/images/icons';
 /** Second fallback when primary DB is down (same icon names, .jpg on Wowhead CDN) */
 export const ICON_CDN_ZAMIMG_LARGE = 'https://wow.zamimg.com/images/wow/icons/large/';
 export const ICON_CDN_ZAMIMG_MEDIUM = 'https://wow.zamimg.com/images/wow/icons/medium/';
 export const ICON_BASE_URL_BACKUP = 'https://database.turtle-wow.org/images/icons/large/';
 
-let _iconFallbackInstalled = false;
+/** Strip path/extension and return lowercase WoW icon basename. */
+export function normalizeIconBasename(iconRef) {
+    const raw = String(iconRef || 'inv_misc_questionmark').trim();
+    if (!raw) return 'inv_misc_questionmark';
+    const noQuery = raw.split('?')[0].split('#')[0];
+    const leaf = noQuery.replace(/^.*\//, '');
+    return leaf.replace(/\.(png|jpg|jpeg|gif|webp)$/i, '').toLowerCase() || 'inv_misc_questionmark';
+}
 
 /**
- * Installs a single capture-phase listener so any <img> whose src fails to load
- * from octowow.st/db tries wow.zamimg (.jpg) then database.turtle-wow.org (.png).
+ * Build https://octowow.st/db/images/icons/{size}/{basename}.png
+ * @param {string} iconRef - basename or full/legacy URL
+ * @param {'large'|'medium'} [size='large']
+ */
+export function buildOctowowIconUrl(iconRef, size = 'large') {
+    const basename = normalizeIconBasename(iconRef);
+    const folder = size === 'medium' ? 'medium' : 'large';
+    return `${OCTOWOW_ICON_BASE}/${folder}/${basename}.png`;
+}
+
+/**
+ * Resolve icon refs (basename, legacy CDN URL, or assets/ path) to a loadable URL.
+ * Remote game icons prefer octowow.st; local assets/ paths pass through unchanged.
+ */
+export function resolveIconUrl(iconRef, size = 'large') {
+    const raw = String(iconRef || '').trim();
+    if (!raw) return buildOctowowIconUrl('inv_misc_questionmark', size);
+    if (raw.startsWith('assets/') || raw.startsWith('/assets/')) return raw;
+    if (raw.startsWith('http://') || raw.startsWith('https://')) {
+        const fromKnownHost = raw.match(/\/icons\/(?:large|medium)\/([^/?#]+)\.(?:png|jpg|jpeg|webp)/i)
+            || raw.match(/\/icons\/([^/?#]+)\.(?:png|jpg|jpeg|webp)/i);
+        if (fromKnownHost) return buildOctowowIconUrl(fromKnownHost[1], size);
+        if (/octowow\.st\/db\/images\/icons\//i.test(raw)) return raw;
+        return buildOctowowIconUrl(raw, size);
+    }
+    return buildOctowowIconUrl(raw, size);
+}
+
+let _iconFallbackInstalled = false;
+
+function _iconNameFromSrc(src) {
+    const m = src.match(/\/icons\/(?:large|medium)\/([^/?#]+)\.(?:png|jpg|jpeg|webp)/i)
+        || src.match(/\/icons\/([^/?#]+)\.(?:png|jpg|jpeg|webp)/i);
+    return m ? m[1].toLowerCase() : null;
+}
+
+/**
+ * Installs a single capture-phase listener so failed icon loads try octowow → zamimg → turtle DB.
  * Call once from app init (covers hardcoded innerHTML URLs as well as createIconImage).
  */
 export function installIconLoadFallbacks() {
@@ -78,17 +122,19 @@ export function installIconLoadFallbacks() {
         const el = e.target;
         if (!el || el.tagName !== 'IMG') return;
         const src = el.currentSrc || el.src || '';
-        if (!src.includes('octowow.st/db')) return;
-        const m = src.match(/\/images\/icons\/(large|medium)\/([^/?#]+)\.png/i);
-        if (!m) return;
-        const size = m[1].toLowerCase();
-        const name = m[2];
+        if (src.startsWith('assets/') || src.includes('/assets/icons/')) return;
+        const name = _iconNameFromSrc(src);
+        if (!name) return;
+        const size = /\/icons\/medium\//i.test(src) ? 'medium' : 'large';
         const step = el.dataset.iconFb || '0';
         if (step === '0') {
             el.dataset.iconFb = '1';
-            el.src = `https://wow.zamimg.com/images/wow/icons/${size}/${name}.jpg`;
+            el.src = buildOctowowIconUrl(name, size);
         } else if (step === '1') {
             el.dataset.iconFb = '2';
+            el.src = `https://wow.zamimg.com/images/wow/icons/${size}/${name}.jpg`;
+        } else if (step === '2') {
+            el.dataset.iconFb = '3';
             el.src = `https://database.turtle-wow.org/images/icons/${size}/${name}.png`;
         } else {
             el.removeAttribute('data-icon-fb');
@@ -99,8 +145,7 @@ export function installIconLoadFallbacks() {
 // Helper function to create an image (fallback chain via installIconLoadFallbacks)
 export function createIconImage(iconName, altText) {
     const img = document.createElement('img');
-    const iconFileName = (iconName || 'inv_misc_questionmark').toLowerCase();
-    img.src = `${ICON_BASE_URL}${iconFileName}.png`;
+    img.src = resolveIconUrl(iconName);
     img.alt = altText;
     return img;
 }

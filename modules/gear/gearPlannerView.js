@@ -21,7 +21,7 @@ import {
     GEAR_PLAN_DESCRIPTION_MAX,
     GEAR_PLAN_NAME_MAX,
 } from './gearPlanner.js';
-import { ICON_BASE_URL, getEmptySlotPlaceholderUrl, getMeleeWeaponType, getEnchantableSlots } from './gear.js';
+import { ICON_BASE_URL, getEmptySlotPlaceholderUrl, getMeleeWeaponType, getEnchantableSlots, resolveIconUrl } from './gear.js';
 import { enchantDatabase } from './enchants.js';
 import { getEnchantCompactLabel } from './enchantStatLabels.js';
 import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, getItemType, filterEnchantsByItemType } from '../character/stats.js';
@@ -30,7 +30,7 @@ import { calculateEffectiveHealth } from '../ui/calculator.js';
 import { generateTalentInputs, updateTalentPoints, updateAllTalentStates, getTalentBonusesFromSpec, classTalents } from '../talents_new.js';
 import { generateBuffIcons, applyBuffListToDom, getBuffsFromSavedList, handleBuffExclusivity } from '../character/buffs.js';
 import { getSetBonuses } from './setBonuses.js';
-import { runGearPlanQuickSim, runGearPlanStatWeightSimulations, mergeStatWeightsToTemplate, updateStatWeightsTable, sortStatWeightsTable, openDpsSimConfigModal } from '../shaman/dps.js';
+import { runGearPlanQuickSim, runGearPlanStatWeightSimulations, mergeStatWeightsToTemplate, updateStatWeightsTable, sortStatWeightsTable, openDpsSimConfigModal, prepareDpsSimConfigForGearPlanner } from '../shaman/dps.js';
 import { runTankSimulation, getBossDatabase } from '../tank/tankSimulator.js';
 import { createItemTooltipHTML, createEnchantTooltipHTML, calculateItemDpsScore, calculateItemTankScore } from '../ui/tooltips.js';
 import { positionItemTooltipOnIcon } from '../ui/itemTooltipPosition.js';
@@ -259,6 +259,7 @@ export function initGearPlannerView(cbs) {
     wireHeaderVotes();
     wireGpTalentPresetMenu();
     wireGpTankBossSearch();
+    wireGpSimConfigButton();
     refreshGearPlannerWhenItemsReady();
     hydrateCommunityVoteMeta();
 }
@@ -390,9 +391,6 @@ function wireHeaderControls() {
     document.getElementById('gp-community-search-btn')?.addEventListener('click', () => openCommunitySearchDialog());
     document.getElementById('gp-share-btn')?.addEventListener('click', () => shareCurrentPlan());
     document.getElementById('gp-quick-sim-btn')?.addEventListener('click', () => runQuickSim());
-    document.getElementById('gp-sim-settings-btn')?.addEventListener('click', () => {
-        openDpsSimConfigModal();
-    });
     document.getElementById('gp-st-rotation-row')?.addEventListener('click', (e) => {
         const btn = e.target.closest('[data-gp-st-rot]');
         if (!btn) return;
@@ -407,6 +405,24 @@ function wireHeaderControls() {
         try { localStorage.setItem(SIM_HINT_DISMISS_KEY, '1'); } catch { /* ignore */ }
         updateQuickSimVisibility();
     });
+}
+
+function wireGpSimConfigButton() {
+    const shell = document.getElementById('gear-planner-shell');
+    if (!shell || shell.dataset.gpSimConfigWired === '1') return;
+    shell.dataset.gpSimConfigWired = '1';
+    shell.addEventListener('click', (e) => {
+        const btn = e.target.closest('#gp-sim-settings-btn');
+        if (!btn || btn.disabled) return;
+        e.preventDefault();
+        e.stopPropagation();
+        if (!openDpsSimConfigModal()) {
+            console.warn('[Gear Planner] Could not open DPS sim settings modal');
+        }
+    });
+    if (String(currentPlan?.class || '').toLowerCase() === 'shaman') {
+        prepareDpsSimConfigForGearPlanner();
+    }
 }
 
 function closeGpClassDrawer() {
@@ -476,6 +492,7 @@ function generateGpClassIcons() {
             persistSession();
             updateQuickSimVisibility();
             updateStatWeightsBtnVisibility();
+            if (currentPlan.class === 'shaman') prepareDpsSimConfigForGearPlanner();
             closeGpClassDrawer();
             renderGearPlanner();
             if (gpOverlay === 'talents') {
@@ -643,6 +660,15 @@ function setHeaderBtnIcon(btn, svg, title) {
     btn.setAttribute('aria-label', title);
 }
 
+function syncGpTalentsTitle() {
+    const title = document.getElementById('gp-talents-title');
+    if (!title) return;
+    const cls = getGpClassId();
+    const label = classIconData[cls]?.name || (cls.charAt(0).toUpperCase() + cls.slice(1));
+    title.textContent = label;
+    title.hidden = gpOverlay !== 'talents';
+}
+
 function syncGpOverlayUi() {
     const shell = document.getElementById('gear-planner-shell');
     const talentsView = document.getElementById('gp-talents-view');
@@ -672,6 +698,7 @@ function syncGpOverlayUi() {
     setHeaderBtnIcon(talentsBtn, talentsOpen ? GP_ICON_HOME : GP_ICON_TALENTS, talentsOpen ? 'Gear Planner' : 'Talents');
     setHeaderBtnIcon(buffsBtn, buffsOpen ? GP_ICON_HOME : GP_ICON_BUFFS, buffsOpen ? 'Gear Planner' : 'Buffs & consumables');
     setHeaderBtnIcon(weightsBtn, weightsOpen ? GP_ICON_HOME : GP_ICON_WEIGHTS, weightsOpen ? 'Gear Planner' : 'Stat weights');
+    syncGpTalentsTitle();
 }
 
 let gpTalentFitObserver = null;
@@ -1847,10 +1874,8 @@ function wireGpTalentPresetMenu() {
         const iconUrl = SHAMAN_PRESET_SPEC_ICONS[name];
         if (iconUrl) {
             const img = document.createElement('img');
-            img.src = iconUrl;
+            img.src = resolveIconUrl(iconUrl);
             img.alt = '';
-            img.width = 36;
-            img.height = 36;
             item.appendChild(img);
         }
         const label = document.createElement('span');
@@ -2246,7 +2271,10 @@ function updateQuickSimVisibility() {
         rotRow.style.display = isShaman ? '' : 'none';
     }
     if (resultEl) resultEl.style.display = isShaman ? '' : 'none';
-    if (isShaman) syncGpStRotationUi();
+    if (isShaman) {
+        syncGpStRotationUi();
+        prepareDpsSimConfigForGearPlanner();
+    }
     let hintDismissed = false;
     try { hintDismissed = localStorage.getItem(SIM_HINT_DISMISS_KEY) === '1'; } catch { hintDismissed = false; }
     if (wrap) {

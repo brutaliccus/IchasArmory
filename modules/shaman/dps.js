@@ -1432,7 +1432,10 @@ export function renderDPSSimulation(containerElement, totals, talentBonuses, act
 
     // Portal sim settings modal to body so it works when #dpssim-tab is hidden (Stats/Talents/etc.)
     const simModalPortal = containerElement.querySelector('#dps-sim-config-modal');
-    if (simModalPortal) document.body.appendChild(simModalPortal);
+    if (simModalPortal) {
+        document.body.appendChild(simModalPortal);
+        simModalPortal.dataset.ichacalcSimConfigReady = '1';
+    }
 
     mountGlobalSimHeroHost();
 
@@ -5000,6 +5003,17 @@ function setupDpsBossPicker(container) {
 let closeDpsSimConfigModalFn = null;
 let dpsSimConfigEscHandler = null;
 
+function isDpsSimConfigModalReady() {
+    const modal = document.getElementById('dps-sim-config-modal');
+    return !!(
+        modal
+        && modal.parentElement === document.body
+        && modal.dataset.ichacalcSimConfigReady === '1'
+        && document.getElementById('dps-sim-config-modal-close')
+        && document.getElementById('dps-sim-config-modal-dialog')
+    );
+}
+
 function closeDpsSimConfigModalInternal() {
     const modal = document.getElementById('dps-sim-config-modal');
     if (modal) modal.style.display = 'none';
@@ -5013,7 +5027,8 @@ function closeDpsSimConfigModalInternal() {
 }
 
 function bootstrapDpsSimConfigModalStandalone() {
-    if (document.getElementById('dps-sim-config-modal')) return true;
+    if (isDpsSimConfigModalReady()) return true;
+    document.getElementById('dps-sim-config-modal')?.remove();
     const wrap = document.createElement('div');
     wrap.innerHTML = generateSimConfigModalHTML(null, {}, true);
     const modal = wrap.querySelector('#dps-sim-config-modal');
@@ -5029,13 +5044,16 @@ function bootstrapDpsSimConfigModalStandalone() {
     setupDpsBossPicker(container);
     setupCombatSimulator(container, {});
     setupCombatConfig(container, {}, {}, [], {});
+    modal.dataset.ichacalcSimConfigReady = '1';
     return true;
 }
 
 function ensureDpsSimConfigModalExists() {
-    if (document.getElementById('dps-sim-config-modal')) return true;
+    if (isDpsSimConfigModalReady()) return true;
+    document.getElementById('dps-sim-config-modal')?.remove();
+
     const container = document.getElementById('shaman-dps-simulation');
-    if (container && window.currentCalculatorTotals != null) {
+    if (container && container.querySelector('#sim-duration') && window.currentCalculatorTotals != null) {
         renderDPSSimulation(
             container,
             window.currentCalculatorTotals,
@@ -5045,9 +5063,22 @@ function ensureDpsSimConfigModalExists() {
             window.currentSetBonuses || {},
             window.currentEquippedGear || null
         );
-        return !!document.getElementById('dps-sim-config-modal');
+        return isDpsSimConfigModalReady();
     }
     return bootstrapDpsSimConfigModalStandalone();
+}
+
+/**
+ * Eager bootstrap for Gear Planner (Shaman quick sim / settings cog).
+ * @returns {boolean}
+ */
+export function prepareDpsSimConfigForGearPlanner() {
+    try {
+        return ensureDpsSimConfigModalExists();
+    } catch (err) {
+        console.error('[DPS Sim] prepareDpsSimConfigForGearPlanner failed:', err);
+        return false;
+    }
 }
 
 /**
@@ -5068,8 +5099,12 @@ export function openDpsSimConfigModal() {
     };
     document.addEventListener('keydown', dpsSimConfigEscHandler);
     closeDpsSimConfigModalFn = closeDpsSimConfigModalInternal;
-    updateBossStatsDisplay();
-    syncDpsCombatTargetSummaryPanels();
+    try {
+        updateBossStatsDisplay();
+        syncDpsCombatTargetSummaryPanels();
+    } catch (err) {
+        console.warn('[DPS Sim] Modal opened but summary refresh failed:', err);
+    }
     return true;
 }
 
