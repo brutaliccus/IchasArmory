@@ -5,7 +5,7 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 ## Locations sidebar
 
 - `#gp-locations-sidebar` is **outside** `#ichacalc-scaled-root`: `position: fixed; left: 0; top: 60px` (below the unscaled nav), docked to the **screen** left. Hidden unless `body[data-app-mode="gearPlanner"]`.
-- `#gp-stats-sidebar` mirrors it on the **far right**. Each listed stat is **total** (GP class/race/talents/**buffs** + primary items via `calculateEffectiveHealth`) then **(gear bonus)** vs the same payload with no gear. Example: `120 (+53)`. Damage reduction fields are 0–1 fractions shown as percent (`11.00%`). Rows with non-zero gear bonus or totals that differ from ungared/unbuffed baseline. Empty plan: “No modified stats yet”.
+- `#gp-stats-sidebar` mirrors it on the **far right**. Each listed stat is **total** (GP class/race/talents/**buffs** + primary items + **slot enchants** via `calculateEffectiveHealth`) then **(gear bonus)** vs the same payload with no gear. Example: `120 (+53)`. Damage reduction fields are 0–1 fractions shown as percent (`11.00%`). Rows with non-zero gear bonus or totals that differ from ungared/unbuffed baseline. Empty plan: “No modified stats yet”.
 - Gear Planner class/race/talents/**buffs** are **independent** of the Character Planner. **Talents** and **Buffs** are full views (not modals): they hide slot columns. Locations Needed and Modified stats stay docked. Opening snapshots Character Planner trees/buffs (moves `#buffs-list` + consume presets into GP) and restores on close. Buff icon clicks are handled on `#gp-buffs-view` (Character Planner’s `#buffs-card` listener does not see parked icons). Preset hamburger + Clear all sit on the right. The talent tree scales with `transform` to fit `#gp-talents-host` (no fixed zoom). The active view’s header button morphs into the Gear Planner (armor) icon to return to slots — no Done button.
 - `#gear-planner-shell` is viewport-centered (`margin: 0 auto`); the locations/stats docks overlay the edges and do **not** pad the shell by sidebar width.
 - Nested item names use quality classes (`span.q0`–`q5`) from `getItemById`.
@@ -18,8 +18,9 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 ## Integration (app.js)
 
 - Direct URL `/gear-planner` (alias `/gp`) calls `setAppMode('gearPlanner')`. Character planner stays `/`. Share copies `origin/gear-planner?gp=<id>` (`?b=` character builds are unchanged).
-- `initGearPlannerView({ setAppMode, getItemById, openItemModalForGearPlan, exportGearPlanToURL })`
+- `initGearPlannerView({ setAppMode, getItemById, openItemModalForGearPlan, openEnchantModalForGearPlan, exportGearPlanToURL })`
 - Item picks from modal call `handleGearPlanItemSelected(item)` when `data-gear-plan-pick` is set on modal.
+- Enchant picks call `handleGearPlanEnchantSelected(slotId, index)` when `#enchant-modal` has `data-gear-plan-enchant`. Filtering uses the plan primary (`itemOverride`), not Character Planner gear.
 
 ## UI elements (index.html)
 
@@ -46,7 +47,7 @@ Each card:
 - Collapsed by default (`plan.ui.collapsed[slotId] !== false`); session-persisted
 - Icon on the **outer** edge; name + `Zone: Dungeon – Boss` source line
 - Middle-click icon opens `https://octowow.st/db/?item=` (same as item modal)
-- Empty slot: no in-card `+`; a always-visible empty-slot icon sits **outside** the card (left of left-column cards, right of right-column cards), using character-planner `inventoryslot_*` art and a small gold `+`. Click adds primary if empty, otherwise an alternative. Druid/shaman/paladin ranged empty icon is relic.
+- Enchantable slots (same as Character Planner `getEnchantableSlots`): a small **scroll** `.gp-enchant-btn` sits on the **item icon** when filled, or on the empty-slot **add** icon. Top-left on left-column cards, top-right on right-column. Click opens the existing enchant picker with the plan primary as `itemOverride`. Stored as `slots[slot].enchant` (database index). Included in Modified stats and Shaman quick sim (snapshot/restore Character Planner enchants).
 - Click card or chevron to expand alternatives (icon, name, source; remove/add only in edit mode)
 - Right-column cards reverse the **primary/alt rows** so the icon stays on the outer edge; `.gp-alts-panel` stays a column so **Add alternative** is full-width under the alt list (not beside the primary X)
 - Item tooltips (`#item-tooltip` via `createItemTooltipHTML` / `positionItemTooltipOnIcon`) fire **only on the item icon** (`.gp-item-tip` on `.gp-slot-icon-frame` / `.gp-alt-icon`). Left-column cards grow left+down from the icon’s top-left; right-column cards grow right+down from top-right. They do not follow the cursor.

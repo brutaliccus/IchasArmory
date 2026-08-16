@@ -21,7 +21,7 @@ import { itemLoader } from './modules/gear/itemLoader.js';
 import { importFromArmoryAPI as importFromArmoryModule, updateCharacterStatusBar, initializeStatusBar, updateStatusBarValues, setImportedState as setImportedStateArmory, RACE_TO_FACTION, FACTION_ICONS } from './modules/armory/armory.js';
 import { displayStatWeightFormula } from './modules/statWeightFormulas.js';
 import { exportBuildToURL as exportBuildModule, importBuildFromURL as importBuildModule, exportGearPlanToURL as exportGearPlanModule, importGearPlanFromURL as importGearPlanModule } from './modules/armory/buildManager.js';
-import { initGearPlannerView, handleGearPlanItemSelected, setGearPlan, getCurrentGearPlan, renderGearPlanner, closeGpTalentsModal } from './modules/gear/gearPlannerView.js';
+import { initGearPlannerView, handleGearPlanItemSelected, handleGearPlanEnchantSelected, setGearPlan, getCurrentGearPlan, renderGearPlanner, closeGpTalentsModal } from './modules/gear/gearPlannerView.js';
 import { ensureItemSourcesLoaded } from './modules/gear/itemSources.js';
 import { runTankSimulation, getBossDatabase, getBossById } from './modules/tank/tankSimulator.js';
 import { raidDefinitions, getAvailableRaids, getRaidBosses } from './modules/tank/raidDefinitions.js';
@@ -857,7 +857,16 @@ async function openItemModal(slotId, isCompareMode = false) {
 
 function openEnchantModal(slotId) {
     const enchants = enchantDatabase[slotId] || [];
-    openEnchantModalFromModule(slotId, enchants, elements);
+    delete elements.enchantModal.dataset.gearPlanEnchant;
+    delete elements.enchantModal.dataset.gearPlanItemId;
+    openEnchantModalFromModule(slotId, enchants, elements, null);
+}
+
+function openEnchantModalForGearPlan(slotId, item) {
+    const enchants = enchantDatabase[slotId] || [];
+    elements.enchantModal.dataset.gearPlanEnchant = 'true';
+    elements.enchantModal.dataset.gearPlanItemId = item?.id != null ? String(item.id) : '';
+    openEnchantModalFromModule(slotId, enchants, elements, item || null);
 }
 
 function closeModal() {
@@ -870,7 +879,11 @@ function closeModal() {
         elements.modal.dataset.gearPlanPick = 'false';
     }
     setItemModalPlayerClassOverride(null);
-    if (elements.enchantModal) elements.enchantModal.style.display = 'none';
+    if (elements.enchantModal) {
+        elements.enchantModal.style.display = 'none';
+        delete elements.enchantModal.dataset.gearPlanEnchant;
+        delete elements.enchantModal.dataset.gearPlanItemId;
+    }
 }
 
 // --- Filtering Functions ---
@@ -908,13 +921,16 @@ function filterEnchantItems() {
     const currentSlot = elements.enchantModal.dataset.currentSlot;
     const allEnchantsForSlot = enchantDatabase[currentSlot] || [];
 
-    // Apply smart filtering based on equipped item type
-    const equippedItem = getCurrentlyEquippedItem(currentSlot);
+    // Apply smart filtering based on equipped item type (GP picker uses plan primary)
+    let equippedItem = getCurrentlyEquippedItem(currentSlot);
+    if (elements.enchantModal?.dataset.gearPlanEnchant === 'true') {
+        const gpId = Number(elements.enchantModal.dataset.gearPlanItemId);
+        equippedItem = gpId ? getItemById(gpId) : null;
+    }
     const itemType = getItemType(equippedItem);
-    const filteredEnchants = filterEnchantsByItemType(allEnchantsForSlot, itemType);
+    const filteredEnchants = filterEnchantsByItemType(allEnchantsForSlot, itemType, currentSlot, equippedItem);
 
-
-    filterAndRenderEnchants(filteredEnchants, searchTerm, elements.enchantModalList);
+    filterAndRenderEnchants(filteredEnchants, searchTerm, elements.enchantModalList, allEnchantsForSlot);
 }
 
 // --- Rendering Functions ---
@@ -4750,8 +4766,14 @@ async function init() {
     elements.enchantModalList.addEventListener('click', e => {
         const enchantItem = e.target.closest('.enchant-item');
         if (enchantItem) {
-            applyEnchant(elements.enchantModal.dataset.currentSlot, enchantItem.dataset.enchantIndex);
-            updateAllCalculations();
+            const slotId = elements.enchantModal.dataset.currentSlot;
+            const enchantIndex = enchantItem.dataset.enchantIndex;
+            if (elements.enchantModal.dataset.gearPlanEnchant === 'true') {
+                handleGearPlanEnchantSelected(slotId, enchantIndex);
+            } else {
+                applyEnchant(slotId, enchantIndex);
+                updateAllCalculations();
+            }
             closeModal();
         }
     });
@@ -4913,6 +4935,7 @@ async function init() {
         setAppMode,
         getItemById,
         openItemModalForGearPlan,
+        openEnchantModalForGearPlan,
         exportGearPlanToURL,
     });
 

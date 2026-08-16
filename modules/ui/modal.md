@@ -92,7 +92,7 @@ Applies intelligent filtering based on equipment slot rules.
 
 ### Opening the Enchant Modal
 
-**Function:** `openEnchantModal(slotId, enchants, elements)`
+**Function:** `openEnchantModal(slotId, enchants, elements, itemOverride?)`
 
 Opens the enchant selection modal for a specific equipment slot.
 
@@ -103,13 +103,14 @@ Opens the enchant selection modal for a specific equipment slot.
   - `enchantModal`: The modal container element
   - `enchantModalTitle`: Title element
   - `enchantModalList`: List container for enchants
+- `itemOverride` (Object | null, optional): Item used for type filtering instead of the Character Planner equipped item (Gear Planner primary)
 
 **Behavior:**
 1. Sets the current slot in the modal's dataset
 2. Updates modal title
 3. Resets search input
 4. Stores original enchant database for index mapping
-5. Applies smart filtering based on currently equipped item type
+5. Applies smart filtering based on `itemOverride` or currently equipped item type
 6. Renders filtered enchants
 7. Displays modal and focuses search input
 

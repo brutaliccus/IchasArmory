@@ -3,8 +3,9 @@
 import { shamanSpells } from './spells.js';
 import { ShamanStats, callOfThunderCritBonusFraction } from '../character/shamanTalents.js';
 import { calculateSpellDPS, calculateSpellDamage, formatDamage, formatDPS } from './damageCalc.js';
-import { getCurrentlyEquippedItem, getAllSpellStrikeSources, getEquippedGearObjects, getItemById, equipItem, clearItem, createIconImage, PLACEHOLDER_ICON_URL, slotIconMap, setVirtualStatWeightItem, clearVirtualStatWeightItem } from '../gear/gear.js';
+import { getCurrentlyEquippedItem, getAllSpellStrikeSources, getEquippedGearObjects, getItemById, equipItem, clearItem, createIconImage, PLACEHOLDER_ICON_URL, slotIconMap, setVirtualStatWeightItem, clearVirtualStatWeightItem, applyEnchant, getSelectedEnchants, getEnchantableSlots } from '../gear/gear.js';
 import { GEAR_PLAN_SLOTS } from '../gear/gearPlanner.js';
+import { enchantDatabase } from '../gear/enchants.js';
 import { openCustomRadialMenu, openRadialMenu, closeRadialMenu } from '../ui/radialMenu.js';
 import { runShamanSimulation, replayShamanSimulationIteration } from './combatSim.js';
 
@@ -15,10 +16,10 @@ let lastShamanAdvancedSimReplayContext = null;
 let lastShamanSimDistributionBundle = null;
 
 let simHistogramClickAbort = null;
-import { getActiveBuffs } from '../character/buffs.js';
+import { getActiveBuffs, generateBuffIcons, applyBuffListToDom } from '../character/buffs.js';
 import { procDefinitions, getOnUseTrinketProcs, procIdToCamelCase } from '../gear/procs.js';
 import { parseStatsFromTooltip, getAttackPowerBonusVsCreatureType, getSpellDamageHealingBonusVsCreatureType } from '../character/stats.js';
-import { getTalentBonuses } from '../talents_new.js';
+import { getTalentBonuses, generateTalentInputs, updateTalentPoints } from '../talents_new.js';
 import { getSetBonuses } from '../gear/setBonuses.js';
 import { createItemTooltipHTML } from '../ui/tooltips.js';
 import { positionItemTooltipOnIcon } from '../ui/itemTooltipPosition.js';
@@ -4474,7 +4475,9 @@ async function runStatWeightSimulations(stats, duration, priorityConfig, iterati
     if (siTps >= 0) { runs[siTps].tpsAp = apTps > eps ? (spTps / apTps).toFixed(3) : '0.000'; runs[siTps].tpsSp = '1.000'; }
 
     // Save stat weights to storage (ST vs AOE keys — do not write AOE results into ST slot)
-    saveStatWeights(runs, statWeightIsAoe);
+    if (!options.skipPersist) {
+        saveStatWeights(runs, statWeightIsAoe);
+    }
 
     return runs;
 }
@@ -11941,12 +11944,17 @@ export async function runGearPlanQuickSim(gearPlan) {
     for (const slot of GEAR_PLAN_SLOTS) {
         snapshot[slot] = getCurrentlyEquippedItem(slot);
     }
+    const enchantSnap = getSelectedEnchants();
 
     try {
         for (const slot of GEAR_PLAN_SLOTS) {
             const id = gearPlan.slots?.[slot]?.primary;
             if (id) equipItem(id, slot);
             else clearItem(slot);
+        }
+        for (const slot of getEnchantableSlots()) {
+            const idx = gearPlan.slots?.[slot]?.enchant;
+            applyEnchant(slot, idx == null ? 0 : idx);
         }
 
         const freshStats = getFreshShamanStats();
@@ -11972,6 +11980,11 @@ export async function runGearPlanQuickSim(gearPlan) {
             const prev = snapshot[slot];
             if (prev?.id) equipItem(prev.id, slot);
             else clearItem(slot);
+        }
+        for (const slot of getEnchantableSlots()) applyEnchant(slot, 0);
+        for (const [slot, ench] of Object.entries(enchantSnap || {})) {
+            const idx = (enchantDatabase[slot] || []).findIndex(e => e.name === ench?.name);
+            if (idx >= 0) applyEnchant(slot, idx);
         }
     }
 }

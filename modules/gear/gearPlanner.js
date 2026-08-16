@@ -12,7 +12,7 @@ export const LOCAL_GEAR_PLANS_KEY = 'ichacalc_local_gear_plans_v1';
 export function createEmptyGearPlan(classId = 'warrior', name = 'New Gear Plan') {
     const slots = {};
     for (const slot of GEAR_PLAN_SLOTS) {
-        slots[slot] = { primary: null, alternatives: [] };
+        slots[slot] = { primary: null, alternatives: [], enchant: null };
     }
     return {
         schemaVersion: 1,
@@ -31,6 +31,7 @@ export function createEmptyGearPlan(classId = 'warrior', name = 'New Gear Plan')
  * @typedef {Object} GearPlanSlot
  * @property {number|null} primary
  * @property {number[]} alternatives
+ * @property {number|null} enchant Enchant database index for this slot's primary, or null
  */
 
 /**
@@ -61,15 +62,60 @@ export function getGearPlanData(plan) {
     for (const slot of GEAR_PLAN_SLOTS) {
         const s = plan.slots?.[slot];
         if (!s) continue;
+        const enchantIdx = s.enchant != null && s.enchant !== '' ? Number(s.enchant) : null;
         out.slots[slot] = {
             primary: s.primary != null ? Number(s.primary) : null,
             alternatives: Array.isArray(s.alternatives) ? s.alternatives.map(Number).filter(Boolean) : [],
+            enchant: Number.isInteger(enchantIdx) && enchantIdx >= 0 ? enchantIdx : null,
         };
     }
     if (plan.ui?.collapsed) out.ui.collapsed = { ...plan.ui.collapsed };
     if (plan.id) out.id = plan.id;
     if (plan.favorite) out.favorite = true;
     return out;
+}
+
+const GP_TANK_WEIGHTS_KEY = 'ichacalc_gp_tankStatWeights';
+const GP_DPS_WEIGHTS_KEY = 'ichacalc_gp_statWeights';
+const GP_DPS_WEIGHTS_AOE_KEY = 'ichacalc_gp_statWeights_aoe';
+
+export function saveGearPlannerTankStatWeights(sw) {
+    try {
+        if (!sw) localStorage.removeItem(GP_TANK_WEIGHTS_KEY);
+        else localStorage.setItem(GP_TANK_WEIGHTS_KEY, JSON.stringify(sw));
+    } catch (e) {
+        console.warn('[gearPlanner] Failed to save tank stat weights:', e);
+    }
+}
+
+export function getGearPlannerTankStatWeights() {
+    try {
+        const raw = localStorage.getItem(GP_TANK_WEIGHTS_KEY);
+        return raw ? JSON.parse(raw) : null;
+    } catch {
+        return null;
+    }
+}
+
+export function saveGearPlannerDpsStatWeights(weights, isAoe = false) {
+    if (!weights || !Array.isArray(weights)) return;
+    const key = isAoe ? GP_DPS_WEIGHTS_AOE_KEY : GP_DPS_WEIGHTS_KEY;
+    try {
+        localStorage.setItem(key, JSON.stringify(weights));
+    } catch (e) {
+        console.warn('[gearPlanner] Failed to save DPS stat weights:', e);
+    }
+}
+
+export function getGearPlannerDpsStatWeights(isAoe = false) {
+    const key = isAoe ? GP_DPS_WEIGHTS_AOE_KEY : GP_DPS_WEIGHTS_KEY;
+    try {
+        const raw = localStorage.getItem(key);
+        const parsed = raw ? JSON.parse(raw) : null;
+        return Array.isArray(parsed) && parsed.length ? parsed : null;
+    } catch {
+        return null;
+    }
 }
 
 export function loadGearPlanData(raw) {

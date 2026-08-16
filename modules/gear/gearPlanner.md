@@ -15,13 +15,13 @@ Gear plan data model and localStorage persistence for the Gear Planner page.
   talents: {},            // same `tree-talentId` → points map as character builds
   buffs: [],              // `{ id, improved? }[]` independent of Character Planner
   slots: {
-    [slotId]: { primary: number|null, alternatives: number[] }
+    [slotId]: { primary: number|null, alternatives: number[], enchant: number|null }
   },
   ui: { collapsed: { [slotId]: boolean } }
 }
 ```
 
-Items only (no enchants in v1).
+Items and per-slot **primary enchants** (`enchant` = index into `enchantDatabase[slot]`, or `null`). Alternatives are unenchanted. Independent of Character Planner `selectedEnchants`.
 
 ## Storage keys
 

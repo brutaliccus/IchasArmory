@@ -1707,7 +1707,7 @@ export function getCurrentFilters() {
  * @param {Array} enchants - Enchants for this slot
  * @param {Object} elements - DOM elements
  */
-export function openEnchantModal(slotId, enchants, elements) {
+export function openEnchantModal(slotId, enchants, elements, itemOverride = null) {
     elements.enchantModal.dataset.currentSlot = slotId;
     elements.enchantModalTitle.textContent = `Select Enchant for ${slotId}`;
 
@@ -1720,7 +1720,7 @@ export function openEnchantModal(slotId, enchants, elements) {
     elements.enchantModalList.dataset.originalEnchants = JSON.stringify(enchants);
 
     // Apply smart filtering based on equipped item type or slot type
-    const equippedItem = getCurrentlyEquippedItem(slotId);
+    const equippedItem = itemOverride || getCurrentlyEquippedItem(slotId);
     const itemType = getItemType(equippedItem);
     console.log('Enchant modal opened:', {
         slotId,
@@ -1750,7 +1750,11 @@ export function closeModal(elements) {
         elements.modal.style.display = 'none';
         elements.modal.setAttribute('aria-hidden', 'true');
     }
-    if (elements.enchantModal) elements.enchantModal.style.display = 'none';
+    if (elements.enchantModal) {
+        elements.enchantModal.style.display = 'none';
+        delete elements.enchantModal.dataset.gearPlanEnchant;
+        delete elements.enchantModal.dataset.gearPlanItemId;
+    }
 }
 
 /**

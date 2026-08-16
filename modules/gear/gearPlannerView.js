@@ -10,15 +10,16 @@ import {
     saveLocalGearPlans,
     applyGearPlanItemMove,
 } from './gearPlanner.js';
-import { ICON_BASE_URL, getEmptySlotPlaceholderUrl, getMeleeWeaponType } from './gear.js';
-import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip } from '../character/stats.js';
+import { ICON_BASE_URL, getEmptySlotPlaceholderUrl, getMeleeWeaponType, getEnchantableSlots } from './gear.js';
+import { enchantDatabase } from './enchants.js';
+import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, getItemType, filterEnchantsByItemType } from '../character/stats.js';
 import { baseStats, raceIconData, getSelectedRaceBonuses } from '../character/races.js';
 import { calculateEffectiveHealth } from '../ui/calculator.js';
 import { generateTalentInputs, updateTalentPoints, getTalentBonusesFromSpec } from '../talents_new.js';
 import { generateBuffIcons, applyBuffListToDom, getBuffsFromSavedList, handleBuffExclusivity } from '../character/buffs.js';
 import { getSetBonuses } from './setBonuses.js';
 import { runGearPlanQuickSim } from '../shaman/dps.js';
-import { createItemTooltipHTML } from '../ui/tooltips.js';
+import { createItemTooltipHTML, createEnchantTooltipHTML } from '../ui/tooltips.js';
 import { positionItemTooltipOnIcon } from '../ui/itemTooltipPosition.js';
 import {
     ensureItemSourcesLoaded,
@@ -122,6 +123,15 @@ export function handleGearPlanItemSelected(item) {
     pickCallback(item);
     pickCallback = null;
     editingAltSlot = null;
+}
+
+export function handleGearPlanEnchantSelected(slotId, enchantIndex) {
+    if (!slotId || !currentPlan.slots[slotId]) return;
+    const idx = parseInt(enchantIndex, 10);
+    const enchant = enchantDatabase[slotId]?.[idx];
+    currentPlan.slots[slotId].enchant = (!enchant || enchant.name === 'None' || !Number.isInteger(idx) || idx < 0) ? null : idx;
+    persistSession();
+    renderGearPlanner();
 }
 
 function persistSession() {
@@ -630,6 +640,60 @@ function emptyStatTemplate() {
     return total;
 }
 
+function aggregatePlanEnchantStats(plan) {
+    const total = emptyStatTemplate();
+    for (const slot of GEAR_PLAN_SLOTS) {
+        const idx = plan.slots?.[slot]?.enchant;
+        if (idx == null) continue;
+        const enchant = enchantDatabase[slot]?.[idx];
+        if (!enchant?.stats) continue;
+        for (const stat in enchant.stats) {
+            const finalKey = KEY_MAP[stat] || stat;
+            if (stat === 'weaponSkillByType' && typeof enchant.stats[stat] === 'object') {
+                for (const weaponType in enchant.stats[stat]) {
+                    total.weaponSkillByType[weaponType] = (total.weaponSkillByType[weaponType] || 0) + enchant.stats[stat][weaponType];
+                }
+            } else if (Object.prototype.hasOwnProperty.call(total, finalKey)) {
+                total[finalKey] += enchant.stats[stat];
+            }
+        }
+    }
+    return total;
+}
+
+function pruneSlotEnchant(slotId) {
+    const slot = currentPlan.slots[slotId];
+    if (!slot || slot.enchant == null) return;
+    const db = enchantDatabase[slotId] || [];
+    const enchant = db[slot.enchant];
+    if (!enchant || enchant.name === 'None') {
+        slot.enchant = null;
+        return;
+    }
+    const item = slot.primary != null ? callbacks.getItemById?.(slot.primary) : null;
+    if (!item) return;
+    const filtered = filterEnchantsByItemType(db, getItemType(item), slotId, item);
+    if (!filtered.some(e => e.name === enchant.name)) slot.enchant = null;
+}
+
+function gpRangedIsEnchantable(item) {
+    if (!item) return false;
+    const lines = (item.tooltip_lines_raw || []).map(l => String(l || '').toLowerCase().trim());
+    if (lines.includes('wand') || lines.includes('thrown') || lines.includes('relic')) return false;
+    return lines.includes('ranged') || lines.includes('bow') || lines.includes('crossbow') || lines.includes('gun');
+}
+
+function gpSlotShowsEnchant(slotId, primaryItem) {
+    if (!getEnchantableSlots().includes(slotId)) return false;
+    if (slotId === 'ranged') return gpRangedIsEnchantable(primaryItem);
+    return true;
+}
+
+function gpEnchantButtonHtml(slotId, side, enchanted) {
+    const title = enchanted ? 'Change enchant' : 'Select enchant';
+    return `<button type="button" class="gp-enchant-btn enchant-btn${enchanted ? ' is-enchanted' : ''}" data-slot="${slotId}" data-side="${side}" title="${escapeHtml(title)}" aria-label="${escapeHtml(title)}"></button>`;
+}
+
 function aggregatePrimaryGearStats(plan) {
     const total = emptyStatTemplate();
     const equipped = {};
@@ -674,7 +738,7 @@ function buildGpCalcPayload(plan, { includeGear, includeTalents, includeBuffs })
         talentBonuses,
         racialBonuses: getSelectedRaceBonuses(race),
         activeBuffs: includeBuffs ? getBuffsFromSavedList(plan.buffs || [], talentBonuses) : [],
-        enchantStats: emptyStatTemplate(),
+        enchantStats: includeGear ? aggregatePlanEnchantStats(plan) : emptyStatTemplate(),
         offhandArmor: oh?.stats?.armor || 0,
         setBonuses: includeGear ? getSetBonuses(equipped, false) : {},
         isDualWielding: !!(oh && ohType),
@@ -1015,14 +1079,20 @@ function getGpClassId() {
     return currentPlan.class || document.getElementById('gp-class-sidebar')?.dataset.selectedClass || 'warrior';
 }
 
-function gpSlotAddButtonHtml(slotId, hasPrimary) {
+function gpSlotAddButtonHtml(slotId, hasPrimary, side) {
     const url = getEmptySlotPlaceholderUrl(slotId, getGpClassId());
     const label = SLOT_LABELS[slotId] || slotId;
     const title = hasPrimary ? `Add ${label} alternative` : `Add ${label}`;
-    return `<button type="button" class="gp-slot-add" data-slot="${slotId}" title="${escapeHtml(title)}" aria-label="${escapeHtml(title)}"${editMode ? '' : ' disabled'}>
-        <img src="${url}" alt="">
-        <span class="gp-slot-add-plus" aria-hidden="true">+</span>
-    </button>`;
+    const showEnchant = !hasPrimary && gpSlotShowsEnchant(slotId, null);
+    const enchanted = currentPlan.slots[slotId]?.enchant != null;
+    const enchantBtn = showEnchant ? gpEnchantButtonHtml(slotId, side, enchanted) : '';
+    return `<div class="gp-slot-add-wrap">
+        <button type="button" class="gp-slot-add" data-slot="${slotId}" title="${escapeHtml(title)}" aria-label="${escapeHtml(title)}"${editMode ? '' : ' disabled'}>
+            <img src="${url}" alt="">
+            <span class="gp-slot-add-plus" aria-hidden="true">+</span>
+        </button>
+        ${enchantBtn}
+    </div>`;
 }
 
 function renderSlotCard(slotId, side) {
@@ -1054,10 +1124,14 @@ function renderSlotCard(slotId, side) {
         </div>`;
     }).join('');
 
+    const enchanted = slot?.enchant != null;
+    const showEnchantOnIcon = !empty && gpSlotShowsEnchant(slotId, primaryItem);
+    const enchantOnIcon = showEnchantOnIcon ? gpEnchantButtonHtml(slotId, side, enchanted) : '';
+
     const primaryInner = empty
         ? `<div class="gp-empty-primary"><span class="gp-empty-label">${escapeHtml(label)}</span></div>`
         : `<div class="gp-primary-row" data-slot="${slotId}" data-item-id="${primaryItem.id}" data-gp-role="primary">
-                <span class="gp-slot-icon-frame gp-drag-handle gp-item-tip" draggable="${editMode ? 'true' : 'false'}" data-slot="${slotId}" data-gp-role="primary" data-item-id="${primaryItem.id}">${itemIconHtml(primaryItem)}</span>
+                <span class="gp-slot-icon-frame gp-drag-handle gp-item-tip" draggable="${editMode ? 'true' : 'false'}" data-slot="${slotId}" data-gp-role="primary" data-item-id="${primaryItem.id}">${itemIconHtml(primaryItem)}${enchantOnIcon}</span>
                 ${renderItemMeta(primaryItem)}
                 <button type="button" class="gp-toggle-alts" data-slot="${slotId}" aria-expanded="${expanded}" title="Alternatives">▾</button>
                 <button type="button" class="gp-clear-primary" data-slot="${slotId}" title="Clear"${editMode ? '' : ' hidden'}>×</button>
@@ -1070,7 +1144,7 @@ function renderSlotCard(slotId, side) {
             ${altsHtml}
         </div>
     </article>`;
-    const addBtn = gpSlotAddButtonHtml(slotId, !empty);
+    const addBtn = gpSlotAddButtonHtml(slotId, !empty, side);
     return side === 'right'
         ? `<div class="gp-slot-row gp-slot-row--right">${card}${addBtn}</div>`
         : `<div class="gp-slot-row gp-slot-row--left">${addBtn}${card}</div>`;
@@ -1088,7 +1162,7 @@ function bindSlotEvents() {
     document.querySelectorAll('.gp-slot-card').forEach(card => {
         card.addEventListener('click', (e) => {
             if (gpDidDrag) return;
-            if (e.target.closest('.gp-slot-add, .gp-empty-primary, .gp-remove-alt, .gp-clear-primary, .gp-toggle-alts, .gp-drag-handle')) return;
+            if (e.target.closest('.gp-slot-add, .gp-empty-primary, .gp-remove-alt, .gp-clear-primary, .gp-toggle-alts, .gp-drag-handle, .gp-enchant-btn')) return;
             const slotId = card.dataset.slot;
             if (!currentPlan.slots[slotId]?.primary) {
                 if (editMode) openPickerForSlot(slotId, false);
@@ -1113,6 +1187,7 @@ function bindSlotEvents() {
         el.addEventListener('click', (e) => {
             e.stopPropagation();
             currentPlan.slots[el.dataset.slot].primary = null;
+            currentPlan.slots[el.dataset.slot].enchant = null;
             renderGearPlanner();
         });
     });
@@ -1134,6 +1209,19 @@ function bindSlotEvents() {
         });
     });
 
+    document.querySelectorAll('#gear-planner-shell .gp-enchant-btn').forEach(el => {
+        el.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openEnchantPickerForSlot(el.dataset.slot);
+        });
+        el.addEventListener('mousedown', (e) => e.stopPropagation());
+        el.addEventListener('dragstart', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    });
+
     bindPlannerTooltips();
     bindPlannerDragDrop();
     bindPlannerMiddleClick();
@@ -1150,6 +1238,20 @@ function bindPlannerTooltips() {
             tooltip.innerHTML = createItemTooltipHTML(item);
             tooltip.style.display = 'block';
             const side = el.closest('#gp-slots-right') || el.closest('.gp-slot-card--right') ? 'east' : 'left';
+            requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, el, { side }));
+        });
+        el.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+    });
+    document.querySelectorAll('#gear-planner-shell .gp-enchant-btn').forEach(el => {
+        el.addEventListener('mouseenter', async (e) => {
+            e.stopPropagation();
+            const slotId = el.dataset.slot;
+            const idx = currentPlan.slots[slotId]?.enchant;
+            const enchant = idx != null ? enchantDatabase[slotId]?.[idx] : null;
+            if (!enchant || enchant.name === 'None') return;
+            tooltip.innerHTML = await createEnchantTooltipHTML(enchant);
+            tooltip.style.display = 'block';
+            const side = el.dataset.side === 'right' ? 'east' : 'left';
             requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, el, { side }));
         });
         el.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
@@ -1244,6 +1346,13 @@ function bindPlannerDragDrop() {
     dropRows.forEach(bindDropZone);
 }
 
+async function openEnchantPickerForSlot(slotId) {
+    if (!callbacks.openEnchantModalForGearPlan) return;
+    const primaryId = currentPlan.slots[slotId]?.primary;
+    const item = primaryId != null ? callbacks.getItemById?.(primaryId) : null;
+    await callbacks.openEnchantModalForGearPlan(slotId, item);
+}
+
 async function openPickerForSlot(slotId, isAlt) {
     if (!editMode || !callbacks.openItemModalForGearPlan) return;
     pickCallback = (item) => {
@@ -1256,6 +1365,7 @@ async function openPickerForSlot(slotId, isAlt) {
             currentPlan.slots[slotId].primary = item.id;
             currentPlan.slots[slotId].alternatives = (currentPlan.slots[slotId].alternatives || [])
                 .filter(id => id !== item.id);
+            pruneSlotEnchant(slotId);
         }
         renderGearPlanner();
     };
