@@ -1088,6 +1088,7 @@ function bindGpDpsWeightGenerate(host, isAoe) {
         btn.textContent = 'Generating...';
         setTimeout(async () => {
             try {
+                flushGpOverlayStateToPlan();
                 const weights = await runGearPlanStatWeightSimulations(
                     getGearPlanData(currentPlan),
                     { isAoe },
@@ -3235,6 +3236,7 @@ async function runQuickSim() {
     gpQuickSimRunning = true;
     setGpQuickSimRunningUi(true);
     try {
+        flushGpOverlayStateToPlan();
         const result = await runGearPlanQuickSim(
             getGearPlanData(currentPlan),
             (completed, total) => {

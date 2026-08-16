@@ -12261,7 +12261,7 @@ export async function runGearPlanStatWeightSimulations(gearPlan, options = {}, p
 }
 
 /**
- * Quick DPS sim for gear planner: snapshot build, equip plan primaries, sim, restore.
+ * Quick DPS sim for gear planner: apply GP class/race/talents/buffs/gear, sim, restore CP state.
  * @param {import('../gear/gearPlanner.js').GearPlan} gearPlan
  * @param {(completed: number, total: number) => void} [onProgress]
  */
@@ -12270,81 +12270,58 @@ export async function runGearPlanQuickSim(gearPlan, onProgress) {
         return { error: 'Quick DPS sim is only available for Shaman gear plans.' };
     }
 
-    const snapshot = {};
-    for (const slot of GEAR_PLAN_SLOTS) {
-        snapshot[slot] = getCurrentlyEquippedItem(slot);
-    }
-    const enchantSnap = getSelectedEnchants();
+    const captured = captureShamanStatWeightSimOptions(false);
     const prevPriorityTab = activePriorityTabMode;
     const gpRot = gearPlan.ui?.stRotation === 'eleSt' ? 'eleSt' : 'enhSt';
     activePriorityTabMode = gpRot;
 
     try {
-        for (const slot of GEAR_PLAN_SLOTS) {
-            const id = gearPlan.slots?.[slot]?.primary;
-            if (id) equipItem(id, slot);
-            else clearItem(slot);
-        }
-        for (const slot of getEnchantableSlots()) {
-            const idx = gearPlan.slots?.[slot]?.enchant;
-            applyEnchant(slot, idx == null ? 0 : idx);
-        }
+        return await withGearPlanCharacterContext(gearPlan, async () => {
+            const freshStats = getFreshShamanStats();
+            freshStats.targetArmor = captured.targetArmor;
+            freshStats.natureResist = captured.targetNatureResist;
+            freshStats.fireResist = captured.targetFireResist;
+            freshStats.frostResist = captured.targetFrostResist;
+            freshStats.setCombatConfig('beingAttacked', captured.beingAttacked);
+            freshStats.setCombatConfig('wearingShield', captured.wearingShield);
+            freshStats.setCombatConfig('inFrontOfBoss', captured.inFrontOfBoss);
+            freshStats.setCombatConfig('threatHold', captured.threatHold);
+            freshStats.setCombatConfig('threatHoldDuration', captured.threatHoldDuration);
+            freshStats.setCombatConfig('handOfEdwardSpell', captured.handOfEdwardSpell);
+            freshStats.setCombatConfig('jewelForcedOutcome', captured.jewelForcedOutcome);
+            freshStats.setCombatConfig('enemySwingTimer', captured.enemySwingTimer);
+            freshStats.setCombatConfig('aoeEnabled', false);
+            freshStats.setCombatConfig('aoeTargetCount', captured.aoeTargetCount);
+            freshStats.setCombatConfig('casterMode', captured.casterMode);
 
-        const durationMinInput = document.querySelector('#sim-duration-min');
-        const durationSecInput = document.querySelector('#sim-duration-sec');
-        const durationInput = document.querySelector('#sim-duration');
-        const mins = parseInt(durationMinInput?.value, 10) || 0;
-        const secs = parseInt(durationSecInput?.value, 10) || 0;
-        const duration = (mins * 60 + secs) || parseInt(durationInput?.value, 10) || 120;
-        const iterations = parseInt(document.querySelector('#sim-iterations')?.value, 10) || 400;
-        const workers = parseInt(document.querySelector('#sim-workers')?.value, 10) || 7;
-        const tabMode = getSimModeFromTab();
+            const priorityConfig = loadPriorityConfig(freshStats.setBonuses || {});
+            syncSearingTotemCombatConfigFromPriority(freshStats, priorityConfig);
+            const currentActiveBuffs = getActiveBuffs(freshStats.talentBonuses || {});
+            const results = await runShamanSimulation(
+                freshStats,
+                captured.duration,
+                captured.iterations,
+                onProgress || null,
+                priorityConfig,
+                {
+                    quickSim: true,
+                    maxWorkers: captured.workers || undefined,
+                    nightfallEnabled: currentActiveBuffs.some(buff => buff && (buff.id === 'nightfall' || buff.name?.toLowerCase().includes('nightfall'))),
+                    hemoEnabled: currentActiveBuffs.some(buff => buff && (buff.id === 'hemorrhage' || buff.name?.toLowerCase().includes('hemorrhage'))),
+                    hemoImproved: currentActiveBuffs.some(buff => buff && buff.id === 'hemorrhage' && buff.isImproved),
+                    corrosiveSpitEnabled: currentActiveBuffs.some(buff => buff && (buff.id === 'corrosiveSpit' || buff.name?.toLowerCase().includes('corrosive spit'))),
+                }
+            );
 
-        const freshStats = getFreshShamanStats();
-        freshStats.targetArmor = parseInt(document.querySelector('#target-armor')?.value, 10) || freshStats.targetArmor;
-        freshStats.natureResist = parseInt(document.querySelector('#target-nature-resist')?.value, 10) || 0;
-        freshStats.fireResist = parseInt(document.querySelector('#target-fire-resist')?.value, 10) || 0;
-        freshStats.frostResist = parseInt(document.querySelector('#target-frost-resist')?.value, 10) || 0;
-        freshStats.setCombatConfig('aoeEnabled', false);
-        freshStats.setCombatConfig('casterMode', tabMode.casterMode);
-        if (document.querySelector('#config-being-attacked')) {
-            freshStats.setCombatConfig('beingAttacked', document.querySelector('#config-being-attacked')?.checked || false);
-            freshStats.setCombatConfig('wearingShield', document.querySelector('#config-wearing-shield')?.checked || false);
-            freshStats.setCombatConfig('inFrontOfBoss', document.querySelector('#config-in-front')?.checked || false);
-            freshStats.setCombatConfig('threatHold', document.querySelector('#config-threat-hold')?.checked || false);
-            freshStats.setCombatConfig('threatHoldDuration', parseInt(document.querySelector('#config-threat-hold-duration')?.value, 10) || 5);
-            freshStats.setCombatConfig('enemySwingTimer', parseFloat(document.querySelector('#config-enemy-swing-timer')?.value) || 2.0);
-        }
-
-        const priorityConfig = loadPriorityConfig(freshStats.setBonuses || {});
-        syncSearingTotemCombatConfigFromPriority(freshStats, priorityConfig);
-        const results = await runShamanSimulation(
-            freshStats,
-            duration,
-            iterations,
-            onProgress || null,
-            priorityConfig,
-            { quickSim: true, maxWorkers: workers || undefined }
-        );
-
-        return {
-            dps: results?.dps ?? 0,
-            note: 'Uses current talents, buffs, GP ST rotation, and DPS sim settings.',
-        };
+            return {
+                dps: results?.dps ?? 0,
+                note: 'Uses GP gear, talents, buffs, race, ST rotation, and DPS sim settings.',
+            };
+        });
     } catch (error) {
         console.error('[runGearPlanQuickSim]', error);
         return { error: error.message || 'Simulation failed' };
     } finally {
         activePriorityTabMode = prevPriorityTab;
-        for (const slot of GEAR_PLAN_SLOTS) {
-            const prev = snapshot[slot];
-            if (prev?.id) equipItem(prev.id, slot);
-            else clearItem(slot);
-        }
-        for (const slot of getEnchantableSlots()) applyEnchant(slot, 0);
-        for (const [slot, ench] of Object.entries(enchantSnap || {})) {
-            const idx = (enchantDatabase[slot] || []).findIndex(e => e.name === ench?.name);
-            if (idx >= 0) applyEnchant(slot, idx);
-        }
     }
 }
