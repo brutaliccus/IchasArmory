@@ -1500,7 +1500,49 @@ function renderStatsSidebar() {
 
 function hideSaveDialog() {
     const el = document.getElementById('gp-save-overwrite-dialog');
-    if (el) el.style.display = 'none';
+    if (el) {
+        el.style.display = 'none';
+        el.setAttribute('aria-hidden', 'true');
+    }
+    document.querySelectorAll('#gp-save-overwrite-dialog .stat-dropdown-menu').forEach((menu) => {
+        menu.style.display = 'none';
+    });
+    document.querySelectorAll('#gp-save-overwrite-dialog .stat-dropdown-header').forEach((header) => {
+        header.classList.remove('open');
+        header.setAttribute('aria-expanded', 'false');
+    });
+}
+
+function setSaveRoleValue(value) {
+    const role = String(value || 'dps').toLowerCase();
+    const hidden = document.getElementById('gp-save-role');
+    const label = document.getElementById('gp-save-role-label');
+    if (hidden) hidden.value = role;
+    const labels = { dps: 'DPS', tank: 'Tank', healer: 'Healer' };
+    if (label) label.textContent = labels[role] || role;
+    document.querySelectorAll('#gp-save-role-dropdown .gp-save-dd-option').forEach((btn) => {
+        btn.classList.toggle('is-selected', btn.dataset.value === role);
+    });
+}
+
+function setSaveSpecValue(value) {
+    const spec = String(value || '').trim();
+    const hidden = document.getElementById('gp-save-spec');
+    const label = document.getElementById('gp-save-spec-label');
+    if (hidden) hidden.value = spec;
+    if (label) label.textContent = spec || '—';
+    document.querySelectorAll('#gp-save-spec-dropdown .gp-save-dd-option').forEach((btn) => {
+        btn.classList.toggle('is-selected', btn.dataset.value === spec);
+    });
+}
+
+function onSaveSpecChanged(spec) {
+    const currentIcon = document.getElementById('gp-save-icon-value')?.value;
+    const prevDefault = defaultIconForClassSpec(currentPlan.class, saveDialogSpecBaseline || currentPlan.spec);
+    if (!saveIconUserPicked && (!currentIcon || currentIcon === prevDefault)) {
+        setSaveIconPreview(defaultIconForClassSpec(currentPlan.class, spec));
+    }
+    saveDialogSpecBaseline = spec;
 }
 
 function canOverwriteCurrentPlan() {
@@ -1516,17 +1558,16 @@ function canOverwriteCurrentPlan() {
 }
 
 function fillSaveSpecOptions(classId, selectedSpec) {
-    const sel = document.getElementById('gp-save-spec');
-    if (!sel) return;
+    const menu = document.getElementById('gp-save-spec-dropdown');
+    if (!menu) return;
     const specs = specsForClass(classId);
-    sel.innerHTML = specs.map((s) =>
-        `<option value="${escapeHtml(s.name)}">${escapeHtml(s.name)}</option>`
+    menu.innerHTML = specs.map((s) =>
+        `<button type="button" class="gp-save-dd-option" data-value="${escapeHtml(s.name)}" role="option">${escapeHtml(s.name)}</button>`
     ).join('');
-    if (selectedSpec && specs.some((s) => s.name === selectedSpec)) {
-        sel.value = selectedSpec;
-    } else if (specs[0]) {
-        sel.value = specs[0].name;
-    }
+    let value = selectedSpec && specs.some((s) => s.name === selectedSpec)
+        ? selectedSpec
+        : (specs[0]?.name || '');
+    setSaveSpecValue(value);
 }
 
 function setSaveIconPreview(iconKey, { userPicked = false } = {}) {
@@ -1621,8 +1662,7 @@ async function proceedSaveFromDialog(asNew) {
 
 function populateSaveDialogFields() {
     const roles = normalizeGearPlanRoles(currentPlan.role);
-    const roleSel = document.getElementById('gp-save-role');
-    if (roleSel) roleSel.value = roles[0] || 'dps';
+    setSaveRoleValue(roles[0] || 'dps');
     fillSaveSpecOptions(currentPlan.class, currentPlan.spec);
     const spec = document.getElementById('gp-save-spec')?.value || currentPlan.spec || '';
     saveDialogSpecBaseline = spec;
@@ -1638,28 +1678,49 @@ function populateSaveDialogFields() {
     loadWowIconsList().then(() => renderSaveIconGrid());
 }
 
+function wireSaveMetaDropdowns() {
+    const root = document.getElementById('gp-save-overwrite-dialog');
+    if (!root || root.dataset.saveDdWired === '1') return;
+    root.dataset.saveDdWired = '1';
+    root.addEventListener('click', (e) => {
+        const opt = e.target.closest('.gp-save-dd-option');
+        if (!opt) return;
+        const container = opt.closest('.stat-dropdown-container');
+        const menu = opt.closest('.stat-dropdown-menu');
+        if (!container || !menu) return;
+        const value = opt.dataset.value || '';
+        const hidden = container.querySelector('input[type="hidden"]');
+        if (hidden?.id === 'gp-save-role') {
+            setSaveRoleValue(value);
+        } else if (hidden?.id === 'gp-save-spec') {
+            setSaveSpecValue(value);
+            onSaveSpecChanged(value);
+        }
+        menu.style.display = 'none';
+        container.querySelector('.stat-dropdown-header')?.classList.remove('open');
+        container.querySelector('.stat-dropdown-header')?.setAttribute('aria-expanded', 'false');
+    });
+}
+
 function wireSaveOverwriteDialog() {
+    wireSaveMetaDropdowns();
     const hide = () => hideSaveDialog();
     document.getElementById('gp-save-overwrite-close')?.addEventListener('click', hide);
-    document.getElementById('gp-save-overwrite-cancel')?.addEventListener('click', hide);
+    document.getElementById('gp-save-dialog-backdrop')?.addEventListener('click', hide);
     document.getElementById('gp-save-cancel')?.addEventListener('click', hide);
     document.getElementById('gp-save-overwrite-confirm')?.addEventListener('click', () => proceedSaveFromDialog(false));
     document.getElementById('gp-save-new-confirm')?.addEventListener('click', () => proceedSaveFromDialog(true));
     document.getElementById('gp-save-confirm')?.addEventListener('click', () => proceedSaveFromDialog(false));
-    document.getElementById('gp-save-spec')?.addEventListener('change', () => {
-        const spec = document.getElementById('gp-save-spec')?.value || '';
-        const currentIcon = document.getElementById('gp-save-icon-value')?.value;
-        const prevDefault = defaultIconForClassSpec(currentPlan.class, saveDialogSpecBaseline || currentPlan.spec);
-        if (!saveIconUserPicked && (!currentIcon || currentIcon === prevDefault)) {
-            setSaveIconPreview(defaultIconForClassSpec(currentPlan.class, spec));
-        }
-        saveDialogSpecBaseline = spec;
-    });
     document.getElementById('gp-save-description')?.addEventListener('input', updateSaveDescCounter);
     let filterTimer = null;
     document.getElementById('gp-save-icon-q')?.addEventListener('input', () => {
         clearTimeout(filterTimer);
         filterTimer = setTimeout(() => renderSaveIconGrid(), 120);
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        const dlg = document.getElementById('gp-save-overwrite-dialog');
+        if (dlg && dlg.style.display !== 'none') hideSaveDialog();
     });
 }
 
@@ -1686,12 +1747,13 @@ function requestSaveCurrentPlan() {
         overwriteBtn.disabled = existing && !canOw;
         overwriteBtn.title = (existing && !canOw) ? 'Only the original author can overwrite' : '';
     }
-    const existingActions = document.getElementById('gp-save-actions-existing');
-    const newActions = document.getElementById('gp-save-actions-new');
-    if (existingActions) existingActions.hidden = !existing;
-    if (newActions) newActions.hidden = existing;
+    const footerLeft = document.getElementById('gp-save-footer-left');
+    if (footerLeft) footerLeft.hidden = !existing;
     const dlg = document.getElementById('gp-save-overwrite-dialog');
-    if (dlg) dlg.style.display = 'flex';
+    if (dlg) {
+        dlg.style.display = 'flex';
+        dlg.setAttribute('aria-hidden', 'false');
+    }
 }
 
 let wowIconsCache = null;
