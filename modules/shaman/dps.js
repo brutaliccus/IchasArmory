@@ -2380,8 +2380,6 @@ function setupCombatSimulator(container, stats) {
     const heroRunBtn = document.getElementById('sim-hero-resim-btn');
     const heroSettingsCog = document.getElementById('sim-hero-sim-settings-cog');
 
-    if (!heroRunBtn) return;
-
     // Helper to get duration in seconds from min:sec inputs
     function getDurationSeconds() {
         const mins = parseInt(durationMinInput?.value) || 0;
@@ -2459,28 +2457,30 @@ function setupCombatSimulator(container, stats) {
     }
 
     const runLabel = 'Run Sim';
-    heroRunBtn.addEventListener('click', () => {
-        if (heroRunBtn.disabled) return;
-        getDurationSeconds();
-        heroRunBtn.disabled = true;
-        if (heroSettingsCog) heroSettingsCog.disabled = true;
-        heroRunBtn.textContent = 'Running...';
+    if (heroRunBtn) {
+        heroRunBtn.addEventListener('click', () => {
+            if (heroRunBtn.disabled) return;
+            getDurationSeconds();
+            heroRunBtn.disabled = true;
+            if (heroSettingsCog) heroSettingsCog.disabled = true;
+            heroRunBtn.textContent = 'Running...';
 
-        setTimeout(async () => {
-            try {
-                await executeShamanCombatSimulation(container, getSimRunModeFromDom(), heroRunBtn);
-            } catch (error) {
-                console.error('Simulation error:', error);
-                alert('Simulation failed: ' + error.message);
-            } finally {
-                heroRunBtn.disabled = false;
-                if (heroSettingsCog) heroSettingsCog.disabled = false;
-                heroRunBtn.textContent = runLabel;
-            }
-        }, 100);
-    });
+            setTimeout(async () => {
+                try {
+                    await executeShamanCombatSimulation(container, getSimRunModeFromDom(), heroRunBtn);
+                } catch (error) {
+                    console.error('Simulation error:', error);
+                    alert('Simulation failed: ' + error.message);
+                } finally {
+                    heroRunBtn.disabled = false;
+                    if (heroSettingsCog) heroSettingsCog.disabled = false;
+                    heroRunBtn.textContent = runLabel;
+                }
+            }, 100);
+        });
 
-    applyHeroSimModeChrome(getSimRunModeFromDom());
+        applyHeroSimModeChrome(getSimRunModeFromDom());
+    }
 
     const syncSummaryFromTargets = () => syncDpsCombatTargetSummaryPanels();
     ['#target-armor', '#target-nature-resist', '#target-fire-resist', '#target-frost-resist', '#config-enemy-swing-timer', '#sim-iterations'].forEach(sel => {
@@ -4557,6 +4557,7 @@ export function sortStatWeightsTable(column, descending = true, tableElOrSelecto
     const headers = table.querySelectorAll('th.stat-weight-sortable');
     headers.forEach(header => {
         const indicator = header.querySelector('.sort-indicator');
+        if (!indicator) return;
         if (header.dataset.sort === column || (column === 'tps' && header.dataset.sort === 'dps')) {
             indicator.textContent = descending ? '▼' : '▲';
         } else {
@@ -5011,20 +5012,42 @@ function closeDpsSimConfigModalInternal() {
     document.getElementById('config-sim-run-mode-trigger')?.setAttribute('aria-expanded', 'false');
 }
 
+function bootstrapDpsSimConfigModalStandalone() {
+    if (document.getElementById('dps-sim-config-modal')) return true;
+    const wrap = document.createElement('div');
+    wrap.innerHTML = generateSimConfigModalHTML(null, {}, true);
+    const modal = wrap.querySelector('#dps-sim-config-modal');
+    if (!modal) return false;
+    document.body.appendChild(modal);
+    const container = document.getElementById('shaman-dps-simulation') || document.body;
+    const pwRow = dpsRaidBossStats[String(DPS_DEFAULT_BOSS_NPC_ID)];
+    if (pwRow && typeof pwRow === 'object') {
+        applyLoadedDpsBossFromPayload(DPS_DEFAULT_BOSS_NPC_ID, pwRow);
+    }
+    setupSimConfigModal(container);
+    setupSimRunModePicker(container);
+    setupDpsBossPicker(container);
+    setupCombatSimulator(container, {});
+    setupCombatConfig(container, {}, {}, [], {});
+    return true;
+}
+
 function ensureDpsSimConfigModalExists() {
     if (document.getElementById('dps-sim-config-modal')) return true;
     const container = document.getElementById('shaman-dps-simulation');
-    if (!container || window.currentCalculatorTotals == null) return false;
-    renderDPSSimulation(
-        container,
-        window.currentCalculatorTotals,
-        window.currentTalentBonuses || {},
-        window.currentActiveBuffs || [],
-        null,
-        window.currentSetBonuses || {},
-        window.currentEquippedGear || null
-    );
-    return !!document.getElementById('dps-sim-config-modal');
+    if (container && window.currentCalculatorTotals != null) {
+        renderDPSSimulation(
+            container,
+            window.currentCalculatorTotals,
+            window.currentTalentBonuses || {},
+            window.currentActiveBuffs || [],
+            null,
+            window.currentSetBonuses || {},
+            window.currentEquippedGear || null
+        );
+        return !!document.getElementById('dps-sim-config-modal');
+    }
+    return bootstrapDpsSimConfigModalStandalone();
 }
 
 /**

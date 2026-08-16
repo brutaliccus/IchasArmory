@@ -132,8 +132,9 @@ let consumeToolsHome = null;
 const GP_ICON_TALENTS = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>`;
 const GP_ICON_BUFFS = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v7.31L4.21 20.39A1 1 0 0 0 5.08 22h13.84a1 1 0 0 0 .87-1.61L14 9.31V2"/><path d="M8.5 2h7"/><path d="M7 15h10"/></svg>`;
 const GP_ICON_WEIGHTS = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M28.396 24.92c4.349-5.985 3.826-14.41-1.571-19.807-5.507-5.507-14.165-5.94-20.168-1.302-0.869-1.018-1.71-2.033-2.463-2.995l-3.227 3.227c0.962 0.745 1.983 1.57 3.008 2.423-4.743 6.008-4.343 14.748 1.203 20.293 5.379 5.379 13.765 5.917 19.746 1.615l1.274 1.274 4.826 1.202-1.362-4.665-1.266-1.266zM20.631 17.154l-7.288-7.288 2.729-2.729-1.99-1.99c5.647-0.282 10.325 6.479 6.549 12.006zM13.949 5.155l-3.241 3.242c-0.394-0.436-0.802-0.889-1.219-1.355 1.461-1.204 2.991-1.784 4.461-1.886zM7.315 9.315c0.453 0.395 0.894 0.784 1.317 1.159l-3.367 3.368 2.052 2.052 2.563-2.564 14.952 14.952c-11.952 8.045-27.183-6.773-17.517-18.967z"/></svg>`;
-const GP_ICON_VOTE_UP = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 7l-7 9h14z"/></svg>`;
-const GP_ICON_VOTE_DOWN = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17l7-9H5z"/></svg>`;
+/** Thumbs-up / thumbs-down (SVG Repo 513857 / 513858 style, filled hand). */
+const GP_ICON_VOTE_UP = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.71V10c0-.55-.45-1-1-1h-4V3c0-1.1-.9-2-2-2s-2 .9-2 2v7H5c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1z"/></svg>`;
+const GP_ICON_VOTE_DOWN = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.71V12c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23 16.41 16.41c.37-.36.59-.86.59-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>`;
 const GP_TANK_WEIGHT_CLASSES = new Set(['warrior', 'paladin', 'druid']);
 /** Classes that can meaningfully tank and DPS — show both stat-weight panels. */
 const GP_DUAL_ROLE_CLASSES = new Set(['warrior', 'paladin', 'druid', 'shaman']);
@@ -970,12 +971,16 @@ async function generateGpTankStatWeights() {
     }
 }
 
+function isGpDualWeightsLayout() {
+    return showTankWeightsUi() && showDpsWeightsUi();
+}
+
 function gpStatWeightsTableHtml(weights, tableClass) {
     let html = `<div class="stat-weights-table-wrap"><table class="stat-weights-table ${tableClass}" style="font-size: 12px;"><thead><tr>`;
-    html += '<th class="stat-weight-sortable" data-sort="stat" style="cursor: pointer; user-select: none; text-align: left; padding: 4px 6px;">Stat</th>';
-    html += '<th class="stat-weight-sortable stat-weight-value-col" data-sort="dps" style="cursor: pointer; user-select: none; text-align: right; padding: 4px 6px;"><span class="stat-weight-col-label">DPS</span></th>';
-    html += '<th class="stat-weight-sortable" data-sort="ap" style="cursor: pointer; user-select: none; text-align: right; padding: 4px 6px;">AP</th>';
-    html += '<th class="stat-weight-sortable" data-sort="sp" style="cursor: pointer; user-select: none; text-align: right; padding: 4px 6px;">SP</th>';
+    html += '<th class="stat-weight-sortable" data-sort="stat" style="cursor: pointer; user-select: none; text-align: left; padding: 4px 6px;">Stat <span class="sort-indicator"></span></th>';
+    html += '<th class="stat-weight-sortable stat-weight-value-col" data-sort="dps" style="cursor: pointer; user-select: none; text-align: right; padding: 4px 6px;"><span class="stat-weight-col-label">DPS</span> <span class="sort-indicator"></span></th>';
+    html += '<th class="stat-weight-sortable" data-sort="ap" style="cursor: pointer; user-select: none; text-align: right; padding: 4px 6px;">AP <span class="sort-indicator"></span></th>';
+    html += '<th class="stat-weight-sortable" data-sort="sp" style="cursor: pointer; user-select: none; text-align: right; padding: 4px 6px;">SP <span class="sort-indicator"></span></th>';
     html += '</tr></thead><tbody>';
     for (const row of weights) {
         html += `<tr data-stat-key="${row.key || ''}">`;
@@ -993,7 +998,6 @@ function bindGpDpsWeightGenerate(host, isAoe) {
     const btn = host.querySelector(`#${btnId}`);
     if (!btn) return;
     btn.addEventListener('click', () => {
-        const original = btn.textContent;
         btn.disabled = true;
         btn.textContent = 'Generating...';
         setTimeout(async () => {
@@ -1001,7 +1005,10 @@ function bindGpDpsWeightGenerate(host, isAoe) {
                 const weights = await runGearPlanStatWeightSimulations(
                     getGearPlanData(currentPlan),
                     { isAoe },
-                    (completed, total) => { btn.textContent = 'Generating... ' + Math.round(100 * completed / total) + '%'; }
+                    (completed, total) => {
+                        const liveBtn = document.getElementById(btnId);
+                        if (liveBtn) liveBtn.textContent = 'Generating... ' + Math.round(100 * completed / total) + '%';
+                    }
                 );
                 saveGearPlannerDpsStatWeights(weights, isAoe);
                 if (isAoe) currentPlan.statWeightsAoe = weights;
@@ -1009,18 +1016,21 @@ function bindGpDpsWeightGenerate(host, isAoe) {
                 writeLocalWeightDraft(isAoe ? { statWeightsAoe: weights } : { statWeights: weights });
                 persistSession();
                 renderGearPlanner();
+                const freshHost = document.getElementById('gp-dps-weights-host');
                 const panel = isAoe
-                    ? host.querySelector('.stat-weights-aoe-panel')
-                    : host.querySelector('.stat-weights-panel:not(.stat-weights-aoe-panel)');
+                    ? freshHost?.querySelector('.stat-weights-aoe-panel')
+                    : freshHost?.querySelector('.stat-weights-panel:not(.stat-weights-aoe-panel)');
                 const table = panel?.querySelector('.stat-weights-table');
-                const tabType = panel?.querySelector('.stat-weights-tab-btn.active, .stat-weights-aoe-tab-btn.active')?.dataset.statWeightType || 'dps';
-                updateStatWeightsTable(weights, tabType, table);
+                if (table) updateStatWeightsTable(weights, 'dps', table);
             } catch (e) {
                 console.error('[GP DPS stat weights]', e);
                 alert('Failed to generate stat weights: ' + (e.message || e));
             } finally {
-                btn.disabled = false;
-                btn.textContent = original;
+                const liveBtn = document.getElementById(btnId);
+                if (liveBtn) {
+                    liveBtn.disabled = false;
+                    liveBtn.textContent = 'Generate';
+                }
             }
         }, 50);
     });
@@ -1074,26 +1084,29 @@ function renderGpDpsWeightsHost() {
         renderGpManualDpsWeightsHost();
         return;
     }
+    const dual = isGpDualWeightsLayout();
     const st = mergeStatWeightsToTemplate(resolveGpDpsWeights(false));
     const aoe = mergeStatWeightsToTemplate(resolveGpDpsWeights(true));
-    host.innerHTML = `<div class="stat-weights-tab-content" style="padding: 8px 0; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
-        <div class="stat-weights-panel" style="flex: 0 1 400px; min-width: 280px;">
+    const stPanel = `<div class="stat-weights-panel gp-dps-st-panel" style="flex: 0 1 400px; min-width: 280px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-                <h4 style="margin:0;color:#ffd700;">Single target</h4>
+                <h4 style="margin:0;color:#ffd700;">Single Target (DPS)</h4>
                 <button type="button" id="gp-generate-stat-weights-btn" class="gp-btn gp-btn-primary">Generate</button>
             </div>
             ${gpStatWeightsTableHtml(st, 'gp-st-weights')}
-        </div>
-        <div class="stat-weights-aoe-panel stat-weights-panel" style="flex: 0 1 400px; min-width: 280px;">
+        </div>`;
+    const aoePanel = dual ? '' : `<div class="stat-weights-aoe-panel stat-weights-panel" style="flex: 0 1 400px; min-width: 280px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
                 <h4 style="margin:0;color:#ffd700;">AOE</h4>
                 <button type="button" id="gp-generate-aoe-stat-weights-btn" class="gp-btn gp-btn-primary">Generate</button>
             </div>
             ${gpStatWeightsTableHtml(aoe, 'gp-aoe-weights')}
-        </div>
+        </div>`;
+    host.innerHTML = `<div class="stat-weights-tab-content gp-dps-weights-columns" style="padding: 8px 0; display: flex; gap: 20px; justify-content: center; flex-wrap: ${dual ? 'nowrap' : 'wrap'};">
+        ${stPanel}
+        ${aoePanel}
     </div>`;
     bindGpDpsWeightGenerate(host, false);
-    bindGpDpsWeightGenerate(host, true);
+    if (!dual) bindGpDpsWeightGenerate(host, true);
     host.querySelectorAll('.stat-weights-panel').forEach(panel => {
         panel.querySelectorAll('th.stat-weight-sortable').forEach(header => {
             header.addEventListener('click', () => {
@@ -1115,10 +1128,16 @@ function renderGpStatWeightsPanels() {
     if (tankPanel) tankPanel.hidden = !showTank;
     if (dpsPanel) dpsPanel.hidden = !showDps;
     if (unsupported) unsupported.hidden = showTank || showDps;
+    const shell = document.getElementById('gear-planner-shell');
+    shell?.classList.toggle('gp-dual-weights', showTank && showDps);
     if (title) {
-        title.textContent = String(currentPlan.class || '').toLowerCase() === 'shaman'
-            ? 'Shaman DPS stat weights'
-            : 'DPS stat weights (manual)';
+        if (showTank && showDps) {
+            title.textContent = 'Single Target (DPS) stat weights';
+        } else if (String(currentPlan.class || '').toLowerCase() === 'shaman') {
+            title.textContent = 'Shaman DPS stat weights';
+        } else {
+            title.textContent = 'DPS stat weights (manual)';
+        }
     }
     if (showTank) {
         wireGpTankBossSearch();
@@ -2059,10 +2078,14 @@ function planMatchesVoteId(plan, id) {
 /** Keep header votes and any open community-card votes in sync after a vote. */
 function syncVoteUiEverywhere(updated, id) {
     if (!updated || !id) return;
+    if (planMatchesVoteId(currentPlan, id)) {
+        currentPlan.upvotes = Number(updated.upvotes) || 0;
+        currentPlan.downvotes = Number(updated.downvotes) || 0;
+        currentPlan.myVote = updated.myVote === 'up' || updated.myVote === 'down' ? updated.myVote : null;
+    }
     const headerWrap = document.getElementById('gp-header-votes');
     if (headerWrap && planMatchesVoteId(currentPlan, id)) {
         applyVoteUi(updated, headerWrap);
-        updateHeaderVotesUi();
     }
     const list = document.getElementById('gp-community-results');
     if (!list) return;

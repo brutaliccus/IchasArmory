@@ -15,11 +15,7 @@ body[data-app-mode="character"] #gear-planner-shell {
 }
 
 #gear-planner-shell {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 12px;
+    display: block;
     width: 100%;
     max-width: none;
     margin: 0 auto;
@@ -154,6 +150,19 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
     gap: 20px;
     align-items: flex-start;
     justify-content: center;
+}
+
+#gear-planner-shell.gp-dual-weights .gp-stat-weights-view {
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 100%;
+}
+
+#gear-planner-shell.gp-dual-weights .gp-stat-weights-view .gp-weights-panel:not([hidden]) {
+    flex: 1 1 0;
+    min-width: min(100%, 280px);
+    max-width: min(480px, calc(50% - 10px));
 }
 
 .gp-stat-weights-view .gp-weights-panel:not([hidden]) {
@@ -476,10 +485,14 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
 }
 
 .gp-class-sidebar {
+    position: fixed;
+    top: calc(68px / var(--ui-scale, 1));
+    left: max(8px, calc(50vw - var(--gp-center-width) / 2 - 88px));
     flex: 0 0 auto;
     align-self: flex-start;
-    z-index: 20;
+    z-index: 1200;
     pointer-events: none;
+    transform: translateX(-100%);
 }
 
 .gp-class-sidebar .cr-drawer {
@@ -491,6 +504,8 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     width: var(--gp-center-width);
     max-width: var(--gp-center-width);
     min-width: 0;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .gp-header {
@@ -644,6 +659,11 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     font-size: 0.72rem;
     font-weight: 650;
     font-variant-numeric: tabular-nums;
+    justify-content: flex-start;
+}
+
+.gp-slot-card--right .gp-item-scores {
+    justify-content: flex-end;
 }
 
 .gp-item-score-dps { color: #ffd700; }
@@ -1410,6 +1430,12 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     padding: 2px 4px;
 }
 
+.gp-vote-btn svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
 .gp-community-modal { width: min(720px, 94vw); max-height: 85vh; display: flex; flex-direction: column; }
 .gp-community-body { display: flex; flex-direction: column; gap: 12px; padding: 12px 16px 16px; min-height: 0; }
 .gp-community-filters {
@@ -1496,6 +1522,8 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
 .gp-vote-btn svg {
     display: block;
     flex-shrink: 0;
+    width: 18px;
+    height: 18px;
 }
 .gp-vote-btn:hover {
     border: none;
