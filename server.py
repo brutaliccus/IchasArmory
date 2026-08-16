@@ -1070,6 +1070,24 @@ class NoCacheHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             if parsed_path in ('/gear-planner', '/gp', '/gear-planner/', '/gp/'):
                 self.path = '/index.html'
 
+            # Production serves dist/ only; keep selected root data files reachable
+            # (icon catalog is not part of the Vite app graph).
+            if parsed_path == '/data/wow-icons.json':
+                icon_path = os.path.join(script_dir, 'data', 'wow-icons.json')
+                if os.path.isfile(icon_path):
+                    try:
+                        with open(icon_path, 'rb') as f:
+                            data = f.read()
+                        self.send_response(200)
+                        self.send_header('Content-Type', 'application/json')
+                        self.send_header('Content-Length', str(len(data)))
+                        self.send_header('Cache-Control', 'public, max-age=86400')
+                        self.end_headers()
+                        self.wfile.write(data)
+                        return
+                    except Exception as e:
+                        print(f"[Server] Error serving wow-icons.json: {e}")
+
             # Serve all static files (including JSON) through SimpleHTTPRequestHandler.
             # This sets proper Content-Length, streams efficiently, and handles MIME types.
             # Check dist/ first (Vite production build), fall back to project root.

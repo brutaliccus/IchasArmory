@@ -69,6 +69,7 @@ export default defineConfig({
         viteStaticCopy({
             targets: [
                 { src: 'assets', dest: '.' },
+                { src: 'data/wow-icons.json', dest: 'data' },
             ],
         }),
     ],
