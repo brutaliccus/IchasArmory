@@ -376,7 +376,7 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
 
 .gp-header {
     display: grid;
-    grid-template-columns: minmax(160px, 280px) 1fr auto;
+    grid-template-columns: minmax(200px, max-content) 1fr auto;
     align-items: center;
     gap: 10px 14px;
     padding: 14px 18px;
@@ -387,10 +387,20 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
 }
 
+.gp-plan-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    justify-self: start;
+    max-width: 100%;
+}
+
 .gp-plan-name-input {
     width: 100%;
     max-width: 280px;
-    justify-self: start;
+    flex: 1 1 auto;
+    min-width: 120px;
     padding: 8px 12px;
     background: transparent;
     border: 1px solid transparent;
@@ -1246,11 +1256,12 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     display: inline-flex;
     flex-direction: row;
     align-items: center;
-    gap: 4px;
+    gap: 2px;
+    flex-shrink: 0;
 }
 .gp-header-votes .gp-vote-btn {
-    min-width: 48px;
-    padding: 4px 6px;
+    min-width: 0;
+    padding: 2px 4px;
 }
 
 .gp-community-modal { width: min(720px, 94vw); max-height: 85vh; display: flex; flex-direction: column; }
@@ -1319,7 +1330,7 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; align-items: stretch;
 }
 .gp-community-card-votes {
-    display: flex; flex-direction: column; gap: 4px; flex-shrink: 0;
+    display: flex; flex-direction: row; gap: 2px; flex-shrink: 0; align-items: center; justify-content: flex-end;
 }
 .gp-fav-community-btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 4px;
@@ -1328,13 +1339,35 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     cursor: pointer; font-size: 0.72rem; line-height: 1;
 }
 .gp-fav-community-btn:hover { border-color: #c9a227; color: #ffd700; }
+/* SVG-only votes (logout-style): no border / background box */
 .gp-vote-btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
-    min-width: 52px; padding: 4px 8px; border-radius: 4px;
-    border: 1px solid #5a4a20; background: #1a1810; color: #c8b890;
+    display: inline-flex; align-items: center; justify-content: center; gap: 3px;
+    min-width: 0; padding: 2px 4px; border-radius: 0;
+    border: none; background: transparent; box-shadow: none;
+    color: var(--text-muted, #a09070);
     cursor: pointer; font-size: 0.78rem; line-height: 1;
 }
-.gp-vote-btn:hover { border-color: #c9a227; color: #ffd700; }
-.gp-vote-btn.is-active.gp-vote-up { border-color: #5a9e5a; color: #7dce7d; background: rgba(60, 120, 60, 0.25); }
-.gp-vote-btn.is-active.gp-vote-down { border-color: #b06060; color: #e08080; background: rgba(120, 50, 50, 0.25); }
-.gp-vote-count { font-variant-numeric: tabular-nums; min-width: 1.2em; text-align: right; }
+.gp-vote-btn svg {
+    display: block;
+    flex-shrink: 0;
+}
+.gp-vote-btn:hover {
+    border: none;
+    background: transparent;
+    color: var(--accent-color, #ffd700);
+}
+.gp-vote-btn:focus-visible {
+    outline: 1px solid rgba(255, 215, 0, 0.45);
+    outline-offset: 2px;
+}
+.gp-vote-btn.is-active.gp-vote-up {
+    border: none;
+    background: transparent;
+    color: #7dce7d;
+}
+.gp-vote-btn.is-active.gp-vote-down {
+    border: none;
+    background: transparent;
+    color: #e08080;
+}
+.gp-vote-count { font-variant-numeric: tabular-nums; min-width: 1em; text-align: left; }

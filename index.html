@@ -915,7 +915,19 @@
         </aside>
         <div class="gp-main">
             <header class="gp-header">
-                <input type="text" id="gp-plan-name" class="gp-plan-name-input slick-input" value="New Gear Plan" aria-label="Plan name" />
+                <div class="gp-plan-title-row">
+                    <input type="text" id="gp-plan-name" class="gp-plan-name-input slick-input" value="New Gear Plan" aria-label="Plan name" />
+                    <div id="gp-header-votes" class="gp-header-votes" hidden>
+                        <button type="button" class="gp-vote-btn gp-vote-up" id="gp-header-vote-up" data-vote="up" title="Upvote" aria-label="Upvote" aria-pressed="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 7l-7 9h14z"/></svg>
+                            <span class="gp-vote-count" id="gp-header-up-count">0</span>
+                        </button>
+                        <button type="button" class="gp-vote-btn gp-vote-down" id="gp-header-vote-down" data-vote="down" title="Downvote" aria-label="Downvote" aria-pressed="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17l7-9H5z"/></svg>
+                            <span class="gp-vote-count" id="gp-header-down-count">0</span>
+                        </button>
+                    </div>
+                </div>
                 <div class="gp-header-actions">
                     <button type="button" id="gp-talents-btn" class="gp-btn gp-btn-icon" title="Talents" aria-label="Talents" aria-pressed="false">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -944,14 +956,6 @@
                             <polyline points="7 3 7 8 15 8"></polyline>
                         </svg>
                     </button>
-                    <div id="gp-header-votes" class="gp-header-votes" hidden>
-                        <button type="button" class="gp-vote-btn gp-vote-up" id="gp-header-vote-up" data-vote="up" title="Upvote" aria-label="Upvote" aria-pressed="false">
-                            <span aria-hidden="true">▲</span><span class="gp-vote-count" id="gp-header-up-count">0</span>
-                        </button>
-                        <button type="button" class="gp-vote-btn gp-vote-down" id="gp-header-vote-down" data-vote="down" title="Downvote" aria-label="Downvote" aria-pressed="false">
-                            <span aria-hidden="true">▼</span><span class="gp-vote-count" id="gp-header-down-count">0</span>
-                        </button>
-                    </div>
                     <button type="button" id="gp-edit-mode-btn" class="gp-btn gp-btn-icon" title="Edit mode" aria-label="Edit mode" aria-pressed="false">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M12 20h9"></path>
