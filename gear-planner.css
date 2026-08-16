@@ -803,6 +803,25 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     box-shadow: 0 0 0 1px var(--accent-color, #ffd700);
 }
 
+.gp-btn-icon.is-sim-running {
+    cursor: wait;
+    opacity: 0.9;
+}
+
+.gp-btn-icon.is-sim-running .loading-spinner-small {
+    border-top-color: var(--accent-color, #ffd700);
+}
+
+#gp-quick-sim-result.gp-quick-sim-result--running {
+    color: #d4c090;
+    animation: gp-quick-sim-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes gp-quick-sim-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.55; }
+}
+
 .gp-layout {
     display: grid;
     grid-template-columns: 1fr 1fr;

@@ -34,6 +34,17 @@ for f in server.py server.js armory_proxy.py profiles.js requirements.txt packag
   fi
 done
 
+echo "==> Syncing service worker (root /sw.js + dist/sw.js + public/sw.js)"
+ssh "$PI_HOST" "mkdir -p '${PI_PATH}/public'"
+for sw in sw.js public/sw.js; do
+  if [[ -f "${ROOT}/${sw}" ]]; then
+    scp "${ROOT}/${sw}" "${PI_HOST}:${PI_PATH}/${sw}"
+  fi
+done
+if [[ -f "${ROOT}/dist/sw.js" ]]; then
+  scp "${ROOT}/dist/sw.js" "${PI_HOST}:${PI_PATH}/dist/sw.js"
+fi
+
 echo "==> Installing Node dependencies on Pi (session-file-store, etc.)"
 ssh "$PI_HOST" "cd '${PI_PATH}' && npm install --omit=dev"
 
@@ -51,5 +62,14 @@ ssh "$PI_HOST" "sudo systemctl restart ${SERVICE} && sleep 2 && sudo systemctl i
 
 echo "==> Verifying live bundle contains UI scale markup"
 ssh "$PI_HOST" "curl -fsS http://127.0.0.1:6100/index.html | grep -q ui-scale-settings && echo OK: ui-scale-settings present in served index.html"
+
+echo "==> Verifying live /sw.js CACHE_VERSION"
+LOCAL_SW_VER="$(grep -m1 \"CACHE_VERSION\" \"${ROOT}/sw.js\" | sed \"s/.*'\\([^']*\\)'.*/\\1/\")"
+REMOTE_SW_VER="$(ssh \"$PI_HOST\" \"curl -fsS http://127.0.0.1:6100/sw.js | grep -m1 CACHE_VERSION | sed \\\"s/.*'\\\\([^']*\\\\)'.*/\\\\1/\\\"\")"
+if [[ \"$LOCAL_SW_VER\" == \"$REMOTE_SW_VER\" && -n \"$LOCAL_SW_VER\" ]]; then
+  echo \"OK: live /sw.js CACHE_VERSION=${LOCAL_SW_VER}\"
+else
+  echo \"WARN: /sw.js version mismatch (local=${LOCAL_SW_VER}, remote=${REMOTE_SW_VER})\" >&2
+fi
 
 echo "Deploy complete."

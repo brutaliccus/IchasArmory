@@ -12263,8 +12263,9 @@ export async function runGearPlanStatWeightSimulations(gearPlan, options = {}, p
 /**
  * Quick DPS sim for gear planner: snapshot build, equip plan primaries, sim, restore.
  * @param {import('../gear/gearPlanner.js').GearPlan} gearPlan
+ * @param {(completed: number, total: number) => void} [onProgress]
  */
-export async function runGearPlanQuickSim(gearPlan) {
+export async function runGearPlanQuickSim(gearPlan, onProgress) {
     if (!gearPlan || gearPlan.class !== 'shaman') {
         return { error: 'Quick DPS sim is only available for Shaman gear plans.' };
     }
@@ -12321,7 +12322,7 @@ export async function runGearPlanQuickSim(gearPlan) {
             freshStats,
             duration,
             iterations,
-            null,
+            onProgress || null,
             priorityConfig,
             { quickSim: true, maxWorkers: workers || undefined }
         );

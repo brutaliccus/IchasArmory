@@ -120,6 +120,7 @@ let characterTalentSnapshot = null;
 let characterBuffSnapshot = null;
 let buffsListHome = null;
 let consumeToolsHome = null;
+let gpQuickSimRunning = false;
 
 const GP_ICON_TALENTS = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>`;
 const GP_ICON_BUFFS = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v7.31L4.21 20.39A1 1 0 0 0 5.08 22h13.84a1 1 0 0 0 .87-1.61L14 9.31V2"/><path d="M8.5 2h7"/><path d="M7 15h10"/></svg>`;
@@ -3194,18 +3195,67 @@ async function shareCurrentPlan() {
     }
 }
 
-async function runQuickSim() {
-    const resultEl = document.getElementById('gp-quick-sim-result');
+function setGpQuickSimRunningUi(running, progressPct = null) {
     const btn = document.getElementById('gp-quick-sim-btn');
-    if (btn) { btn.disabled = true; btn.setAttribute('aria-busy', 'true'); }
+    const cfg = document.getElementById('gp-sim-settings-btn');
+    const resultEl = document.getElementById('gp-quick-sim-result');
+    if (btn) {
+        btn.disabled = running;
+        btn.classList.toggle('is-sim-running', running);
+        if (running) {
+            btn.setAttribute('aria-busy', 'true');
+            if (!btn.dataset.gpQuickSimIconHtml) {
+                btn.dataset.gpQuickSimIconHtml = btn.innerHTML;
+            }
+            btn.innerHTML = '<span class="loading-spinner-small" aria-hidden="true"></span>';
+            btn.title = 'Simming…';
+            btn.setAttribute('aria-label', 'Quick DPS Sim running');
+        } else {
+            btn.removeAttribute('aria-busy');
+            if (btn.dataset.gpQuickSimIconHtml) {
+                btn.innerHTML = btn.dataset.gpQuickSimIconHtml;
+            }
+            btn.title = 'Quick DPS Sim';
+            btn.setAttribute('aria-label', 'Quick DPS Sim');
+        }
+    }
+    if (cfg) cfg.disabled = running;
+    if (resultEl) {
+        resultEl.classList.toggle('gp-quick-sim-result--running', running);
+        if (running) {
+            resultEl.textContent = progressPct != null ? `Simming… ${progressPct}%` : 'Simming…';
+        }
+    }
+}
+
+async function runQuickSim() {
+    if (gpQuickSimRunning) return;
+    gpQuickSimRunning = true;
+    setGpQuickSimRunningUi(true);
     try {
-        const result = await runGearPlanQuickSim(getGearPlanData(currentPlan));
+        const result = await runGearPlanQuickSim(
+            getGearPlanData(currentPlan),
+            (completed, total) => {
+                const pct = total ? Math.round(100 * completed / total) : 0;
+                setGpQuickSimRunningUi(true, pct);
+            }
+        );
+        const resultEl = document.getElementById('gp-quick-sim-result');
         if (resultEl) {
+            resultEl.classList.remove('gp-quick-sim-result--running');
             resultEl.textContent = result?.dps != null
                 ? `~${Math.round(result.dps)} DPS`
                 : (result?.error || 'Sim failed');
         }
+    } catch (error) {
+        console.error('[GP quick sim]', error);
+        const resultEl = document.getElementById('gp-quick-sim-result');
+        if (resultEl) {
+            resultEl.classList.remove('gp-quick-sim-result--running');
+            resultEl.textContent = error.message || 'Sim failed';
+        }
     } finally {
-        if (btn) { btn.disabled = false; btn.removeAttribute('aria-busy'); }
+        gpQuickSimRunning = false;
+        setGpQuickSimRunningUi(false);
     }
 }
