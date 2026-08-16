@@ -29,7 +29,8 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 ## UI elements (index.html)
 
 - `#gear-planner-shell`, `#gp-locations-sidebar`, `#gp-class-sidebar`, `#gp-slots-left`, `#gp-slots-right`
-- Header: `#gp-plan-name` + `#gp-header-votes` in `.gp-plan-title-row` (left); icon buttons Save / **Edit mode** / **My Gear Plans** dropdown (`#gear-plans-dropdown`, same classes as My Builds: share/delete/favorite) / **Community search** (`#gp-community-search-btn`) / Share
+- Header: `#gp-plan-name` (max **64** chars) + `#gp-header-votes` in `.gp-plan-title-row` (title flex-grows; votes `flex-shrink: 0` at end); icon buttons Save / **Edit mode** / **My Gear Plans** dropdown (`#gear-plans-dropdown`, same classes as My Builds: share/delete/favorite) / **Community search** (`#gp-community-search-btn`) / Share
+- Talents view: `#gp-talent-preset-tools` hamburger (shaman only) applies `SHAMAN_TALENT_PRESETS`; shell goes full width between sidebars (`max-width: none`) so trees fill the center column.
 - `#gp-quick-sim-btn`: Shaman-only header icon (sword SVG, `.gp-btn-icon`, same size as other GP header icons). Result text in `#gp-quick-sim-result`. `#gp-sim-settings-btn`: shaman-only cog that opens `#dps-sim-config-modal` via `openDpsSimConfigModal()` (same fight settings as Character Planner DPS). `#gp-st-rotation-row`: Enhance ST / Elemental ST only; stored as `plan.ui.stRotation`. `#gp-quick-sim-wrap`: dismissible info banner only. Dismiss X stores `ichacalc_gp_sim_hint_dismissed` in localStorage
 - `#gp-stat-weights-btn`: spinning-sword SVG (SVG Repo 499402), same `.gp-btn-icon` size as other header buttons. Quick DPS Sim keeps its own sword.
 - Class drawer: `#gp-cr-drawer-class` uses `.is-open` (same as character `#cr-drawer-class`) so `#gp-class-drawer-toggle` expands `#gp-class-drawer-panel`
