@@ -27,13 +27,14 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 
 - `#gear-planner-shell`, `#gp-locations-sidebar`, `#gp-class-sidebar`, `#gp-slots-left`, `#gp-slots-right`
 - Header: `#gp-plan-name` (left, slick fade borders); icon buttons Save / **Edit mode** / **My Gear Plans** dropdown (`#gear-plans-dropdown`, same classes as My Builds: share/delete/favorite) / Share
-- `#gp-quick-sim-btn`: Shaman-only header icon (sword SVG, `.gp-btn-icon`, same size as other GP header icons). Result text in `#gp-quick-sim-result`. `#gp-quick-sim-wrap`: dismissible info banner only. Dismiss X stores `ichacalc_gp_sim_hint_dismissed` in localStorage
+- `#gp-quick-sim-btn`: Shaman-only header icon (sword SVG, `.gp-btn-icon`, same size as other GP header icons). Result text in `#gp-quick-sim-result`. `#gp-sim-settings-btn`: shaman-only cog that opens `#dps-sim-config-modal` via `openDpsSimConfigModal()` (same fight settings as Character Planner DPS). `#gp-st-rotation-row`: Enhance ST / Elemental ST only; stored as `plan.ui.stRotation`. `#gp-quick-sim-wrap`: dismissible info banner only. Dismiss X stores `ichacalc_gp_sim_hint_dismissed` in localStorage
+- `#gp-stat-weights-btn`: spinning-sword SVG (SVG Repo 499402), same `.gp-btn-icon` size as other header buttons. Quick DPS Sim keeps its own sword.
 - Class drawer: `#gp-cr-drawer-class` uses `.is-open` (same as character `#cr-drawer-class`) so `#gp-class-drawer-toggle` expands `#gp-class-drawer-panel`
 
 ## Edit mode
 
 - New unsaved plans start with edit **on**. Saved or loaded plans start with edit **off** (session `editMode` overrides when present). Saving a plan turns edit off.
-- **View (off):** hide clear/remove X; no picker or drag-reorder; cards still expand to show alts. Shell gets `.gp-view-mode`. Outside add icons stay visible but disabled.
+- **View (off):** hide clear/remove X **and** empty `inventoryslot_*` add icons (`.gp-slot-add-wrap`); no picker or drag-reorder; cards still expand to show alts. Shell gets `.gp-view-mode`.
 - **Edit (on):** X buttons, outside empty-slot add icons, icon drag-and-drop, item picker.
 
 ## Slot cards
@@ -48,7 +49,7 @@ Each card:
 - Collapsed by default (`plan.ui.collapsed[slotId] !== false`); session-persisted
 - Icon on the **outer** edge; name + `Zone: Dungeon – Boss` source line
 - Middle-click icon opens `https://octowow.st/db/?item=` (same as item modal)
-- Enchantable slots (same as Character Planner `getEnchantableSlots`): `.gp-name-enchant` wraps item name/source (or empty slot label) plus `.gp-enchant-chrome` (`.enchant-btn` + optional gold `.gp-enchant-name`) as a tight `display:flex; gap:6px` cluster. Left column packs `[icon][name][scroll][gold name]` on the left. Right column uses `margin-left:auto` on the **whole** cluster (not between name and enchant) so `[gold name][scroll][name][icon]` sits on the right. Empty scroll stays next to the name/label, not stretched to the inner card edge. Click opens the existing enchant picker with the plan primary as `itemOverride`. Stored as `slots[slot].enchant` (database index). Included in Modified stats and Shaman quick sim (snapshot/restore Character Planner enchants).
+- Enchantable slots (same as Character Planner `getEnchantableSlots`): `.gp-item-name-row` is a horizontal flex line with the quality-colored **item name** plus `.gp-enchant-chrome` (`.enchant-btn` + optional gold `.gp-enchant-name` using `getEnchantCompactLabel`). Left: `[name][scroll][enchant]`; right: `[enchant][scroll][name]`. Source line sits under the name only. Collapse chevron (`.gp-toggle-alts`) is last in the primary row DOM so it sits at the **end of the card line** (far right on left column; far left on right column via `row-reverse`). Click opens the existing enchant picker with the plan primary as `itemOverride`. Stored as `slots[slot].enchant` (database index). Included in Modified stats and Shaman quick sim (snapshot/restore Character Planner enchants).
 - Click card or chevron to expand alternatives (icon, name, source; remove/add only in edit mode)
 - Right-column cards reverse the **primary/alt rows** so the icon stays on the outer edge; `.gp-alts-panel` stays a column so **Add alternative** is full-width under the alt list (not beside the primary X)
 - Item tooltips (`#item-tooltip` via `createItemTooltipHTML` / `positionItemTooltipOnIcon`) fire **only on the item icon** (`.gp-item-tip` on `.gp-slot-icon-frame` / `.gp-alt-icon`). Left-column cards grow left+down from the icon’s top-left; right-column cards grow right+down from top-right. They do not follow the cursor.

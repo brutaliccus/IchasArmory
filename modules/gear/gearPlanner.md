@@ -17,7 +17,7 @@ Gear plan data model and localStorage persistence for the Gear Planner page.
   slots: {
     [slotId]: { primary: number|null, alternatives: number[], enchant: number|null }
   },
-  ui: { collapsed: { [slotId]: boolean } }
+  ui: { collapsed: { [slotId]: boolean }, stRotation?: 'enhSt'|'eleSt' }
 }
 ```
 

@@ -16,13 +16,14 @@ import {
 } from './gearPlanner.js';
 import { ICON_BASE_URL, getEmptySlotPlaceholderUrl, getMeleeWeaponType, getEnchantableSlots } from './gear.js';
 import { enchantDatabase } from './enchants.js';
+import { getEnchantCompactLabel } from './enchantStatLabels.js';
 import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, getItemType, filterEnchantsByItemType } from '../character/stats.js';
 import { baseStats, raceIconData, getSelectedRaceBonuses } from '../character/races.js';
 import { calculateEffectiveHealth } from '../ui/calculator.js';
 import { generateTalentInputs, updateTalentPoints, getTalentBonusesFromSpec } from '../talents_new.js';
 import { generateBuffIcons, applyBuffListToDom, getBuffsFromSavedList, handleBuffExclusivity } from '../character/buffs.js';
 import { getSetBonuses } from './setBonuses.js';
-import { runGearPlanQuickSim, runGearPlanStatWeightSimulations, mergeStatWeightsToTemplate, updateStatWeightsTable, sortStatWeightsTable } from '../shaman/dps.js';
+import { runGearPlanQuickSim, runGearPlanStatWeightSimulations, mergeStatWeightsToTemplate, updateStatWeightsTable, sortStatWeightsTable, openDpsSimConfigModal } from '../shaman/dps.js';
 import { runTankSimulation, getBossDatabase } from '../tank/tankSimulator.js';
 import { createItemTooltipHTML, createEnchantTooltipHTML } from '../ui/tooltips.js';
 import { positionItemTooltipOnIcon } from '../ui/itemTooltipPosition.js';
@@ -84,7 +85,7 @@ let consumeToolsHome = null;
 
 const GP_ICON_TALENTS = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>`;
 const GP_ICON_BUFFS = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v7.31L4.21 20.39A1 1 0 0 0 5.08 22h13.84a1 1 0 0 0 .87-1.61L14 9.31V2"/><path d="M8.5 2h7"/><path d="M7 15h10"/></svg>`;
-const GP_ICON_WEIGHTS = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8.2A2.22 2.22 0 0 1 13.8 6H9.4A2.2 2.2 0 0 1 8 2"/><path d="M12 2v20"/><path d="M3 10h7a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2H3"/><path d="M14 14h7a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-7"/></svg>`;
+const GP_ICON_WEIGHTS = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M28.396 24.92c4.349-5.985 3.826-14.41-1.571-19.807-5.507-5.507-14.165-5.94-20.168-1.302-0.869-1.018-1.71-2.033-2.463-2.995l-3.227 3.227c0.962 0.745 1.983 1.57 3.008 2.423-4.743 6.008-4.343 14.748 1.203 20.293 5.379 5.379 13.765 5.917 19.746 1.615l1.274 1.274 4.826 1.202-1.362-4.665-1.266-1.266zM20.631 17.154l-7.288-7.288 2.729-2.729-1.99-1.99c5.647-0.282 10.325 6.479 6.549 12.006zM13.949 5.155l-3.241 3.242c-0.394-0.436-0.802-0.889-1.219-1.355 1.461-1.204 2.991-1.784 4.461-1.886zM7.315 9.315c0.453 0.395 0.894 0.784 1.317 1.159l-3.367 3.368 2.052 2.052 2.563-2.564 14.952 14.952c-11.952 8.045-27.183-6.773-17.517-18.967z"/></svg>`;
 const GP_TANK_WEIGHT_CLASSES = new Set(['warrior', 'paladin', 'druid']);
 const GP_ICON_HOME = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M25,21.5c0,-0.319 -0.152,-0.619 -0.409,-0.807c-0.258,-0.188 -0.589,-0.243 -0.893,-0.146l-7.698,2.44c-0,0 -7.698,-2.44 -7.698,-2.44c-0.304,-0.097 -0.635,-0.042 -0.893,0.146c-0.257,0.188 -0.409,0.488 -0.409,0.807l0,6c0,0.552 0.448,1 1,1l16,0c0.552,0 1,-0.448 1,-1l0,-6Zm-2,1.366l0,3.634l-14,0c0,-0 0,-3.634 0,-3.634c0,0 6.698,2.123 6.698,2.123c0.196,0.063 0.408,0.063 0.604,0l6.698,-2.123Zm-2.002,-14.31c0.02,-0.341 -0.137,-0.668 -0.414,-0.868c-0.278,-0.199 -0.638,-0.243 -0.955,-0.116l-2.5,1c-0.38,0.151 -0.629,0.519 -0.629,0.928l0,11c0,0.317 0.151,0.616 0.406,0.804c0.255,0.189 0.585,0.245 0.888,0.152l6.5,-2c0.42,-0.129 0.706,-0.517 0.706,-0.956l0,-6c0,-0.552 -0.448,-1 -1,-1c-0.892,0 -1.663,-0.246 -2.203,-0.739c-0.516,-0.472 -0.797,-1.166 -0.797,-2.02c0,-0.062 -0.005,-0.124 -0.002,-0.185Zm-8.627,-0.984c-0.317,-0.127 -0.677,-0.083 -0.955,0.116c-0.277,0.2 -0.434,0.527 -0.414,0.868c0.003,0.061 -0.002,0.123 -0.002,0.185c0,0.854 -0.281,1.548 -0.797,2.02c-0.54,0.493 -1.311,0.739 -2.203,0.739c-0.552,0 -1,0.448 -1,1l0,6c0,0.439 0.286,0.827 0.706,0.956l6.5,2c0.303,0.093 0.633,0.037 0.888,-0.152c0.255,-0.188 0.406,-0.487 0.406,-0.804l0,-11c0,-0.409 -0.249,-0.777 -0.629,-0.928l-2.5,-1Zm6.756,2.354c0.21,0.942 0.675,1.72 1.32,2.31c0.666,0.609 1.537,1.023 2.553,1.186c0,0 0,4.339 0,4.339c0,0 -4.5,1.385 -4.5,1.385c0,0 0,-8.969 0,-8.969l0.627,-0.251Zm-6.254,0l0.627,0.251c0,0 0,8.969 0,8.969c-0,0 -4.5,-1.385 -4.5,-1.385c0,0 0,-4.339 0,-4.339c1.016,-0.163 1.887,-0.577 2.553,-1.186c0.645,-0.59 1.11,-1.368 1.32,-2.31Zm-1.892,-5.23c0.058,-0.294 -0.018,-0.598 -0.208,-0.83c-0.19,-0.232 -0.473,-0.366 -0.773,-0.366c-1.611,0 -3.965,1.17 -5.569,2.638c-1.191,1.089 -1.931,2.354 -1.931,3.362c0,0.552 0.448,1 1,1l5.5,0l0.981,-0.804l1,-5Zm11.019,-1.196c-0.3,0 -0.583,0.134 -0.773,0.366c-0.19,0.232 -0.266,0.536 -0.208,0.83l1,5l0.981,0.804l5.5,0c0.552,0 1,-0.448 1,-1c-0,-1.008 -0.74,-2.273 -1.931,-3.362c-1.604,-1.468 -3.958,-2.638 -5.569,-2.638Zm-13.82,5l-3.216,0c0.222,-0.299 0.501,-0.598 0.816,-0.886c0.847,-0.775 1.944,-1.485 2.948,-1.852l-0.548,2.738Zm15.64,0l-0.548,-2.738c1.004,0.367 2.101,1.078 2.948,1.852c0.315,0.288 0.594,0.587 0.816,0.886l-3.216,0Z"/></svg>`;
 
@@ -104,6 +105,7 @@ export function initGearPlannerView(cbs) {
     ensurePlanRace();
     if (!currentPlan.talents) currentPlan.talents = {};
     if (!currentPlan.buffs) currentPlan.buffs = [];
+    ensurePlanStRotation();
     wireHeaderControls();
     wireClassDrawer();
     wireRaceDrawer();
@@ -174,9 +176,17 @@ function wireHeaderControls() {
     });
     document.getElementById('gp-share-btn')?.addEventListener('click', () => shareCurrentPlan());
     document.getElementById('gp-quick-sim-btn')?.addEventListener('click', () => runQuickSim());
-    document.getElementById('gp-configure-sim-btn')?.addEventListener('click', () => {
-        if (typeof callbacks.setAppMode === 'function') callbacks.setAppMode('character');
-        document.querySelector('[data-tab="dps-sim"]')?.click();
+    document.getElementById('gp-sim-settings-btn')?.addEventListener('click', () => {
+        openDpsSimConfigModal();
+    });
+    document.getElementById('gp-st-rotation-row')?.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-gp-st-rot]');
+        if (!btn) return;
+        const mode = btn.dataset.gpStRot === 'eleSt' ? 'eleSt' : 'enhSt';
+        ensurePlanStRotation();
+        currentPlan.ui.stRotation = mode;
+        persistSession();
+        syncGpStRotationUi();
     });
     document.getElementById('gp-sim-hint-dismiss')?.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -908,7 +918,7 @@ function gpEnchantDisplayName(slotId) {
     if (idx == null) return '';
     const enchant = enchantDatabase[slotId]?.[idx];
     if (!enchant || enchant.name === 'None') return '';
-    return enchant.name;
+    return getEnchantCompactLabel(enchant) || enchant.name;
 }
 
 function gpEnchantChromeHtml(slotId, side) {
@@ -1079,15 +1089,38 @@ function requestSaveCurrentPlan() {
     saveCurrentPlan(false);
 }
 
+function ensurePlanStRotation() {
+    if (!currentPlan.ui) currentPlan.ui = { collapsed: {} };
+    if (currentPlan.ui.stRotation !== 'eleSt' && currentPlan.ui.stRotation !== 'enhSt') {
+        currentPlan.ui.stRotation = 'enhSt';
+    }
+}
+
+function syncGpStRotationUi() {
+    ensurePlanStRotation();
+    const mode = currentPlan.ui.stRotation;
+    document.querySelectorAll('#gp-st-rotation-row [data-gp-st-rot]').forEach(btn => {
+        const on = btn.dataset.gpStRot === mode;
+        btn.classList.toggle('is-active', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+}
+
 function updateQuickSimVisibility() {
     const btn = document.getElementById('gp-quick-sim-btn');
-    const cfg = document.getElementById('gp-configure-sim-btn');
+    const cfg = document.getElementById('gp-sim-settings-btn');
+    const rotRow = document.getElementById('gp-st-rotation-row');
     const wrap = document.getElementById('gp-quick-sim-wrap');
     const resultEl = document.getElementById('gp-quick-sim-result');
     const isShaman = currentPlan.class === 'shaman';
     if (btn) btn.style.display = isShaman ? '' : 'none';
     if (cfg) cfg.style.display = isShaman ? '' : 'none';
+    if (rotRow) {
+        rotRow.hidden = !isShaman;
+        rotRow.style.display = isShaman ? '' : 'none';
+    }
     if (resultEl) resultEl.style.display = isShaman ? '' : 'none';
+    if (isShaman) syncGpStRotationUi();
     let hintDismissed = false;
     try { hintDismissed = localStorage.getItem(SIM_HINT_DISMISS_KEY) === '1'; } catch { hintDismissed = false; }
     if (wrap) {
@@ -1272,12 +1305,15 @@ function itemIconHtml(item) {
     return `<img src="${ICON_BASE_URL}${file}.png" alt="${escapeHtml(item?.name || '')}">`;
 }
 
-function renderItemMeta(item) {
+function renderItemMeta(item, enchantChrome = '') {
     if (!item) return '';
     const q = item.quality ?? 0;
     const source = formatPlannerSourceLine(item.id);
     return `<div class="gp-item-meta">
-        <div class="gp-item-name q${q}"><span class="gp-item-name-text">${escapeHtml(item.name || `Item ${item.id}`)}</span></div>
+        <div class="gp-item-name-row">
+            <div class="gp-item-name q${q}"><span class="gp-item-name-text">${escapeHtml(item.name || `Item ${item.id}`)}</span></div>
+            ${enchantChrome}
+        </div>
         ${source ? `<div class="gp-item-source">${escapeHtml(source)}</div>` : ''}
     </div>`;
 }
@@ -1354,16 +1390,18 @@ function renderSlotCard(slotId, side) {
     const showEnchant = gpSlotShowsEnchant(slotId, primaryItem);
     const enchantChrome = showEnchant ? gpEnchantChromeHtml(slotId, side) : '';
 
-    const nameEnchant = `<div class="gp-name-enchant">${empty
-        ? `<span class="gp-empty-label">${escapeHtml(label)}</span>`
-        : renderItemMeta(primaryItem)}${enchantChrome}</div>`;
+    const nameBlock = empty
+        ? `<div class="gp-item-name-row"><span class="gp-empty-label">${escapeHtml(label)}</span>${enchantChrome}</div>`
+        : renderItemMeta(primaryItem, enchantChrome);
+    const toggleBtn = `<button type="button" class="gp-toggle-alts" data-slot="${slotId}" aria-expanded="${expanded}" title="Alternatives">▾</button>`;
+    const clearBtn = `<button type="button" class="gp-clear-primary" data-slot="${slotId}" title="Clear"${editMode ? '' : ' hidden'}>×</button>`;
     const primaryInner = empty
-        ? `<div class="gp-empty-primary">${nameEnchant}</div>`
+        ? `<div class="gp-empty-primary">${nameBlock}</div>`
         : `<div class="gp-primary-row" data-slot="${slotId}" data-item-id="${primaryItem.id}" data-gp-role="primary">
                 <span class="gp-slot-icon-frame gp-drag-handle gp-item-tip" draggable="${editMode ? 'true' : 'false'}" data-slot="${slotId}" data-gp-role="primary" data-item-id="${primaryItem.id}">${itemIconHtml(primaryItem)}</span>
-                ${nameEnchant}
-                <button type="button" class="gp-toggle-alts" data-slot="${slotId}" aria-expanded="${expanded}" title="Alternatives">▾</button>
-                <button type="button" class="gp-clear-primary" data-slot="${slotId}" title="Clear"${editMode ? '' : ' hidden'}>×</button>
+                ${nameBlock}
+                ${clearBtn}
+                ${toggleBtn}
            </div>`;
 
     const card = `<article class="gp-slot-card gp-slot-card--${side}${empty ? ' gp-slot-card--empty' : ''}${expanded ? ' gp-slot-card--expanded' : ''}"

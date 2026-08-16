@@ -933,11 +933,8 @@
                         </svg>
                     </button>
                     <button type="button" id="gp-stat-weights-btn" class="gp-btn gp-btn-icon" title="Stat weights" aria-label="Stat weights" aria-pressed="false" hidden>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <path d="M16 8.2A2.22 2.22 0 0 1 13.8 6H9.4A2.2 2.2 0 0 1 8 2"></path>
-                            <path d="M12 2v20"></path>
-                            <path d="M3 10h7a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2H3"></path>
-                            <path d="M14 14h7a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-7"></path>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+                            <path d="M28.396 24.92c4.349-5.985 3.826-14.41-1.571-19.807-5.507-5.507-14.165-5.94-20.168-1.302-0.869-1.018-1.71-2.033-2.463-2.995l-3.227 3.227c0.962 0.745 1.983 1.57 3.008 2.423-4.743 6.008-4.343 14.748 1.203 20.293 5.379 5.379 13.765 5.917 19.746 1.615l1.274 1.274 4.826 1.202-1.362-4.665-1.266-1.266zM20.631 17.154l-7.288-7.288 2.729-2.729-1.99-1.99c5.647-0.282 10.325 6.479 6.549 12.006zM13.949 5.155l-3.241 3.242c-0.394-0.436-0.802-0.889-1.219-1.355 1.461-1.204 2.991-1.784 4.461-1.886zM7.315 9.315c0.453 0.395 0.894 0.784 1.317 1.159l-3.367 3.368 2.052 2.052 2.563-2.564 14.952 14.952c-11.952 8.045-27.183-6.773-17.517-18.967z"></path>
                         </svg>
                     </button>
                     <button type="button" id="gp-save-btn" class="gp-btn gp-btn-icon" title="Save" aria-label="Save">
@@ -975,7 +972,12 @@
                             <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
                         </svg>
                     </button>
-                    <button type="button" id="gp-configure-sim-btn" class="gp-btn" style="display:none;">Configure Sim</button>
+                    <button type="button" id="gp-sim-settings-btn" class="gp-btn gp-btn-icon" title="Simulation settings" aria-label="Simulation settings" style="display:none;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </button>
                     <button type="button" id="gp-quick-sim-btn" class="gp-btn gp-btn-icon" title="Quick DPS Sim" aria-label="Quick DPS Sim" style="display:none;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"></polyline>
@@ -987,6 +989,10 @@
                     <div id="gp-quick-sim-result"></div>
                 </div>
             </header>
+            <div id="gp-st-rotation-row" class="gp-st-rotation-row" hidden>
+                <button type="button" class="gp-st-rot-btn" data-gp-st-rot="enhSt" aria-pressed="true">Enhance - ST</button>
+                <button type="button" class="gp-st-rot-btn" data-gp-st-rot="eleSt" aria-pressed="false">Elemental - ST</button>
+            </div>
             <div id="gp-quick-sim-wrap" class="gp-quick-sim-wrap" style="display:none;" hidden>
                 <p class="gp-quick-sim-hint">Quick DPS sim uses your current character talents, buffs, and rotation. Configure them on the DPS sim page for accurate results.</p>
                 <button type="button" id="gp-sim-hint-dismiss" class="gp-sim-hint-dismiss" title="Dismiss" aria-label="Dismiss">×</button>

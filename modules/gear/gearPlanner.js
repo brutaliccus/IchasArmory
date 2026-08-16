@@ -23,7 +23,7 @@ export function createEmptyGearPlan(classId = 'warrior', name = 'New Gear Plan')
         talents: {},
         buffs: [],
         slots,
-        ui: { collapsed: {} },
+        ui: { collapsed: {}, stRotation: 'enhSt' },
     };
 }
 
@@ -44,7 +44,7 @@ export function createEmptyGearPlan(classId = 'warrior', name = 'New Gear Plan')
  * @property {Record<string, number>} talents
  * @property {Array<{ id: string, improved?: boolean }>} buffs
  * @property {Record<string, GearPlanSlot>} slots
- * @property {{ collapsed?: Record<string, boolean> }} ui
+ * @property {{ collapsed?: Record<string, boolean>, stRotation?: 'enhSt'|'eleSt' }} ui
  */
 
 /** @returns {GearPlan} */
@@ -70,6 +70,9 @@ export function getGearPlanData(plan) {
         };
     }
     if (plan.ui?.collapsed) out.ui.collapsed = { ...plan.ui.collapsed };
+    if (plan.ui?.stRotation === 'eleSt' || plan.ui?.stRotation === 'enhSt') {
+        out.ui.stRotation = plan.ui.stRotation;
+    }
     if (plan.id) out.id = plan.id;
     if (plan.favorite) out.favorite = true;
     return out;

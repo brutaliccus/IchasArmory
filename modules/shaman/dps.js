@@ -4997,6 +4997,58 @@ function setupDpsBossPicker(container) {
 
 /** Set by setupSimConfigModal so boss tile can close the dialog after load */
 let closeDpsSimConfigModalFn = null;
+let dpsSimConfigEscHandler = null;
+
+function closeDpsSimConfigModalInternal() {
+    const modal = document.getElementById('dps-sim-config-modal');
+    if (modal) modal.style.display = 'none';
+    if (dpsSimConfigEscHandler) {
+        document.removeEventListener('keydown', dpsSimConfigEscHandler);
+        dpsSimConfigEscHandler = null;
+    }
+    closeDpsSimConfigModalFn = null;
+    document.getElementById('config-sim-run-mode-menu')?.classList.remove('dps-sim-run-mode-menu--open');
+    document.getElementById('config-sim-run-mode-trigger')?.setAttribute('aria-expanded', 'false');
+}
+
+function ensureDpsSimConfigModalExists() {
+    if (document.getElementById('dps-sim-config-modal')) return true;
+    const container = document.getElementById('shaman-dps-simulation');
+    if (!container || window.currentCalculatorTotals == null) return false;
+    renderDPSSimulation(
+        container,
+        window.currentCalculatorTotals,
+        window.currentTalentBonuses || {},
+        window.currentActiveBuffs || [],
+        null,
+        window.currentSetBonuses || {},
+        window.currentEquippedGear || null
+    );
+    return !!document.getElementById('dps-sim-config-modal');
+}
+
+/**
+ * Open the Character Planner DPS simulation settings modal (boss, duration, etc.).
+ * Safe from Gear Planner: builds the DPS sim DOM once if needed.
+ * @returns {boolean}
+ */
+export function openDpsSimConfigModal() {
+    if (!ensureDpsSimConfigModalExists()) return false;
+    const modal = document.getElementById('dps-sim-config-modal');
+    if (!modal) return false;
+    document.getElementById('config-sim-run-mode-menu')?.classList.remove('dps-sim-run-mode-menu--open');
+    document.getElementById('config-sim-run-mode-trigger')?.setAttribute('aria-expanded', 'false');
+    modal.style.display = 'flex';
+    if (dpsSimConfigEscHandler) document.removeEventListener('keydown', dpsSimConfigEscHandler);
+    dpsSimConfigEscHandler = (e) => {
+        if (e.key === 'Escape') closeDpsSimConfigModalInternal();
+    };
+    document.addEventListener('keydown', dpsSimConfigEscHandler);
+    closeDpsSimConfigModalFn = closeDpsSimConfigModalInternal;
+    updateBossStatsDisplay();
+    syncDpsCombatTargetSummaryPanels();
+    return true;
+}
 
 /**
  * Advanced / Quick / Safe dropdown in `#dps-sim-config-modal` (column 3, below AoE).
@@ -5047,49 +5099,20 @@ function setupSimConfigModal(container) {
         (el) => el.id !== 'sim-hero-copy-snip-btn'
     );
     const closeBtn = document.getElementById('dps-sim-config-modal-close');
-    if (!modal || openBtns.length === 0) return;
-
-    const closeRunModeMenu = () => {
-        const m = document.getElementById('config-sim-run-mode-menu');
-        const t = document.getElementById('config-sim-run-mode-trigger');
-        m?.classList.remove('dps-sim-run-mode-menu--open');
-        t?.setAttribute('aria-expanded', 'false');
-    };
-
-    let escHandler = null;
-    const closeModal = () => {
-        modal.style.display = 'none';
-        if (escHandler) {
-            document.removeEventListener('keydown', escHandler);
-            escHandler = null;
-        }
-        closeDpsSimConfigModalFn = null;
-    };
-    const openModal = () => {
-        closeRunModeMenu();
-        modal.style.display = 'flex';
-        if (escHandler) document.removeEventListener('keydown', escHandler);
-        escHandler = (e) => {
-            if (e.key === 'Escape') closeModal();
-        };
-        document.addEventListener('keydown', escHandler);
-        closeDpsSimConfigModalFn = closeModal;
-        updateBossStatsDisplay();
-        syncDpsCombatTargetSummaryPanels();
-    };
+    if (!modal) return;
 
     openBtns.forEach(openBtn => {
         openBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            openModal();
+            openDpsSimConfigModal();
         });
     });
     closeBtn?.addEventListener('click', (e) => {
         e.preventDefault();
-        closeModal();
+        closeDpsSimConfigModalInternal();
     });
     modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
+        if (e.target === modal) closeDpsSimConfigModalInternal();
     });
     dialog?.addEventListener('click', (e) => e.stopPropagation());
 }
@@ -12136,6 +12159,9 @@ export async function runGearPlanQuickSim(gearPlan) {
         snapshot[slot] = getCurrentlyEquippedItem(slot);
     }
     const enchantSnap = getSelectedEnchants();
+    const prevPriorityTab = activePriorityTabMode;
+    const gpRot = gearPlan.ui?.stRotation === 'eleSt' ? 'eleSt' : 'enhSt';
+    activePriorityTabMode = gpRot;
 
     try {
         for (const slot of GEAR_PLAN_SLOTS) {
@@ -12148,25 +12174,52 @@ export async function runGearPlanQuickSim(gearPlan) {
             applyEnchant(slot, idx == null ? 0 : idx);
         }
 
+        const durationMinInput = document.querySelector('#sim-duration-min');
+        const durationSecInput = document.querySelector('#sim-duration-sec');
+        const durationInput = document.querySelector('#sim-duration');
+        const mins = parseInt(durationMinInput?.value, 10) || 0;
+        const secs = parseInt(durationSecInput?.value, 10) || 0;
+        const duration = (mins * 60 + secs) || parseInt(durationInput?.value, 10) || 120;
+        const iterations = parseInt(document.querySelector('#sim-iterations')?.value, 10) || 400;
+        const workers = parseInt(document.querySelector('#sim-workers')?.value, 10) || 7;
+        const tabMode = getSimModeFromTab();
+
         const freshStats = getFreshShamanStats();
+        freshStats.targetArmor = parseInt(document.querySelector('#target-armor')?.value, 10) || freshStats.targetArmor;
+        freshStats.natureResist = parseInt(document.querySelector('#target-nature-resist')?.value, 10) || 0;
+        freshStats.fireResist = parseInt(document.querySelector('#target-fire-resist')?.value, 10) || 0;
+        freshStats.frostResist = parseInt(document.querySelector('#target-frost-resist')?.value, 10) || 0;
+        freshStats.setCombatConfig('aoeEnabled', false);
+        freshStats.setCombatConfig('casterMode', tabMode.casterMode);
+        if (document.querySelector('#config-being-attacked')) {
+            freshStats.setCombatConfig('beingAttacked', document.querySelector('#config-being-attacked')?.checked || false);
+            freshStats.setCombatConfig('wearingShield', document.querySelector('#config-wearing-shield')?.checked || false);
+            freshStats.setCombatConfig('inFrontOfBoss', document.querySelector('#config-in-front')?.checked || false);
+            freshStats.setCombatConfig('threatHold', document.querySelector('#config-threat-hold')?.checked || false);
+            freshStats.setCombatConfig('threatHoldDuration', parseInt(document.querySelector('#config-threat-hold-duration')?.value, 10) || 5);
+            freshStats.setCombatConfig('enemySwingTimer', parseFloat(document.querySelector('#config-enemy-swing-timer')?.value) || 2.0);
+        }
+
         const priorityConfig = loadPriorityConfig(freshStats.setBonuses || {});
+        syncSearingTotemCombatConfigFromPriority(freshStats, priorityConfig);
         const results = await runShamanSimulation(
             freshStats,
-            120,
-            400,
+            duration,
+            iterations,
             null,
             priorityConfig,
-            { quickSim: true }
+            { quickSim: true, maxWorkers: workers || undefined }
         );
 
         return {
             dps: results?.dps ?? 0,
-            note: 'Uses current talents, buffs, and rotation. Configure on the DPS sim page for accurate results.',
+            note: 'Uses current talents, buffs, GP ST rotation, and DPS sim settings.',
         };
     } catch (error) {
         console.error('[runGearPlanQuickSim]', error);
         return { error: error.message || 'Simulation failed' };
     } finally {
+        activePriorityTabMode = prevPriorityTab;
         for (const slot of GEAR_PLAN_SLOTS) {
             const prev = snapshot[slot];
             if (prev?.id) equipItem(prev.id, slot);
