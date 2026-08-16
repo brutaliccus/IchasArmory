@@ -73,6 +73,16 @@ export function calculateItemTankScore(item, tankWeights) {
     };
 }
 
+/**
+ * Compact tank score label for GP item cards and similar UI.
+ * @param {{ ehp: number, mitScore: number, tankScore: number }} tank
+ * @returns {string}
+ */
+export function formatItemTankScoreBadge(tank) {
+    if (!tank) return '';
+    return `Tank score: ${tank.tankScore.toLocaleString()} (EHP ${tank.ehp.toLocaleString()} · MIT ${tank.mitScore.toLocaleString()})`;
+}
+
 // Mapping from parseStatsFromTooltip keys to stat weight keys
 const TOOLTIP_TO_WEIGHT_KEY = {
     attackPower: 'ap',

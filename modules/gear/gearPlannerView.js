@@ -32,7 +32,7 @@ import { generateBuffIcons, applyBuffListToDom, getBuffsFromSavedList, handleBuf
 import { getSetBonuses } from './setBonuses.js';
 import { runGearPlanQuickSim, runGearPlanStatWeightSimulations, mergeStatWeightsToTemplate, updateStatWeightsTable, sortStatWeightsTable, openDpsSimConfigModal, prepareDpsSimConfigForGearPlanner } from '../shaman/dps.js';
 import { runTankSimulation, getBossDatabase } from '../tank/tankSimulator.js';
-import { createItemTooltipHTML, createEnchantTooltipHTML, calculateItemDpsScore, calculateItemTankScore } from '../ui/tooltips.js';
+import { createItemTooltipHTML, createEnchantTooltipHTML, calculateItemDpsScore, calculateItemTankScore, formatItemTankScoreBadge } from '../ui/tooltips.js';
 import { positionItemTooltipOnIcon } from '../ui/itemTooltipPosition.js';
 import {
     ensureItemSourcesLoaded,
@@ -2603,7 +2603,9 @@ function gpItemScoreBadgesHtml(item) {
     }
     if (hasMeaningfulTankWeights(tankW)) {
         const tank = calculateItemTankScore(item, tankW);
-        if (tank) parts.push(`<span class="gp-item-score-tank" title="Tank score (EHP + mitigation)">EHP ${tank.ehp.toLocaleString()} · ${tank.tankScore.toLocaleString()}</span>`);
+        if (tank) {
+            parts.push(`<span class="gp-item-score-tank" title="Tank score = EHP contribution + MIT contribution">${formatItemTankScoreBadge(tank)}</span>`);
+        }
     }
     if (!parts.length) return '';
     return `<div class="gp-item-scores">${parts.join('')}</div>`;

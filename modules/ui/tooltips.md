@@ -48,6 +48,12 @@ Computes an item's estimated DPS contribution from its parsed stats and current 
 
 Stats not in this mapping (stamina, spirit, defense, etc.) contribute 0 DPS.
 
+### `calculateItemTankScore(item, tankWeights)`
+Returns `{ ehp, mitScore, tankScore }` where `tankScore = ehp + mitScore` (stamina/armor vs mitigation stats).
+
+### `formatItemTankScoreBadge(tank)`
+Compact label for GP slot cards: `Tank score: X (EHP Y · MIT Z)`.
+
 **Weapon skill handling:** Items with `weaponSkillByType` (e.g., "Increased Axes +5") only contribute the `wepSkill` weight if the equipped mainhand weapon matches the skill type. `getWeaponSubtype()` reads the mainhand tooltip to determine the weapon type (e.g., "Axe", "Two-handed Mace"). A one-hand skill like "Axe" also matches "Two-handed Axe". Generic weapon skill (rare) always counts.
 
 ## Internal Functions
