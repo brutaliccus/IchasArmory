@@ -24,6 +24,70 @@ body[data-app-mode="character"] #gear-planner-shell {
     display: none;
 }
 
+body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    right: 0;
+    left: auto;
+    top: 60px;
+    bottom: 0;
+    width: 260px;
+    z-index: 1100;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 16px 16px 20px;
+    background: linear-gradient(145deg, #1a1a1f 0%, #121218 100%);
+    border: 1px solid #3d3520;
+    border-right: none;
+    border-radius: 10px 0 0 10px;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.4);
+    box-sizing: border-box;
+    zoom: 1 !important;
+}
+
+.gp-stats-sidebar {
+    display: none;
+}
+
+.gp-stats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.gp-stat-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.gp-stat-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    color: #c8c0a8;
+    font-size: calc(1rem + 2pt);
+    line-height: 1.35;
+    padding: 3px 6px;
+}
+
+.gp-stat-item strong {
+    color: var(--accent-color, #ffd700);
+    font-variant-numeric: tabular-nums;
+}
+
+.gp-talents-modal-content {
+    max-width: min(1100px, 96vw);
+    max-height: 90vh;
+    overflow: auto;
+    width: 100%;
+}
+
+.gp-talents-host {
+    padding: 8px 12px 16px;
+}
+
 body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     display: flex;
     flex-direction: column;

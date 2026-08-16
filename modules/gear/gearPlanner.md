@@ -10,7 +10,9 @@ Gear plan data model and localStorage persistence for the Gear Planner page.
   kind: 'gearPlan',
   id?: string,            // set after local/cloud save
   name: string,
-  class: string,          // class id for can-equip filter
+  class: string,
+  race: string,           // independent of Character Planner
+  talents: {},            // same `tree-talentId` → points map as character builds
   slots: {
     [slotId]: { primary: number|null, alternatives: number[] }
   },

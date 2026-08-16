@@ -17,6 +17,24 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+function isSiteAdmin(req) {
+    const adminId = process.env.SITE_ADMIN_DISCORD_ID;
+    if (!adminId) return false;
+    try {
+        if (typeof req.isAuthenticated !== 'function' || !req.isAuthenticated()) return false;
+        return String(req.user?.id) === String(adminId);
+    } catch {
+        return false;
+    }
+}
+
+function requireBugAdmin(req, res, next) {
+    if (!isSiteAdmin(req)) {
+        return res.status(403).json({ success: false, error: 'Forbidden' });
+    }
+    next();
+}
+
 // Try to load Discord auth features (optional)
 let authEnabled = false;
 try {
@@ -290,6 +308,7 @@ app.get('/user', (req, res) => {
     }
     res.json({
         authenticated: true,
+        isAdmin: isSiteAdmin(req),
         user: {
             id: req.user.id,
             username: req.user.username,
@@ -303,7 +322,6 @@ app.get('/user', (req, res) => {
 // Profile Management Routes
 // =======================
 
-// Middleware to check authentication
 const requireAuth = (req, res, next) => {
     if (!req.isAuthenticated()) {
         return res.status(401).json({ success: false, error: 'Not authenticated' });
@@ -716,7 +734,7 @@ app.delete('/user-gear-plans/:id', requireAuth, (req, res) => {
 // =======================
 
 // Serve bug report screenshots - handle any file in the timestamp directory
-app.get('/bug-reports/:timestamp/:filename', (req, res) => {
+app.get('/bug-reports/:timestamp/:filename', requireBugAdmin, (req, res) => {
     const timestamp = req.params.timestamp;
     const filename = req.params.filename;
     const filePath = path.join(bugReportsDir, timestamp, filename);
@@ -735,8 +753,29 @@ app.get('/bug-reports/:timestamp/:filename', (req, res) => {
     }
 });
 
+app.get('/bug-report-status', (req, res) => {
+    try {
+        const dirs = String(req.query.dirs || '')
+            .split(',')
+            .map((s) => s.trim())
+            .filter((d) => /^[0-9T.\-]+$/.test(d))
+            .slice(0, 80);
+        const reports = [];
+        for (const dir of dirs) {
+            const reportPath = path.join(bugReportsDir, dir, 'report.json');
+            if (!fs.existsSync(reportPath)) continue;
+            const reportData = JSON.parse(fs.readFileSync(reportPath, 'utf-8'));
+            reports.push({ timestampDir: dir, status: reportData.status || 'open' });
+        }
+        res.set({ 'Cache-Control': 'no-store' });
+        res.json({ success: true, reports });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 // Get all bug reports
-app.get('/bug-reports', (req, res) => {
+app.get('/bug-reports', requireBugAdmin, (req, res) => {
     try {
         const reports = [];
         
@@ -814,7 +853,7 @@ app.get('/bug-reports', (req, res) => {
 });
 
 // Update bug report status
-app.patch('/bug-reports/:timestamp/status', (req, res) => {
+app.patch('/bug-reports/:timestamp/status', requireBugAdmin, (req, res) => {
     try {
         const { timestamp } = req.params;
         const { status } = req.body;

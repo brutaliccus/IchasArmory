@@ -21,7 +21,7 @@ import { itemLoader } from './modules/gear/itemLoader.js';
 import { importFromArmoryAPI as importFromArmoryModule, updateCharacterStatusBar, initializeStatusBar, updateStatusBarValues, setImportedState as setImportedStateArmory, RACE_TO_FACTION, FACTION_ICONS } from './modules/armory/armory.js';
 import { displayStatWeightFormula } from './modules/statWeightFormulas.js';
 import { exportBuildToURL as exportBuildModule, importBuildFromURL as importBuildModule, exportGearPlanToURL as exportGearPlanModule, importGearPlanFromURL as importGearPlanModule } from './modules/armory/buildManager.js';
-import { initGearPlannerView, handleGearPlanItemSelected, setGearPlan, getCurrentGearPlan, renderGearPlanner } from './modules/gear/gearPlannerView.js';
+import { initGearPlannerView, handleGearPlanItemSelected, setGearPlan, getCurrentGearPlan, renderGearPlanner, closeGpTalentsModal } from './modules/gear/gearPlannerView.js';
 import { ensureItemSourcesLoaded } from './modules/gear/itemSources.js';
 import { runTankSimulation, getBossDatabase, getBossById } from './modules/tank/tankSimulator.js';
 import { raidDefinitions, getAvailableRaids, getRaidBosses } from './modules/tank/raidDefinitions.js';
@@ -173,7 +173,12 @@ export function setAppMode(mode) {
         btn.classList.toggle('active', mode === next);
     });
     const locSidebar = document.getElementById('gp-locations-sidebar');
+    const statsSidebar = document.getElementById('gp-stats-sidebar');
     if (locSidebar) locSidebar.hidden = next !== 'gearPlanner';
+    if (statsSidebar) statsSidebar.hidden = next !== 'gearPlanner';
+    if (next !== 'gearPlanner') {
+        closeGpTalentsModal();
+    }
     if (next === 'gearPlanner') {
         renderGearPlanner();
     }

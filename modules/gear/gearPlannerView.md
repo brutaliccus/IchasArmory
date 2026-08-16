@@ -5,11 +5,14 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 ## Locations sidebar
 
 - `#gp-locations-sidebar` is **outside** `#ichacalc-scaled-root`: `position: fixed; left: 0; top: 60px` (below the unscaled nav), docked to the **screen** left. Hidden unless `body[data-app-mode="gearPlanner"]`.
-- `#gear-planner-shell` is viewport-centered (`margin: 0 auto`); the locations dock overlays the left and does **not** pad the shell by sidebar width.
+- `#gp-stats-sidebar` mirrors it on the **far right**. It shows only non-zero deltas vs naked class/race (no gear, no GP talents), using `calculateEffectiveHealth` with **GP** class, race, talent spec, and **primary** items. Empty plan: “No modified stats yet”.
+- Gear Planner class/race/talents are **independent** of the Character Planner. Race drawer `#gp-cr-drawer-race`. Talents button opens `#gp-talents-modal`, snapshotting `#talents-list` then restoring on close.
+- `#gear-planner-shell` is viewport-centered (`margin: 0 auto`); the locations/stats docks overlay the edges and do **not** pad the shell by sidebar width.
 - Nested item names use quality classes (`span.q0`–`q5`) from `getItemById`.
 - Built from the current plan’s **primary and alternative** item IDs via `getPreferredSourcesForItem` (`itemSources.js`). Unique dungeon/raid/worldboss instances (not Collections when an instance source exists). Nested indented item names under each location; click opens octowow DB. Hovering a location adds `.gp-location-hovering` on `#gear-planner-shell`, `.gp-row--location-hl` on matching primary/alt rows, and `.gp-item-name--location-hl` on the inner `.gp-item-name-text` span only (not the card).
 - Dungeons follow the same high-level-first order as the item-modal instance filter (`getInstanceFilterGroups`). Other groups are alphabetical.
-- `renderLocationsSidebar()` runs on every `renderGearPlanner()` so add/remove/clear updates live. Empty plan: “No locations yet”.
+- Save: unsaved plans save immediately; loaded/saved plans prompt overwrite vs save-as-new (`#gp-save-overwrite-dialog`).
+- Empty alternatives: no “No alternatives” placeholder.
 - Larger type in `gear-planner.css` (~1rem instance names, gold headings); independent scroll if the list is long.
 
 ## Integration (app.js)

@@ -1,6 +1,7 @@
 // modules/gear/gearPlannerView.js — Gear Planner page UI
 
 import {
+    GEAR_PLAN_SLOTS,
     createEmptyGearPlan,
     getGearPlanData,
     saveGearPlannerSession,
@@ -9,7 +10,12 @@ import {
     saveLocalGearPlans,
     applyGearPlanItemMove,
 } from './gearPlanner.js';
-import { ICON_BASE_URL, getEmptySlotPlaceholderUrl } from './gear.js';
+import { ICON_BASE_URL, getEmptySlotPlaceholderUrl, getMeleeWeaponType } from './gear.js';
+import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip } from '../character/stats.js';
+import { baseStats, raceIconData, getSelectedRaceBonuses } from '../character/races.js';
+import { calculateEffectiveHealth } from '../ui/calculator.js';
+import { generateTalentInputs, updateTalentPoints, getTalentBonusesFromSpec } from '../talents_new.js';
+import { getSetBonuses } from './setBonuses.js';
 import { runGearPlanQuickSim } from '../shaman/dps.js';
 import { createItemTooltipHTML } from '../ui/tooltips.js';
 import { positionItemTooltipOnIcon } from '../ui/itemTooltipPosition.js';
@@ -63,6 +69,8 @@ let editingAltSlot = null;
 let pickCallback = null;
 let editMode = true;
 let gpDidDrag = false;
+let gpTalentModalOpen = false;
+let characterTalentSnapshot = null;
 
 export function initGearPlannerView(cbs) {
     callbacks = cbs || {};
@@ -77,8 +85,13 @@ export function initGearPlannerView(cbs) {
     } else {
         editMode = true;
     }
+    ensurePlanRace();
+    if (!currentPlan.talents) currentPlan.talents = {};
     wireHeaderControls();
     wireClassDrawer();
+    wireRaceDrawer();
+    wireTalentModal();
+    wireSaveOverwriteDialog();
     ensureItemSourcesLoaded().then(() => renderGearPlanner()).catch(() => {});
     renderGearPlanner();
 }
@@ -118,7 +131,8 @@ function wireHeaderControls() {
         });
     }
 
-    document.getElementById('gp-save-btn')?.addEventListener('click', () => saveCurrentPlan());
+    document.getElementById('gp-save-btn')?.addEventListener('click', () => requestSaveCurrentPlan());
+    document.getElementById('gp-talents-btn')?.addEventListener('click', () => openGpTalentsModal());
     document.getElementById('gp-edit-mode-btn')?.addEventListener('click', () => {
         editMode = !editMode;
         persistSession();
@@ -161,6 +175,7 @@ function wireClassDrawer() {
         if (open) {
             closeGpClassDrawer();
         } else {
+            closeGpRaceDrawer();
             generateGpClassIcons();
             drawer.classList.add('is-open');
             toggle.setAttribute('aria-expanded', 'true');
@@ -168,7 +183,10 @@ function wireClassDrawer() {
     });
 
     document.addEventListener('click', (e) => {
-        if (sidebar && !sidebar.contains(e.target)) closeGpClassDrawer();
+        if (sidebar && !sidebar.contains(e.target)) {
+            closeGpClassDrawer();
+            closeGpRaceDrawer();
+        }
     });
 
     generateGpClassIcons();
@@ -199,6 +217,8 @@ function generateGpClassIcons() {
             e.stopPropagation();
             currentPlan.class = el.dataset.classId;
             sidebar.dataset.selectedClass = el.dataset.classId;
+            currentPlan.talents = {};
+            ensurePlanRace(true);
             persistSession();
             updateQuickSimVisibility();
             closeGpClassDrawer();
@@ -215,6 +235,308 @@ function syncGpClassToggle() {
         img.src = data.icon;
         img.alt = data.name;
     }
+}
+
+function racesForGpClass(classId) {
+    const available = Object.keys(baseStats[classId] || {}).filter(key => raceIconData[key]);
+    available.sort((a, b) => raceIconData[a].name.localeCompare(raceIconData[b].name, undefined, { sensitivity: 'base' }));
+    return available;
+}
+
+function ensurePlanRace(forceIfInvalid = false) {
+    const cls = currentPlan.class || 'warrior';
+    const races = racesForGpClass(cls);
+    const fallback = races[0] || 'human';
+    if (!currentPlan.race || forceIfInvalid || !races.includes(currentPlan.race)) {
+        currentPlan.race = races.includes(currentPlan.race) ? currentPlan.race : fallback;
+    }
+}
+
+function closeGpRaceDrawer() {
+    const drawer = document.getElementById('gp-cr-drawer-race');
+    const toggle = document.getElementById('gp-race-drawer-toggle');
+    drawer?.classList.remove('is-open');
+    toggle?.setAttribute('aria-expanded', 'false');
+}
+
+function wireRaceDrawer() {
+    const toggle = document.getElementById('gp-race-drawer-toggle');
+    const drawer = document.getElementById('gp-cr-drawer-race');
+    if (!toggle || !drawer) return;
+    toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const open = !drawer.classList.contains('is-open');
+        closeGpClassDrawer();
+        drawer.classList.toggle('is-open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open) generateGpRaceIcons();
+    });
+}
+
+function generateGpRaceIcons() {
+    const container = document.getElementById('gp-race-selector');
+    const sidebar = document.getElementById('gp-class-sidebar');
+    if (!container || !sidebar) return;
+    ensurePlanRace();
+    const selected = currentPlan.race;
+    sidebar.dataset.selectedRace = selected;
+    syncGpRaceToggle();
+    const listIds = racesForGpClass(currentPlan.class || 'warrior').filter(id => id !== selected);
+    container.innerHTML = listIds.map(raceId => {
+        const data = raceIconData[raceId];
+        return `<div class="race-icon gp-race-icon" data-race-id="${raceId}" data-race-name="${data.name}">
+            <img src="${data.icon}" alt="${data.name}">
+        </div>`;
+    }).join('');
+    container.querySelectorAll('.gp-race-icon').forEach(el => {
+        el.addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentPlan.race = el.dataset.raceId;
+            sidebar.dataset.selectedRace = el.dataset.raceId;
+            persistSession();
+            closeGpRaceDrawer();
+            renderGearPlanner();
+        });
+    });
+}
+
+function syncGpRaceToggle() {
+    const img = document.getElementById('gp-race-drawer-toggle-img');
+    const race = currentPlan.race || 'human';
+    const data = raceIconData[race];
+    if (img && data) {
+        img.src = data.icon;
+        img.alt = data.name;
+    }
+}
+
+function serializeTalentSpec(root) {
+    const spec = {};
+    root?.querySelectorAll('.talent-icon-container').forEach(el => {
+        const points = parseInt(el.dataset.points, 10) || 0;
+        if (points <= 0) return;
+        const key = el.dataset.tree ? `${el.dataset.tree}-${el.dataset.talentId}` : el.dataset.talentId;
+        if (key) spec[key] = points;
+    });
+    return spec;
+}
+
+async function applyTalentSpec(root, spec) {
+    if (!root || !spec) return;
+    for (const [key, points] of Object.entries(spec)) {
+        let tree, talentId;
+        if (key.includes('-')) [tree, talentId] = key.split('-');
+        else talentId = key;
+        const selector = tree
+            ? `.talent-icon-container[data-tree="${tree}"][data-talent-id="${talentId}"]`
+            : `.talent-icon-container[data-talent-id="${talentId}"]`;
+        const talentEl = root.querySelector(selector);
+        if (talentEl) updateTalentPoints(talentEl, points);
+    }
+}
+
+function snapshotCharacterTalents() {
+    const list = document.getElementById('talents-list');
+    const classId = document.getElementById('class-race-sidebar')?.dataset?.selectedClass || 'warrior';
+    return { classId, spec: serializeTalentSpec(list) };
+}
+
+async function restoreCharacterTalents(snap) {
+    const list = document.getElementById('talents-list');
+    if (!list || !snap) return;
+    generateTalentInputs(list, snap.classId);
+    await applyTalentSpec(list, snap.spec);
+}
+
+function wireTalentModal() {
+    document.getElementById('gp-talents-modal-close')?.addEventListener('click', () => closeGpTalentsModal());
+    document.getElementById('gp-talents-modal')?.addEventListener('click', (e) => {
+        if (e.target?.id === 'gp-talents-modal') closeGpTalentsModal();
+    });
+}
+
+async function openGpTalentsModal() {
+    const modal = document.getElementById('gp-talents-modal');
+    const host = document.getElementById('gp-talents-host');
+    const charList = document.getElementById('talents-list');
+    if (!modal || !host) return;
+    if (!gpTalentModalOpen) {
+        characterTalentSnapshot = snapshotCharacterTalents();
+        if (charList) charList.innerHTML = '';
+    }
+    gpTalentModalOpen = true;
+    generateTalentInputs(host, currentPlan.class || 'warrior');
+    await applyTalentSpec(host, currentPlan.talents || {});
+    modal.style.display = 'flex';
+}
+
+export async function closeGpTalentsModal() {
+    const modal = document.getElementById('gp-talents-modal');
+    const host = document.getElementById('gp-talents-host');
+    if (host) {
+        currentPlan.talents = serializeTalentSpec(host);
+        host.innerHTML = '';
+    }
+    persistSession();
+    gpTalentModalOpen = false;
+    if (modal) modal.style.display = 'none';
+    await restoreCharacterTalents(characterTalentSnapshot);
+    characterTalentSnapshot = null;
+    renderStatsSidebar();
+}
+
+function emptyStatTemplate() {
+    const total = Object.assign({}, STAT_TEMPLATE);
+    total.weaponSkillByType = {};
+    return total;
+}
+
+function aggregatePrimaryGearStats(plan) {
+    const total = emptyStatTemplate();
+    const equipped = {};
+    for (const slot of GEAR_PLAN_SLOTS) {
+        const id = plan.slots?.[slot]?.primary;
+        if (id == null) continue;
+        const item = callbacks.getItemById?.(id);
+        if (!item) continue;
+        if (!item.stats) item.stats = parseStatsFromTooltip(item);
+        equipped[slot] = item;
+        if (!item.stats) continue;
+        for (const itemStatKey in item.stats) {
+            if (itemStatKey === 'weaponSkillByType' && typeof item.stats[itemStatKey] === 'object') {
+                for (const weaponType in item.stats[itemStatKey]) {
+                    total.weaponSkillByType[weaponType] = (total.weaponSkillByType[weaponType] || 0) + item.stats[itemStatKey][weaponType];
+                }
+            } else {
+                const finalKey = KEY_MAP[itemStatKey] || itemStatKey;
+                if (Object.prototype.hasOwnProperty.call(total, finalKey)) {
+                    total[finalKey] += item.stats[itemStatKey];
+                }
+            }
+        }
+    }
+    return { gearStats: total, equipped };
+}
+
+function buildGpCalcPayload(plan, { includeGear, includeTalents }) {
+    const cls = plan.class || 'warrior';
+    const race = plan.race || 'human';
+    const { gearStats, equipped } = includeGear ? aggregatePrimaryGearStats(plan) : { gearStats: emptyStatTemplate(), equipped: {} };
+    const mh = equipped.mainhand;
+    const oh = equipped.offhand;
+    const mhType = getMeleeWeaponType(mh);
+    const ohType = getMeleeWeaponType(oh);
+    return {
+        selectedClass: cls,
+        selectedRace: race,
+        attackerLevel: 63,
+        gearStats,
+        talentBonuses: includeTalents ? getTalentBonusesFromSpec(cls, plan.talents || {}) : {},
+        racialBonuses: getSelectedRaceBonuses(race),
+        activeBuffs: [],
+        enchantStats: emptyStatTemplate(),
+        offhandArmor: oh?.stats?.armor || 0,
+        setBonuses: includeGear ? getSetBonuses(equipped, false) : {},
+        isDualWielding: !!(oh && ohType),
+        mainhandWeaponType: mhType,
+        offhandWeaponType: ohType,
+        mainhandIsTwoHanded: mh?.tooltip_lines_raw?.includes('Two-hand') || false,
+        offhandIsTwoHanded: oh?.tooltip_lines_raw?.includes('Two-hand') || false,
+        rangedWeaponType: null,
+    };
+}
+
+const GP_STAT_GROUPS = [
+    { title: 'Attributes', rows: [
+        ['strength', 'Strength'], ['agility', 'Agility'], ['stamina', 'Stamina'],
+        ['intellect', 'Intellect'], ['spirit', 'Spirit'], ['vampirism', 'Vampirism', 'pct'],
+        ['critDmgReduction', 'Crit Dmg Reduction', 'pct'],
+    ]},
+    { title: 'Melee', rows: [
+        ['attackPower', 'Attack Power'], ['crit', 'Melee Crit', 'pct'],
+        ['hit', 'Melee Hit', 'pct'], ['haste', 'Haste', 'pct'], ['armorPen', 'Armor Pen'],
+    ]},
+    { title: 'Ranged', rows: [
+        ['rangedAttackPower', 'Attack Power'], ['rangedCrit', 'Ranged Crit', 'pct'],
+        ['rangedHit', 'Ranged Hit', 'pct'],
+    ]},
+    { title: 'Spell', rows: [
+        ['dmgAndHealing', 'Spell Damage'], ['healing', 'Healing'], ['spellCrit', 'Spell Crit', 'pct'],
+        ['spellHit', 'Spell Hit', 'pct'], ['spellPen', 'Spell Pen'], ['mp5', 'Mp5'],
+        ['fireDamage', 'Fire Damage'], ['frostDamage', 'Frost Damage'], ['natureDamage', 'Nature Damage'],
+        ['shadowDamage', 'Shadow Damage'], ['arcaneDamage', 'Arcane Damage'], ['holyDamage', 'Holy Damage'],
+    ]},
+    { title: 'Defense', rows: [
+        ['health', 'Health'], ['mana', 'Mana'], ['armor', 'Armor'], ['defense', 'Defense'],
+        ['dodge', 'Dodge', 'pct'], ['parry', 'Parry', 'pct'], ['block', 'Block', 'pct'],
+        ['blockValue', 'Block Value'],
+    ]},
+    { title: 'Damage Reduction', rows: [
+        ['fireDR', 'Fire', 'pct'], ['natureDR', 'Nature', 'pct'], ['frostDR', 'Frost', 'pct'],
+        ['shadowDR', 'Shadow', 'pct'], ['arcaneDR', 'Arcane', 'pct'], ['holyDR', 'Holy', 'pct'],
+    ]},
+];
+
+function formatGpStatValue(value, kind) {
+    if (kind === 'pct') return `${Number(value).toFixed(2)}%`;
+    if (Number.isInteger(value)) return String(value);
+    return Number(value).toFixed(1);
+}
+
+function renderStatsSidebar() {
+    const list = document.getElementById('gp-stats-list');
+    if (!list) return;
+    ensurePlanRace();
+    const plan = getGearPlanData(currentPlan);
+    const hasPrimary = GEAR_PLAN_SLOTS.some(s => plan.slots?.[s]?.primary != null);
+    const talentBonuses = getTalentBonusesFromSpec(plan.class || 'warrior', plan.talents || {});
+    const hasTalents = Object.values(talentBonuses).some(v => typeof v === 'number' && v !== 0);
+    if (!hasPrimary && !hasTalents) {
+        list.innerHTML = '<p class="gp-locations-empty">No modified stats yet</p>';
+        return;
+    }
+    const full = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: true, includeTalents: true }));
+    const base = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: false, includeTalents: false }));
+    const cards = GP_STAT_GROUPS.map(group => {
+        const rows = group.rows.map(([key, label, kind]) => {
+            const delta = (Number(full[key]) || 0) - (Number(base[key]) || 0);
+            if (Math.abs(delta) < 0.005) return '';
+            const sign = delta > 0 ? '+' : '';
+            return `<div class="gp-stat-item"><span>${escapeHtml(label)}</span><strong>${sign}${formatGpStatValue(delta, kind)}</strong></div>`;
+        }).filter(Boolean).join('');
+        if (!rows) return '';
+        return `<div class="gp-stat-card"><h4 class="gp-locations-group-heading">${escapeHtml(group.title)}</h4>${rows}</div>`;
+    }).filter(Boolean).join('');
+    list.innerHTML = cards || '<p class="gp-locations-empty">No modified stats yet</p>';
+}
+
+function wireSaveOverwriteDialog() {
+    const hide = () => {
+        const el = document.getElementById('gp-save-overwrite-dialog');
+        if (el) el.style.display = 'none';
+    };
+    document.getElementById('gp-save-overwrite-close')?.addEventListener('click', hide);
+    document.getElementById('gp-save-overwrite-cancel')?.addEventListener('click', hide);
+    document.getElementById('gp-save-overwrite-confirm')?.addEventListener('click', () => {
+        hide();
+        saveCurrentPlan(false);
+    });
+    document.getElementById('gp-save-new-confirm')?.addEventListener('click', () => {
+        hide();
+        saveCurrentPlan(true);
+    });
+}
+
+function requestSaveCurrentPlan() {
+    if (currentPlan.id) {
+        const msg = document.getElementById('gp-save-overwrite-msg');
+        if (msg) msg.textContent = `"${currentPlan.name || 'This plan'}" is already saved. Overwrite it or save as a new plan?`;
+        const dlg = document.getElementById('gp-save-overwrite-dialog');
+        if (dlg) dlg.style.display = 'flex';
+        return;
+    }
+    saveCurrentPlan(false);
 }
 
 function updateQuickSimVisibility() {
@@ -426,9 +748,11 @@ export function renderGearPlanner() {
         nameInput.value = currentPlan.name || 'Gear Plan';
     }
     generateGpClassIcons();
+    generateGpRaceIcons();
     updateQuickSimVisibility();
     syncEditModeUi();
     renderLocationsSidebar();
+    renderStatsSidebar();
 
     const leftCol = document.getElementById('gp-slots-left');
     const rightCol = document.getElementById('gp-slots-right');
@@ -497,7 +821,7 @@ function renderSlotCard(slotId, side) {
         data-slot="${slotId}" data-side="${side}" aria-expanded="${expanded}">
         <div class="gp-slot-card-header">${primaryInner}</div>
         <div class="gp-alts-panel" data-slot="${slotId}" ${expanded ? '' : 'hidden'}>
-            ${altsHtml || '<div class="gp-alt-empty">No alternatives</div>'}
+            ${altsHtml}
         </div>
     </article>`;
     const addBtn = gpSlotAddButtonHtml(slotId, !empty);
@@ -692,9 +1016,10 @@ async function openPickerForSlot(slotId, isAlt) {
     await callbacks.openItemModalForGearPlan(slotId, currentPlan.class);
 }
 
-async function saveCurrentPlan() {
+async function saveCurrentPlan(asNew = false) {
     const plan = getGearPlanData(currentPlan);
     plan.updatedAt = new Date().toISOString();
+    if (asNew) delete plan.id;
 
     if (window.profileManager?.user) {
         const saved = await window.profileManager.saveGearPlan(plan);
@@ -711,7 +1036,7 @@ async function saveCurrentPlan() {
     }
 
     const local = loadLocalGearPlans();
-    if (!plan.id) plan.id = `local_gp_${Date.now()}`;
+    if (asNew || !plan.id) plan.id = `local_gp_${Date.now()}`;
     const existing = local.findIndex(p => p.id === plan.id);
     if (existing >= 0) local[existing] = { ...local[existing], ...plan };
     else local.push(plan);

@@ -19,6 +19,13 @@
 .dropdown-btn.icon-only {
     padding: 10px;
     position: relative;
+    min-width: 38px;
+    min-height: 38px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
 }
 
 .user-btn:hover, .dropdown-btn:hover {
@@ -105,6 +112,7 @@
 
 .user-dropdown {
     display: flex;
+    align-items: center;
     gap: 8px;
 }
 
@@ -515,6 +523,8 @@
 /* Builds Dropdown Menu */
 .builds-dropdown-container {
     position: relative;
+    display: inline-flex;
+    align-items: center;
 }
 
 .builds-dropdown {
@@ -670,6 +680,8 @@
 /* Inbox Dropdown Menu */
 .inbox-dropdown-container {
     position: relative;
+    display: inline-flex;
+    align-items: center;
 }
 
 .inbox-dropdown {

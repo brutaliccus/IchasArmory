@@ -69,14 +69,10 @@ async function checkForNotifications() {
         }
 
         // Force a fresh fetch by adding timestamp to prevent caching
-        const response = await fetch(`/bug-reports?t=${Date.now()}`, {
+        const response = await fetch(`/bug-report-status?dirs=${encodeURIComponent(submittedReports.join(','))}&t=${Date.now()}`, {
             method: 'GET',
             cache: 'no-store',
-            headers: {
-                'Cache-Control': 'no-cache, no-store, must-revalidate',
-                'Pragma': 'no-cache',
-                'Expires': '0'
-            }
+            credentials: 'include',
         });
 
         if (!response.ok) {
@@ -373,6 +369,7 @@ export function initBugReportsViewer() {
             const response = await fetch(`/bug-reports?t=${Date.now()}`, {
                 method: 'GET',
                 cache: 'no-store',
+                credentials: 'include',
                 headers: {
                     'Cache-Control': 'no-cache, no-store, must-revalidate',
                     'Pragma': 'no-cache',
@@ -433,6 +430,7 @@ export function initBugReportsViewer() {
         try {
             const response = await fetch(`/bug-reports/${timestampDir}/status`, {
                 method: 'PATCH',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                     'Cache-Control': 'no-cache',
@@ -556,6 +554,9 @@ export function initBugReportsViewer() {
     window.bugReportModule = {
         markAsFixed: markAsFixed,
         closeNotification: closeNotification,
-        updateNotificationBadge: updateNotificationBadge
+        updateNotificationBadge: updateNotificationBadge,
+        setAdminViewer: (isAdmin) => {
+            if (viewBtn) viewBtn.style.display = isAdmin ? 'flex' : 'none';
+        }
     };
 }

@@ -98,8 +98,10 @@ class ProfileManager {
 
             if (data.authenticated) {
                 this.user = data.user;
+                this.isAdmin = !!data.isAdmin;
                 this.updateUI(true);
             } else {
+                this.isAdmin = false;
                 this.updateUI(false);
                 return;
             }
@@ -129,9 +131,19 @@ class ProfileManager {
                 : 'https://cdn.discordapp.com/embed/avatars/0.png';
             document.getElementById('user-avatar').src = avatarUrl;
         } else {
+            this.isAdmin = false;
             loginBtn.style.display = 'flex';
             userInfo.style.display = 'none';
         }
+
+        document.querySelectorAll('.auth-only-nav').forEach(el => {
+            el.style.display = authenticated ? 'inline-flex' : 'none';
+        });
+        const viewBtn = document.getElementById('view-bug-reports-btn');
+        if (viewBtn) {
+            viewBtn.style.display = (authenticated && this.isAdmin) ? 'flex' : 'none';
+        }
+        window.bugReportModule?.setAdminViewer?.(!!(authenticated && this.isAdmin));
     }
 
     setupEventListeners() {

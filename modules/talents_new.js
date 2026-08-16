@@ -727,6 +727,50 @@ export function getTalentBonuses(className) {
     return bonuses;
 }
 
+/** Compute talent bonuses from a saved spec map (`tree-talentId` → points), without reading the live tree DOM. */
+export function getTalentBonusesFromSpec(className, spec) {
+    const talents = classTalents[className];
+    const bonuses = {};
+    const map = spec && typeof spec === 'object' ? spec : {};
+
+    if (talents && typeof talents === 'object' && !Array.isArray(talents)) {
+        Object.entries(talents).forEach(([treeKey, tree]) => {
+            tree.talents.forEach(talent => {
+                const points = parseInt(map[`${treeKey}-${talent.id}`], 10) || parseInt(map[talent.id], 10) || 0;
+                if (points === 0) return;
+                applyTalentBonuses(talent, points, bonuses, className);
+            });
+        });
+    } else if (Array.isArray(talents)) {
+        talents.forEach(talent => {
+            if (talent.type !== 'points') return;
+            const points = parseInt(map[talent.id], 10) || 0;
+            if (points === 0) return;
+            if (talent.statsPerRank) {
+                const rankStats = talent.statsPerRank[points - 1];
+                if (rankStats) {
+                    Object.entries(rankStats).forEach(([statName, statValue]) => {
+                        bonuses[statName] = (bonuses[statName] || 0) + statValue;
+                    });
+                }
+            } else if (talent.statPerRank) {
+                const rankData = talent.statPerRank[points - 1];
+                if (rankData && rankData.stat && rankData.stat !== 'none') {
+                    bonuses[rankData.stat] = (bonuses[rankData.stat] || 0) + rankData.value;
+                }
+            } else if (talent.stats) {
+                Object.entries(talent.stats).forEach(([statName, statValue]) => {
+                    bonuses[statName] = (bonuses[statName] || 0) + points * statValue;
+                });
+            } else if (talent.stat && talent.stat !== 'none') {
+                bonuses[talent.stat] = (bonuses[talent.stat] || 0) + points * talent.value;
+            }
+        });
+    }
+
+    return bonuses;
+}
+
 // Apply bonuses from individual talents (to be expanded per talent)
 function applyTalentBonuses(talent, points, bonuses, className) {
     // Map talent effects to stat bonuses

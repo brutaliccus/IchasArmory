@@ -24,12 +24,13 @@
     backdrop-filter: blur(10px);
 }
 
-/* Left side - bug report controls */
+/* Left side - login / profile / logout */
 .top-nav-left {
     display: flex;
     align-items: center;
     gap: 8px;
     justify-self: start;
+    min-height: 38px;
 }
 
 /* Center - site title */
@@ -45,6 +46,7 @@
 
 .bug-report-controls {
     display: flex;
+    align-items: center;
     gap: 8px;
 }
 
@@ -54,6 +56,9 @@
     border: 1px solid var(--ichacalc-ui-orange, #FFA500);
     border-radius: 6px;
     padding: 8px;
+    min-width: 38px;
+    min-height: 38px;
+    box-sizing: border-box;
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
@@ -61,6 +66,7 @@
     justify-content: center;
     color: var(--accent-color);
     position: relative;
+    margin: 0;
 }
 
 .top-nav-icon-btn:hover {
