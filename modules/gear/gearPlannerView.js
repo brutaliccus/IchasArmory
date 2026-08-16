@@ -15,6 +15,9 @@ import {
     getGearPlannerDpsStatWeights,
     normalizeGearPlanRoles,
     defaultIconForClassSpec,
+    sanitizeGearPlanDescription,
+    formatGearPlanRoleLabel,
+    GEAR_PLAN_DESCRIPTION_MAX,
 } from './gearPlanner.js';
 import { ICON_BASE_URL, getEmptySlotPlaceholderUrl, getMeleeWeaponType, getEnchantableSlots } from './gear.js';
 import { enchantDatabase } from './enchants.js';
@@ -27,7 +30,7 @@ import { generateBuffIcons, applyBuffListToDom, getBuffsFromSavedList, handleBuf
 import { getSetBonuses } from './setBonuses.js';
 import { runGearPlanQuickSim, runGearPlanStatWeightSimulations, mergeStatWeightsToTemplate, updateStatWeightsTable, sortStatWeightsTable, openDpsSimConfigModal } from '../shaman/dps.js';
 import { runTankSimulation, getBossDatabase } from '../tank/tankSimulator.js';
-import { createItemTooltipHTML, createEnchantTooltipHTML } from '../ui/tooltips.js';
+import { createItemTooltipHTML, createEnchantTooltipHTML, calculateItemDpsScore, calculateItemTankScore } from '../ui/tooltips.js';
 import { positionItemTooltipOnIcon } from '../ui/itemTooltipPosition.js';
 import {
     ensureItemSourcesLoaded,
@@ -36,6 +39,28 @@ import {
     getInstanceFilterGroups,
 } from './itemSources.js';
 import { itemLoader } from './itemLoader.js';
+
+/** Manual DPS weight keys used by item score tooltips. */
+const GP_MANUAL_DPS_WEIGHT_KEYS = [
+    { key: 'ap', label: 'Attack Power' },
+    { key: 'str', label: 'Strength' },
+    { key: 'agi', label: 'Agility' },
+    { key: 'int', label: 'Intellect' },
+    { key: 'physCrit', label: 'Phys Crit %' },
+    { key: 'physHit', label: 'Phys Hit %' },
+    { key: 'haste', label: 'Haste %' },
+    { key: 'sp', label: 'Spell Power' },
+    { key: 'spellCrit', label: 'Spell Crit %' },
+    { key: 'spellHit', label: 'Spell Hit %' },
+    { key: 'arp', label: 'Armor Pen' },
+    { key: 'wepSkill', label: 'Weapon Skill' },
+];
+
+const GP_TANK_CAPABLE = new Set(['warrior', 'paladin', 'druid', 'shaman']);
+
+/** Track user-picked icon in save dialog (never overwrite with spec default). */
+let saveIconUserPicked = false;
+let saveDialogSpecBaseline = '';
 
 function wowIconUrl(iconKey) {
     const key = String(iconKey || 'inv_misc_questionmark')
@@ -106,11 +131,96 @@ const GP_ICON_WEIGHTS = `<svg xmlns="http://www.w3.org/2000/svg" width="18" heig
 const GP_TANK_WEIGHT_CLASSES = new Set(['warrior', 'paladin', 'druid']);
 const GP_ICON_HOME = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M25,21.5c0,-0.319 -0.152,-0.619 -0.409,-0.807c-0.258,-0.188 -0.589,-0.243 -0.893,-0.146l-7.698,2.44c-0,0 -7.698,-2.44 -7.698,-2.44c-0.304,-0.097 -0.635,-0.042 -0.893,0.146c-0.257,0.188 -0.409,0.488 -0.409,0.807l0,6c0,0.552 0.448,1 1,1l16,0c0.552,0 1,-0.448 1,-1l0,-6Zm-2,1.366l0,3.634l-14,0c0,-0 0,-3.634 0,-3.634c0,0 6.698,2.123 6.698,2.123c0.196,0.063 0.408,0.063 0.604,0l6.698,-2.123Zm-2.002,-14.31c0.02,-0.341 -0.137,-0.668 -0.414,-0.868c-0.278,-0.199 -0.638,-0.243 -0.955,-0.116l-2.5,1c-0.38,0.151 -0.629,0.519 -0.629,0.928l0,11c0,0.317 0.151,0.616 0.406,0.804c0.255,0.189 0.585,0.245 0.888,0.152l6.5,-2c0.42,-0.129 0.706,-0.517 0.706,-0.956l0,-6c0,-0.552 -0.448,-1 -1,-1c-0.892,0 -1.663,-0.246 -2.203,-0.739c-0.516,-0.472 -0.797,-1.166 -0.797,-2.02c0,-0.062 -0.005,-0.124 -0.002,-0.185Zm-8.627,-0.984c-0.317,-0.127 -0.677,-0.083 -0.955,0.116c-0.277,0.2 -0.434,0.527 -0.414,0.868c0.003,0.061 -0.002,0.123 -0.002,0.185c0,0.854 -0.281,1.548 -0.797,2.02c-0.54,0.493 -1.311,0.739 -2.203,0.739c-0.552,0 -1,0.448 -1,1l0,6c0,0.439 0.286,0.827 0.706,0.956l6.5,2c0.303,0.093 0.633,0.037 0.888,-0.152c0.255,-0.188 0.406,-0.487 0.406,-0.804l0,-11c0,-0.409 -0.249,-0.777 -0.629,-0.928l-2.5,-1Zm6.756,2.354c0.21,0.942 0.675,1.72 1.32,2.31c0.666,0.609 1.537,1.023 2.553,1.186c0,0 0,4.339 0,4.339c0,0 -4.5,1.385 -4.5,1.385c0,0 0,-8.969 0,-8.969l0.627,-0.251Zm-6.254,0l0.627,0.251c0,0 0,8.969 0,8.969c-0,0 -4.5,-1.385 -4.5,-1.385c0,0 0,-4.339 0,-4.339c1.016,-0.163 1.887,-0.577 2.553,-1.186c0.645,-0.59 1.11,-1.368 1.32,-2.31Zm-1.892,-5.23c0.058,-0.294 -0.018,-0.598 -0.208,-0.83c-0.19,-0.232 -0.473,-0.366 -0.773,-0.366c-1.611,0 -3.965,1.17 -5.569,2.638c-1.191,1.089 -1.931,2.354 -1.931,3.362c0,0.552 0.448,1 1,1l5.5,0l0.981,-0.804l1,-5Zm11.019,-1.196c-0.3,0 -0.583,0.134 -0.773,0.366c-0.19,0.232 -0.266,0.536 -0.208,0.83l1,5l0.981,0.804l5.5,0c0.552,0 1,-0.448 1,-1c-0,-1.008 -0.74,-2.273 -1.931,-3.362c-1.604,-1.468 -3.958,-2.638 -5.569,-2.638Zm-13.82,5l-3.216,0c0.222,-0.299 0.501,-0.598 0.816,-0.886c0.847,-0.775 1.944,-1.485 2.948,-1.852l-0.548,2.738Zm15.64,0l-0.548,-2.738c1.004,0.367 2.101,1.078 2.948,1.852c0.315,0.288 0.594,0.587 0.816,0.886l-3.216,0Z"/></svg>`;
 
+function planRoles() {
+    return normalizeGearPlanRoles(currentPlan?.role);
+}
+
+function showTankWeightsUi() {
+    const cls = String(currentPlan?.class || '').toLowerCase();
+    if (!GP_TANK_CAPABLE.has(cls)) return false;
+    const roles = planRoles();
+    if (roles.includes('tank')) return true;
+    // Pre-save fallback: classic tanks still see tank SW before role is set
+    return !roles.length && GP_TANK_WEIGHT_CLASSES.has(cls);
+}
+
+function showDpsWeightsUi() {
+    const roles = planRoles();
+    if (roles.includes('dps')) return true;
+    return !roles.length && String(currentPlan?.class || '').toLowerCase() === 'shaman';
+}
+
+function gpLocalWeightsStorageKey(planId = currentPlan?.id) {
+    return `ichacalc_gp_local_weights_${planId || 'session'}`;
+}
+
+function readLocalWeightDraft() {
+    try {
+        const raw = localStorage.getItem(gpLocalWeightsStorageKey());
+        return raw ? JSON.parse(raw) : null;
+    } catch {
+        return null;
+    }
+}
+
+function writeLocalWeightDraft( partial ) {
+    try {
+        const prev = readLocalWeightDraft() || {};
+        localStorage.setItem(gpLocalWeightsStorageKey(), JSON.stringify({ ...prev, ...partial, updatedAt: Date.now() }));
+    } catch (e) {
+        console.warn('[Gear Planner] local weight draft save failed', e);
+    }
+}
+
+/** Resolve DPS weights: local draft → plan.statWeights → GP localStorage. */
+function resolveGpDpsWeights(isAoe = false) {
+    const draft = readLocalWeightDraft();
+    const draftKey = isAoe ? 'statWeightsAoe' : 'statWeights';
+    if (Array.isArray(draft?.[draftKey]) && draft[draftKey].length) return draft[draftKey];
+    const planKey = isAoe ? 'statWeightsAoe' : 'statWeights';
+    const fromPlan = currentPlan?.[planKey] || currentPlan?.ui?.[planKey];
+    if (Array.isArray(fromPlan) && fromPlan.length) return fromPlan;
+    return getGearPlannerDpsStatWeights(isAoe);
+}
+
+function resolveGpTankWeights() {
+    const draft = readLocalWeightDraft();
+    if (draft?.tankStatWeights && typeof draft.tankStatWeights === 'object') return draft.tankStatWeights;
+    const fromPlan = currentPlan?.tankStatWeights || currentPlan?.ui?.tankStatWeights;
+    if (fromPlan && typeof fromPlan === 'object') return fromPlan;
+    return getGearPlannerTankStatWeights();
+}
+
+function hasMeaningfulDpsWeights(weights) {
+    if (!Array.isArray(weights) || !weights.length) return false;
+    return weights.some((w) => typeof w.statDps === 'number' && Math.abs(w.statDps) > 1e-9);
+}
+
+function hasMeaningfulTankWeights(sw) {
+    if (!sw || typeof sw !== 'object') return false;
+    return ['stamina1EHP', 'armor1EHP', 'defense1EHP', 'avoidance1PercentEHP', 'blockValue1EHP', 'blockChance1PercentEHP']
+        .some((k) => Number(sw[k]) > 0);
+}
+
+function installGpWeightResolvers() {
+    if (typeof window === 'undefined') return;
+    window.getGearPlannerDpsStatWeights = (isAoe = false) => resolveGpDpsWeights(isAoe);
+    window.getGearPlannerTankStatWeights = () => resolveGpTankWeights();
+}
+
 export function initGearPlannerView(cbs) {
     callbacks = cbs || {};
+    installGpWeightResolvers();
     const session = loadGearPlannerSession();
     if (session?.plan) {
         currentPlan = getGearPlanData(session.plan);
+        // Restore vote/community fields not in schema clone
+        if (session.plan.upvotes != null) currentPlan.upvotes = session.plan.upvotes;
+        if (session.plan.downvotes != null) currentPlan.downvotes = session.plan.downvotes;
+        if (session.plan.myVote) currentPlan.myVote = session.plan.myVote;
+        if (session.plan.statWeights) currentPlan.statWeights = session.plan.statWeights;
+        if (session.plan.statWeightsAoe) currentPlan.statWeightsAoe = session.plan.statWeightsAoe;
+        if (session.plan.tankStatWeights) currentPlan.tankStatWeights = session.plan.tankStatWeights;
         if (typeof session.editMode === 'boolean') {
             editMode = session.editMode;
         } else {
@@ -130,6 +240,8 @@ export function initGearPlannerView(cbs) {
     wireSaveOverwriteDialog();
     wireCommunitySearchDialog();
     wireIconPickerDialog();
+    wireHeaderVotes();
+    wireGpTankBossSearch();
     refreshGearPlannerWhenItemsReady();
 }
 
@@ -618,13 +730,15 @@ async function openGpStatWeightsView() {
 }
 
 function gpClassSupportsStatWeights(classId = currentPlan.class) {
-    return GP_TANK_WEIGHT_CLASSES.has(classId) || classId === 'shaman';
+    return showTankWeightsUi() || showDpsWeightsUi()
+        || GP_TANK_WEIGHT_CLASSES.has(classId) || classId === 'shaman';
 }
 
 function updateStatWeightsBtnVisibility() {
     const btn = document.getElementById('gp-stat-weights-btn');
     if (!btn) return;
-    const show = gpClassSupportsStatWeights();
+    const show = showTankWeightsUi() || showDpsWeightsUi()
+        || GP_TANK_WEIGHT_CLASSES.has(currentPlan.class) || currentPlan.class === 'shaman';
     btn.hidden = !show;
     if (!show && gpOverlay === 'weights') closeGpTalentsModal();
 }
@@ -642,24 +756,136 @@ function fillGpTankWeightDisplay(sw) {
     set('gp-sw-blockchance', sw?.blockChance1PercentEHP);
 }
 
+let gpSelectedTankBoss = null;
+
 function resolveGpTankBoss() {
-    const typed = document.getElementById('gp-tank-boss-search')?.value?.trim();
+    const input = document.getElementById('gp-tank-boss-search');
+    if (input?.dataset?.bossData) {
+        try {
+            const parsed = JSON.parse(input.dataset.bossData);
+            if (parsed?.minDamage && parsed?.maxDamage) return parsed;
+        } catch { /* ignore */ }
+    }
+    if (gpSelectedTankBoss?.minDamage && gpSelectedTankBoss?.maxDamage) return gpSelectedTankBoss;
     const charSearch = document.getElementById('boss-search');
     if (charSearch?.dataset?.bossData) {
-        try { return JSON.parse(charSearch.dataset.bossData); } catch { /* ignore */ }
+        try {
+            const parsed = JSON.parse(charSearch.dataset.bossData);
+            if (parsed?.minDamage && parsed?.maxDamage) return parsed;
+        } catch { /* ignore */ }
     }
     try {
         const stored = localStorage.getItem('lastSelectedBoss');
         if (stored) {
             const boss = JSON.parse(stored);
-            if (!typed || String(boss.name || '').toLowerCase() === typed.toLowerCase()) return boss;
+            if (boss?.minDamage && boss?.maxDamage) return boss;
         }
     } catch { /* ignore */ }
-    if (typed) {
-        const bosses = getBossDatabase() || [];
-        return bosses.find(b => String(b.name || '').toLowerCase() === typed.toLowerCase()) || null;
-    }
     return null;
+}
+
+function wireGpTankBossSearch() {
+    const input = document.getElementById('gp-tank-boss-search');
+    const resultsEl = document.getElementById('gp-tank-boss-results');
+    if (!input || !resultsEl || input.dataset.gpBossWired === '1') return;
+    input.dataset.gpBossWired = '1';
+    let searchTimeout = null;
+
+    const decodeHtml = (html) => {
+        const txt = document.createElement('textarea');
+        txt.innerHTML = html;
+        return txt.value;
+    };
+
+    async function searchGpTankBosses(query) {
+        resultsEl.innerHTML = '<div class="search-loading">Searching...</div>';
+        resultsEl.style.display = 'block';
+        try {
+            const res = await fetch(`/bosses/search?q=${encodeURIComponent(query)}`);
+            const data = await res.json();
+            if (!data.success || !data.results?.length) {
+                resultsEl.innerHTML = '<div class="search-no-results">No bosses found.</div>';
+                return;
+            }
+            resultsEl.innerHTML = '';
+            const list = document.createElement('div');
+            list.className = 'search-results-list';
+            data.results.forEach((npc) => {
+                const name = decodeHtml(npc.name);
+                const item = document.createElement('div');
+                item.className = `search-result-item ${npc.is_boss ? 'is-boss' : ''}`;
+                item.dataset.bossId = npc.id;
+                item.dataset.bossName = name;
+                item.innerHTML = `<div class="result-name"></div><div class="result-meta"></div>`;
+                item.querySelector('.result-name').textContent = name;
+                item.querySelector('.result-meta').textContent =
+                    `${npc.is_boss ? 'Boss' : 'NPC'}${npc.level ? ` - Level ${npc.level}` : ''} - ID: ${npc.id}`;
+                item.addEventListener('click', () => loadGpTankBoss(npc.id, name));
+                list.appendChild(item);
+            });
+            resultsEl.appendChild(list);
+        } catch (e) {
+            console.error('[GP tank boss search]', e);
+            resultsEl.innerHTML = `<div class="search-error">Error: ${e.message || e}</div>`;
+        }
+    }
+
+    async function loadGpTankBoss(bossId, bossName) {
+        resultsEl.style.display = 'none';
+        const prev = input.value;
+        input.disabled = true;
+        input.value = 'Loading...';
+        try {
+            const res = await fetch(`/bosses/scrape?id=${encodeURIComponent(bossId)}`);
+            const data = await res.json();
+            if (!data.success || !data.boss) throw new Error(data.error || 'Invalid boss data');
+            const boss = data.boss;
+            const bossData = {
+                id: boss.id || `boss_${bossId}`,
+                name: boss.name || bossName,
+                level: boss.level || 63,
+                minDamage: boss.minDamage || 0,
+                maxDamage: boss.maxDamage || 0,
+                attackSpeed: boss.attackSpeed || 2.0,
+            };
+            gpSelectedTankBoss = bossData;
+            input.dataset.bossData = JSON.stringify(bossData);
+            input.value = `${bossData.name} (${bossData.minDamage}-${bossData.maxDamage} dmg)`;
+            try { localStorage.setItem('lastSelectedBoss', JSON.stringify(bossData)); } catch { /* ignore */ }
+            const status = document.getElementById('gp-tank-weights-status');
+            if (status) status.textContent = `Boss ready: ${bossData.name}`;
+        } catch (e) {
+            console.error('[GP tank boss load]', e);
+            input.value = prev;
+            window.notify?.error?.(e.message || 'Failed to load boss', 4000, 'Gear Planner');
+        } finally {
+            input.disabled = false;
+        }
+    }
+
+    input.addEventListener('input', () => {
+        clearTimeout(searchTimeout);
+        delete input.dataset.bossData;
+        gpSelectedTankBoss = null;
+        const query = input.value.trim();
+        if (query.length < 2) {
+            resultsEl.style.display = 'none';
+            return;
+        }
+        searchTimeout = setTimeout(() => searchGpTankBosses(query), 350);
+    });
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const query = input.value.trim();
+            if (query) searchGpTankBosses(query);
+        }
+    });
+    document.addEventListener('click', (e) => {
+        if (!input.contains(e.target) && !resultsEl.contains(e.target)) {
+            resultsEl.style.display = 'none';
+        }
+    });
 }
 
 async function generateGpTankStatWeights() {
@@ -667,11 +893,11 @@ async function generateGpTankStatWeights() {
     const btn = document.getElementById('gp-generate-tank-weights-btn');
     const boss = resolveGpTankBoss();
     if (!boss) {
-        if (status) status.textContent = 'Select a tank-sim boss first (Character Planner) or type an exact boss name.';
+        if (status) status.textContent = 'Search and select a boss below (or use last Character Planner tank boss).';
         return;
     }
     if (!boss.minDamage || !boss.maxDamage) {
-        if (status) status.textContent = 'Boss damage data is missing. Search the boss on Character Planner tank sim.';
+        if (status) status.textContent = 'Boss damage data is missing. Pick the boss again from search results.';
         return;
     }
     const minutes = parseInt(document.getElementById('gp-tank-time-min')?.value, 10) || 0;
@@ -689,8 +915,13 @@ async function generateGpTankStatWeights() {
     if (status) status.textContent = `Simulating ${boss.name}…`;
     try {
         const results = await runTankSimulation(characterData, boss, timeInSeconds, 1000, { yieldEvery: 50 });
-        saveGearPlannerTankStatWeights(results?.statWeights || null);
-        fillGpTankWeightDisplay(results?.statWeights);
+        const sw = results?.statWeights || null;
+        saveGearPlannerTankStatWeights(sw);
+        currentPlan.tankStatWeights = sw;
+        writeLocalWeightDraft({ tankStatWeights: sw });
+        fillGpTankWeightDisplay(sw);
+        persistSession();
+        renderGearPlanner();
         if (status) status.textContent = `Done (${boss.name}). Item scores now use these weights.`;
     } catch (e) {
         console.error('[GP tank stat weights]', e);
@@ -734,6 +965,11 @@ function bindGpDpsWeightGenerate(host, isAoe) {
                     (completed, total) => { btn.textContent = 'Generating... ' + Math.round(100 * completed / total) + '%'; }
                 );
                 saveGearPlannerDpsStatWeights(weights, isAoe);
+                if (isAoe) currentPlan.statWeightsAoe = weights;
+                else currentPlan.statWeights = weights;
+                writeLocalWeightDraft(isAoe ? { statWeightsAoe: weights } : { statWeights: weights });
+                persistSession();
+                renderGearPlanner();
                 const panel = isAoe
                     ? host.querySelector('.stat-weights-aoe-panel')
                     : host.querySelector('.stat-weights-panel:not(.stat-weights-aoe-panel)');
@@ -751,11 +987,56 @@ function bindGpDpsWeightGenerate(host, isAoe) {
     });
 }
 
+function renderGpManualDpsWeightsHost() {
+    const host = document.getElementById('gp-dps-weights-host');
+    if (!host) return;
+    const existing = mergeStatWeightsToTemplate(resolveGpDpsWeights(false));
+    const byKey = Object.fromEntries((existing || []).map((r) => [r.key, r]));
+    host.innerHTML = `<p class="gp-weights-hint">Enter DPS weights manually for this class. Values apply to item card scores and persist with the plan (local draft until reload from My Gear Plans / community).</p>
+        <div class="gp-manual-weights-grid">
+            ${GP_MANUAL_DPS_WEIGHT_KEYS.map(({ key, label }) => {
+                const val = byKey[key]?.statDps;
+                const shown = (typeof val === 'number' && !Number.isNaN(val)) ? val : '';
+                return `<label>${escapeHtml(label)}
+                    <input type="number" step="any" class="slick-input gp-manual-weight-input" data-weight-key="${escapeHtml(key)}" value="${shown === '' ? '' : escapeHtml(String(shown))}" />
+                </label>`;
+            }).join('')}
+        </div>`;
+    const persistManual = () => {
+        const rows = mergeStatWeightsToTemplate(null).map((row) => {
+            const input = host.querySelector(`.gp-manual-weight-input[data-weight-key="${row.key}"]`);
+            const raw = input?.value;
+            const num = raw === '' || raw == null ? null : Number(raw);
+            const statDps = (num != null && !Number.isNaN(num)) ? num : 0;
+            return {
+                ...row,
+                statDps,
+                dps: statDps ? String(statDps) : '-',
+                ap: '-',
+                sp: '-',
+            };
+        });
+        currentPlan.statWeights = rows;
+        saveGearPlannerDpsStatWeights(rows, false);
+        writeLocalWeightDraft({ statWeights: rows });
+        persistSession();
+        renderGearPlanner();
+    };
+    host.querySelectorAll('.gp-manual-weight-input').forEach((el) => {
+        el.addEventListener('change', persistManual);
+        el.addEventListener('blur', persistManual);
+    });
+}
+
 function renderGpDpsWeightsHost() {
     const host = document.getElementById('gp-dps-weights-host');
     if (!host) return;
-    const st = mergeStatWeightsToTemplate(getGearPlannerDpsStatWeights(false));
-    const aoe = mergeStatWeightsToTemplate(getGearPlannerDpsStatWeights(true));
+    if (String(currentPlan.class || '').toLowerCase() !== 'shaman') {
+        renderGpManualDpsWeightsHost();
+        return;
+    }
+    const st = mergeStatWeightsToTemplate(resolveGpDpsWeights(false));
+    const aoe = mergeStatWeightsToTemplate(resolveGpDpsWeights(true));
     host.innerHTML = `<div class="stat-weights-tab-content" style="padding: 8px 0; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
         <div class="stat-weights-panel" style="flex: 0 1 400px; min-width: 280px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
@@ -786,17 +1067,31 @@ function renderGpDpsWeightsHost() {
 }
 
 function renderGpStatWeightsPanels() {
-    const cls = currentPlan.class || 'warrior';
     const tankPanel = document.getElementById('gp-tank-weights-panel');
     const dpsPanel = document.getElementById('gp-dps-weights-panel');
     const unsupported = document.getElementById('gp-weights-unsupported');
-    const tank = GP_TANK_WEIGHT_CLASSES.has(cls);
-    const shaman = cls === 'shaman';
-    if (tankPanel) tankPanel.hidden = !tank;
-    if (dpsPanel) dpsPanel.hidden = !shaman;
-    if (unsupported) unsupported.hidden = tank || shaman;
-    if (tank) fillGpTankWeightDisplay(getGearPlannerTankStatWeights());
-    if (shaman) renderGpDpsWeightsHost();
+    const title = document.getElementById('gp-dps-weights-title');
+    const showTank = showTankWeightsUi();
+    const showDps = showDpsWeightsUi();
+    if (tankPanel) tankPanel.hidden = !showTank;
+    if (dpsPanel) dpsPanel.hidden = !showDps;
+    if (unsupported) unsupported.hidden = showTank || showDps;
+    if (title) {
+        title.textContent = String(currentPlan.class || '').toLowerCase() === 'shaman'
+            ? 'Shaman DPS stat weights'
+            : 'DPS stat weights (manual)';
+    }
+    if (showTank) {
+        wireGpTankBossSearch();
+        fillGpTankWeightDisplay(resolveGpTankWeights());
+        const input = document.getElementById('gp-tank-boss-search');
+        const boss = resolveGpTankBoss();
+        if (input && boss && !input.value) {
+            input.value = `${boss.name} (${boss.minDamage}-${boss.maxDamage} dmg)`;
+            input.dataset.bossData = JSON.stringify(boss);
+        }
+    }
+    if (showDps) renderGpDpsWeightsHost();
 }
 
 function toggleGpBuffsView() {
@@ -1127,6 +1422,18 @@ function hideSaveDialog() {
     if (el) el.style.display = 'none';
 }
 
+function canOverwriteCurrentPlan() {
+    if (!currentPlan?.id) return false;
+    const user = window.profileManager?.user;
+    if (!currentPlan.community && String(currentPlan.id).startsWith('local_gp_')) return true;
+    if (!user) {
+        return !currentPlan.community && !currentPlan.authorId;
+    }
+    if (currentPlan.authorId != null && String(currentPlan.authorId) === String(user.id)) return true;
+    if (!currentPlan.community && !currentPlan.authorId) return true;
+    return false;
+}
+
 function fillSaveSpecOptions(classId, selectedSpec) {
     const sel = document.getElementById('gp-save-spec');
     if (!sel) return;
@@ -1141,7 +1448,7 @@ function fillSaveSpecOptions(classId, selectedSpec) {
     }
 }
 
-function setSaveIconPreview(iconKey) {
+function setSaveIconPreview(iconKey, { userPicked = false } = {}) {
     const key = iconKey || defaultIconForClassSpec(currentPlan.class, currentPlan.spec);
     const img = document.getElementById('gp-save-icon-preview');
     const hidden = document.getElementById('gp-save-icon-value');
@@ -1152,22 +1459,35 @@ function setSaveIconPreview(iconKey) {
         img.alt = key;
     }
     if (nameEl) nameEl.textContent = key;
+    if (userPicked) saveIconUserPicked = true;
+}
+
+function updateSaveDescCounter() {
+    const ta = document.getElementById('gp-save-description');
+    const counter = document.getElementById('gp-save-desc-count');
+    if (!ta || !counter) return;
+    const n = String(ta.value || '').length;
+    counter.textContent = `${n} / ${GEAR_PLAN_DESCRIPTION_MAX}`;
 }
 
 function readSaveMetaFromDialog() {
-    const roles = [...document.querySelectorAll('input[name="gp-save-role"]:checked')]
-        .map((el) => el.value);
+    const roleSel = document.getElementById('gp-save-role')?.value || '';
+    const roles = normalizeGearPlanRoles(roleSel ? [roleSel] : []);
     const spec = document.getElementById('gp-save-spec')?.value || '';
     const icon = document.getElementById('gp-save-icon-value')?.value
         || defaultIconForClassSpec(currentPlan.class, spec);
-    return { roles: normalizeGearPlanRoles(roles), spec, icon };
+    const description = sanitizeGearPlanDescription(document.getElementById('gp-save-description')?.value || '');
+    return { roles, spec, icon, description };
 }
 
 function applySaveMetaToPlan(meta) {
     currentPlan.role = meta.roles;
     currentPlan.spec = meta.spec;
-    currentPlan.icon = meta.icon || defaultIconForClassSpec(currentPlan.class, meta.spec);
+    if (meta.icon) currentPlan.icon = meta.icon;
+    else if (!currentPlan.icon) currentPlan.icon = defaultIconForClassSpec(currentPlan.class, meta.spec);
+    currentPlan.description = meta.description || '';
     persistSession();
+    updateStatWeightsBtnVisibility();
 }
 
 function validateSaveMeta(meta) {
@@ -1177,17 +1497,62 @@ function validateSaveMeta(meta) {
     return ok;
 }
 
+function collectSaveWarnings(meta) {
+    const warnings = [];
+    const talents = currentPlan.talents || {};
+    const talentPts = Object.values(talents).reduce((n, v) => n + (Number(v) || 0), 0);
+    if (talentPts <= 0) warnings.push('No talents are selected.');
+    if (!Array.isArray(currentPlan.buffs) || currentPlan.buffs.length === 0) {
+        warnings.push('No consumables/buffs are selected.');
+    }
+    const roles = meta?.roles || planRoles();
+    if (roles.includes('dps') && !hasMeaningfulDpsWeights(resolveGpDpsWeights(false))) {
+        warnings.push('No DPS stat weights are set (role includes DPS).');
+    }
+    const cls = String(currentPlan.class || '').toLowerCase();
+    if (roles.includes('tank') && GP_TANK_CAPABLE.has(cls) && !hasMeaningfulTankWeights(resolveGpTankWeights())) {
+        warnings.push('No tank stat weights are set (role includes Tank).');
+    }
+    return warnings;
+}
+
+function confirmSaveWarnings(warnings) {
+    if (!warnings.length) return Promise.resolve(true);
+    const body = `This plan may be incomplete:\n\n• ${warnings.join('\n• ')}\n\nSave anyway?`;
+    return Promise.resolve(window.confirm(body));
+}
+
+async function proceedSaveFromDialog(asNew) {
+    const meta = readSaveMetaFromDialog();
+    if (!validateSaveMeta(meta)) return;
+    if (!asNew && !canOverwriteCurrentPlan()) {
+        window.notify?.error?.('Only the original author can overwrite this plan. Use Save as New.', 4500, 'Gear Planner');
+        return;
+    }
+    const warnings = collectSaveWarnings(meta);
+    if (!(await confirmSaveWarnings(warnings))) return;
+    applySaveMetaToPlan(meta);
+    hideSaveDialog();
+    await saveCurrentPlan(asNew);
+}
+
 function populateSaveDialogFields() {
     const roles = normalizeGearPlanRoles(currentPlan.role);
-    document.querySelectorAll('input[name="gp-save-role"]').forEach((el) => {
-        el.checked = roles.includes(el.value);
-    });
+    const roleSel = document.getElementById('gp-save-role');
+    if (roleSel) roleSel.value = roles[0] || 'dps';
     fillSaveSpecOptions(currentPlan.class, currentPlan.spec);
     const spec = document.getElementById('gp-save-spec')?.value || currentPlan.spec || '';
-    const icon = currentPlan.icon || defaultIconForClassSpec(currentPlan.class, spec);
+    saveDialogSpecBaseline = spec;
+    const defaultIcon = defaultIconForClassSpec(currentPlan.class, spec);
+    const icon = currentPlan.icon || defaultIcon;
+    saveIconUserPicked = !!(currentPlan.icon && currentPlan.icon !== defaultIcon);
     setSaveIconPreview(icon);
+    const desc = document.getElementById('gp-save-description');
+    if (desc) desc.value = sanitizeGearPlanDescription(currentPlan.description || '');
+    updateSaveDescCounter();
     const err = document.getElementById('gp-save-meta-error');
     if (err) err.hidden = true;
+    loadWowIconsList().then(() => renderSaveIconGrid());
 }
 
 function wireSaveOverwriteDialog() {
@@ -1195,49 +1560,48 @@ function wireSaveOverwriteDialog() {
     document.getElementById('gp-save-overwrite-close')?.addEventListener('click', hide);
     document.getElementById('gp-save-overwrite-cancel')?.addEventListener('click', hide);
     document.getElementById('gp-save-cancel')?.addEventListener('click', hide);
-    document.getElementById('gp-save-overwrite-confirm')?.addEventListener('click', () => {
-        const meta = readSaveMetaFromDialog();
-        if (!validateSaveMeta(meta)) return;
-        applySaveMetaToPlan(meta);
-        hide();
-        saveCurrentPlan(false);
-    });
-    document.getElementById('gp-save-new-confirm')?.addEventListener('click', () => {
-        const meta = readSaveMetaFromDialog();
-        if (!validateSaveMeta(meta)) return;
-        applySaveMetaToPlan(meta);
-        hide();
-        saveCurrentPlan(true);
-    });
-    document.getElementById('gp-save-confirm')?.addEventListener('click', () => {
-        const meta = readSaveMetaFromDialog();
-        if (!validateSaveMeta(meta)) return;
-        applySaveMetaToPlan(meta);
-        hide();
-        saveCurrentPlan(false);
-    });
+    document.getElementById('gp-save-overwrite-confirm')?.addEventListener('click', () => proceedSaveFromDialog(false));
+    document.getElementById('gp-save-new-confirm')?.addEventListener('click', () => proceedSaveFromDialog(true));
+    document.getElementById('gp-save-confirm')?.addEventListener('click', () => proceedSaveFromDialog(false));
     document.getElementById('gp-save-spec')?.addEventListener('change', () => {
         const spec = document.getElementById('gp-save-spec')?.value || '';
         const currentIcon = document.getElementById('gp-save-icon-value')?.value;
-        const prevDefault = defaultIconForClassSpec(currentPlan.class, currentPlan.spec);
-        // If user hasn't customized icon (still default for previous/current), update to new spec default
-        if (!currentIcon || currentIcon === prevDefault || currentIcon === currentPlan.icon) {
+        const prevDefault = defaultIconForClassSpec(currentPlan.class, saveDialogSpecBaseline || currentPlan.spec);
+        if (!saveIconUserPicked && (!currentIcon || currentIcon === prevDefault)) {
             setSaveIconPreview(defaultIconForClassSpec(currentPlan.class, spec));
         }
+        saveDialogSpecBaseline = spec;
     });
-    document.getElementById('gp-save-icon-btn')?.addEventListener('click', () => openIconPickerDialog());
+    document.getElementById('gp-save-description')?.addEventListener('input', updateSaveDescCounter);
+    let filterTimer = null;
+    document.getElementById('gp-save-icon-q')?.addEventListener('input', () => {
+        clearTimeout(filterTimer);
+        filterTimer = setTimeout(() => renderSaveIconGrid(), 120);
+    });
 }
 
 function requestSaveCurrentPlan() {
     populateSaveDialogFields();
     const existing = !!currentPlan.id;
+    const canOw = canOverwriteCurrentPlan();
     const msg = document.getElementById('gp-save-overwrite-msg');
     if (msg) {
-        msg.textContent = existing
-            ? `"${currentPlan.name || 'This plan'}" is already saved. Choose role & spec, then overwrite or save as new.`
-            : (window.profileManager?.user
+        if (existing && !canOw) {
+            msg.textContent = `"${currentPlan.name || 'This plan'}" belongs to another author. You can Save as New (your own copy) — overwrite is disabled.`;
+        } else if (existing) {
+            msg.textContent = `"${currentPlan.name || 'This plan'}" is already saved. Choose role & spec, then overwrite or save as new.`;
+        } else {
+            msg.textContent = window.profileManager?.user
                 ? 'Choose role & talent focus. Cloud saves are published to the community browser.'
-                : 'Choose role & talent focus. Local saves stay on this device (not published to community).');
+                : 'Choose role & talent focus. Local saves stay on this device (not published to community).';
+        }
+    }
+    const hint = document.getElementById('gp-save-author-hint');
+    if (hint) hint.hidden = !(existing && !canOw);
+    const overwriteBtn = document.getElementById('gp-save-overwrite-confirm');
+    if (overwriteBtn) {
+        overwriteBtn.disabled = existing && !canOw;
+        overwriteBtn.title = (existing && !canOw) ? 'Only the original author can overwrite' : '';
     }
     const existingActions = document.getElementById('gp-save-actions-existing');
     const newActions = document.getElementById('gp-save-actions-new');
@@ -1273,47 +1637,25 @@ function DEFAULT_SPEC_ICONS_FLAT() {
 }
 
 function wireIconPickerDialog() {
-    const hide = () => {
-        const el = document.getElementById('gp-icon-picker-dialog');
-        if (el) el.style.display = 'none';
-    };
-    document.getElementById('gp-icon-picker-close')?.addEventListener('click', hide);
-    document.getElementById('gp-icon-picker-dialog')?.addEventListener('click', (e) => {
-        if (e.target.id === 'gp-icon-picker-dialog') hide();
-    });
-    let filterTimer = null;
-    document.getElementById('gp-icon-picker-q')?.addEventListener('input', () => {
-        clearTimeout(filterTimer);
-        filterTimer = setTimeout(() => renderIconPickerGrid(), 120);
-    });
+    // Icons live inside the save modal now; stub kept for init compatibility.
 }
 
-async function openIconPickerDialog() {
-    const dlg = document.getElementById('gp-icon-picker-dialog');
-    const q = document.getElementById('gp-icon-picker-q');
-    if (q) q.value = '';
-    if (dlg) dlg.style.display = 'flex';
-    await loadWowIconsList();
-    renderIconPickerGrid();
-}
-
-function renderIconPickerGrid() {
-    const grid = document.getElementById('gp-icon-picker-grid');
+function renderSaveIconGrid() {
+    const grid = document.getElementById('gp-save-icon-grid');
     if (!grid) return;
-    const q = String(document.getElementById('gp-icon-picker-q')?.value || '').trim().toLowerCase();
+    const q = String(document.getElementById('gp-save-icon-q')?.value || '').trim().toLowerCase();
     const all = wowIconsCache || [];
     const filtered = (q ? all.filter((n) => n.includes(q)) : all).slice(0, 400);
     const selected = document.getElementById('gp-save-icon-value')?.value || '';
     grid.innerHTML = filtered.map((name) =>
-        `<button type="button" class="gp-icon-pick ${name === selected ? 'is-selected' : ''}" data-icon="${escapeHtml(name)}" title="${escapeHtml(name)}">
-            <img src="${wowIconUrl(name)}" alt="" loading="lazy" width="36" height="36" />
+        `<button type="button" class="gp-icon-pick ${name === selected ? 'is-selected' : ''}" data-icon="${escapeHtml(name)}" title="${escapeHtml(name)}" role="option" aria-selected="${name === selected ? 'true' : 'false'}">
+            <img src="${wowIconUrl(name)}" alt="" loading="lazy" width="34" height="34" />
         </button>`
     ).join('') || '<p class="gp-locations-empty">No icons match</p>';
     grid.querySelectorAll('.gp-icon-pick').forEach((btn) => {
         btn.addEventListener('click', () => {
-            setSaveIconPreview(btn.dataset.icon);
-            const el = document.getElementById('gp-icon-picker-dialog');
-            if (el) el.style.display = 'none';
+            setSaveIconPreview(btn.dataset.icon, { userPicked: true });
+            renderSaveIconGrid();
         });
     });
 }
@@ -1432,10 +1774,11 @@ function renderCommunityResults(plans) {
         return;
     }
     list.innerHTML = plans.map((p) => {
-        const roles = normalizeGearPlanRoles(p.role).map((r) => r.toUpperCase()).join(', ');
+        const roles = normalizeGearPlanRoles(p.role).map((r) => formatGearPlanRoleLabel(r)).join(', ');
         const cls = p.class ? String(p.class).charAt(0).toUpperCase() + String(p.class).slice(1) : '';
         const date = formatCommunityDate(p.updatedAt || p.createdAt);
         const spread = formatTalentSpread(p.talentSpread);
+        const desc = sanitizeGearPlanDescription(p.description || '');
         const up = Number(p.upvotes) || 0;
         const down = Number(p.downvotes) || 0;
         const my = p.myVote === 'up' || p.myVote === 'down' ? p.myVote : '';
@@ -1443,17 +1786,21 @@ function renderCommunityResults(plans) {
             <img class="gp-community-card-icon" src="${wowIconUrl(p.icon)}" alt="" width="48" height="48" loading="lazy" />
             <div class="gp-community-card-body">
                 <div class="gp-community-card-title">${escapeHtml(p.name || 'Untitled')}</div>
+                ${desc ? `<div class="gp-community-card-desc">${escapeHtml(desc)}</div>` : ''}
                 <div class="gp-community-card-spread" title="Talent tree points">${escapeHtml(spread)}</div>
                 <div class="gp-community-card-meta">${escapeHtml([cls, roles, p.spec].filter(Boolean).join(' · '))}</div>
                 <div class="gp-community-card-author">${escapeHtml(p.authorName || 'Anonymous')}${date ? ` · ${escapeHtml(date)}` : ''}</div>
             </div>
-            <div class="gp-community-card-votes" data-stop="1">
-                <button type="button" class="gp-vote-btn gp-vote-up ${my === 'up' ? 'is-active' : ''}" data-vote="up" data-id="${escapeHtml(p.id || '')}" title="Upvote" aria-label="Upvote" aria-pressed="${my === 'up' ? 'true' : 'false'}">
-                    <span aria-hidden="true">▲</span><span class="gp-vote-count" data-up-count>${up}</span>
-                </button>
-                <button type="button" class="gp-vote-btn gp-vote-down ${my === 'down' ? 'is-active' : ''}" data-vote="down" data-id="${escapeHtml(p.id || '')}" title="Downvote" aria-label="Downvote" aria-pressed="${my === 'down' ? 'true' : 'false'}">
-                    <span aria-hidden="true">▼</span><span class="gp-vote-count" data-down-count>${down}</span>
-                </button>
+            <div class="gp-community-card-actions" data-stop="1">
+                <button type="button" class="gp-fav-community-btn" data-fav-id="${escapeHtml(p.id || '')}" title="Copy to My Gear Plans" aria-label="Favorite to My Gear Plans">★ Favorite</button>
+                <div class="gp-community-card-votes">
+                    <button type="button" class="gp-vote-btn gp-vote-up ${my === 'up' ? 'is-active' : ''}" data-vote="up" data-id="${escapeHtml(p.id || '')}" title="Upvote" aria-label="Upvote" aria-pressed="${my === 'up' ? 'true' : 'false'}">
+                        <span aria-hidden="true">▲</span><span class="gp-vote-count" data-up-count>${up}</span>
+                    </button>
+                    <button type="button" class="gp-vote-btn gp-vote-down ${my === 'down' ? 'is-active' : ''}" data-vote="down" data-id="${escapeHtml(p.id || '')}" title="Downvote" aria-label="Downvote" aria-pressed="${my === 'down' ? 'true' : 'false'}">
+                        <span aria-hidden="true">▼</span><span class="gp-vote-count" data-down-count>${down}</span>
+                    </button>
+                </div>
             </div>
         </article>`;
     }).join('');
@@ -1475,6 +1822,13 @@ function renderCommunityResults(plans) {
             e.stopPropagation();
             e.preventDefault();
             voteCommunityPlan(btn.dataset.id, btn.dataset.vote, btn.closest('.gp-community-card'));
+        });
+    });
+    list.querySelectorAll('.gp-fav-community-btn').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            favoriteCommunityPlanById(btn.dataset.favId);
         });
     });
 }
@@ -1499,11 +1853,23 @@ async function voteCommunityPlan(id, direction, cardEl) {
             console.error('[Gear Planner] vote failed', e);
         }
     }
-    if (!updated || !cardEl) return;
-    const upBtn = cardEl.querySelector('.gp-vote-up');
-    const downBtn = cardEl.querySelector('.gp-vote-down');
-    const upCount = cardEl.querySelector('[data-up-count]');
-    const downCount = cardEl.querySelector('[data-down-count]');
+    if (!updated) return;
+    applyVoteUi(updated, cardEl);
+    if (String(currentPlan.id) === String(id)) {
+        currentPlan.upvotes = Number(updated.upvotes) || 0;
+        currentPlan.downvotes = Number(updated.downvotes) || 0;
+        currentPlan.myVote = updated.myVote === 'up' || updated.myVote === 'down' ? updated.myVote : null;
+        updateHeaderVotesUi();
+        persistSession();
+    }
+}
+
+function applyVoteUi(updated, rootEl) {
+    if (!updated || !rootEl) return;
+    const upBtn = rootEl.querySelector('.gp-vote-up');
+    const downBtn = rootEl.querySelector('.gp-vote-down');
+    const upCount = rootEl.querySelector('[data-up-count], #gp-header-up-count');
+    const downCount = rootEl.querySelector('[data-down-count], #gp-header-down-count');
     if (upCount) upCount.textContent = String(Number(updated.upvotes) || 0);
     if (downCount) downCount.textContent = String(Number(updated.downvotes) || 0);
     const my = updated.myVote === 'up' || updated.myVote === 'down' ? updated.myVote : '';
@@ -1511,6 +1877,95 @@ async function voteCommunityPlan(id, direction, cardEl) {
     downBtn?.classList.toggle('is-active', my === 'down');
     if (upBtn) upBtn.setAttribute('aria-pressed', my === 'up' ? 'true' : 'false');
     if (downBtn) downBtn.setAttribute('aria-pressed', my === 'down' ? 'true' : 'false');
+}
+
+function isCommunityPlanOpen() {
+    return !!(currentPlan?.id && (currentPlan.community || currentPlan.authorId));
+}
+
+function updateHeaderVotesUi() {
+    const wrap = document.getElementById('gp-header-votes');
+    if (!wrap) return;
+    const show = isCommunityPlanOpen();
+    wrap.hidden = !show;
+    if (!show) return;
+    const up = Number(currentPlan.upvotes) || 0;
+    const down = Number(currentPlan.downvotes) || 0;
+    const my = currentPlan.myVote === 'up' || currentPlan.myVote === 'down' ? currentPlan.myVote : '';
+    const upCount = document.getElementById('gp-header-up-count');
+    const downCount = document.getElementById('gp-header-down-count');
+    const upBtn = document.getElementById('gp-header-vote-up');
+    const downBtn = document.getElementById('gp-header-vote-down');
+    if (upCount) upCount.textContent = String(up);
+    if (downCount) downCount.textContent = String(down);
+    upBtn?.classList.toggle('is-active', my === 'up');
+    downBtn?.classList.toggle('is-active', my === 'down');
+    if (upBtn) upBtn.setAttribute('aria-pressed', my === 'up' ? 'true' : 'false');
+    if (downBtn) downBtn.setAttribute('aria-pressed', my === 'down' ? 'true' : 'false');
+}
+
+function wireHeaderVotes() {
+    const wrap = document.getElementById('gp-header-votes');
+    if (!wrap || wrap.dataset.wired === '1') return;
+    wrap.dataset.wired = '1';
+    wrap.querySelectorAll('.gp-vote-btn').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (!isCommunityPlanOpen()) return;
+            voteCommunityPlan(currentPlan.id, btn.dataset.vote, wrap);
+        });
+    });
+}
+
+async function favoriteCommunityPlanById(id) {
+    if (!id) return;
+    let plan = null;
+    if (window.profileManager?.fetchCommunityGearPlan) {
+        plan = await window.profileManager.fetchCommunityGearPlan(id);
+    } else {
+        try {
+            const res = await fetch(`/community-gear-plans/${encodeURIComponent(id)}`, { credentials: 'include' });
+            const data = await res.json();
+            plan = data.success ? data.plan : null;
+        } catch (e) {
+            console.error('[Gear Planner] favorite fetch failed', e);
+        }
+    }
+    if (!plan) {
+        window.notify?.error?.('Could not favorite community plan', 4000, 'Gear Planner');
+        return;
+    }
+    const copy = getGearPlanData(plan);
+    copy.sourceCommunityId = String(plan.id);
+    copy.community = false;
+    copy.favorite = true;
+    copy.description = sanitizeGearPlanDescription(plan.description || copy.description);
+    if (plan.icon) copy.icon = plan.icon;
+    delete copy.id;
+    delete copy.upvotes;
+    delete copy.downvotes;
+    delete copy.myVote;
+    delete copy.votes;
+
+    if (window.profileManager?.user) {
+        const saved = await window.profileManager.saveGearPlan(copy);
+        if (saved) {
+            window.notify?.success?.('Saved to My Gear Plans', 3000, 'Gear Planner');
+            return;
+        }
+        window.notify?.error?.('Cloud favorite failed', 4000, 'Gear Planner');
+        return;
+    }
+
+    const local = loadLocalGearPlans();
+    const src = String(plan.id);
+    const idx = local.findIndex((p) => String(p.sourceCommunityId || '') === src || String(p.id) === src);
+    copy.id = idx >= 0 ? local[idx].id : `local_gp_${Date.now()}`;
+    copy.updatedAt = new Date().toISOString();
+    if (idx >= 0) local[idx] = { ...local[idx], ...copy, favorite: true };
+    else local.push(copy);
+    saveLocalGearPlans(local);
+    window.notify?.success?.('Saved to My Gear Plans (local)', 3000, 'Gear Planner');
 }
 
 async function loadCommunityPlanById(id) {
@@ -1557,12 +2012,14 @@ function syncGpStRotationUi() {
 function updateQuickSimVisibility() {
     const btn = document.getElementById('gp-quick-sim-btn');
     const cfg = document.getElementById('gp-sim-settings-btn');
+    const simWrap = document.getElementById('gp-header-sim');
     const rotRow = document.getElementById('gp-st-rotation-row');
     const wrap = document.getElementById('gp-quick-sim-wrap');
     const resultEl = document.getElementById('gp-quick-sim-result');
     const isShaman = currentPlan.class === 'shaman';
     if (btn) btn.style.display = isShaman ? '' : 'none';
     if (cfg) cfg.style.display = isShaman ? '' : 'none';
+    if (simWrap) simWrap.hidden = !isShaman;
     if (rotRow) {
         rotRow.hidden = !isShaman;
         rotRow.style.display = isShaman ? '' : 'none';
@@ -1753,6 +2210,23 @@ function itemIconHtml(item) {
     return `<img src="${ICON_BASE_URL}${file}.png" alt="${escapeHtml(item?.name || '')}">`;
 }
 
+function gpItemScoreBadgesHtml(item) {
+    if (!item) return '';
+    const parts = [];
+    const dpsW = resolveGpDpsWeights(false);
+    const tankW = resolveGpTankWeights();
+    if (hasMeaningfulDpsWeights(dpsW)) {
+        const dps = calculateItemDpsScore(item, dpsW);
+        if (dps != null) parts.push(`<span class="gp-item-score-dps" title="Estimated DPS score">~${Math.round(dps).toLocaleString()} DPS</span>`);
+    }
+    if (hasMeaningfulTankWeights(tankW)) {
+        const tank = calculateItemTankScore(item, tankW);
+        if (tank) parts.push(`<span class="gp-item-score-tank" title="Tank score (EHP + mitigation)">EHP ${tank.ehp.toLocaleString()} · ${tank.tankScore.toLocaleString()}</span>`);
+    }
+    if (!parts.length) return '';
+    return `<div class="gp-item-scores">${parts.join('')}</div>`;
+}
+
 function renderItemMeta(item, enchantChrome = '') {
     if (!item) return '';
     const q = item.quality ?? 0;
@@ -1763,6 +2237,7 @@ function renderItemMeta(item, enchantChrome = '') {
             ${enchantChrome}
         </div>
         ${source ? `<div class="gp-item-source">${escapeHtml(source)}</div>` : ''}
+        ${gpItemScoreBadgesHtml(item)}
     </div>`;
 }
 
@@ -1775,6 +2250,7 @@ export function renderGearPlanner() {
     generateGpRaceIcons();
     updateQuickSimVisibility();
     updateStatWeightsBtnVisibility();
+    updateHeaderVotesUi();
     syncEditModeUi();
     renderLocationsSidebar();
     renderStatsSidebar();
@@ -1830,6 +2306,7 @@ function renderSlotCard(slotId, side) {
             <div class="gp-item-meta">
                 <div class="gp-item-name q${q}"><span class="gp-item-name-text">${escapeHtml(name)}</span></div>
                 ${source ? `<div class="gp-item-source">${escapeHtml(source)}</div>` : ''}
+                ${it ? gpItemScoreBadgesHtml(it) : ''}
             </div>
             <button type="button" class="gp-remove-alt" data-slot="${slotId}" data-alt-index="${i}" title="Remove"${editMode ? '' : ' hidden'}>×</button>
         </div>`;
@@ -2088,17 +2565,37 @@ async function openPickerForSlot(slotId, isAlt) {
 }
 
 async function saveCurrentPlan(asNew = false) {
+    if (!asNew && !canOverwriteCurrentPlan()) {
+        window.notify?.error?.('Only the original author can overwrite this plan. Use Save as New.', 4500, 'Gear Planner');
+        return;
+    }
     const plan = getGearPlanData(currentPlan);
     plan.updatedAt = new Date().toISOString();
     plan.role = normalizeGearPlanRoles(currentPlan.role);
     plan.spec = currentPlan.spec || '';
+    // Preserve user-picked icon; never force-overwrite with a different default
     plan.icon = currentPlan.icon || defaultIconForClassSpec(plan.class, plan.spec);
+    plan.description = sanitizeGearPlanDescription(currentPlan.description || '');
+    const dpsW = resolveGpDpsWeights(false);
+    const dpsAoe = resolveGpDpsWeights(true);
+    const tankW = resolveGpTankWeights();
+    if (dpsW) plan.statWeights = dpsW;
+    if (dpsAoe) plan.statWeightsAoe = dpsAoe;
+    if (tankW) plan.tankStatWeights = tankW;
     if (!plan.role.length || !plan.spec) {
         window.notify?.error?.('Role and talent tree focus are required to save', 4000, 'Gear Planner');
         requestSaveCurrentPlan();
         return;
     }
-    if (asNew) delete plan.id;
+    if (asNew) {
+        delete plan.id;
+        delete plan.authorId;
+        delete plan.authorName;
+        delete plan.upvotes;
+        delete plan.downvotes;
+        delete plan.myVote;
+        delete plan.sourceCommunityId;
+    }
 
     if (window.profileManager?.user) {
         plan.community = true;
@@ -2110,12 +2607,16 @@ async function saveCurrentPlan(asNew = false) {
             if (saved.role) currentPlan.role = normalizeGearPlanRoles(saved.role);
             if (saved.spec) currentPlan.spec = saved.spec;
             if (saved.icon) currentPlan.icon = saved.icon;
+            if (saved.description != null) currentPlan.description = sanitizeGearPlanDescription(saved.description);
+            if (saved.authorId) currentPlan.authorId = String(saved.authorId);
+            if (saved.authorName) currentPlan.authorName = saved.authorName;
+            currentPlan.community = true;
             editMode = false;
             persistSession();
             renderGearPlanner();
             window.notify?.success('Gear plan saved to cloud (community)', 3000, 'Gear Planner');
         } else {
-            window.notify?.error?.('Cloud save failed — check role/spec and try again', 4000, 'Gear Planner');
+            window.notify?.error?.('Cloud save failed — you may not overwrite another author’s plan', 4500, 'Gear Planner');
         }
         return;
     }
@@ -2187,11 +2688,27 @@ function sortPlansFavFirst(plans) {
 
 function loadPlanIntoView(plan) {
     if (!plan) return;
+    const prevId = currentPlan?.id;
     currentPlan = getGearPlanData(plan);
     if (plan.id) currentPlan.id = plan.id;
+    if (plan.upvotes != null) currentPlan.upvotes = plan.upvotes;
+    if (plan.downvotes != null) currentPlan.downvotes = plan.downvotes;
+    if (plan.myVote) currentPlan.myVote = plan.myVote;
+    if (plan.statWeights) currentPlan.statWeights = plan.statWeights;
+    if (plan.statWeightsAoe) currentPlan.statWeightsAoe = plan.statWeightsAoe;
+    if (plan.tankStatWeights) currentPlan.tankStatWeights = plan.tankStatWeights;
+    // Reload from My Gear Plans / community overwrites local weight drafts for this plan id
+    try {
+        localStorage.removeItem(gpLocalWeightsStorageKey(plan.id || prevId));
+        if (plan.statWeights) saveGearPlannerDpsStatWeights(plan.statWeights, false);
+        if (plan.statWeightsAoe) saveGearPlannerDpsStatWeights(plan.statWeightsAoe, true);
+        if (plan.tankStatWeights) saveGearPlannerTankStatWeights(plan.tankStatWeights);
+    } catch { /* ignore */ }
     editMode = false;
     persistSession();
     closeGearPlansDropdown();
+    updateHeaderVotesUi();
+    updateStatWeightsBtnVisibility();
     return refreshGearPlannerWhenItemsReady(currentPlan);
 }
 

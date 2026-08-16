@@ -46,6 +46,22 @@ export function defaultIconForClassSpec(classId, spec) {
     return first || 'inv_misc_questionmark';
 }
 
+/** Max length for gear plan short description (community cards / save meta). */
+export const GEAR_PLAN_DESCRIPTION_MAX = 180;
+
+export function sanitizeGearPlanDescription(desc) {
+    return String(desc == null ? '' : desc).replace(/\s+/g, ' ').trim().slice(0, GEAR_PLAN_DESCRIPTION_MAX);
+}
+
+/** Display labels for role keys (store lowercase; UI title-case except DPS). */
+export function formatGearPlanRoleLabel(role) {
+    const key = String(role || '').toLowerCase();
+    if (key === 'dps') return 'DPS';
+    if (key === 'tank') return 'Tank';
+    if (key === 'healer') return 'Healer';
+    return key ? key.charAt(0).toUpperCase() + key.slice(1) : '';
+}
+
 export function createEmptyGearPlan(classId = 'warrior', name = 'New Gear Plan') {
     const slots = {};
     for (const slot of GEAR_PLAN_SLOTS) {
@@ -63,6 +79,7 @@ export function createEmptyGearPlan(classId = 'warrior', name = 'New Gear Plan')
         ui: { collapsed: {}, stRotation: 'enhSt' },
         role: [],
         spec: '',
+        description: '',
         icon: defaultIconForClassSpec(classId, ''),
         community: false,
     };
@@ -88,10 +105,12 @@ export function createEmptyGearPlan(classId = 'warrior', name = 'New Gear Plan')
  * @property {{ collapsed?: Record<string, boolean>, stRotation?: 'enhSt'|'eleSt' }} ui
  * @property {Array<'dps'|'tank'|'healer'>} [role]
  * @property {string} [spec]
+ * @property {string} [description] Short blurb (max 180)
  * @property {string} [icon] Vanilla icon basename (e.g. spell_nature_lightning)
  * @property {boolean} [community]
  * @property {string} [authorName]
  * @property {string} [authorId]
+ * @property {string} [sourceCommunityId] When favorited from community
  */
 
 /** @returns {GearPlan} */
@@ -125,19 +144,26 @@ export function getGearPlanData(plan) {
 
     out.role = normalizeGearPlanRoles(plan.role);
     out.spec = plan.spec != null ? String(plan.spec) : '';
+    out.description = sanitizeGearPlanDescription(plan.description);
     const iconRaw = plan.icon != null ? String(plan.icon).trim() : '';
     const iconKey = iconRaw
         .replace(/^https?:\/\/[^/]+\/.*\//i, '')
         .replace(/\.(jpg|png|blp)$/i, '')
         .toLowerCase();
+    // Preserve user-picked icons; only fall back to spec default when missing/invalid
     out.icon = /^[a-z0-9_]+$/.test(iconKey)
         ? iconKey
         : defaultIconForClassSpec(out.class, out.spec);
     out.community = !!plan.community;
     if (plan.authorName) out.authorName = String(plan.authorName);
     if (plan.authorId) out.authorId = String(plan.authorId);
+    if (plan.sourceCommunityId) out.sourceCommunityId = String(plan.sourceCommunityId);
     if (plan.createdAt) out.createdAt = plan.createdAt;
     if (plan.updatedAt) out.updatedAt = plan.updatedAt;
+    if (plan.upvotes != null) out.upvotes = Number(plan.upvotes) || 0;
+    if (plan.downvotes != null) out.downvotes = Number(plan.downvotes) || 0;
+    if (plan.myVote === 'up' || plan.myVote === 'down') out.myVote = plan.myVote;
+    else if (plan.myVote === null) out.myVote = null;
     return out;
 }
 

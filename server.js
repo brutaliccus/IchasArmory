@@ -116,6 +116,23 @@ function sanitizeIconKey(icon) {
     return /^[a-z0-9_]+$/.test(key) ? key : '';
 }
 
+function sanitizePlanDescription(desc) {
+    return String(desc == null ? '' : desc).replace(/\s+/g, ' ').trim().slice(0, 180);
+}
+
+/** Resolve community author for an existing plan id (index or file). */
+function getCommunityPlanAuthorId(planId) {
+    const id = sanitizeCommunityPlanId(planId);
+    if (!id) return null;
+    const fromIndex = readCommunityIndex().find(e => String(e.id) === String(id));
+    if (fromIndex?.authorId != null) return String(fromIndex.authorId);
+    try {
+        const loaded = loadCommunityPlanFile(id);
+        if (loaded?.plan?.authorId != null) return String(loaded.plan.authorId);
+    } catch (_) { /* ignore */ }
+    return null;
+}
+
 /** Talent tree key order matches classTalents Object.keys for each class. */
 const CLASS_TALENT_TREE_KEYS = {
     warrior: ['arms', 'fury', 'protection'],
@@ -184,6 +201,7 @@ function publicCommunityEntry(entry, voterId) {
         role: normalizeRoles(entry.role),
         spec: entry.spec || '',
         icon: entry.icon || 'inv_misc_questionmark',
+        description: sanitizePlanDescription(entry.description),
         authorName: entry.authorName || 'Anonymous',
         authorId: entry.authorId,
         updatedAt: entry.updatedAt,
@@ -224,6 +242,7 @@ function toCommunityEntry(plan, author, previous) {
         role: roles,
         spec: String(plan.spec || '').slice(0, 64),
         icon,
+        description: sanitizePlanDescription(plan.description),
         authorName: authorName.slice(0, 64),
         authorId,
         updatedAt: plan.updatedAt || new Date().toISOString(),
@@ -250,9 +269,20 @@ function publishCommunityGearPlan(plan, author) {
                         upvotes: loaded.plan.upvotes,
                         downvotes: loaded.plan.downvotes,
                         createdAt: loaded.plan.createdAt,
+                        authorId: loaded.plan.authorId,
                     };
                 }
             } catch (_) { /* ignore */ }
+        }
+        // Only the original author may overwrite an existing community plan id
+        const existingAuthor = previous?.authorId != null
+            ? String(previous.authorId)
+            : getCommunityPlanAuthorId(prevId);
+        const requesterId = author?.id != null ? String(author.id) : '';
+        if (existingAuthor && requesterId && existingAuthor !== requesterId) {
+            const err = new Error('Only the original author can overwrite this community gear plan');
+            err.code = 'NOT_AUTHOR';
+            throw err;
         }
     }
     const entry = toCommunityEntry(plan, author, previous);
@@ -264,6 +294,7 @@ function publishCommunityGearPlan(plan, author) {
         role: entry.role,
         spec: entry.spec,
         icon: entry.icon,
+        description: entry.description,
         community: true,
         authorName: entry.authorName,
         authorId: entry.authorId,
@@ -416,14 +447,21 @@ app.get('/data/loot/*.json', (req, res, next) => {
 });
 
 // Serve all other static files (JS, CSS, images, etc.)
-app.use(express.static(__dirname, {
+// Skip /bug-reports* so the on-disk bug-reports/ folder does not 301/steal API routes.
+const siteStatic = express.static(__dirname, {
     maxAge: '1h',
-    setHeaders(res, filePath) {
+    setHeaders(staticRes, filePath) {
         if (filePath.endsWith('.html')) {
-            res.setHeader('Cache-Control', 'no-cache');
+            staticRes.setHeader('Cache-Control', 'no-cache');
         }
     }
-}));
+});
+app.use((req, res, next) => {
+    if (req.path === '/bug-reports' || req.path.startsWith('/bug-reports/')) {
+        return next();
+    }
+    return siteStatic(req, res, next);
+});
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Middleware to parse JSON bodies
@@ -954,44 +992,99 @@ app.post('/user-gear-plans', requireAuth, (req, res) => {
 
             const now = new Date().toISOString();
             const icon = sanitizeIconKey(plan.icon) || 'inv_misc_questionmark';
+            const description = sanitizePlanDescription(plan.description);
             const authorMeta = {
                 username: req.user.username || 'Anonymous',
                 id: String(req.user.id),
             };
+            const publishToCommunity = plan.community !== false;
+            let planId = plan.id ? String(plan.id) : '';
+            // Never let a non-author reuse someone else's community plan id
+            if (planId) {
+                const communityAuthor = getCommunityPlanAuthorId(planId);
+                if (communityAuthor && communityAuthor !== authorMeta.id) {
+                    if (publishToCommunity) {
+                        return res.status(403).json({
+                            success: false,
+                            error: 'Only the original author can overwrite this community gear plan. Use Save as New.',
+                            code: 'NOT_AUTHOR',
+                        });
+                    }
+                    // Personal (non-community) copy: mint a new id instead of clobbering
+                    planId = '';
+                }
+            }
             let saved;
             const base = {
                 ...plan,
                 role: roles,
                 spec,
                 icon,
-                community: true,
+                description,
+                community: publishToCommunity,
                 authorName: authorMeta.username,
                 authorId: authorMeta.id,
             };
-            if (plan.id) {
-                const idx = user.gearPlans.findIndex(p => String(p.id) === String(plan.id));
+            if (plan.sourceCommunityId) {
+                base.sourceCommunityId = String(plan.sourceCommunityId).slice(0, 64);
+            }
+            if (planId) {
+                const idx = user.gearPlans.findIndex(p => String(p.id) === String(planId));
                 if (idx >= 0) {
                     user.gearPlans[idx] = {
                         ...base,
-                        id: plan.id,
+                        id: planId,
                         createdAt: user.gearPlans[idx].createdAt || now,
                         updatedAt: now,
                         favorite: !!user.gearPlans[idx].favorite,
                     };
                     saved = user.gearPlans[idx];
                 } else {
-                    saved = { ...base, id: plan.id, createdAt: now, updatedAt: now };
+                    saved = { ...base, id: planId, createdAt: now, updatedAt: now };
                     user.gearPlans.push(saved);
                 }
             } else {
-                saved = { ...base, id: `gp_${Date.now()}`, createdAt: now, updatedAt: now };
-                user.gearPlans.push(saved);
+                // Idempotent favorite/copy: update existing personal copy of same community source
+                const srcId = plan.sourceCommunityId ? String(plan.sourceCommunityId) : '';
+                const existingCopyIdx = srcId
+                    ? user.gearPlans.findIndex(p => String(p.sourceCommunityId || '') === srcId)
+                    : -1;
+                if (existingCopyIdx >= 0) {
+                    user.gearPlans[existingCopyIdx] = {
+                        ...user.gearPlans[existingCopyIdx],
+                        ...base,
+                        id: user.gearPlans[existingCopyIdx].id,
+                        createdAt: user.gearPlans[existingCopyIdx].createdAt || now,
+                        updatedAt: now,
+                        favorite: true,
+                        community: false,
+                    };
+                    saved = user.gearPlans[existingCopyIdx];
+                } else {
+                    saved = {
+                        ...base,
+                        id: `gp_${Date.now()}`,
+                        createdAt: now,
+                        updatedAt: now,
+                        favorite: !!plan.favorite,
+                    };
+                    user.gearPlans.push(saved);
+                }
             }
             fs.writeFileSync(userFile, JSON.stringify(user, null, 2));
-            try {
-                publishCommunityGearPlan(saved, authorMeta);
-            } catch (pubErr) {
-                console.error('[CommunityGearPlans] publish failed:', pubErr);
+            if (saved.community !== false) {
+                try {
+                    publishCommunityGearPlan(saved, authorMeta);
+                } catch (pubErr) {
+                    if (pubErr && pubErr.code === 'NOT_AUTHOR') {
+                        return res.status(403).json({
+                            success: false,
+                            error: pubErr.message,
+                            code: 'NOT_AUTHOR',
+                        });
+                    }
+                    console.error('[CommunityGearPlans] publish failed:', pubErr);
+                }
             }
             res.json({ success: true, plan: saved });
         } catch (error) {
@@ -1072,7 +1165,7 @@ app.get('/bug-report-status', (req, res) => {
         const dirs = String(req.query.dirs || '')
             .split(',')
             .map((s) => s.trim())
-            .filter((d) => /^[0-9T.\-]+$/.test(d))
+            .filter((d) => /^[0-9TZ.\-]+$/i.test(d))
             .slice(0, 80);
         const reports = [];
         for (const dir of dirs) {

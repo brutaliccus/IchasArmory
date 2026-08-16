@@ -1053,10 +1053,13 @@ Press Ctrl+C to stop all servers.
 - **GET /api/armory/\*** - Proxy to armory.turtle-wow.org
 
 ### Bug Report Server Proxy
-- **POST /bug-report** - Submit bug report
-- **GET /bug-reports** - List bug reports
-- **GET /bug-reports/:id** - Get bug report screenshot
-- **PATCH /bug-reports/:id/status** - Update bug report status
+- **POST /bug-report** - Submit bug report (no auth)
+- **GET /bug-report-status** - Public status check for submitted report dirs (Cookie optional)
+- **GET /bug-reports** - List bug reports (**admin session Cookie required**; proxy forwards Cookie via `_proxy_headers_to_node`)
+- **GET /bug-reports/:timestamp/:filename** - Screenshot (admin Cookie)
+- **PATCH /bug-reports/:id/status** - Update bug report status (admin Cookie)
+
+Proxy note: GET `/bug-reports*` and `/bug-report-status` use `requests.get` with client headers (including Cookie). Do not use bare `urllib.urlopen` here — Node returns 403 for non-admins, and urlopen would surface that as a misleading 503 “server down”.
 
 ### Profile/Auth Server Proxy (server.js)
 - **GET /auth/discord** - Discord OAuth login
@@ -1071,8 +1074,8 @@ Press Ctrl+C to stop all servers.
 - **GET /inbox** - Get inbox messages
 - **PATCH /inbox/:id** - Mark message as read
 - **DELETE /inbox/:id** - Delete inbox message
-- **GET/POST /user-gear-plans**, **DELETE /user-gear-plans/:id**, **PATCH /user-gear-plans/:id/favorite** - Cloud gear plan storage (must be registered inside the `if (authEnabled)` block in `server.js` because they use `requireAuth`). Authenticated **POST** requires `role` (one or more of `dps`/`tank`/`healer`) and `spec` (talent-tree focus); sets `community: true`, stamps Discord `authorName`/`authorId`, and publishes a sanitized copy under `data/community-gear-plans/`. **DELETE** also unpublishes from the community index.
-- **GET /community-gear-plans** — Public list/search (`q`, `class`, `role`, `spec`, `sort=popular|recent`, `voterId`). Default sort **Popular** (`score = upvotes - downvotes`). Returns card metadata (talentSpread, upvotes, downvotes, score, myVote). Guests allowed.
+- **GET/POST /user-gear-plans**, **DELETE /user-gear-plans/:id**, **PATCH /user-gear-plans/:id/favorite** - Cloud gear plan storage (must be registered inside the `if (authEnabled)` block in `server.js` because they use `requireAuth`). Authenticated **POST** requires `role` (dps/tank/healer) and `spec`; stores `icon` + `description` (max 180). Overwriting an existing **community** plan id is allowed only when Discord `authorId` matches the requester — otherwise 403 `NOT_AUTHOR` (clients should Save as New). Personal copies (`community: false`, e.g. Favorite) skip community publish and may mint a new id. Publishing stamps Discord `authorName`/`authorId` and writes `data/community-gear-plans/`. **DELETE** also unpublishes from the community index.
+- **GET /community-gear-plans** — Public list/search (`q`, `class`, `role`, `spec`, `sort=popular|recent`, `voterId`). Default sort **Popular** (`score = upvotes - downvotes`). Returns card metadata including `description`, `icon`, talentSpread, votes.
 - **GET /community-gear-plans/:id** — Public full gear plan load (sanitized; no session secrets / vote map). IDs restricted to `[A-Za-z0-9_-]{1,64}`.
 - **POST /community-gear-plans/:id/vote** — Body `{ direction: 'up'|'down'|null, voterId? }`. Prefer Discord session id when logged in; else client voterId. Same direction toggles off.
 - Storage: `data/community-gear-plans/index.json` + `data/community-gear-plans/{id}.json`. Icon catalog: `data/wow-icons.json` (Node static + `server.py` explicit serve from project `data/` because production static root is `dist/`).

@@ -1738,7 +1738,13 @@ ProfileManager.prototype.saveGearPlan = async function saveGearPlan(plan) {
             body: JSON.stringify({ plan }),
         });
         const data = await res.json();
-        return data.success ? (data.plan || plan) : null;
+        if (!data.success) {
+            if (data.code === 'NOT_AUTHOR' || res.status === 403) {
+                window.notify?.error?.(data.error || 'Only the original author can overwrite this plan', 4500, 'Gear Planner');
+            }
+            return null;
+        }
+        return data.plan || plan;
     } catch (e) {
         console.error('[Profiles] saveGearPlan:', e);
         return null;

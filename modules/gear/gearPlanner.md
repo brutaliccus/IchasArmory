@@ -18,16 +18,20 @@ Gear plan data model and localStorage persistence for the Gear Planner page.
     [slotId]: { primary: number|null, alternatives: number[], enchant: number|null }
   },
   ui: { collapsed: { [slotId]: boolean }, stRotation?: 'enhSt'|'eleSt' },
-  role: Array<'dps'|'tank'|'healer'>,  // multi-select; required before save
+  role: Array<'dps'|'tank'|'healer'>,  // required before save (UI uses single dropdown)
   spec: string,           // talent-tree display name (e.g. Enhancement)
   icon: string,           // vanilla icon basename (e.g. spell_nature_lightning)
+  description?: string,   // short blurb max 180
+  statWeights?: array,    // DPS weight rows (plan + local draft)
+  tankStatWeights?: object,
   community?: boolean,    // true for cloud/authenticated publishes
   authorName?: string,
-  authorId?: string
+  authorId?: string,
+  sourceCommunityId?: string
 }
 ```
 
-Helpers: `normalizeGearPlanRoles`, `defaultIconForClassSpec`, `DEFAULT_SPEC_ICONS`, `GEAR_PLAN_ROLES`.
+Helpers: `normalizeGearPlanRoles`, `defaultIconForClassSpec`, `sanitizeGearPlanDescription`, `formatGearPlanRoleLabel`, `DEFAULT_SPEC_ICONS`, `GEAR_PLAN_ROLES`, `GEAR_PLAN_DESCRIPTION_MAX`.
 
 Items and per-slot **primary enchants** (`enchant` = index into `enchantDatabase[slot]`, or `null`). Alternatives are unenchanted. Independent of Character Planner `selectedEnchants`.
 
