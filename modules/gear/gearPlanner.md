@@ -49,6 +49,7 @@ Cloud saves: `user.gearPlans[]` via profiles API (see `profiles.md`). Guests are
 ## Exports
 
 - `GEAR_PLAN_SLOTS`, `GEAR_PLAN_ROLES`, `DEFAULT_SPEC_ICONS`, `createEmptyGearPlan`, `getGearPlanData`, `loadGearPlanData`
+- `getGearPlanPrimaryEquipped(plan, getItemById)` — primary-slot item snapshot for set bonuses (full item when loaded, `{ id }` stub otherwise; alts excluded)
 - `normalizeGearPlanRoles`, `defaultIconForClassSpec`
 - `saveGearPlannerSession`, `loadGearPlannerSession`
 - `saveGearPlannerTankStatWeights` / `getGearPlannerTankStatWeights`

@@ -315,3 +315,25 @@ export function applyGearPlanItemMove(plan, from, to) {
 
     return false;
 }
+
+/**
+ * Snapshot primary-slot item objects for set bonus / tooltip detection.
+ * Uses full item data when loaded; falls back to `{ id }` stubs so setDatabase
+ * ID lookup still works before slot JSON finishes loading.
+ * Alternatives are excluded (primary slots only).
+ * @param {GearPlan} plan
+ * @param {(id: number|string) => object|null} [getItemById]
+ * @returns {Record<string, { id: number }>}
+ */
+export function getGearPlanPrimaryEquipped(plan, getItemById) {
+    const equipped = {};
+    const p = plan?.slots || {};
+    for (const slot of GEAR_PLAN_SLOTS) {
+        const id = p[slot]?.primary;
+        if (id == null) continue;
+        const numId = Number(id);
+        const item = getItemById?.(numId);
+        equipped[slot] = item?.id != null ? item : { id: numId };
+    }
+    return equipped;
+}

@@ -9,6 +9,7 @@ import {
     loadLocalGearPlans,
     saveLocalGearPlans,
     applyGearPlanItemMove,
+    getGearPlanPrimaryEquipped,
     saveGearPlannerTankStatWeights,
     getGearPlannerTankStatWeights,
     saveGearPlannerDpsStatWeights,
@@ -1627,26 +1628,36 @@ function gpEnchantChromeHtml(slotId, side) {
     </span>`;
 }
 
+function getGpPrimaryEquipped() {
+    return getGearPlanPrimaryEquipped(currentPlan, callbacks.getItemById);
+}
+
 function aggregatePrimaryGearStats(plan) {
     const total = emptyStatTemplate();
-    const equipped = {};
+    const equipped = getGearPlanPrimaryEquipped(plan, callbacks.getItemById);
     for (const slot of GEAR_PLAN_SLOTS) {
-        const id = plan.slots?.[slot]?.primary;
-        if (id == null) continue;
-        const item = callbacks.getItemById?.(id);
+        const item = equipped[slot];
         if (!item) continue;
-        if (!item.stats) item.stats = parseStatsFromTooltip(item);
-        equipped[slot] = item;
-        if (!item.stats) continue;
-        for (const itemStatKey in item.stats) {
-            if (itemStatKey === 'weaponSkillByType' && typeof item.stats[itemStatKey] === 'object') {
-                for (const weaponType in item.stats[itemStatKey]) {
-                    total.weaponSkillByType[weaponType] = (total.weaponSkillByType[weaponType] || 0) + item.stats[itemStatKey][weaponType];
+        if (!item.stats) {
+            const loaded = callbacks.getItemById?.(item.id);
+            if (loaded) {
+                equipped[slot] = loaded;
+                if (!loaded.stats) loaded.stats = parseStatsFromTooltip(loaded);
+            } else {
+                continue;
+            }
+        }
+        const gearItem = equipped[slot];
+        if (!gearItem.stats) continue;
+        for (const itemStatKey in gearItem.stats) {
+            if (itemStatKey === 'weaponSkillByType' && typeof gearItem.stats[itemStatKey] === 'object') {
+                for (const weaponType in gearItem.stats[itemStatKey]) {
+                    total.weaponSkillByType[weaponType] = (total.weaponSkillByType[weaponType] || 0) + gearItem.stats[itemStatKey][weaponType];
                 }
             } else {
                 const finalKey = KEY_MAP[itemStatKey] || itemStatKey;
                 if (Object.prototype.hasOwnProperty.call(total, finalKey)) {
-                    total[finalKey] += item.stats[itemStatKey];
+                    total[finalKey] += gearItem.stats[itemStatKey];
                 }
             }
         }
@@ -3103,7 +3114,7 @@ function bindPlannerTooltips() {
         const item = itemId && callbacks.getItemById ? callbacks.getItemById(itemId) : null;
         if (!item) return;
         el.addEventListener('mouseenter', () => {
-            tooltip.innerHTML = createItemTooltipHTML(item);
+            tooltip.innerHTML = createItemTooltipHTML(item, getGpPrimaryEquipped());
             tooltip.style.display = 'block';
             const side = el.closest('#gp-slots-right') || el.closest('.gp-slot-card--right') ? 'east' : 'left';
             requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, el, { side }));
