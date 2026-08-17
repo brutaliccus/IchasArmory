@@ -11,15 +11,10 @@ export const shamanTalents = {
                 ranks: 5,
                 row: 1,
                 col: 2,
-                values: [
-                    "2",
-                    "4",
-                    "6",
-                    "8",
-                    "10"
-                ],
                 description: "Reduces the mana cost of your offensive Fire, Frost, and Nature spells by ",
+                
                 fullDescription: "Reduces the mana cost of your offensive Fire, Frost, and Nature spells by 2%.",
+                
                 spellIds: [
                     16039,
                     16109,
@@ -42,15 +37,10 @@ export const shamanTalents = {
                 ranks: 5,
                 row: 1,
                 col: 3,
-                values: [
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5"
-                ],
                 description: "Increases the damage done by your Fire, Frost, and Nature spells by ",
+                
                 fullDescription: "Increases the damage done by your Fire, Frost, and Nature spells by 1%.",
+                
                 spellIds: [
                     16035,
                     16105,
@@ -73,12 +63,10 @@ export const shamanTalents = {
                 ranks: 2,
                 row: 2,
                 col: 1,
-                values: [
-                    "25",
-                    "50"
-                ],
                 description: "Increases the health of your Stoneclaw Totem by ",
+                
                 fullDescription: "Increases the health of your Stoneclaw Totem by 25% and the radius of your Earthbind Totem by 10%.",
+                
                 spellIds: [
                     16043,
                     16130
@@ -95,13 +83,10 @@ export const shamanTalents = {
                 ranks: 3,
                 row: 2,
                 col: 2,
-                values: [
-                    "4",
-                    "7",
-                    "10"
-                ],
                 description: "Reduces damage taken from Fire, Frost and Nature effects by ",
+                
                 fullDescription: "Reduces damage taken from Fire, Frost and Nature effects by 4%.",
+                
                 spellIds: [
                     28996,
                     28997,
@@ -120,13 +105,10 @@ export const shamanTalents = {
                 ranks: 3,
                 row: 2,
                 col: 3,
-                values: [
-                    "1",
-                    "2",
-                    "3"
-                ],
                 description: "Increases your chance to hit with spells and melee attacks by ",
+                
                 fullDescription: "Increases your chance to hit with spells and melee attacks by 1% and your melee critical strikes increase your chance to hit with spells by additional 3% for 10 sec.",
+                
                 spellIds: [
                     30160,
                     29179,
@@ -145,11 +127,10 @@ export const shamanTalents = {
                 ranks: 1,
                 row: 3,
                 col: 1,
-                values: [
-                    "60%"
-                ],
                 description: "After landing a critical strike with a Fire, Frost, or Nature damage spell, you enter a Clearcasting state. The Clearcasting state reduces the mana cost of your next two damage spells or abilities by 60%.",
+                
                 fullDescription: "After landing a critical strike with a Fire, Frost, or Nature damage spell, you enter a Clearcasting state. The Clearcasting state reduces the mana cost of your next two damage spells or abilities by 60%.",
+                
                 spellIds: [
                     45541
                 ],
@@ -164,13 +145,10 @@ export const shamanTalents = {
                 ranks: 3,
                 row: 3,
                 col: 2,
-                values: [
-                    "0.3",
-                    "0.7",
-                    "1"
-                ],
                 description: "Reduces the cooldown of your Shock spells by ",
+                
                 fullDescription: "Reduces the cooldown of your Shock spells by 0.333 sec.",
+                
                 spellIds: [
                     16040,
                     16113,
@@ -189,15 +167,10 @@ export const shamanTalents = {
                 ranks: 5,
                 row: 3,
                 col: 3,
-                values: [
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "6"
-                ],
                 description: "Increases the critical strike chance of your Lightning Bolt and Chain Lightning spells by an additional ",
+                
                 fullDescription: "Increases the critical strike chance of your Lightning Bolt and Chain Lightning spells by an additional 1%.",
+                
                 spellIds: [
                     16041,
                     16117,
@@ -220,12 +193,10 @@ export const shamanTalents = {
                 ranks: 2,
                 row: 3,
                 col: 4,
-                values: [
-                    "30",
-                    "60"
-                ],
                 description: "Refreshing Flame Shock with Molten Blast deals damage equal to ",
+                
                 fullDescription: "Refreshing Flame Shock with Molten Blast deals damage equal to 30% of the refreshed duration.",
+                
                 spellIds: [
                     46107,
                     46108
@@ -242,12 +213,10 @@ export const shamanTalents = {
                 ranks: 2,
                 row: 4,
                 col: 1,
-                values: [
-                    "1",
-                    "2"
-                ],
                 description: "Reduces the delay before your Fire Nova Totem activates by ",
+                
                 fullDescription: "Reduces the delay before your Fire Nova Totem activates by 1000 sec, decreases the threat generated by your Magma Totem by 25%, and increases your Searing Totem's attack speed by 10% and its attack range by 5 yards.",
+                
                 spellIds: [
                     16086,
                     16544
@@ -264,13 +233,14 @@ export const shamanTalents = {
                 ranks: 2,
                 row: 4,
                 col: 2,
-                values: [
-                    "2/25",
-                    "4/50"
-                ],
                 description: "Increases the maximum charges of Earth Shield by ",
+                
                 fullDescription: "Increases the maximum charges of Earth Shield by 2, while it is active your damaging spells replenish one charge and it increases your chance to avoid interruption caused by damage while casting any damaging spells by an additional 25%.",
-                spellIds: [],
+                
+                spellIds: [
+                    58238,
+                    58239
+                ],
                 rankDescriptions: [
                     "Increases the maximum charges of Earth Shield by 2, while it is active your damaging spells replenish one charge and it increases your chance to avoid interruption caused by damage while casting any damaging spells by an additional 25%.",
                     "Increases the maximum charges of Earth Shield by 4, while it is active your damaging spells replenish one charge and it increases your chance to avoid interruption caused by damage while casting any damaging spells by an additional 50%."
@@ -283,13 +253,10 @@ export const shamanTalents = {
                 ranks: 3,
                 row: 4,
                 col: 4,
-                values: [
-                    "5",
-                    "10",
-                    "15"
-                ],
                 description: "Increases the damage done by your Fire Totems and Fire spells by ",
+                
                 fullDescription: "Increases the damage done by your Fire Totems and Fire spells by 5%, and the range of your Flame Shock by 3 yards.",
+                
                 spellIds: [
                     16038,
                     16160,
@@ -308,12 +275,10 @@ export const shamanTalents = {
                 ranks: 2,
                 row: 5,
                 col: 1,
-                values: [
-                    "3",
-                    "6"
-                ],
                 description: "Increases the range of your Lightning Bolt and Chain Lightning spells by ",
+                
                 fullDescription: "Increases the range of your Lightning Bolt and Chain Lightning spells by 3 yards.",
+                
                 spellIds: [
                     28999,
                     29000
@@ -330,13 +295,10 @@ export const shamanTalents = {
                 ranks: 1,
                 row: 5,
                 col: 2,
-                values: [
-                    "0.3",
-                    "0.7",
-                    "1"
-                ],
                 description: "When activated, your next Fire, Frost, or Nature damage spell with a base casting time less than 10 sec becomes an instant cast spell. If that spell is a damaging spell, the damage it deals is reduced by ",
+                
                 fullDescription: "Increases your Fire, Frost, and Nature damage by 15% and reduces the mana cost of your offensive spells by 20% for 10 sec.",
+                
                 spellIds: [
                     16166
                 ],
@@ -351,12 +313,10 @@ export const shamanTalents = {
                 ranks: 2,
                 row: 5,
                 col: 4,
-                values: [
-                    "5",
-                    "10"
-                ],
                 description: "Increases the damage done by your Fire and Nature spells by ",
+                
                 fullDescription: "Increases the damage done by your Fire and Nature spells by 5% and increases the critical strike damage bonus of your Searing, Magma, and Fire Nova Totems and your Fire, Frost, and Nature spells by 50%.",
+                
                 spellIds: [
                     56556,
                     56557
@@ -373,17 +333,11 @@ export const shamanTalents = {
                 ranks: 5,
                 row: 6,
                 col: 3,
-                values: [
-                    "0.2",
-                    "0.4",
-                    "0.6",
-                    "0.8",
-                    "1"
-                ],
-                description: "Reduces the cast time of your Lightning Bolt and Chain Lightning spells by ",
                 requires: 10,
-                reqRanks: 5,
+                description: "Reduces the cast time of your Lightning Bolt and Chain Lightning spells by ",
+                
                 fullDescription: "Reduces the cast time of your Lightning Bolt and Chain Lightning spells by 0.2 sec.",
+                
                 spellIds: [
                     16578,
                     16579,
@@ -406,23 +360,19 @@ export const shamanTalents = {
                 ranks: 1,
                 row: 7,
                 col: 2,
-                values: [
-                    "0.3",
-                    "0.7",
-                    "1"
-                ],
-                description: "Breaks the earth beneath the target, dealing Nature damage to the target and an additional 35% of that damage as Nature damage to other enemies within 10 yards. Creates a patch of broken earth that slows enemies inside it by 15%. After 4 sec, the broken earth erupts in an aftershock, dealing Nature damage equal to 30% of the initial damage to all enemies within the area.\r\nRequires Elemental Mastery",
                 requires: 17,
-                reqRanks: 1,
+                description: "Breaks the earth beneath the target, dealing Nature damage to the target and an additional 35% of that damage as Nature damage to other enemies within 10 yards. Creates a patch of broken earth that slows enemies inside it by 15%. After 4 sec, the broken earth erupts in an aftershock, dealing Nature damage equal to 30% of the initial damage to all enemies within the area.\\r\\nRequires Elemental Mastery",
+                
                 fullDescription: "Breaks the earth beneath the target, dealing 587 to 634 Nature damage to the target and an additional 35% of that damage as Nature damage to other enemies within 10 yards. Creates a patch of broken earth that slows enemies inside it by 15%. After 4 sec, the broken earth erupts in an aftershock, dealing Nature damage equal to 30% of the initial damage to all enemies within the area.",
+                
                 spellIds: [
-                    48308
+                    48306
                 ],
                 rankDescriptions: [
                     "Breaks the earth beneath the target, dealing 587 to 634 Nature damage to the target and an additional 35% of that damage as Nature damage to other enemies within 10 yards. Creates a patch of broken earth that slows enemies inside it by 15%. After 4 sec, the broken earth erupts in an aftershock, dealing Nature damage equal to 30% of the initial damage to all enemies within the area."
                 ]
             }
-        ]
+        ],
     },
     enhancement: {
         name: "Enhancement",
@@ -435,15 +385,10 @@ export const shamanTalents = {
                 ranks: 5,
                 row: 1,
                 col: 2,
-                values: [
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5"
-                ],
                 description: "Increases the total value of all your stats by ",
+                
                 fullDescription: "Increases the total value of all your stats by 1%.",
+                
                 spellIds: [
                     17485,
                     17486,
@@ -466,15 +411,10 @@ export const shamanTalents = {
                 ranks: 5,
                 row: 1,
                 col: 3,
-                values: [
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5"
-                ],
                 description: "Increases your chance to block attacks with a shield by ",
+                
                 fullDescription: "Increases your chance to block attacks with a shield by 1% and increases the amount blocked by 6%.",
+                
                 spellIds: [
                     16253,
                     16298,
@@ -497,14 +437,12 @@ export const shamanTalents = {
                 ranks: 2,
                 row: 2,
                 col: 1,
-                values: [
-                    "45",
-                    "90"
-                ],
                 description: "Improves your chance to get a critical strike with your weapon attacks by ",
+                
                 fullDescription: "45% of the threat generated by your totems is transferred to you.",
+                
                 spellIds: [
-                    51379,
+                    51381,
                     51382
                 ],
                 rankDescriptions: [
@@ -519,15 +457,10 @@ export const shamanTalents = {
                 ranks: 5,
                 row: 2,
                 col: 2,
-                values: [
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5"
-                ],
                 description: "Improves your chance to get a critical strike with your weapon attacks by ",
+                
                 fullDescription: "Improves your chance to get a critical strike with your weapon attacks by 1%.",
+                
                 spellIds: [
                     16255,
                     16302,
@@ -550,13 +483,10 @@ export const shamanTalents = {
                 ranks: 3,
                 row: 2,
                 col: 3,
-                values: [
-                    "2",
-                    "4",
-                    "6"
-                ],
                 description: "Increases the number of charges of your shield spells by ",
+                
                 fullDescription: "Increases the number of charges of your shield spells by 2, but increases the cooldown between activations by 1 sec.",
+                
                 spellIds: [
                     16261,
                     16290,
@@ -575,12 +505,10 @@ export const shamanTalents = {
                 ranks: 2,
                 row: 2,
                 col: 4,
-                values: [
-                    "1",
-                    "2"
-                ],
                 description: "Reduces the cast time of your Ghost Wolf spell by ",
+                
                 fullDescription: "Reduces the cast time of your Ghost Wolf spell by 1000 sec.",
+                
                 spellIds: [
                     16262,
                     16287
@@ -597,13 +525,10 @@ export const shamanTalents = {
                 ranks: 3,
                 row: 3,
                 col: 1,
-                values: [
-                    "8",
-                    "16",
-                    "25"
-                ],
                 description: "Reduces threat generated by your physical attacks, weapon imbue effects, and your Lightning Strike and Stormstrike abilities by ",
+                
                 fullDescription: "Reduces threat generated by your physical attacks, weapon imbue effects, and your Lightning Strike and Stormstrike abilities by 8%. This effect does not apply while Rockbiter Weapon is active.",
+                
                 spellIds: [
                     51383,
                     51384,
@@ -622,19 +547,13 @@ export const shamanTalents = {
                 ranks: 1,
                 row: 3,
                 col: 3,
-                values: [
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5"
-                ],
-                description: "Gives you an extra melee attack for ",
                 requires: 6,
-                reqRanks: 3,
+                description: "Gives you an extra melee attack for ",
+                
                 fullDescription: "Instantly strikes your target, causing 60% weapon damage and an additional 20% as Nature damage. This strike also triggers an empowered version of your active shield, consuming 1 charge.",
+                
                 spellIds: [
-                    52422
+                    51387
                 ],
                 rankDescriptions: [
                     "Instantly strikes your target, causing 60% weapon damage and an additional 20% as Nature damage. This strike also triggers an empowered version of your active shield, consuming 1 charge."
@@ -647,13 +566,10 @@ export const shamanTalents = {
                 ranks: 3,
                 row: 3,
                 col: 4,
-                values: [
-                    "5",
-                    "10",
-                    "15"
-                ],
                 description: "Increases your armor value from items by ",
+                
                 fullDescription: "Increases your armor value from items by 5% and chance to dodge by an additional 2%.",
+                
                 spellIds: [
                     45545,
                     45546,
@@ -672,23 +588,17 @@ export const shamanTalents = {
                 ranks: 5,
                 row: 4,
                 col: 2,
-                values: [
-                    "8",
-                    "11",
-                    "14",
-                    "17",
-                    "20"
-                ],
-                description: "Increases your attack speed by ",
                 requires: 5,
-                reqRanks: 5,
+                description: "Increases your attack speed by ",
+                
                 fullDescription: "Increases your attack speed by 8% for your next 3 swings after dealing a critical strike.",
+                
                 spellIds: [
-                    12319,
+                    16256,
                     16281,
-                    12972,
-                    12973,
-                    12974
+                    16282,
+                    16283,
+                    16284
                 ],
                 rankDescriptions: [
                     "Increases your attack speed by 8% for your next 3 swings after dealing a critical strike.",
@@ -705,12 +615,10 @@ export const shamanTalents = {
                 ranks: 2,
                 row: 4,
                 col: 3,
-                values: [
-                    "15",
-                    "30"
-                ],
                 description: "Increases the armor gained from shields by ",
+                
                 fullDescription: "Increases the armor gained from shields by 15% and threat generated by 5% while wearing a shield.",
+                
                 spellIds: [
                     45951,
                     45952
@@ -727,12 +635,10 @@ export const shamanTalents = {
                 ranks: 2,
                 row: 5,
                 col: 1,
-                values: [
-                    "12",
-                    "25"
-                ],
                 description: "Increases the effect of your Strength of Earth and Grace of Air Totems by ",
+                
                 fullDescription: "Increases the effect of your Strength of Earth and Grace of Air Totems by 12% and reduces the cooldown of your Grounding Totem by 1000 sec. Your Stoneskin Totem's damage reduction is increased by 15% and additionally it increases block amount by 15%.",
+                
                 spellIds: [
                     16259,
                     16295
@@ -749,23 +655,19 @@ export const shamanTalents = {
                 ranks: 3,
                 row: 5,
                 col: 2,
-                values: {
-                    flametongue: [10, 20, 30],  // Fire damage % (on melee hit, 5s buff)
-                    rockbiter: [4, 7, 10],      // Damage reduction %
-                    frostbrand: [8, 16, 25],    // Proc chance %
-                    windfury: [2, 4, 6]         // Max haste stacks (1% per stack)
-                },
-                description: "Imbuing your weapon grants a special benefit based on the imbue:\n\n- Flametongue: Hitting enemies with your attacks increases damage done by Fire Totems and Fire spells by ",
-                fullDescription: "Imbuing your weapon grants a special benefit based on the imbue:\n\n- Flametongue: Hitting enemies with your attacks increases damage done by Fire Totems and Fire spells by 10% for 5 sec.\n- Frostbrand: Increases the chance to trigger the effect by 8% and causes it to critically hit if the target is afflicted with Frost Shock.\n- Windfury: Gaining extra attacks increases attack speed by 1% for 5 sec. Stacks up to 2 times.\n- Rockbiter: Physical damage builds up an earthen bulwark equal to 20% of damage dealt, tripled while wearing a shield. The bulwark absorbs 15% of incoming damage for 8 sec or until it mitigates enough damage. Its durability cannot exceed 20% of maximum health.",
+                description: "Imbuing your weapon grants a special benefit based on the imbue:\\n\\n- Flametongue: Hitting enemies with your attacks increases damage done by Fire Totems and Fire spells by ",
+                
+                fullDescription: "Imbuing your weapon grants a special benefit based on the imbue:\\n\\n- Flametongue: Hitting enemies with your attacks increases damage done by Fire Totems and Fire spells by 10% for 5 sec.\\n- Frostbrand: Increases the chance to trigger the effect by 8% and causes it to critically hit if the target is afflicted with Frost Shock.\\n- Windfury: Gaining extra attacks increases attack speed by 1% for 5 sec. Stacks up to 2 times.\\n- Rockbiter: Physical damage builds up an earthen bulwark equal to 20% of damage dealt, tripled while wearing a shield. The bulwark absorbs 15% of incoming damage for 8 sec or until it mitigates enough damage. Its durability cannot exceed 20% of maximum health.",
+                
                 spellIds: [
                     16266,
                     29079,
                     29080
                 ],
                 rankDescriptions: [
-                    "Imbuing your weapon grants a special benefit based on the imbue:\n\n- Flametongue: Hitting enemies with your attacks increases damage done by Fire Totems and Fire spells by 10% for 5 sec.\n- Frostbrand: Increases the chance to trigger the effect by 8% and causes it to critically hit if the target is afflicted with Frost Shock.\n- Windfury: Gaining extra attacks increases attack speed by 1% for 5 sec. Stacks up to 2 times.\n- Rockbiter: Physical damage builds up an earthen bulwark equal to 20% of damage dealt, tripled while wearing a shield. The bulwark absorbs 15% of incoming damage for 8 sec or until it mitigates enough damage. Its durability cannot exceed 20% of maximum health.",
-                    "Imbuing your weapon grants a special benefit based on the imbue:\n\n- Flametongue: Hitting enemies with your attacks increases damage done by Fire Totems and Fire spells by 20% for 5 sec.\n- Frostbrand: Increases the chance to trigger the effect by 16% and causes it to critically hit if the target is afflicted with Frost Shock.\n- Windfury: Gaining extra attacks increases attack speed by 1% for 5 sec. Stacks up to 4 times.\n- Rockbiter: Physical damage builds up an earthen bulwark equal to 20% of damage dealt, tripled while wearing a shield. The bulwark absorbs 15% of incoming damage for 8 sec or until it mitigates enough damage. Its durability cannot exceed 20% of maximum health.",
-                    "Imbuing your weapon grants a special benefit based on the imbue:\n\n- Flametongue: Hitting enemies with your attacks increases damage done by Fire Totems and Fire spells by 30% for 5 sec.\n- Frostbrand: Increases the chance to trigger the effect by 25% and causes it to critically hit if the target is afflicted with Frost Shock.\n- Windfury: Gaining extra attacks increases attack speed by 1% for 5 sec. Stacks up to 6 times.\n- Rockbiter: Physical damage builds up an earthen bulwark equal to 20% of damage dealt, tripled while wearing a shield. The bulwark absorbs 15% of incoming damage for 8 sec or until it mitigates enough damage. Its durability cannot exceed 20% of maximum health."
+                    "Imbuing your weapon grants a special benefit based on the imbue:\\n\\n- Flametongue: Hitting enemies with your attacks increases damage done by Fire Totems and Fire spells by 10% for 5 sec.\\n- Frostbrand: Increases the chance to trigger the effect by 8% and causes it to critically hit if the target is afflicted with Frost Shock.\\n- Windfury: Gaining extra attacks increases attack speed by 1% for 5 sec. Stacks up to 2 times.\\n- Rockbiter: Physical damage builds up an earthen bulwark equal to 20% of damage dealt, tripled while wearing a shield. The bulwark absorbs 15% of incoming damage for 8 sec or until it mitigates enough damage. Its durability cannot exceed 20% of maximum health.",
+                    "Imbuing your weapon grants a special benefit based on the imbue:\\n\\n- Flametongue: Hitting enemies with your attacks increases damage done by Fire Totems and Fire spells by 20% for 5 sec.\\n- Frostbrand: Increases the chance to trigger the effect by 16% and causes it to critically hit if the target is afflicted with Frost Shock.\\n- Windfury: Gaining extra attacks increases attack speed by 1% for 5 sec. Stacks up to 4 times.\\n- Rockbiter: Physical damage builds up an earthen bulwark equal to 20% of damage dealt, tripled while wearing a shield. The bulwark absorbs 15% of incoming damage for 8 sec or until it mitigates enough damage. Its durability cannot exceed 20% of maximum health.",
+                    "Imbuing your weapon grants a special benefit based on the imbue:\\n\\n- Flametongue: Hitting enemies with your attacks increases damage done by Fire Totems and Fire spells by 30% for 5 sec.\\n- Frostbrand: Increases the chance to trigger the effect by 25% and causes it to critically hit if the target is afflicted with Frost Shock.\\n- Windfury: Gaining extra attacks increases attack speed by 1% for 5 sec. Stacks up to 6 times.\\n- Rockbiter: Physical damage builds up an earthen bulwark equal to 20% of damage dealt, tripled while wearing a shield. The bulwark absorbs 15% of incoming damage for 8 sec or until it mitigates enough damage. Its durability cannot exceed 20% of maximum health."
                 ]
             },
             {
@@ -775,15 +677,10 @@ export const shamanTalents = {
                 ranks: 1,
                 row: 5,
                 col: 3,
-                values: [
-                    "2",
-                    "4",
-                    "6",
-                    "8",
-                    "10"
-                ],
                 description: "Gives you an extra attack for ",
+                
                 fullDescription: "Gives you an extra attack for 100% weapon damage and increases the next 2 sources of Nature damage you deal by 25%.  Lasts 12 sec.",
+                
                 spellIds: [
                     17364
                 ],
@@ -798,15 +695,10 @@ export const shamanTalents = {
                 ranks: 5,
                 row: 6,
                 col: 3,
-                values: [
-                    "2",
-                    "4",
-                    "6",
-                    "8",
-                    "10"
-                ],
                 description: "Increases the damage you deal with all weapons, Stormstrike and Lightning Strike abilities by ",
+                
                 fullDescription: "Increases the damage you deal with all weapons, Stormstrike and Lightning Strike abilities by 2%. Increases the critical strike chance of your instant cast spells by 2%.",
+                
                 spellIds: [
                     29082,
                     29084,
@@ -829,17 +721,11 @@ export const shamanTalents = {
                 ranks: 1,
                 row: 7,
                 col: 2,
-                values: [
-                    "2",
-                    "4",
-                    "6",
-                    "8",
-                    "10"
-                ],
-                description: "Increases melee, ranged, and spell haste by ",
                 requires: 17,
-                reqRanks: 3,
+                description: "Increases melee, ranged, and spell haste by ",
+                
                 fullDescription: "Fly into a frenzy, increasing your attack speed by 20% and spell casting speed by 20% for 30 sec.  While under this effect, your melee critical strikes increase the attack and spell casting speed of all party members within 30 yards by 8% for 6 sec.",
+                
                 spellIds: [
                     45509
                 ],
@@ -847,7 +733,7 @@ export const shamanTalents = {
                     "Fly into a frenzy, increasing your attack speed by 20% and spell casting speed by 20% for 30 sec.  While under this effect, your melee critical strikes increase the attack and spell casting speed of all party members within 30 yards by 8% for 6 sec."
                 ]
             }
-        ]
+        ],
     },
     restoration: {
         name: "Restoration",
@@ -860,15 +746,10 @@ export const shamanTalents = {
                 ranks: 5,
                 row: 1,
                 col: 2,
-                values: [
-                    "15",
-                    "0.3",
-                    "45",
-                    "0.6",
-                    "75"
-                ],
                 description: "Reduces the casting time of your Healing Wave spell by ",
+                
                 fullDescription: "Reduces the casting time of your Healing Wave spell by 0.150 sec.",
+                
                 spellIds: [
                     16182,
                     16226,
@@ -891,15 +772,10 @@ export const shamanTalents = {
                 ranks: 5,
                 row: 1,
                 col: 3,
-                values: [
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5"
-                ],
                 description: "Reduces the mana cost of your healing spells by ",
+                
                 fullDescription: "Reduces the Mana cost of your healing spells by 1% and your totems by 5%.",
+                
                 spellIds: [
                     16179,
                     16214,
@@ -922,12 +798,10 @@ export const shamanTalents = {
                 ranks: 2,
                 row: 2,
                 col: 1,
-                values: [
-                    "7",
-                    "15"
-                ],
                 description: "Reduces the cooldown of your Reincarnation spell by ",
+                
                 fullDescription: "Reduces the cooldown of your Reincarnation spell by 600000 min and increases the amount of health and mana you reincarnate with by an additional 10%.",
+                
                 spellIds: [
                     16184,
                     16209
@@ -944,13 +818,10 @@ export const shamanTalents = {
                 ranks: 3,
                 row: 2,
                 col: 2,
-                values: [
-                    "8",
-                    "16",
-                    "25"
-                ],
                 description: "Increases your target's armor value by ",
+                
                 fullDescription: "Increases your target's armor value by 8% for 15 sec after getting a critical effect from one of your healing spells.",
+                
                 spellIds: [
                     16176,
                     16235,
@@ -969,15 +840,10 @@ export const shamanTalents = {
                 ranks: 5,
                 row: 2,
                 col: 3,
-                values: [
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5"
-                ],
                 description: "Increases the critical effect chance of your healing and lightning spells by ",
+                
                 fullDescription: "Increases the critical effect chance of your healing and lightning spells by 1%.",
+                
                 spellIds: [
                     16194,
                     16218,
@@ -1000,13 +866,10 @@ export const shamanTalents = {
                 ranks: 3,
                 row: 3,
                 col: 1,
-                values: [
-                    "33",
-                    "66",
-                    "100"
-                ],
                 description: "Your Healing Wave, Lesser Healing Wave, and Chain Heal spells have a ",
+                
                 fullDescription: "Your Healing Wave and Lesser Healing Wave spells each have a 33% chance, and your Chain Heal spell has a 11% chance to increase the healing of your next Healing Wave or Chain Heal on that target by 6% for 15 sec. This effect stacks up to 15001 times.",
+                
                 spellIds: [
                     29206,
                     29205,
@@ -1025,12 +888,10 @@ export const shamanTalents = {
                 ranks: 2,
                 row: 3,
                 col: 2,
-                values: [
-                    "35",
-                    "70"
-                ],
                 description: "Gives you a ",
+                
                 fullDescription: "Gives you a 35% chance to avoid interruption caused by damage while casting any healing spell.",
+                
                 spellIds: [
                     16181,
                     16230
@@ -1047,12 +908,10 @@ export const shamanTalents = {
                 ranks: 1,
                 row: 3,
                 col: 3,
-                values: [
-                    "20",
-                    "50"
-                ],
                 description: "Increases the duration of your beneficial totems by ",
+                
                 fullDescription: "Increases the duration of your helpful totems by 20% and the amount of mana refunded by Totemic Recall by an additional 15%.",
+                
                 spellIds: [
                     16189
                 ],
@@ -1067,13 +926,10 @@ export const shamanTalents = {
                 ranks: 3,
                 row: 3,
                 col: 4,
-                values: [
-                    "5",
-                    "10",
-                    "15"
-                ],
                 description: "Reduces the threat generated by your healing and lightning spells by ",
+                
                 fullDescription: "Reduces the threat generated by your Nature spells by 5%.",
+                
                 spellIds: [
                     29187,
                     29189,
@@ -1092,15 +948,10 @@ export const shamanTalents = {
                 ranks: 5,
                 row: 4,
                 col: 2,
-                values: [
-                    "5",
-                    "10",
-                    "15",
-                    "20",
-                    "25"
-                ],
                 description: "Increases the amount healed by your Healing Stream Totem by ",
+                
                 fullDescription: "Reduces mana cost of your Mana Spring Totem by 10% and increases the effect of your Healing Stream Totem by 5%.",
+                
                 spellIds: [
                     16187,
                     16205,
@@ -1123,13 +974,10 @@ export const shamanTalents = {
                 ranks: 3,
                 row: 4,
                 col: 3,
-                values: [
-                    "2",
-                    "4",
-                    "6"
-                ],
                 description: "Your Water Shield restores ",
+                
                 fullDescription: "While your Water Shield is active, you restore 3 Mana every 5 sec, and your total mana regeneration is increased by 10% for each active Water Shield globe.",
+                
                 spellIds: [
                     51369,
                     51370,
@@ -1142,65 +990,17 @@ export const shamanTalents = {
                 ]
             },
             {
-                id: 19,
-                name: "Undertow",
-                icon: "spell_shaman_tidalwaves",
-                ranks: 2,
-                row: 5,
-                col: 4,
-                values: [
-                    "50",
-                    "100"
-                ],
-                description: "Your Chain Heal, Healing Wave, and Lesser Healing Wave have a ",
-                requires: 14,
-                reqRanks: 3,
-                fullDescription: "Your Healing Wave and Lesser Healing Wave spells have a 25% chance to restore a charge of your active Water Shield.  When your Water Shield is at maximum charges, this effect consumes a charge instead.",
-                spellIds: [
-                    51372,
-                    51373
-                ],
-                rankDescriptions: [
-                    "Your Healing Wave and Lesser Healing Wave spells have a 25% chance to restore a charge of your active Water Shield.  When your Water Shield is at maximum charges, this effect consumes a charge instead.",
-                    "Your Healing Wave and Lesser Healing Wave spells have a 50% chance to restore a charge of your active Water Shield.  When your Water Shield is at maximum charges, this effect consumes a charge instead."
-                ]
-            },
-            {
-                id: 18,
-                name: "Ancestral Swiftness",
-                icon: "spell_nature_ravenform",
-                ranks: 1,
-                row: 5,
-                col: 3,
-                values: [
-                    "0.3",
-                    "0.7",
-                    "1"
-                ],
-                description: "When activated, your next Nature spell with a base casting time less than 10 sec becomes an instant cast spell. If that spell is a damaging spell, the damage it deals is reduced by ",
-                fullDescription: "When activated, your next Nature spell with a casting time less than 10 sec becomes an instant cast spell. Affected damaging spells have 25% reduced effectiveness.",
-                spellIds: [
-                    16188
-                ],
-                rankDescriptions: [
-                    "When activated, your next Nature spell with a casting time less than 10 sec becomes an instant cast spell. Affected damaging spells have 25% reduced effectiveness."
-                ]
-            },
-            {
                 id: 16,
                 name: "Tidal Surge",
                 icon: "spell_arcane_manatap",
                 ranks: 2,
                 row: 5,
                 col: 1,
-                values: [
-                    "25",
-                    "50"
-                ],
-                description: "You regain ",
                 requires: 8,
-                reqRanks: 3,
+                description: "You regain ",
+                
                 fullDescription: "After healing a target affected by your Healing Way effect, you have a 15% chance to regain mana equal to 15% of the base cost of the spell.",
+                
                 spellIds: [
                     51491,
                     51492
@@ -1211,26 +1011,59 @@ export const shamanTalents = {
                 ]
             },
             {
+                id: 18,
+                name: "Ancestral Swiftness",
+                icon: "spell_nature_ravenform",
+                ranks: 1,
+                row: 5,
+                col: 3,
+                description: "When activated, your next Nature spell with a base casting time less than 10 sec becomes an instant cast spell. If that spell is a damaging spell, the damage it deals is reduced by ",
+                
+                fullDescription: "When activated, your next Nature spell with a casting time less than 10 sec becomes an instant cast spell. Affected damaging spells have 25% reduced effectiveness.",
+                
+                spellIds: [
+                    16188
+                ],
+                rankDescriptions: [
+                    "When activated, your next Nature spell with a casting time less than 10 sec becomes an instant cast spell. Affected damaging spells have 25% reduced effectiveness."
+                ]
+            },
+            {
+                id: 19,
+                name: "Undertow",
+                icon: "spell_shaman_tidalwaves",
+                ranks: 2,
+                row: 5,
+                col: 4,
+                requires: 14,
+                description: "Your Chain Heal, Healing Wave, and Lesser Healing Wave have a ",
+                
+                fullDescription: "Your Healing Wave and Lesser Healing Wave spells have a 25% chance to restore a charge of your active Water Shield.  When your Water Shield is at maximum charges, this effect consumes a charge instead.",
+                
+                spellIds: [
+                    51372,
+                    51373
+                ],
+                rankDescriptions: [
+                    "Your Healing Wave and Lesser Healing Wave spells have a 25% chance to restore a charge of your active Water Shield.  When your Water Shield is at maximum charges, this effect consumes a charge instead.",
+                    "Your Healing Wave and Lesser Healing Wave spells have a 50% chance to restore a charge of your active Water Shield.  When your Water Shield is at maximum charges, this effect consumes a charge instead."
+                ]
+            },
+            {
                 id: 21,
                 name: "Improved Chain Heal",
                 icon: "spell_nature_healingwavegreater",
                 ranks: 5,
                 row: 6,
                 col: 2,
-                values: [
-                    "0.2",
-                    "0.4",
-                    "0.6",
-                    "0.8",
-                    "1"
-                ],
-                description: "Reduces the cast time of your Chain Heal spell by ",
                 requires: 13,
-                reqRanks: 5,
+                description: "Reduces the cast time of your Chain Heal spell by ",
+                
                 fullDescription: "Increases the amount healed to targets beyond the first by 26%.",
+                
                 spellIds: [
-                    16183,
-                    30640,
+                    51374,
+                    51375,
                     51376,
                     51377,
                     51378
@@ -1250,15 +1083,11 @@ export const shamanTalents = {
                 ranks: 1,
                 row: 7,
                 col: 2,
-                values: [
-                    "0.3",
-                    "0.7",
-                    "1"
-                ],
-                description: "You link the friendly target with up to 2 nearby allies, causing ",
                 requires: 21,
-                reqRanks: 5,
+                description: "You link the friendly target with up to 2 nearby allies, causing ",
+                
                 fullDescription: "Links the spirit of an ally to that of other group members within 35 yards. When the target takes damage, 30% is distributed among nearby allies. Lasts 20 sec.",
+                
                 spellIds: [
                     51363
                 ],
@@ -1266,6 +1095,6 @@ export const shamanTalents = {
                     "Links the spirit of an ally to that of other group members within 35 yards. When the target takes damage, 30% is distributed among nearby allies. Lasts 20 sec."
                 ]
             }
-        ]
-    }
+        ],
+    },
 };

@@ -12,7 +12,9 @@ export const druidTalents = {
                 row: 1,
                 col: 1,
                 description: "Reduces the cast time and global cooldown of your Wrath spell by 0.1 sec.",
+                
                 fullDescription: "Reduces the cast time and global cooldown of your Wrath spell by 0.1 sec.",
+                
                 spellIds: [
                     16814,
                     16815,
@@ -36,7 +38,9 @@ export const druidTalents = {
                 row: 1,
                 col: 2,
                 description: "While active, any time an enemy strikes the caster they have a 35% chance to become afflicted by Entangling Roots (Rank 1).  Only useable outdoors.  1 charge.  Lasts 45 sec.",
+                
                 fullDescription: "While active, any time an enemy strikes the caster they have a 35% chance to become afflicted by Entangling Roots (Rank 1).  Only useable outdoors.  1 charge.  Lasts 45 sec.",
+                
                 spellIds: [
                     16689
                 ],
@@ -51,8 +55,11 @@ export const druidTalents = {
                 ranks: 4,
                 row: 1,
                 col: 3,
+                requires: 1,
                 description: "Increases the chance for your Nature's Grasp to entangle an enemy by 15%.",
+                
                 fullDescription: "Increases the chance for your Nature's Grasp to entangle an enemy by 15%.",
+                
                 spellIds: [
                     17245,
                     17247,
@@ -64,9 +71,7 @@ export const druidTalents = {
                     "Increases the chance for your Nature's Grasp to entangle an enemy by 30%.",
                     "Increases the chance for your Nature's Grasp to entangle an enemy by 45%.",
                     "Increases the chance for your Nature's Grasp to entangle an enemy by 65%."
-                ],
-                requires: 1,
-                reqRanks: 1
+                ]
             },
             {
                 id: 3,
@@ -76,7 +81,9 @@ export const druidTalents = {
                 row: 1,
                 col: 4,
                 description: "Gives you a 50% chance after killing a target that yields experience or honor to allow your Mana to regenerate at a 100% rate while casting.  Lasts 15 sec.",
+                
                 fullDescription: "Gives you a 50% chance after killing a target that yields experience or honor to allow your Mana to regenerate at a 100% rate while casting.  Lasts 15 sec.",
+                
                 spellIds: [
                     51421,
                     51422
@@ -94,7 +101,9 @@ export const druidTalents = {
                 row: 2,
                 col: 1,
                 description: "Gives you a 23% chance to avoid interruption caused by damage while casting your Balance spells.",
+                
                 fullDescription: "Gives you a 23% chance to avoid interruption caused by damage while casting your Balance spells.",
+                
                 spellIds: [
                     51423,
                     51424,
@@ -114,7 +123,9 @@ export const druidTalents = {
                 row: 2,
                 col: 2,
                 description: "Increases the damage and critical strike chance of your Moonfire spell by 5%.",
+                
                 fullDescription: "Increases the damage and critical strike chance of your Moonfire spell by 5%.",
+                
                 spellIds: [
                     16821,
                     16822
@@ -132,7 +143,9 @@ export const druidTalents = {
                 row: 2,
                 col: 3,
                 description: "Increases the damage you deal with physical attacks in all forms by 3%. Also increases chance to hit with melee attacks and spells by 1%.",
+                
                 fullDescription: "Increases the damage you deal with physical attacks in all forms by 3%. Also increases chance to hit with melee attacks and spells by 1%.",
+                
                 spellIds: [
                     45715,
                     45716,
@@ -152,7 +165,9 @@ export const druidTalents = {
                 row: 2,
                 col: 4,
                 description: "Reduces the mana cost of all shapeshifting by 10%.",
+                
                 fullDescription: "Reduces the mana cost of all shapeshifting by 10%.",
+                
                 spellIds: [
                     16833,
                     16834,
@@ -172,7 +187,9 @@ export const druidTalents = {
                 row: 3,
                 col: 1,
                 description: "Increases the damage of your Starfire, Moonfire, Hurricane, Insect Swarm, and Wrath spells by 4%.",
+                
                 fullDescription: "Increases the damage of your Starfire, Moonfire, Hurricane, Insect Swarm, and Wrath spells by 4%.",
+                
                 spellIds: [
                     16896,
                     16897,
@@ -191,16 +208,17 @@ export const druidTalents = {
                 ranks: 1,
                 row: 3,
                 col: 3,
+                requires: 6,
                 description: "Imbues the Druid with natural energy.  Each of the Druid's melee attacks or offensive spell casts has a chance of causing the caster to enter a Clearcasting state.  The Clearcasting state reduces the Mana, Rage or Energy cost of your next damage or healing spell or offensive ability by 100%.",
+                
                 fullDescription: "Imbues the Druid with natural energy.  Each of the Druid's melee attacks or offensive spell casts has a chance of causing the caster to enter a Clearcasting state.  The Clearcasting state reduces the Mana, Rage or Energy cost of your next damage or healing spell or offensive ability by 100%.",
+                
                 spellIds: [
                     16864
                 ],
                 rankDescriptions: [
                     "Imbues the Druid with natural energy.  Each of the Druid's melee attacks or offensive spell casts has a chance of causing the caster to enter a Clearcasting state.  The Clearcasting state reduces the Mana, Rage or Energy cost of your next damage or healing spell or offensive ability by 100%."
-                ],
-                requires: 6,
-                reqRanks: 3
+                ]
             },
             {
                 id: 11,
@@ -210,7 +228,9 @@ export const druidTalents = {
                 row: 3,
                 col: 4,
                 description: "Increases the range of your Wrath, Entangling Roots, Faerie Fire, Moonfire, Starfire, Insect Swarm, Hurricane, Remove Curse, Abolish Poison, and Cure Poison spells by 10%.",
+                
                 fullDescription: "Increases the range of your Wrath, Entangling Roots, Faerie Fire, Moonfire, Starfire, Insect Swarm, Hurricane, Remove Curse, Abolish Poison, and Cure Poison spells by 10%.",
+                
                 spellIds: [
                     16819,
                     16820
@@ -227,8 +247,11 @@ export const druidTalents = {
                 ranks: 5,
                 row: 4,
                 col: 2,
+                requires: 5,
                 description: "Increases the critical strike damage bonus of your Starfire, Moonfire, and Wrath spells by 20%.",
+                
                 fullDescription: "Increases the critical strike damage bonus of your Starfire, Moonfire, and Wrath spells by 20%.",
+                
                 spellIds: [
                     16909,
                     16910,
@@ -242,9 +265,7 @@ export const druidTalents = {
                     "Increases the critical strike damage bonus of your Starfire, Moonfire, and Wrath spells by 60%.",
                     "Increases the critical strike damage bonus of your Starfire, Moonfire, and Wrath spells by 80%.",
                     "Increases the critical strike damage bonus of your Starfire, Moonfire, and Wrath spells by 100%."
-                ],
-                requires: 5,
-                reqRanks: 2
+                ]
             },
             {
                 id: 14,
@@ -254,7 +275,9 @@ export const druidTalents = {
                 row: 4,
                 col: 3,
                 description: "Reduces the Mana cost of your Moonfire, Starfire, Wrath, Hurricane, Insect Swarm, Healing Touch, Regrowth and Rejuvenation spells by 3%.",
+                
                 fullDescription: "Reduces the Mana cost of your Moonfire, Starfire, Wrath, Hurricane, Insect Swarm, Healing Touch, Regrowth and Rejuvenation spells by 3%.",
+                
                 spellIds: [
                     16845,
                     16846,
@@ -273,19 +296,21 @@ export const druidTalents = {
                 ranks: 3,
                 row: 5,
                 col: 1,
+                requires: 17,
                 description: "Damage taken while in Moonkin Form has a 10% chance to enrage you, granting a 30% chance to avoid interruption caused by damage while casting and regenerating 1% of your maximum mana per second for 10 sec. This effect can only trigger once every 30 seconds.",
+                
                 fullDescription: "Damage taken while in Moonkin Form has a 10% chance to enrage you, granting a 30% chance to avoid interruption caused by damage while casting and regenerating 1% of your maximum mana per second for 10 sec. This effect can only trigger once every 30 seconds.",
+                
                 spellIds: [
                     45734,
                     51426,
-                    51429
+                    51427
                 ],
                 rankDescriptions: [
                     "Damage taken while in Moonkin Form has a 10% chance to enrage you, granting a 30% chance to avoid interruption caused by damage while casting and regenerating 1% of your maximum mana per second for 10 sec. This effect can only trigger once every 30 seconds.",
-                    "Damage taken while in Moonkin Form has a 10% chance to enrage you, granting a 30% chance to avoid interruption caused by damage while casting and regenerating 1% of your maximum mana per second for 10 sec. This effect can only trigger once every 25 seconds."
-                ],
-                requires: 17,
-                reqRanks: 1
+                    "Damage taken while in Moonkin Form has a 10% chance to enrage you, granting a 30% chance to avoid interruption caused by damage while casting and regenerating 1% of your maximum mana per second for 10 sec. This effect can only trigger once every 25 seconds.",
+                    "Damage taken while in Moonkin Form has a 10% chance to enrage you, granting a 30% chance to avoid interruption caused by damage while casting and regenerating 1% of your maximum mana per second for 10 sec. This effect can only trigger once every 30 seconds."
+                ]
             },
             {
                 id: 17,
@@ -295,7 +320,9 @@ export const druidTalents = {
                 row: 5,
                 col: 2,
                 description: "Transforms the Druid into Moonkin Form. While in this form the armor contribution from items is increased by 180%, the Mana cost of your Balance spells is reduced by 20%, and all party members within 30 yards have their spell critical chance increased by 3%. The Moonkin can only cast Balance spells, Innervate, and Remove Curse while shapeshifted. The act of shapeshifting frees the caster of Polymorph and Movement Impairing effects.",
+                
                 fullDescription: "Transforms the Druid into Moonkin Form. While in this form the armor contribution from items is increased by 180%, the Mana cost of your Balance spells is reduced by 20%, and all party members within 30 yards have their spell critical chance increased by 3%. The Moonkin can only cast Balance spells, Innervate, and Remove Curse while shapeshifted. The act of shapeshifting frees the caster of Polymorph and Movement Impairing effects.",
+                
                 spellIds: [
                     24858
                 ],
@@ -310,16 +337,17 @@ export const druidTalents = {
                 ranks: 1,
                 row: 5,
                 col: 3,
+                requires: 14,
                 description: "All spell criticals grace you with a blessing of nature, reducing the casting time of your next spell by 0.5 sec.",
+                
                 fullDescription: "All spell criticals grace you with a blessing of nature, reducing the casting time of your next spell by 0.5 sec.",
+                
                 spellIds: [
                     16880
                 ],
                 rankDescriptions: [
                     "All spell criticals grace you with a blessing of nature, reducing the casting time of your next spell by 0.5 sec."
-                ],
-                requires: 14,
-                reqRanks: 3
+                ]
             },
             {
                 id: 19,
@@ -329,11 +357,13 @@ export const druidTalents = {
                 row: 5,
                 col: 4,
                 description: "Reduces the cast time of Starfire by 0.17 sec and gives it a 5% chance to stun the target for 3 sec.",
+                
                 fullDescription: "Reduces the cast time of Starfire by 0.17 sec and gives it a 5% chance to stun the target for 3 sec.",
+                
                 spellIds: [
-                    45743,
-                    45744,
-                    45745
+                    16850,
+                    16923,
+                    16924
                 ],
                 rankDescriptions: [
                     "Reduces the cast time of Starfire by 0.17 sec and gives it a 5% chance to stun the target for 3 sec.",
@@ -345,24 +375,22 @@ export const druidTalents = {
                 id: 21,
                 name: "Balance of All Things",
                 icon: "ability_druid_manatree",
-                ranks: 5,
+                ranks: 3,
                 row: 6,
                 col: 2,
-                description: "Gives your Insect Swarm spell a 6% chance to reduce the cast time of your next Starfire by 0.5 sec.\r\\n\r\\nGives your Moonfire spell a 6% chance to reduce the mana cost of your next Wrath by 50%.\r\\n\r\\nIncreases the critical strike chance of your Starfire spell by up to 9%.",
-                fullDescription: "Gives your Insect Swarm spell a 6% chance to reduce the cast time of your next Starfire by 0.5 sec.\r\\n\r\\nGives your Moonfire spell a 6% chance to reduce the mana cost of your next Wrath by 50%.\r\\n\r\\nIncreases the critical strike chance of your Starfire spell by up to 9%.",
+                description: "Gives your Insect Swarm spell a 6% chance to reduce the cast time of your next Starfire by 0.5 sec.\\r\\\\n\\r\\\\nGives your Moonfire spell a 6% chance to reduce the mana cost of your next Wrath by 50%.\\r\\\\n\\r\\\\nIncreases the critical strike chance of your Starfire spell by up to 9%.",
+                
+                fullDescription: "Gives your Insect Swarm spell a 6% chance to reduce the cast time of your next Starfire by 0.5 sec.\\r\\\\n\\r\\\\nGives your Moonfire spell a 6% chance to reduce the mana cost of your next Wrath by 50%.\\r\\\\n\\r\\\\nIncreases the critical strike chance of your Starfire spell by up to 9%.",
+                
                 spellIds: [
                     51433,
                     51434,
-                    51435,
-                    51436,
-                    51437
+                    51435
                 ],
                 rankDescriptions: [
-                    "Gives your Insect Swarm spell a 6% chance to reduce the cast time of your next Starfire by 0.5 sec.\r\\n\r\\nGives your Moonfire spell a 6% chance to reduce the mana cost of your next Wrath by 50%.\r\\n\r\\nIncreases the critical strike chance of your Starfire spell by 3%.",
-                    "Gives your Insect Swarm spell a 12% chance to reduce the cast time of your next Starfire by 0.5 sec.\r\\n\r\\nGives your Moonfire spell a 12% chance to reduce the mana cost of your next Wrath by 50%.\r\\n\r\\nIncreases the critical strike chance of your Starfire spell by 6%.",
-                    "Gives your Insect Swarm spell a 18% chance to reduce the cast time of your next Starfire by 0.5 sec.\r\\n\r\\nGives your Moonfire spell a 18% chance to reduce the mana cost of your next Wrath by 50%.\r\\n\r\\nIncreases the critical strike chance of your Starfire spell by 9%.",
-                    "Gives your Insect Swarm spell a 24% chance to reduce the cast time of your next Starfire by 0.5 sec.\r\\n\r\\nGives your Moonfire spell a 24% chance to reduce the mana cost of your next Wrath by 50%.\r\\n\r\\nIncreases the critical strike chance of your Starfire spell by 9%.",
-                    "Gives your Insect Swarm spell a 30% chance to reduce the cast time of your next Starfire by 0.5 sec.\r\\n\r\\nGives your Moonfire spell a 30% chance to reduce the mana cost of your next Wrath by 50%.\r\\n\r\\nIncreases the critical strike chance of your Starfire spell by 9%."
+                    "Gives your Insect Swarm spell a 6% chance to reduce the cast time of your next Starfire by 0.5 sec.\\r\\\\n\\r\\\\nGives your Moonfire spell a 6% chance to reduce the mana cost of your next Wrath by 50%.\\r\\\\n\\r\\\\nIncreases the critical strike chance of your Starfire spell by 3%.",
+                    "Gives your Insect Swarm spell a 12% chance to reduce the cast time of your next Starfire by 0.5 sec.\\r\\\\n\\r\\\\nGives your Moonfire spell a 12% chance to reduce the mana cost of your next Wrath by 50%.\\r\\\\n\\r\\\\nIncreases the critical strike chance of your Starfire spell by 6%.",
+                    "Gives your Insect Swarm spell a 18% chance to reduce the cast time of your next Starfire by 0.5 sec.\\r\\\\n\\r\\\\nGives your Moonfire spell a 18% chance to reduce the mana cost of your next Wrath by 50%.\\r\\\\n\\r\\\\nIncreases the critical strike chance of your Starfire spell by 9%."
                 ]
             },
             {
@@ -373,7 +401,9 @@ export const druidTalents = {
                 row: 6,
                 col: 3,
                 description: "Reduces the mana cost of Hurricane by 10% and causes it to reduce the attack speed of affected enemies by 12%.",
+                
                 fullDescription: "Reduces the mana cost of Hurricane by 10% and causes it to reduce the attack speed of affected enemies by 12%.",
+                
                 spellIds: [
                     51440,
                     51441
@@ -390,16 +420,18 @@ export const druidTalents = {
                 ranks: 1,
                 row: 7,
                 col: 2,
-                description: "Aligns natural and astral energies. Damage from Wrath has a 40% chance to grant Arcane Eclipse, increasing Arcane damage dealt. Damage from Starfire has a 60% chance to grant Nature Eclipse, increasing Nature damage dealt.\\n\\nThe damage bonus is 10% plus 60% of your spell critical strike chance. Each effect lasts 15 sec and has its own 30 sec cooldown. Only one Eclipse can be active at a time.",
-                fullDescription: "Aligns natural and astral energies. Damage from Wrath has a 40% chance to grant Arcane Eclipse, increasing Arcane damage dealt. Damage from Starfire has a 60% chance to grant Nature Eclipse, increasing Nature damage dealt.\\n\\nThe damage bonus is 10% plus 60% of your spell critical strike chance. Each effect lasts 15 sec and has its own 30 sec cooldown. Only one Eclipse can be active at a time.",
+                description: "Aligns natural and astral energies. Damage from Wrath has a 40% chance to grant Arcane Eclipse, increasing Arcane damage dealt. Damage from Starfire has a 60% chance to grant Nature Eclipse, increasing Nature damage dealt.\\\\n\\\\nThe damage bonus is 10% plus 60% of your spell critical strike chance. Each effect lasts 15 sec and has its own 30 sec cooldown. Only one Eclipse can be active at a time.",
+                
+                fullDescription: "Aligns natural and astral energies. Damage from Wrath has a 40% chance to grant Arcane Eclipse, increasing Arcane damage dealt. Damage from Starfire has a 60% chance to grant Nature Eclipse, increasing Nature damage dealt.\\\\n\\\\nThe damage bonus is 10% plus 60% of your spell critical strike chance. Each effect lasts 15 sec and has its own 30 sec cooldown. Only one Eclipse can be active at a time.",
+                
                 spellIds: [
                     51444
                 ],
                 rankDescriptions: [
-                    "Aligns natural and astral energies. Damage from Wrath has a 40% chance to grant Arcane Eclipse, increasing Arcane damage dealt. Damage from Starfire has a 60% chance to grant Nature Eclipse, increasing Nature damage dealt.\\n\\nThe damage bonus is 10% plus 60% of your spell critical strike chance. Each effect lasts 15 sec and has its own 30 sec cooldown. Only one Eclipse can be active at a time."
+                    "Aligns natural and astral energies. Damage from Wrath has a 40% chance to grant Arcane Eclipse, increasing Arcane damage dealt. Damage from Starfire has a 60% chance to grant Nature Eclipse, increasing Nature damage dealt.\\\\n\\\\nThe damage bonus is 10% plus 60% of your spell critical strike chance. Each effect lasts 15 sec and has its own 30 sec cooldown. Only one Eclipse can be active at a time."
                 ]
             }
-        ]
+        ],
     },
     feralCombat: {
         name: "Feral Combat",
@@ -413,7 +445,9 @@ export const druidTalents = {
                 row: 1,
                 col: 2,
                 description: "Reduces the cost of your Maul, Swipe, Savage Bite, Claw, and Rake abilities by 1 Rage or Energy.",
+                
                 fullDescription: "Reduces the cost of your Maul, Swipe, Savage Bite, Claw, and Rake abilities by 1 Rage or Energy.",
+                
                 spellIds: [
                     16934,
                     16935,
@@ -437,7 +471,9 @@ export const druidTalents = {
                 row: 1,
                 col: 3,
                 description: "Increases the Attack Power reduction of your Demoralizing Roar by 8% and the damage caused by your Ferocious Bite by 3%.",
+                
                 fullDescription: "Increases the Attack Power reduction of your Demoralizing Roar by 8% and the damage caused by your Ferocious Bite by 3%.",
+                
                 spellIds: [
                     16858,
                     16859,
@@ -461,7 +497,9 @@ export const druidTalents = {
                 row: 2,
                 col: 1,
                 description: "Increases threat caused in Bear and Dire Bear Form by 5% and reduces the chance enemies have to detect you while Prowling.",
+                
                 fullDescription: "Increases threat caused in Bear and Dire Bear Form by 5% and reduces the chance enemies have to detect you while Prowling.",
+                
                 spellIds: [
                     16947,
                     16948,
@@ -481,7 +519,9 @@ export const druidTalents = {
                 row: 2,
                 col: 2,
                 description: "Increases the stun duration of your Bash and Pounce abilities by 0.5 sec.",
+                
                 fullDescription: "Increases the stun duration of your Bash and Pounce abilities by 0.5 sec.",
+                
                 spellIds: [
                     16940,
                     16941
@@ -499,7 +539,9 @@ export const druidTalents = {
                 row: 2,
                 col: 3,
                 description: "Increases your Armor contribution from items by 3%.",
+                
                 fullDescription: "Increases your Armor contribution from items by 3%.",
+                
                 spellIds: [
                     16929,
                     16930,
@@ -519,7 +561,9 @@ export const druidTalents = {
                 row: 2,
                 col: 4,
                 description: "Increases the damage of Rip by 5%. In addition, increases the damage of Claw by 10% for each active Bleed effect on the target.",
+                
                 fullDescription: "Increases the damage of Rip by 5%. In addition, increases the damage of Claw by 10% for each active Bleed effect on the target.",
+                
                 spellIds: [
                     51402,
                     51403,
@@ -539,7 +583,9 @@ export const druidTalents = {
                 row: 3,
                 col: 1,
                 description: "Increases your movement speed by 15% while outdoors in Cat Form and increases your chance to dodge while in Bear, Dire Bear and Cat Form by 2%.",
+                
                 fullDescription: "Increases your movement speed by 15% while outdoors in Cat Form and increases your chance to dodge while in Bear, Dire Bear and Cat Form by 2%.",
+                
                 spellIds: [
                     17002,
                     24866
@@ -557,7 +603,9 @@ export const druidTalents = {
                 row: 3,
                 col: 2,
                 description: "Causes you to charge an enemy, immobilizing and interrupting any spell being cast for 4 sec.",
+                
                 fullDescription: "Causes you to charge an enemy, immobilizing and interrupting any spell being cast for 4 sec.",
+                
                 spellIds: [
                     16979
                 ],
@@ -573,7 +621,9 @@ export const druidTalents = {
                 row: 3,
                 col: 3,
                 description: "Increases your critical strike chance while in Bear, Dire Bear or Cat Form by 2%.",
+                
                 fullDescription: "Increases your critical strike chance while in Bear, Dire Bear or Cat Form by 2%.",
+                
                 spellIds: [
                     16942,
                     16943,
@@ -592,18 +642,19 @@ export const druidTalents = {
                 ranks: 2,
                 row: 3,
                 col: 4,
+                requires: 10,
                 description: "Gives you a 50% chance to gain an additional 50 Rage anytime you get a critical strike while in Bear and Dire Bear Form.",
+                
                 fullDescription: "Gives you a 50% chance to gain an additional 50 Rage anytime you get a critical strike while in Bear and Dire Bear Form.",
+                
                 spellIds: [
-                    16958,
-                    16961
+                    45719,
+                    45720
                 ],
                 rankDescriptions: [
                     "Gives you a 50% chance to gain an additional 50 Rage anytime you get a critical strike while in Bear and Dire Bear Form.",
                     "Gives you a 100% chance to gain an additional 50 Rage anytime you get a critical strike while in Bear and Dire Bear Form."
-                ],
-                requires: 10,
-                reqRanks: 3
+                ]
             },
             {
                 id: 13,
@@ -613,7 +664,9 @@ export const druidTalents = {
                 row: 4,
                 col: 2,
                 description: "Increases your melee attack power in Cat, Bear, and Dire Bear Forms by 3%. In addition, increases the damage caused by your Claw, Rake, Maul, Swipe, and Savage Bite abilities by 7%.",
+                
                 fullDescription: "Increases your melee attack power in Cat, Bear, and Dire Bear Forms by 3%. In addition, increases the damage caused by your Claw, Rake, Maul, Swipe, and Savage Bite abilities by 7%.",
+                
                 spellIds: [
                     16972,
                     16974,
@@ -632,18 +685,19 @@ export const druidTalents = {
                 ranks: 2,
                 row: 4,
                 col: 3,
+                requires: 10,
                 description: "Your Cat Form abilities that generate combo points have a 50% chance to grant an additional combo point on critical strikes.",
+                
                 fullDescription: "Your Cat Form abilities that generate combo points have a 50% chance to grant an additional combo point on critical strikes.",
+                
                 spellIds: [
-                    16952,
-                    16954
+                    45721,
+                    45722
                 ],
                 rankDescriptions: [
                     "Your Cat Form abilities that generate combo points have a 50% chance to grant an additional combo point on critical strikes.",
                     "Your Cat Form abilities that generate combo points have a 100% chance to grant an additional combo point on critical strikes."
-                ],
-                requires: 10,
-                reqRanks: 3
+                ]
             },
             {
                 id: 15,
@@ -653,7 +707,9 @@ export const druidTalents = {
                 row: 4,
                 col: 4,
                 description: "Increases the damage of Shred by 5% and reduces its Energy cost by 6.",
+                
                 fullDescription: "Increases the damage of Shred by 5% and reduces its Energy cost by 6.",
+                
                 spellIds: [
                     16966,
                     16968
@@ -671,7 +727,9 @@ export const druidTalents = {
                 row: 5,
                 col: 1,
                 description: "Dodging an attack while in Bear or Dire Bear Form imbues you with the spirit of the Ancients, generating 20 Rage per second for 5 sec. This effect can only occur once every 9 seconds.  While in Cat Form, periodic ticks of your Bleed effects restore 3 Energy.",
+                
                 fullDescription: "Dodging an attack while in Bear or Dire Bear Form imbues you with the spirit of the Ancients, generating 20 Rage per second for 5 sec. This effect can only occur once every 9 seconds.  While in Cat Form, periodic ticks of your Bleed effects restore 3 Energy.",
+                
                 spellIds: [
                     51415,
                     51416
@@ -689,7 +747,9 @@ export const druidTalents = {
                 row: 5,
                 col: 3,
                 description: "Removes all Fear effects and increases your energy regeneration rate by 100% while in Cat form, and increases your total health by 20% while in Bear form. After the effect ends, the health is lost. Effect lasts 20 seconds.",
+                
                 fullDescription: "Removes all Fear effects and increases your energy regeneration rate by 100% while in Cat form, and increases your total health by 20% while in Bear form. After the effect ends, the health is lost. Effect lasts 20 seconds.",
+                
                 spellIds: [
                     45708
                 ],
@@ -704,8 +764,11 @@ export const druidTalents = {
                 ranks: 5,
                 row: 6,
                 col: 2,
+                requires: 13,
                 description: "Increases your Intellect by 4%.  In addition, while in Bear or Dire Bear Form your Stamina is increased by 4% and while in Cat Form your Strength is increased by 4%.",
+                
                 fullDescription: "Increases your Intellect by 4%.  In addition, while in Bear or Dire Bear Form your Stamina is increased by 4% and while in Cat Form your Strength is increased by 4%.",
+                
                 spellIds: [
                     17003,
                     17004,
@@ -719,9 +782,7 @@ export const druidTalents = {
                     "Increases your Intellect by 12%.  In addition, while in Bear or Dire Bear Form your Stamina is increased by 12% and while in Cat Form your Strength is increased by 12%.",
                     "Increases your Intellect by 16%.  In addition, while in Bear or Dire Bear Form your Stamina is increased by 16% and while in Cat Form your Strength is increased by 16%.",
                     "Increases your Intellect by 20%.  In addition, while in Bear or Dire Bear Form your Stamina is increased by 20% and while in Cat Form your Strength is increased by 20%."
-                ],
-                requires: 13,
-                reqRanks: 3
+                ]
             },
             {
                 id: 22,
@@ -731,7 +792,9 @@ export const druidTalents = {
                 row: 6,
                 col: 3,
                 description: "Your Maul, Swipe, and Savage Bite abilities return 5% of their damage as healing to you. In addition, gives your Ferocious Bite a 10% chance per combo point spent to refresh your active Rake and Rip effects and to add an additional combo point.",
+                
                 fullDescription: "Your Maul, Swipe, and Savage Bite abilities return 5% of their damage as healing to you. In addition, gives your Ferocious Bite a 10% chance per combo point spent to refresh your active Rake and Rip effects and to add an additional combo point.",
+                
                 spellIds: [
                     16998,
                     16999
@@ -749,7 +812,9 @@ export const druidTalents = {
                 row: 7,
                 col: 2,
                 description: "While in Cat, Bear or Dire Bear Form, the Leader of the Pack increases ranged and melee critical chance of all party members within 45 yards by 3%.",
+                
                 fullDescription: "While in Cat, Bear or Dire Bear Form, the Leader of the Pack increases ranged and melee critical chance of all party members within 45 yards by 3%.",
+                
                 spellIds: [
                     17007
                 ],
@@ -757,7 +822,7 @@ export const druidTalents = {
                     "While in Cat, Bear or Dire Bear Form, the Leader of the Pack increases ranged and melee critical chance of all party members within 45 yards by 3%."
                 ]
             }
-        ]
+        ],
     },
     restoration: {
         name: "Restoration",
@@ -771,7 +836,9 @@ export const druidTalents = {
                 row: 1,
                 col: 2,
                 description: "Increases the effects of your Mark of the Wild and Gift of the Wild spells by 7%.",
+                
                 fullDescription: "Increases the effects of your Mark of the Wild and Gift of the Wild spells by 7%.",
+                
                 spellIds: [
                     17050,
                     17051,
@@ -795,7 +862,9 @@ export const druidTalents = {
                 row: 1,
                 col: 3,
                 description: "Gives you 20% chance to gain 100 Rage when you shapeshift into Bear and Dire Bear Form or 40 Energy when you shapeshift into Cat Form.",
+                
                 fullDescription: "Gives you 20% chance to gain 100 Rage when you shapeshift into Bear and Dire Bear Form or 40 Energy when you shapeshift into Cat Form.",
+                
                 spellIds: [
                     17056,
                     17058,
@@ -819,7 +888,9 @@ export const druidTalents = {
                 row: 2,
                 col: 1,
                 description: "Reduces the cast time of your Healing Touch spell by 0.1 sec.",
+                
                 fullDescription: "Reduces the cast time of your Healing Touch spell by 0.1 sec.",
+                
                 spellIds: [
                     17069,
                     17070,
@@ -843,7 +914,9 @@ export const druidTalents = {
                 row: 2,
                 col: 2,
                 description: "Gives you a 14% chance to avoid interruption caused by damage while casting the Healing Touch, Regrowth, and Tranquility spells.",
+                
                 fullDescription: "Gives you a 14% chance to avoid interruption caused by damage while casting the Healing Touch, Regrowth, and Tranquility spells.",
+                
                 spellIds: [
                     17063,
                     17065,
@@ -867,7 +940,9 @@ export const druidTalents = {
                 row: 2,
                 col: 3,
                 description: "Reduces the threat generated by your spells by 4%.",
+                
                 fullDescription: "Reduces the threat generated by your spells by 4%.",
+                
                 spellIds: [
                     17118,
                     17119,
@@ -891,7 +966,9 @@ export const druidTalents = {
                 row: 3,
                 col: 2,
                 description: "Consumes a Rejuvenation or Regrowth effect on a friendly target to instantly heal them an amount equal to 12 sec. of Rejuvenation or 18 sec. of Regrowth.",
+                
                 fullDescription: "Consumes a Rejuvenation or Regrowth effect on a friendly target to instantly heal them an amount equal to 12 sec. of Rejuvenation or 18 sec. of Regrowth.",
+                
                 spellIds: [
                     18562
                 ],
@@ -907,7 +984,9 @@ export const druidTalents = {
                 row: 3,
                 col: 3,
                 description: "Increases the damage and healing of your periodic magical spells and effects by 5%.",
+                
                 fullDescription: "Increases the damage and healing of your periodic magical spells and effects by 5%.",
+                
                 spellIds: [
                     17111,
                     17112,
@@ -927,7 +1006,9 @@ export const druidTalents = {
                 row: 3,
                 col: 4,
                 description: "Allows 5% of your Mana regeneration to continue while casting.",
+                
                 fullDescription: "Allows 5% of your Mana regeneration to continue while casting.",
+                
                 spellIds: [
                     17106,
                     17107,
@@ -947,7 +1028,9 @@ export const druidTalents = {
                 row: 4,
                 col: 2,
                 description: "Increases the effectiveness of all healing spells by 2%.",
+                
                 fullDescription: "Increases the effectiveness of all healing spells by 2%.",
+                
                 spellIds: [
                     17104,
                     24943,
@@ -971,18 +1054,22 @@ export const druidTalents = {
                 row: 4,
                 col: 4,
                 description: "Reduces the mana cost of your Healing Touch, Regrowth and Tranquility spells by 2%.",
+                
                 fullDescription: "Reduces the mana cost of your Healing Touch, Regrowth and Tranquility spells by 2%.",
+                
                 spellIds: [
                     24968,
                     24969,
                     24970,
+                    24971,
                     24972
                 ],
                 rankDescriptions: [
                     "Reduces the mana cost of your Healing Touch, Regrowth and Tranquility spells by 2%.",
                     "Reduces the mana cost of your Healing Touch, Regrowth and Tranquility spells by 4%.",
                     "Reduces the mana cost of your Healing Touch, Regrowth and Tranquility spells by 6%.",
-                    "Reduces the mana cost of your Healing Touch, Regrowth and Tranquility spells by 10%."
+                    "Reduces the mana cost of your Healing Touch, Regrowth and Tranquility spells by 10%.",
+                    "Reduces the mana cost of your Healing Touch, Regrowth and Tranquility spells by 2%."
                 ]
             },
             {
@@ -992,18 +1079,19 @@ export const druidTalents = {
                 ranks: 2,
                 row: 5,
                 col: 1,
+                requires: 4,
                 description: "Reduces the casting time of your Healing Touch spell by 0.15 sec and refunds 5% of it's mana cost.",
+                
                 fullDescription: "Reduces the casting time of your Healing Touch spell by 0.15 sec and refunds 5% of it's mana cost.",
+                
                 spellIds: [
-                    46788,
-                    46789
+                    51446,
+                    51447
                 ],
                 rankDescriptions: [
                     "Reduces the casting time of your Healing Touch spell by 0.15 sec and refunds 5% of it's mana cost.",
                     "Reduces the casting time of your Healing Touch spell by 0.3 sec and refunds 10% of it's mana cost."
-                ],
-                requires: 4,
-                reqRanks: 5
+                ]
             },
             {
                 id: 18,
@@ -1012,16 +1100,17 @@ export const druidTalents = {
                 ranks: 1,
                 row: 5,
                 col: 3,
+                requires: 10,
                 description: "When activated, your next Nature spell becomes an instant cast spell.",
+                
                 fullDescription: "When activated, your next Nature spell becomes an instant cast spell.",
+                
                 spellIds: [
                     17116
                 ],
                 rankDescriptions: [
                     "When activated, your next Nature spell becomes an instant cast spell."
-                ],
-                requires: 10,
-                reqRanks: 3
+                ]
             },
             {
                 id: 19,
@@ -1031,7 +1120,9 @@ export const druidTalents = {
                 row: 5,
                 col: 4,
                 description: "Increases the periodic healing of Regrowth by 10% if the friendly target is affected by Rejuvenation.",
+                
                 fullDescription: "Increases the periodic healing of Regrowth by 10% if the friendly target is affected by Rejuvenation.",
+                
                 spellIds: [
                     51448,
                     51449,
@@ -1050,8 +1141,11 @@ export const druidTalents = {
                 ranks: 5,
                 row: 6,
                 col: 2,
+                requires: 13,
                 description: "Increases the critical effect chance of your Regrowth spell by 10%.",
+                
                 fullDescription: "Increases the critical effect chance of your Regrowth spell by 10%.",
+                
                 spellIds: [
                     17074,
                     17075,
@@ -1065,9 +1159,7 @@ export const druidTalents = {
                     "Increases the critical effect chance of your Regrowth spell by 30%.",
                     "Increases the critical effect chance of your Regrowth spell by 40%.",
                     "Increases the critical effect chance of your Regrowth spell by 50%."
-                ],
-                requires: 13,
-                reqRanks: 5
+                ]
             },
             {
                 id: 22,
@@ -1077,7 +1169,9 @@ export const druidTalents = {
                 row: 6,
                 col: 3,
                 description: "Increases the healing done by your Tranquility spell by 20%.",
+                
                 fullDescription: "Increases the healing done by your Tranquility spell by 20%.",
+                
                 spellIds: [
                     17123,
                     17124
@@ -1094,17 +1188,18 @@ export const druidTalents = {
                 ranks: 1,
                 row: 7,
                 col: 2,
-                description: "Shapeshift into the Tree of Life.  While in this form armor contribution from items is inreased by 180%, the healing power of nearby party members is increased by an amount equal to 20% of your spirit, your movement speed is reduced by 19%, and you cannot cast damaging spells or Healing Touch, but the mana cost of heal over time spells is reduced by 20%.\\n\\nThe act of shapeshifting frees the caster of Polymorph and Movement Impairing effects.",
-                fullDescription: "Shapeshift into the Tree of Life.  While in this form armor contribution from items is inreased by 180%, the healing power of nearby party members is increased by an amount equal to 20% of your spirit, your movement speed is reduced by 19%, and you cannot cast damaging spells or Healing Touch, but the mana cost of heal over time spells is reduced by 20%.\\n\\nThe act of shapeshifting frees the caster of Polymorph and Movement Impairing effects.",
+                requires: 21,
+                description: "Shapeshift into the Tree of Life.  While in this form armor contribution from items is inreased by 180%, the healing power of nearby party members is increased by an amount equal to 20% of your spirit, your movement speed is reduced by 19%, and you cannot cast damaging spells or Healing Touch, but the mana cost of heal over time spells is reduced by 20%.\\\\n\\\\nThe act of shapeshifting frees the caster of Polymorph and Movement Impairing effects.",
+                
+                fullDescription: "Shapeshift into the Tree of Life.  While in this form armor contribution from items is inreased by 180%, the healing power of nearby party members is increased by an amount equal to 20% of your spirit, your movement speed is reduced by 19%, and you cannot cast damaging spells or Healing Touch, but the mana cost of heal over time spells is reduced by 20%.\\\\n\\\\nThe act of shapeshifting frees the caster of Polymorph and Movement Impairing effects.",
+                
                 spellIds: [
                     45705
                 ],
                 rankDescriptions: [
-                    "Shapeshift into the Tree of Life.  While in this form armor contribution from items is inreased by 180%, the healing power of nearby party members is increased by an amount equal to 20% of your spirit, your movement speed is reduced by 19%, and you cannot cast damaging spells or Healing Touch, but the mana cost of heal over time spells is reduced by 20%.\\n\\nThe act of shapeshifting frees the caster of Polymorph and Movement Impairing effects."
-                ],
-                requires: 21,
-                reqRanks: 5
+                    "Shapeshift into the Tree of Life.  While in this form armor contribution from items is inreased by 180%, the healing power of nearby party members is increased by an amount equal to 20% of your spirit, your movement speed is reduced by 19%, and you cannot cast damaging spells or Healing Touch, but the mana cost of heal over time spells is reduced by 20%.\\\\n\\\\nThe act of shapeshifting frees the caster of Polymorph and Movement Impairing effects."
+                ]
             }
-        ]
-    }
+        ],
+    },
 };

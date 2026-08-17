@@ -40,6 +40,7 @@ export const warriorTalents = {
                 spellIds: [
                     12295,
                     12676,
+                    12677,
                     12678,
                     12679
                 ],
@@ -47,7 +48,8 @@ export const warriorTalents = {
                     "You retain up to 5 of your rage points when you change stances.",
                     "You retain up to 10 of your rage points when you change stances.",
                     "You retain up to 20 of your rage points when you change stances.",
-                    "You retain up to 25 of your rage points when you change stances."
+                    "You retain up to 25 of your rage points when you change stances.",
+                    "You retain up to 5 of your rage points when you change stances."
                 ]
             },
             {
@@ -145,15 +147,15 @@ export const warriorTalents = {
                 ranks: 1,
                 row: 3,
                 col: 1,
-                description: "Performs a skillful attack, dealing 35% weapon damage and causing an additional effect depending on your main hand weapon.\n\\n\n\\nMace: Disorients the target for 3 sec. Any damage caused will remove the effect.\n\\n\n\\nSword: Disarms the target for 3 sec.\n\\n\n\\nAxe: Immobilizes the target for 4 sec.\n\\n\n\\nPolearm: Deals an additional 100% weapon damage if the target is mounted and dismounts them.\n\\n\n\\nFist Weapon: Knocks down the target for 2 sec.\n\\n\n\\nStaff: Increases your chance to parry by 25% for 10 sec.\n\\n\n\\nDagger: Silences the target for 3 sec.",
+                description: "Performs a skillful attack, dealing 35% weapon damage and causing an additional effect depending on your main hand weapon.\\n\\\\n\\n\\\\nMace: Disorients the target for 3 sec. Any damage caused will remove the effect.\\n\\\\n\\n\\\\nSword: Disarms the target for 3 sec.\\n\\\\n\\n\\\\nAxe: Immobilizes the target for 4 sec.\\n\\\\n\\n\\\\nPolearm: Deals an additional 100% weapon damage if the target is mounted and dismounts them.\\n\\\\n\\n\\\\nFist Weapon: Knocks down the target for 2 sec.\\n\\\\n\\n\\\\nStaff: Increases your chance to parry by 25% for 10 sec.\\n\\\\n\\n\\\\nDagger: Silences the target for 3 sec.",
                 
-                fullDescription: "Performs a skillful attack, dealing 35% weapon damage and causing an additional effect depending on your main hand weapon.\n\\n\n\\nMace: Disorients the target for 3 sec. Any damage caused will remove the effect.\n\\n\n\\nSword: Disarms the target for 3 sec.\n\\n\n\\nAxe: Immobilizes the target for 4 sec.\n\\n\n\\nPolearm: Deals an additional 100% weapon damage if the target is mounted and dismounts them.\n\\n\n\\nFist Weapon: Knocks down the target for 2 sec.\n\\n\n\\nStaff: Increases your chance to parry by 25% for 10 sec.\n\\n\n\\nDagger: Silences the target for 3 sec.",
+                fullDescription: "Performs a skillful attack, dealing 35% weapon damage and causing an additional effect depending on your main hand weapon.\\n\\\\n\\n\\\\nMace: Disorients the target for 3 sec. Any damage caused will remove the effect.\\n\\\\n\\n\\\\nSword: Disarms the target for 3 sec.\\n\\\\n\\n\\\\nAxe: Immobilizes the target for 4 sec.\\n\\\\n\\n\\\\nPolearm: Deals an additional 100% weapon damage if the target is mounted and dismounts them.\\n\\\\n\\n\\\\nFist Weapon: Knocks down the target for 2 sec.\\n\\\\n\\n\\\\nStaff: Increases your chance to parry by 25% for 10 sec.\\n\\\\n\\n\\\\nDagger: Silences the target for 3 sec.",
                 
                 spellIds: [
                     54023
                 ],
                 rankDescriptions: [
-                    "Performs a skillful attack, dealing 35% weapon damage and causing an additional effect depending on your main hand weapon.\n\\n\n\\nMace: Disorients the target for 3 sec. Any damage caused will remove the effect.\n\\n\n\\nSword: Disarms the target for 3 sec.\n\\n\n\\nAxe: Immobilizes the target for 4 sec.\n\\n\n\\nPolearm: Deals an additional 100% weapon damage if the target is mounted and dismounts them.\n\\n\n\\nFist Weapon: Knocks down the target for 2 sec.\n\\n\n\\nStaff: Increases your chance to parry by 25% for 10 sec.\n\\n\n\\nDagger: Silences the target for 3 sec."
+                    "Performs a skillful attack, dealing 35% weapon damage and causing an additional effect depending on your main hand weapon.\\n\\\\n\\n\\\\nMace: Disorients the target for 3 sec. Any damage caused will remove the effect.\\n\\\\n\\n\\\\nSword: Disarms the target for 3 sec.\\n\\\\n\\n\\\\nAxe: Immobilizes the target for 4 sec.\\n\\\\n\\n\\\\nPolearm: Deals an additional 100% weapon damage if the target is mounted and dismounts them.\\n\\\\n\\n\\\\nFist Weapon: Knocks down the target for 2 sec.\\n\\\\n\\n\\\\nStaff: Increases your chance to parry by 25% for 10 sec.\\n\\\\n\\n\\\\nDagger: Silences the target for 3 sec."
                 ]
             },
             {
@@ -183,21 +185,21 @@ export const warriorTalents = {
                 ranks: 3,
                 row: 3,
                 col: 3,
+                requires: 2,
                 description: "Your critical strikes cause the opponent to bleed, dealing 20% of your melee weapon's average damage over 6 sec.",
                 
                 fullDescription: "Your critical strikes cause the opponent to bleed, dealing 20% of your melee weapon's average damage over 6 sec.",
                 
                 spellIds: [
-                    12162,
                     12834,
-                    12849
+                    12849,
+                    12867
                 ],
                 rankDescriptions: [
                     "Your critical strikes cause the opponent to bleed, dealing 20% of your melee weapon's average damage over 6 sec.",
-                    "Your critical strikes cause the opponent to bleed, dealing 40% of your melee weapon's average damage over 6 sec."
-                ],
-                requires: 2,
-                reqRanks: 2
+                    "Your critical strikes cause the opponent to bleed, dealing 40% of your melee weapon's average damage over 6 sec.",
+                    "Your critical strikes cause the opponent to bleed, dealing 20% of your melee weapon's average damage over 6 sec."
+                ]
             },
             {
                 id: 13,
@@ -228,6 +230,7 @@ export const warriorTalents = {
                 ranks: 2,
                 row: 4,
                 col: 3,
+                requires: 10,
                 description: "Increases the critical strike damage bonus of your abilities in Battle, Defensive, and Berserker stance by 10%.",
                 
                 fullDescription: "Increases the critical strike damage bonus of your abilities in Battle, Defensive, and Berserker stance by 10%.",
@@ -239,9 +242,7 @@ export const warriorTalents = {
                 rankDescriptions: [
                     "Increases the critical strike damage bonus of your abilities in Battle, Defensive, and Berserker stance by 10%.",
                     "Increases the critical strike damage bonus of your abilities in Battle, Defensive, and Berserker stance by 20%."
-                ],
-                requires: 10,
-                reqRanks: 3
+                ]
             },
             {
                 id: 16,
@@ -250,9 +251,10 @@ export const warriorTalents = {
                 ranks: 5,
                 row: 5,
                 col: 1,
-                description: "Adds the following effects to your weapons, based on the weapon type.\n\\n\n\\nAxe - Increases your chance to get a critical strike by 1%.\n\\n\n\\nMace - Causes your attacks to ignore 1.2 of your target's Armor per level.\n\\n\n\\nSword - Gives you a 1% chance to get an extra attack on the same target after hitting your target.\n\\n\n\\nPolearm - Increases the range of melee attacks by 0.4 yd.",
+                requires: 8,
+                description: "Adds the following effects to your weapons, based on the weapon type.\\n\\\\n\\n\\\\nAxe - Increases your chance to get a critical strike by 1%.\\n\\\\n\\n\\\\nMace - Causes your attacks to ignore 1.2 of your target's Armor per level.\\n\\\\n\\n\\\\nSword - Gives you a 1% chance to get an extra attack on the same target after hitting your target.\\n\\\\n\\n\\\\nPolearm - Increases the range of melee attacks by 0.4 yd.",
                 
-                fullDescription: "Adds the following effects to your weapons, based on the weapon type.\n\\n\n\\nAxe - Increases your chance to get a critical strike by 1%.\n\\n\n\\nMace - Causes your attacks to ignore 1.2 of your target's Armor per level.\n\\n\n\\nSword - Gives you a 1% chance to get an extra attack on the same target after hitting your target.\n\\n\n\\nPolearm - Increases the range of melee attacks by 0.4 yd.",
+                fullDescription: "Adds the following effects to your weapons, based on the weapon type.\\n\\\\n\\n\\\\nAxe - Increases your chance to get a critical strike by 1%.\\n\\\\n\\n\\\\nMace - Causes your attacks to ignore 1.2 of your target's Armor per level.\\n\\\\n\\n\\\\nSword - Gives you a 1% chance to get an extra attack on the same target after hitting your target.\\n\\\\n\\n\\\\nPolearm - Increases the range of melee attacks by 0.4 yd.",
                 
                 spellIds: [
                     51644,
@@ -262,14 +264,12 @@ export const warriorTalents = {
                     51658
                 ],
                 rankDescriptions: [
-                    "Adds the following effects to your weapons, based on the weapon type:\r\\n\r\\nAxe - Increases your chance to get a critical strike by 1%.\r\\nMace - Causes your attacks to ignore 1.2 of your target's Armor per level.\r\\nSword - Gives you a 1% chance to get an extra attack on the same target after hitting your target.\r\\nPolearm - Increases the range of melee attacks by 0.4 yd.",
-                    "Adds the following effects to your weapons, based on the weapon type:\r\\n\r\\nAxe - Increases your chance to get a critical strike by 2%.\r\\nMace - Causes your attacks to ignore 2.4 of your target's Armor per level.\r\\nSword - Gives you a 2% chance to get an extra attack on the same target after hitting your target.\r\\nPolearm - Increases the range of melee attacks by 0.8 yd.",
-                    "Adds the following effects to your weapons, based on the weapon type:\r\\n\r\\nAxe - Increases your chance to get a critical strike by 3%.\r\\nMace - Causes your attacks to ignore 3.6 of your target's Armor per level.\r\\nSword - Gives you a 3% chance to get an extra attack on the same target after hitting your target.\r\\nPolearm - Increases the range of melee attacks by 1.2 yd.",
-                    "Adds the following effects to your weapons, based on the weapon type:\r\\n\r\\nAxe - Increases your chance to get a critical strike by 4%.\r\\nMace - Causes your attacks to ignore 4.8 of your target's Armor per level.\r\\nSword - Gives you a 4% chance to get an extra attack on the same target after hitting your target.\r\\nPolearm - Increases the range of melee attacks by 1.6 yd.",
-                    "Adds the following effects to your weapons, based on the weapon type:\r\\n\r\\nAxe - Increases your chance to get a critical strike by 5%.\r\\nMace - Causes your attacks to ignore 6 of your target's Armor per level.\r\\nSword - Gives you a 5% chance to get an extra attack on the same target after hitting your target.\r\\nPolearm - Increases the range of melee attacks by 2. yd."
-                ],
-                requires: 8,
-                reqRanks: 1
+                    "Adds the following effects to your weapons, based on the weapon type:\\r\\\\n\\r\\\\nAxe - Increases your chance to get a critical strike by 1%.\\r\\\\nMace - Causes your attacks to ignore 1.2 of your target's Armor per level.\\r\\\\nSword - Gives you a 1% chance to get an extra attack on the same target after hitting your target.\\r\\\\nPolearm - Increases the range of melee attacks by 0.4 yd.",
+                    "Adds the following effects to your weapons, based on the weapon type:\\r\\\\n\\r\\\\nAxe - Increases your chance to get a critical strike by 2%.\\r\\\\nMace - Causes your attacks to ignore 2.4 of your target's Armor per level.\\r\\\\nSword - Gives you a 2% chance to get an extra attack on the same target after hitting your target.\\r\\\\nPolearm - Increases the range of melee attacks by 0.8 yd.",
+                    "Adds the following effects to your weapons, based on the weapon type:\\r\\\\n\\r\\\\nAxe - Increases your chance to get a critical strike by 3%.\\r\\\\nMace - Causes your attacks to ignore 3.6 of your target's Armor per level.\\r\\\\nSword - Gives you a 3% chance to get an extra attack on the same target after hitting your target.\\r\\\\nPolearm - Increases the range of melee attacks by 1.2 yd.",
+                    "Adds the following effects to your weapons, based on the weapon type:\\r\\\\n\\r\\\\nAxe - Increases your chance to get a critical strike by 4%.\\r\\\\nMace - Causes your attacks to ignore 4.8 of your target's Armor per level.\\r\\\\nSword - Gives you a 4% chance to get an extra attack on the same target after hitting your target.\\r\\\\nPolearm - Increases the range of melee attacks by 1.6 yd.",
+                    "Adds the following effects to your weapons, based on the weapon type:\\r\\\\n\\r\\\\nAxe - Increases your chance to get a critical strike by 5%.\\r\\\\nMace - Causes your attacks to ignore 6 of your target's Armor per level.\\r\\\\nSword - Gives you a 5% chance to get an extra attack on the same target after hitting your target.\\r\\\\nPolearm - Increases the range of melee attacks by 2. yd."
+                ]
             },
             {
                 id: 17,
@@ -290,29 +290,29 @@ export const warriorTalents = {
                 ]
             },
             {
-                id: 18,
-                name: "Precision Cut",
-                icon: "ability_hunter_swiftstrike",
+                id: 22,
+                name: "Boundless Anger",
+                icon: "ability_warrior_strengthofarms",
                 ranks: 3,
                 row: 5,
                 col: 3,
-                description: "Increases the base damage done by Execute by 15%.",
+                description: "Increases your maximum Rage by 10.",
                 
-                fullDescription: "Increases the base damage done by Execute by 15%.",
+                fullDescription: "Increases your maximum Rage by 10.",
                 
                 spellIds: [
-                    51641,
-                    51642,
-                    51643
+                    57709,
+                    57710,
+                    57711
                 ],
                 rankDescriptions: [
-                    "Increases the base damage done by Execute by 15%.",
-                    "Increases the base damage done by Execute by 30%.",
-                    "Increases the base damage done by Execute by 45%."
+                    "Increases your maximum Rage by 101.",
+                    "Increases your maximum Rage by 201.",
+                    "Increases your maximum Rage by 301."
                 ]
             },
             {
-                id: 19,
+                id: 23,
                 name: "Improved Disciplines",
                 icon: "ability_warrior_improveddisciplines",
                 ranks: 3,
@@ -334,7 +334,7 @@ export const warriorTalents = {
                 ]
             },
             {
-                id: 20,
+                id: 24,
                 name: "Improved Slam",
                 icon: "ability_warrior_decisivestrike",
                 ranks: 2,
@@ -345,43 +345,45 @@ export const warriorTalents = {
                 fullDescription: "Reduces the cast time and global cooldown of your Slam ability by 0.25 sec.",
                 
                 spellIds: [
-                    12862
+                    12862,
+                    12330
                 ],
                 rankDescriptions: [
+                    "Reduces the cast time and global cooldown of your Slam ability by 0.25 sec.",
                     "Reduces the cast time and global cooldown of your Slam ability by 0.25 sec."
                 ]
             },
             {
-                id: 22,
-                name: "Boundless Anger",
-                icon: "ability_warrior_strengthofarms",
+                id: 26,
+                name: "Precision Cut",
+                icon: "ability_hunter_swiftstrike",
                 ranks: 3,
                 row: 6,
                 col: 3,
-                description: "Increases your maximum Rage by 10.",
+                requires: 22,
+                description: "Increases the base damage done by Execute by 15%.",
                 
-                fullDescription: "Increases your maximum Rage by 10.",
+                fullDescription: "Increases the base damage done by Execute by 15%.",
                 
                 spellIds: [
-                    57709,
-                    57710,
-                    57711
+                    51641,
+                    51642,
+                    51643
                 ],
                 rankDescriptions: [
-                    "Increases your maximum Rage by 101.",
-                    "Increases your maximum Rage by 201.",
-                    "Increases your maximum Rage by 301."
-                ],
-                requires: 18,
-                reqRanks: 3
+                    "Increases the base damage done by Execute by 15%.",
+                    "Increases the base damage done by Execute by 30%.",
+                    "Increases the base damage done by Execute by 45%."
+                ]
             },
             {
-                id: 25,
+                id: 27,
                 name: "Mortal Strike",
                 icon: "ability_warrior_savageblow",
                 ranks: 1,
                 row: 7,
                 col: 2,
+                requires: 17,
                 description: "A vicious strike that deals 115% weapon damage and wounds the target, reducing the effectiveness of any healing by 50% for 10 sec.",
                 
                 fullDescription: "A vicious strike that deals 115% weapon damage and wounds the target, reducing the effectiveness of any healing by 50% for 10 sec.",
@@ -391,11 +393,9 @@ export const warriorTalents = {
                 ],
                 rankDescriptions: [
                     "A vicious strike that deals 115% weapon damage and wounds the target, reducing the effectiveness of any healing by 50% for 10 sec."
-                ],
-                requires: 17,
-                reqRanks: 1
+                ]
             }
-        ]
+        ],
     },
     fury: {
         name: "Fury",
@@ -492,16 +492,17 @@ export const warriorTalents = {
                 
                 spellIds: [
                     12322,
-                    12964,
                     12999,
                     13000,
-                    13001
+                    13001,
+                    13002
                 ],
                 rankDescriptions: [
                     "Gives you a 15% chance to generate an additional Rage point when you deal melee damage with a weapon. The effect is doubled for two-handed weapons.",
                     "Gives you a 30% chance to generate an additional Rage point when you deal melee damage with a weapon. The effect is doubled for two-handed weapons.",
                     "Gives you a 45% chance to generate an additional Rage point when you deal melee damage with a weapon. The effect is doubled for two-handed weapons.",
-                    "Gives you a 60% chance to generate an additional Rage point when you deal melee damage with a weapon. The effect is doubled for two-handed weapons."
+                    "Gives you a 60% chance to generate an additional Rage point when you deal melee damage with a weapon. The effect is doubled for two-handed weapons.",
+                    "Gives you a 15% chance to generate an additional Rage point when you deal melee damage with a weapon. The effect is doubled for two-handed weapons."
                 ]
             },
             {
@@ -517,13 +518,17 @@ export const warriorTalents = {
                 
                 spellIds: [
                     51609,
+                    51610,
                     51611,
-                    51612
+                    51612,
+                    51613
                 ],
                 rankDescriptions: [
                     "Increases the melee attack power bonus of your Battle Shout by 5% and increases the melee attack power reduction of your Demoralizing Shout by 8%.",
                     "Increases the melee attack power bonus of your Battle Shout by 15% and increases the melee attack power reduction of your Demoralizing Shout by 24%.",
-                    "Increases the melee attack power bonus of your Battle Shout by 20% and increases the melee attack power reduction of your Demoralizing Shout by 32%."
+                    "Increases the melee attack power bonus of your Battle Shout by 20% and increases the melee attack power reduction of your Demoralizing Shout by 32%.",
+                    "Increases the melee attack power bonus of your Battle Shout by 5% and increases the melee attack power reduction of your Demoralizing Shout by 8%.",
+                    "Increases the melee attack power bonus of your Battle Shout by 5% and increases the melee attack power reduction of your Demoralizing Shout by 8%."
                 ]
             },
             {
@@ -557,12 +562,13 @@ export const warriorTalents = {
                 
                 spellIds: [
                     16487,
-                    16488,
-                    16489
+                    16489,
+                    16492
                 ],
                 rankDescriptions: [
                     "Regenerates 2% of your total Health over 6 sec after being the victim of a critical strike.",
-                    "Regenerates 4% of your total Health over 6 sec after being the victim of a critical strike."
+                    "Regenerates 4% of your total Health over 6 sec after being the victim of a critical strike.",
+                    "Regenerates 2% of your total Health over 6 sec after being the victim of a critical strike."
                 ]
             },
             {
@@ -598,16 +604,17 @@ export const warriorTalents = {
                 
                 spellIds: [
                     12317,
-                    12880,
                     13045,
                     13046,
-                    13047
+                    13047,
+                    13048
                 ],
                 rankDescriptions: [
                     "Gives you a 4% melee damage bonus for 8 sec after being the victim of a critical strike.",
                     "Gives you a 8% melee damage bonus for 8 sec after being the victim of a critical strike.",
                     "Gives you a 12% melee damage bonus for 8 sec after being the victim of a critical strike.",
-                    "Gives you a 16% melee damage bonus for 8 sec after being the victim of a critical strike."
+                    "Gives you a 16% melee damage bonus for 8 sec after being the victim of a critical strike.",
+                    "Gives you a 4% melee damage bonus for 8 sec after being the victim of a critical strike."
                 ]
             },
             {
@@ -631,29 +638,29 @@ export const warriorTalents = {
                 ]
             },
             {
-                id: 16,
-                name: "Improved Whirlwind",
+                id: 26,
+                name: "Ravager",
                 icon: "ability_whirlwind",
                 ranks: 3,
                 row: 5,
                 col: 1,
-                description: "Decrease the rage cost of Whirlwind by 30.",
+                description: "Improved WhirlwindRank 1InstantReduces the cooldown of your Whirlwind ability by 1000 sec.",
                 
-                fullDescription: "Decrease the rage cost of Whirlwind by 30.",
+                fullDescription: "Improved WhirlwindRank 1InstantReduces the cooldown of your Whirlwind ability by 1000 sec.",
                 
                 spellIds: [
-                    24431,
                     51616,
-                    51617
+                    51617,
+                    51618
                 ],
                 rankDescriptions: [
-                    "Decrease the rage cost of Whirlwind by 30.",
-                    "Reduces the cooldown of your Whirlwind ability by 1 sec.",
-                    "Reduces the cooldown of your Whirlwind ability by 10.5 sec."
+                    "Improved WhirlwindRank 1InstantReduces the cooldown of your Whirlwind ability by 1000 sec.",
+                    "Improved WhirlwindRank 1InstantReduces the cooldown of your Whirlwind ability by 1000 sec.",
+                    "Improved WhirlwindRank 1InstantReduces the cooldown of your Whirlwind ability by 1000 sec."
                 ]
             },
             {
-                id: 17,
+                id: 27,
                 name: "Death Wish",
                 icon: "spell_shadow_deathpact",
                 ranks: 1,
@@ -671,7 +678,7 @@ export const warriorTalents = {
                 ]
             },
             {
-                id: 19,
+                id: 28,
                 name: "Improved Execute",
                 icon: "inv_sword_48",
                 ranks: 2,
@@ -691,7 +698,7 @@ export const warriorTalents = {
                 ]
             },
             {
-                id: 20,
+                id: 29,
                 name: "Improved Berserker Rage",
                 icon: "spell_nature_ancestralguardian",
                 ranks: 2,
@@ -711,70 +718,74 @@ export const warriorTalents = {
                 ]
             },
             {
-                id: 21,
+                id: 30,
                 name: "Flurry",
                 icon: "ability_ghoulfrenzy",
                 ranks: 5,
                 row: 6,
                 col: 2,
+                requires: 27,
                 description: "Increases your attack speed by 10% for your next 3 swings after dealing a melee critical strike.",
                 
                 fullDescription: "Increases your attack speed by 10% for your next 3 swings after dealing a melee critical strike.",
                 
                 spellIds: [
                     12319,
-                    12966,
-                    12967,
-                    12968,
-                    12969
+                    12971,
+                    12972,
+                    12973,
+                    12974
                 ],
                 rankDescriptions: [
+                    "Increases your attack speed by 10% for your next 3 swings after dealing a melee critical strike.",
+                    "Increases your attack speed by 10% for your next 3 swings after dealing a melee critical strike.",
+                    "Increases your attack speed by 10% for your next 3 swings after dealing a melee critical strike.",
+                    "Increases your attack speed by 10% for your next 3 swings after dealing a melee critical strike.",
                     "Increases your attack speed by 10% for your next 3 swings after dealing a melee critical strike."
-                ],
-                requires: 17,
-                reqRanks: 1
+                ]
             },
             {
-                id: 22,
+                id: 31,
                 name: "Blood Drinker",
                 icon: "racial_troll_berserk",
                 ranks: 3,
                 row: 6,
                 col: 3,
+                requires: 14,
                 description: "While affected by Enrage, Death Wish, or Recklessness, your melee attacks and abilities restore 1% of your maximum health.",
                 
                 fullDescription: "While affected by Enrage, Death Wish, or Recklessness, your melee attacks and abilities restore 1% of your maximum health.",
                 
                 spellIds: [
-                    51619,
                     51623,
-                    51624
+                    51624,
+                    51625
                 ],
                 rankDescriptions: [
                     "While affected by Enrage, Death Wish, or Recklessness, your melee attacks and abilities restore 1% of your maximum health.",
                     "While affected by Enrage, Death Wish, or Recklessness, your melee attacks and abilities restore 1.5% of your maximum health.",
                     "While affected by Enrage, Death Wish, or Recklessness, your melee attacks and abilities restore 2% of your maximum health."
-                ],
-                requires: 14,
-                reqRanks: 5
+                ]
             },
             {
-                id: 25,
+                id: 32,
                 name: "Bloodthirst",
                 icon: "spell_nature_bloodlust",
                 ranks: 1,
                 row: 7,
                 col: 2,
                 description: "Instantly perform a reckless attack, dealing 100 damage plus 35% of your Attack Power and increasing your movement speed by 10% for 6 sec.",
+                
                 fullDescription: "Instantly perform a reckless attack, dealing 100 damage plus 35% of your Attack Power and increasing your movement speed by 10% for 6 sec.",
+                
                 spellIds: [
-                    0
+                    23881
                 ],
                 rankDescriptions: [
                     "Instantly perform a reckless attack, dealing 100 damage plus 35% of your Attack Power and increasing your movement speed by 10% for 6 sec."
                 ]
             }
-        ]
+        ],
     },
     protection: {
         name: "Protection",
@@ -815,8 +826,8 @@ export const warriorTalents = {
                     12298,
                     12724,
                     12725,
-                    12727,
-                    16253
+                    12726,
+                    12727
                 ],
                 rankDescriptions: [
                     "Increases your chance to block attacks with a shield by 1% and generates 1 rage when a block occurs.",
@@ -838,11 +849,9 @@ export const warriorTalents = {
                 fullDescription: "Increases your Defense by 7.",
                 
                 spellIds: [
-                    16254,
-                    16271,
-                    16272,
-                    16273,
-                    16274
+                    12297,
+                    12750,
+                    12751
                 ],
                 rankDescriptions: [
                     "Increases your Defense by 7.",
@@ -863,6 +872,7 @@ export const warriorTalents = {
                 
                 spellIds: [
                     12300,
+                    12959,
                     12960,
                     12961,
                     12962
@@ -871,7 +881,8 @@ export const warriorTalents = {
                     "Increases your chance to resist Stun and Charm effects by an additional 3%.",
                     "Increases your chance to resist Stun and Charm effects by an additional 9%.",
                     "Increases your chance to resist Stun and Charm effects by an additional 12%.",
-                    "Increases your chance to resist Stun and Charm effects by an additional 15%."
+                    "Increases your chance to resist Stun and Charm effects by an additional 15%.",
+                    "Increases your chance to resist Stun and Charm effects by an additional 3%."
                 ]
             },
             {
@@ -886,11 +897,11 @@ export const warriorTalents = {
                 fullDescription: "Increases your armor value from items by 2%.",
                 
                 spellIds: [
-                    16252,
-                    16306,
-                    16307,
-                    16308,
-                    16309
+                    12299,
+                    12761,
+                    12762,
+                    12763,
+                    12764
                 ],
                 rankDescriptions: [
                     "Increases your armor value from items by 2%.",
@@ -907,6 +918,7 @@ export const warriorTalents = {
                 ranks: 1,
                 row: 3,
                 col: 1,
+                requires: 0,
                 description: "When activated, this ability temporarily grants you 30% of your maximum hit points for 20 seconds.  After the effect expires, the hit points are lost.",
                 
                 fullDescription: "When activated, this ability temporarily grants you 30% of your maximum hit points for 20 seconds.  After the effect expires, the hit points are lost.",
@@ -916,9 +928,7 @@ export const warriorTalents = {
                 ],
                 rankDescriptions: [
                     "Instantly perform a reckless attack, dealing 100 damage plus 35% of your Attack Power and increasing your movement speed by 10% for 6 sec."
-                ],
-                requires: 0,
-                reqRanks: 2
+                ]
             },
             {
                 id: 9,
@@ -928,10 +938,12 @@ export const warriorTalents = {
                 row: 3,
                 col: 2,
                 description: "Grants a 50% chance to gain immunity to movement impairing effects for 3 sec after using Intervene.",
+                
                 fullDescription: "Grants a 50% chance to gain immunity to movement impairing effects for 3 sec after using Intervene.",
+                
                 spellIds: [
-                    51590,
-                    51591
+                    51591,
+                    51592
                 ],
                 rankDescriptions: [
                     "Grants a 50% chance to gain immunity to movement impairing effects for 3 sec after using Intervene.",
@@ -992,9 +1004,11 @@ export const warriorTalents = {
                 fullDescription: "Your Shield Slam has an additional 50% chance to dispel 1 magic effect on the target and your Shield Bash ability has a 50% chance to silence the target for 3 sec.",
                 
                 spellIds: [
-                    12311
+                    12311,
+                    12958
                 ],
                 rankDescriptions: [
+                    "Your Shield Slam has an additional 50% chance to dispel 1 magic effect on the target and your Shield Bash ability has a 50% chance to silence the target for 3 sec.",
                     "Your Shield Slam has an additional 50% chance to dispel 1 magic effect on the target and your Shield Bash ability has a 50% chance to silence the target for 3 sec."
                 ]
             },
@@ -1095,20 +1109,19 @@ export const warriorTalents = {
                 ranks: 2,
                 row: 5,
                 col: 3,
+                requires: 17,
                 description: "Reduces the cooldown of your Shield Slam ability by 0.75 sec and increases your chance to block by 35% for 5 sec.",
                 
                 fullDescription: "Reduces the cooldown of your Shield Slam ability by 0.75 sec and increases your chance to block by 35% for 5 sec.",
                 
                 spellIds: [
-                    51596,
-                    51597
+                    51598,
+                    51599
                 ],
                 rankDescriptions: [
                     "Reduces the cooldown of your Shield Slam ability by 0.75 sec and increases your chance to block by 35% for 5 sec.",
                     "Reduces the cooldown of your Shield Slam ability by 1.5 sec and increases your chance to block by 70% for 5 sec."
-                ],
-                requires: 17,
-                reqRanks: 1
+                ]
             },
             {
                 id: 19,
@@ -1117,6 +1130,7 @@ export const warriorTalents = {
                 ranks: 2,
                 row: 5,
                 col: 4,
+                requires: 11,
                 description: "Increases the damage dealt by your Revenge ability by 25%, and has a 50% chance to refund its rage cost if successful.",
                 
                 fullDescription: "Increases the damage dealt by your Revenge ability by 25%, and has a 50% chance to refund its rage cost if successful.",
@@ -1128,9 +1142,7 @@ export const warriorTalents = {
                 rankDescriptions: [
                     "Increases the damage dealt by your Revenge ability by 25%, and has a 50% chance to refund its rage cost if successful.",
                     "Increases the damage dealt by your Revenge ability by 50%, and has a 100% chance to refund its rage cost if successful."
-                ],
-                requires: 11,
-                reqRanks: 3
+                ]
             },
             {
                 id: 20,
@@ -1181,19 +1193,18 @@ export const warriorTalents = {
                 ranks: 1,
                 row: 7,
                 col: 2,
+                requires: 17,
                 description: "Deals 150 damage and stuns the opponent for 3 sec. This ability deals a high amount of threat and penetrates 100% of the enemy's armor. Instantly generates 10 rage.",
                 
                 fullDescription: "Deals 150 damage and stuns the opponent for 3 sec. This ability deals a high amount of threat and penetrates 100% of the enemy's armor. Instantly generates 10 rage.",
                 
                 spellIds: [
-                    51600
+                    12809
                 ],
                 rankDescriptions: [
                     "Deals 150 damage and stuns the opponent for 3 sec. This ability deals a high amount of threat and penetrates 100% of the enemy's armor. Instantly generates 10 rage."
-                ],
-                requires: 17,
-                reqRanks: 1
+                ]
             }
-        ]
-    }
+        ],
+    },
 };

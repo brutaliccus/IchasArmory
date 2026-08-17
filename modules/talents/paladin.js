@@ -12,12 +12,14 @@ export const paladinTalents = {
                 row: 1,
                 col: 2,
                 description: "Increases your Strength by 2%.",
-
+                
                 fullDescription: "Increases your Strength by 2%.",
-
+                
                 spellIds: [
                     20262,
                     20263,
+                    20264,
+                    20265,
                     20266
                 ],
                 rankDescriptions: [
@@ -134,12 +136,14 @@ export const paladinTalents = {
                 fullDescription: "Increases the amount healed by your Holy Light, Flash of Light and Holy Shock spells by 8%.",
                 
                 spellIds: [
+                    20237,
                     20238,
                     20239
                 ],
                 rankDescriptions: [
                     "Increases the amount healed by your Holy Light, Flash of Light and Holy Shock spells by 8%.",
-                    "Increases the amount healed by your Holy Light, Flash of Light and Holy Shock spells by 12%."
+                    "Increases the amount healed by your Holy Light, Flash of Light and Holy Shock spells by 12%.",
+                    "Increases the amount healed by your Holy Light, Flash of Light and Holy Shock spells by 8%."
                 ]
             },
             {
@@ -172,7 +176,8 @@ export const paladinTalents = {
                 fullDescription: "Gives the target of your Lay on Hands spell a 15% bonus to their armor value from items for 2 min. In addition, the cooldown for your Lay on Hands spell is reduced by 10 min.",
                 
                 spellIds: [
-                    20234
+                    20234,
+                    20235
                 ],
                 rankDescriptions: [
                     "Gives the target of your Lay on Hands spell a 15% bonus to their armor value from items for 2 min. In addition, the cooldown for your Lay on Hands spell is reduced by 10 min.",
@@ -259,9 +264,11 @@ export const paladinTalents = {
                 fullDescription: "Increases your healing power by 2% of your Armor.",
                 
                 spellIds: [
+                    51310,
                     51311
                 ],
                 rankDescriptions: [
+                    "Increases your healing power by 2% of your Armor.",
                     "Increases your healing power by 2% of your Armor."
                 ]
             },
@@ -272,6 +279,7 @@ export const paladinTalents = {
                 ranks: 5,
                 row: 5,
                 col: 1,
+                requires: 17,
                 description: "Improves your chance to get a critical strike with Holy Shock by 10%.",
                 
                 fullDescription: "Improves your chance to get a critical strike with Holy Shock by 10%.",
@@ -289,9 +297,7 @@ export const paladinTalents = {
                     "Improves your chance to get a critical strike with Holy Shock by 30%.",
                     "Improves your chance to get a critical strike with Holy Shock by 40%.",
                     "Improves your chance to get a critical strike with Holy Shock by 50%."
-                ],
-                requires: 17,
-                reqRanks: 1
+                ]
             },
             {
                 id: 17,
@@ -340,6 +346,7 @@ export const paladinTalents = {
                 ranks: 5,
                 row: 6,
                 col: 3,
+                requires: 17,
                 description: "Crusader Strike has a 20% chance to reset the cooldown of your Holy Shock.  In addition, the healing effect of your Holy Strike is increased by 20% and benefits from an additional 5% of your healing power.",
                 
                 fullDescription: "Crusader Strike has a 20% chance to reset the cooldown of your Holy Shock.  In addition, the healing effect of your Holy Strike is increased by 20% and benefits from an additional 5% of your healing power.",
@@ -357,9 +364,7 @@ export const paladinTalents = {
                     "Crusader Strike has a 60% chance to reset the cooldown of your Holy Shock.  In addition, the healing effect of your Holy Strike is increased by 60% and benefits from an additional 15% of your healing power.",
                     "Crusader Strike has a 80% chance to reset the cooldown of your Holy Shock.  In addition, the healing effect of your Holy Strike is increased by 80% and benefits from an additional 20% of your healing power.",
                     "Crusader Strike has a 100% chance to reset the cooldown of your Holy Shock.  In addition, the healing effect of your Holy Strike is increased by 100% and benefits from an additional 25% of your healing power."
-                ],
-                requires: 17,
-                reqRanks: 1
+                ]
             },
             {
                 id: 25,
@@ -368,6 +373,7 @@ export const paladinTalents = {
                 ranks: 1,
                 row: 7,
                 col: 2,
+                requires: 17,
                 description: "Critically healing an ally applies Daybreak on them for 30 sec. When the ally takes damage, Daybreak is consumed to heal them for 348 to 390.",
                 
                 fullDescription: "Critically healing an ally applies Daybreak on them for 30 sec. When the ally takes damage, Daybreak is consumed to heal them for 348 to 390.",
@@ -377,11 +383,9 @@ export const paladinTalents = {
                 ],
                 rankDescriptions: [
                     "Critically healing an ally applies Daybreak on them for 30 sec. When the ally takes damage, Daybreak is consumed to heal them for 348 to 390."
-                ],
-                requires: 17,
-                reqRanks: 1
+                ]
             }
-        ]
+        ],
     },
     protection: {
         name: "Protection",
@@ -425,11 +429,11 @@ export const paladinTalents = {
                 fullDescription: "Successful melee and ranged attacks against you have a 2/4/6/8/10% chance to increase your chance to block by 3/6/9/12/15%. Lasts 10 sec or 5 blocks.",
                 
                 spellIds: [
-                    45818, // Rank 1
-                    45819, // Rank 2
-                    45820, // Rank 3
-                    45821, // Rank 4
-                    45822  // Rank 5
+                    45818,
+                    45819,
+                    45820,
+                    45821,
+                    45822
                 ],
                 rankDescriptions: [
                     "Successful melee and ranged attacks against you have a 2% chance to increase your chance to block by 3%. Lasts 10 sec or 5 blocks.",
@@ -520,11 +524,13 @@ export const paladinTalents = {
                 
                 spellIds: [
                     20468,
+                    20469,
                     20470
                 ],
                 rankDescriptions: [
                     "Increases the amount of threat generated by your Righteous Fury spell by 25%.",
-                    "Increases the amount of threat generated by your Righteous Fury spell by 75%."
+                    "Increases the amount of threat generated by your Righteous Fury spell by 75%.",
+                    "Increases the amount of threat generated by your Righteous Fury spell by 25%."
                 ]
             },
             {
@@ -552,6 +558,7 @@ export const paladinTalents = {
                 ranks: 3,
                 row: 3,
                 col: 3,
+                requires: 2,
                 description: "Increases the amount of damage absorbed by your shield by 10% and has a 33% chance to restore 2% of maximum mana when a block occurs. This effect cannot occur more than once every 5 sec.",
                 
                 fullDescription: "Increases the amount of damage absorbed by your shield by 10% and has a 33% chance to restore 2% of maximum mana when a block occurs. This effect cannot occur more than once every 5 sec.",
@@ -565,9 +572,7 @@ export const paladinTalents = {
                     "Increases the amount of damage absorbed by your shield by 10% and has a 33% chance to restore 2% of maximum mana when a block occurs. This effect cannot occur more than once every 5 sec.",
                     "Increases the amount of damage absorbed by your shield by 20% and has a 66% chance to restore 2% of maximum mana when a block occurs. This effect cannot occur more than once every 5 sec.",
                     "Increases the amount of damage absorbed by your shield by 30% and has a 100% chance to restore 2% of maximum mana when a block occurs. This effect cannot occur more than once every 5 sec."
-                ],
-                requires: 2,
-                reqRanks: 5
+                ]
             },
             {
                 id: 11,
@@ -640,6 +645,7 @@ export const paladinTalents = {
                 ranks: 3,
                 row: 5,
                 col: 1,
+                requires: 8,
                 description: "While Righteous Fury is active, your damage taken is reduced by 3%.",
                 
                 fullDescription: "While Righteous Fury is active, your damage taken is reduced by 3%.",
@@ -653,9 +659,7 @@ export const paladinTalents = {
                     "While Righteous Fury is active, your damage taken is reduced by 3%.",
                     "While Righteous Fury is active, your damage taken is reduced by 6%.",
                     "While Righteous Fury is active, your damage taken is reduced by 10%."
-                ],
-                requires: 8,
-                reqRanks: 3
+                ]
             },
             {
                 id: 17,
@@ -734,6 +738,7 @@ export const paladinTalents = {
                 ranks: 1,
                 row: 7,
                 col: 2,
+                requires: 17,
                 description: "Bash the target with your shield, dealing 274 to 302 Holy damage and reducing the damage you take by 30% for 12 sec.",
                 
                 fullDescription: "Bash the target with your shield, dealing 274 to 302 Holy damage and reducing the damage you take by 30% for 12 sec.",
@@ -743,11 +748,9 @@ export const paladinTalents = {
                 ],
                 rankDescriptions: [
                     "Bash the target with your shield, dealing 274 to 302 Holy damage and reducing the damage you take by 30% for 12 sec."
-                ],
-                requires: 17,
-                reqRanks: 1
+                ]
             }
-        ]
+        ],
     },
     retribution: {
         name: "Retribution",
@@ -838,8 +841,8 @@ export const paladinTalents = {
                 
                 spellIds: [
                     20335,
-                    20337,
-                    28852
+                    20336,
+                    20337
                 ],
                 rankDescriptions: [
                     "Increases the melee attack power bonus of your Seal of the Crusader and the Holy damage increase of your Judgement of the Crusader by 5%.",
@@ -991,13 +994,14 @@ export const paladinTalents = {
                 fullDescription: "Gives the Paladin's damaging melee attacks a chance to reduce the target's damage dealt by 6% for 10 sec. Only affects targets of level  or lower.",
                 
                 spellIds: [
+                    9452,
                     26016,
-                    26017,
                     26021
                 ],
                 rankDescriptions: [
                     "Gives the Paladin's damaging melee attacks a chance to reduce the target's damage dealt by 6% for 10 sec. Only affects targets of level  or lower.",
-                    "Gives the Paladin's damaging melee attacks a chance to reduce the target's damage dealt by 9% for 10 sec. Only affects targets of level  or lower."
+                    "Gives the Paladin's damaging melee attacks a chance to reduce the target's damage dealt by 9% for 10 sec. Only affects targets of level  or lower.",
+                    "Gives the Paladin's damaging melee attacks a chance to reduce the target's damage dealt by 6% for 10 sec. Only affects targets of level  or lower."
                 ]
             },
             {
@@ -1027,22 +1031,25 @@ export const paladinTalents = {
                 ranks: 5,
                 row: 5,
                 col: 2,
+                requires: 9,
                 description: "Gives you a 1% bonus to all damage you deal and decreases threat you generate by 2% for 30 sec after dealing a critical strike from a weapon swing, spell, or ability. This effect stacks up to 3 times. Threat reduction does not apply if the Paladin is under the effect of Righteous Fury.",
                 
                 fullDescription: "Gives you a 1% bonus to all damage you deal and decreases threat you generate by 2% for 30 sec after dealing a critical strike from a weapon swing, spell, or ability. This effect stacks up to 3 times. Threat reduction does not apply if the Paladin is under the effect of Righteous Fury.",
                 
                 spellIds: [
                     20049,
-                    20052,
-                    20053,
-                    20054,
-                    20055
+                    20056,
+                    20057,
+                    20058,
+                    20059
                 ],
                 rankDescriptions: [
+                    "Gives you a 1% bonus to all damage you deal and decreases threat you generate by 2% for 30 sec after dealing a critical strike from a weapon swing, spell, or ability. This effect stacks up to 3 times. Threat reduction does not apply if the Paladin is under the effect of Righteous Fury.",
+                    "Gives you a 1% bonus to all damage you deal and decreases threat you generate by 2% for 30 sec after dealing a critical strike from a weapon swing, spell, or ability. This effect stacks up to 3 times. Threat reduction does not apply if the Paladin is under the effect of Righteous Fury.",
+                    "Gives you a 1% bonus to all damage you deal and decreases threat you generate by 2% for 30 sec after dealing a critical strike from a weapon swing, spell, or ability. This effect stacks up to 3 times. Threat reduction does not apply if the Paladin is under the effect of Righteous Fury.",
+                    "Gives you a 1% bonus to all damage you deal and decreases threat you generate by 2% for 30 sec after dealing a critical strike from a weapon swing, spell, or ability. This effect stacks up to 3 times. Threat reduction does not apply if the Paladin is under the effect of Righteous Fury.",
                     "Gives you a 1% bonus to all damage you deal and decreases threat you generate by 2% for 30 sec after dealing a critical strike from a weapon swing, spell, or ability. This effect stacks up to 3 times. Threat reduction does not apply if the Paladin is under the effect of Righteous Fury."
-                ],
-                requires: 9,
-                reqRanks: 5
+                ]
             },
             {
                 id: 18,
@@ -1051,15 +1058,15 @@ export const paladinTalents = {
                 ranks: 1,
                 row: 5,
                 col: 3,
-                description: "Gives the Paladin a chance to deal additional Holy damage equal to 70% of melee damage.  Only one Seal can be active on the Paladin at any one time.  Lasts 30 sec.\\n\\nUnleashing this Seal's energy will judge an enemy, instantly causing 93 to 102 Holy damage, 93 to 102 if the target is stunned or incapacitated. This damage is increased by 15% of your attack power.",
+                description: "Gives the Paladin a chance to deal additional Holy damage equal to 70% of melee damage.  Only one Seal can be active on the Paladin at any one time.  Lasts 30 sec.\\\\n\\\\nUnleashing this Seal's energy will judge an enemy, instantly causing 93 to 102 Holy damage, 93 to 102 if the target is stunned or incapacitated. This damage is increased by 15% of your attack power.",
                 
-                fullDescription: "Gives the Paladin a chance to deal additional Holy damage equal to 70% of melee damage.  Only one Seal can be active on the Paladin at any one time.  Lasts 30 sec.\\n\\nUnleashing this Seal's energy will judge an enemy, instantly causing 93 to 102 Holy damage, 93 to 102 if the target is stunned or incapacitated. This damage is increased by 15% of your attack power.",
+                fullDescription: "Gives the Paladin a chance to deal additional Holy damage equal to 70% of melee damage.  Only one Seal can be active on the Paladin at any one time.  Lasts 30 sec.\\\\n\\\\nUnleashing this Seal's energy will judge an enemy, instantly causing 93 to 102 Holy damage, 93 to 102 if the target is stunned or incapacitated. This damage is increased by 15% of your attack power.",
                 
                 spellIds: [
                     20375
                 ],
                 rankDescriptions: [
-                    "Gives the Paladin a chance to deal additional Holy damage equal to 70% of melee damage.  Only one Seal can be active on the Paladin at any one time.  Lasts 30 sec.\\n\\nUnleashing this Seal's energy will judge an enemy, instantly causing 93 to 102 Holy damage, 93 to 102 if the target is stunned or incapacitated. This damage is increased by 15% of your attack power."
+                    "Gives the Paladin a chance to deal additional Holy damage equal to 70% of melee damage.  Only one Seal can be active on the Paladin at any one time.  Lasts 30 sec.\\\\n\\\\nUnleashing this Seal's energy will judge an enemy, instantly causing 93 to 102 Holy damage, 93 to 102 if the target is stunned or incapacitated. This damage is increased by 15% of your attack power."
                 ]
             },
             {
@@ -1069,9 +1076,9 @@ export const paladinTalents = {
                 ranks: 5,
                 row: 6,
                 col: 2,
-                description: "Crusader Strike deals an additional 2% damage and Zeal increases your attack and casting speed by an additional 2% per stack.\r\\nHoly Strike infuses you with Holy Might, increasing your Strength by 4% for 20 sec.",
+                description: "Crusader Strike deals an additional 2% damage and Zeal increases your attack and casting speed by an additional 2% per stack.\\r\\\\nHoly Strike infuses you with Holy Might, increasing your Strength by 4% for 20 sec.",
                 
-                fullDescription: "Crusader Strike deals an additional 2% damage and Zeal increases your attack and casting speed by an additional 2% per stack.\r\\nHoly Strike infuses you with Holy Might, increasing your Strength by 4% for 20 sec.",
+                fullDescription: "Crusader Strike deals an additional 2% damage and Zeal increases your attack and casting speed by an additional 2% per stack.\\r\\\\nHoly Strike infuses you with Holy Might, increasing your Strength by 4% for 20 sec.",
                 
                 spellIds: [
                     51355,
@@ -1081,11 +1088,11 @@ export const paladinTalents = {
                     51359
                 ],
                 rankDescriptions: [
-                    "Crusader Strike deals an additional 2% damage and Zeal increases your attack and casting speed by an additional 2% per stack.\r\\nHoly Strike infuses you with Holy Might, increasing your Strength by 4% for 20 sec.",
-                    "Crusader Strike deals an additional 4% damage and Zeal increases your attack and casting speed by an additional 2% per stack.\r\\nHoly Strike infuses you with Holy Might, increasing your Strength by 8% for 20 sec.",
-                    "Crusader Strike deals an additional 6% damage and Zeal increases your attack and casting speed by an additional 2% per stack.\r\\nHoly Strike infuses you with Holy Might, increasing your Strength by 12% for 20 sec.",
-                    "Crusader Strike deals an additional 8% damage and Zeal increases your attack and casting speed by an additional 2% per stack.\r\\nHoly Strike infuses you with Holy Might, increasing your Strength by 16% for 20 sec.",
-                    "Crusader Strike deals an additional 10% damage and Zeal increases your attack and casting speed by an additional 2% per stack.\r\\nHoly Strike infuses you with Holy Might, increasing your Strength by 20% for 20 sec."
+                    "Crusader Strike deals an additional 2% damage and Zeal increases your attack and casting speed by an additional 2% per stack.\\r\\\\nHoly Strike infuses you with Holy Might, increasing your Strength by 4% for 20 sec.",
+                    "Crusader Strike deals an additional 4% damage and Zeal increases your attack and casting speed by an additional 2% per stack.\\r\\\\nHoly Strike infuses you with Holy Might, increasing your Strength by 8% for 20 sec.",
+                    "Crusader Strike deals an additional 6% damage and Zeal increases your attack and casting speed by an additional 2% per stack.\\r\\\\nHoly Strike infuses you with Holy Might, increasing your Strength by 12% for 20 sec.",
+                    "Crusader Strike deals an additional 8% damage and Zeal increases your attack and casting speed by an additional 2% per stack.\\r\\\\nHoly Strike infuses you with Holy Might, increasing your Strength by 16% for 20 sec.",
+                    "Crusader Strike deals an additional 10% damage and Zeal increases your attack and casting speed by an additional 2% per stack.\\r\\\\nHoly Strike infuses you with Holy Might, increasing your Strength by 20% for 20 sec."
                 ]
             },
             {
@@ -1095,17 +1102,17 @@ export const paladinTalents = {
                 ranks: 1,
                 row: 7,
                 col: 2,
-                description: "Puts the enemy target in a state of meditation, incapacitating them for up to 6 sec.  Any damage caused will awaken the target.\\n\\nIf the target is immune to the effect, they repent for their sins, taking 80 Holy damage each time they perform a melee attack for 20 sec.",
+                description: "Puts the enemy target in a state of meditation, incapacitating them for up to 6 sec.  Any damage caused will awaken the target.\\\\n\\\\nIf the target is immune to the effect, they repent for their sins, taking 80 Holy damage each time they perform a melee attack for 20 sec.",
                 
-                fullDescription: "Puts the enemy target in a state of meditation, incapacitating them for up to 6 sec.  Any damage caused will awaken the target.\\n\\nIf the target is immune to the effect, they repent for their sins, taking 80 Holy damage each time they perform a melee attack for 20 sec.",
+                fullDescription: "Puts the enemy target in a state of meditation, incapacitating them for up to 6 sec.  Any damage caused will awaken the target.\\\\n\\\\nIf the target is immune to the effect, they repent for their sins, taking 80 Holy damage each time they perform a melee attack for 20 sec.",
                 
                 spellIds: [
                     20066
                 ],
                 rankDescriptions: [
-                    "Puts the enemy target in a state of meditation, incapacitating them for up to 6 sec.  Any damage caused will awaken the target.\\n\\nIf the target is immune to the effect, they repent for their sins, taking 80 Holy damage each time they perform a melee attack for 20 sec."
+                    "Puts the enemy target in a state of meditation, incapacitating them for up to 6 sec.  Any damage caused will awaken the target.\\\\n\\\\nIf the target is immune to the effect, they repent for their sins, taking 80 Holy damage each time they perform a melee attack for 20 sec."
                 ]
             }
-        ]
-    }
+        ],
+    },
 };

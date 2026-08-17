@@ -17,7 +17,7 @@ Single client-side pipeline for Chronicle (and Turtle rollback) armory imports. 
 | `CHRONICLE_REALM_OPTIONS` | Realm dropdown values for Chronicle |
 | `decodeChronicleTalents(class, payload)` | Chronicle `talents.trees[].ranks` → `{ "treeKey-id": points }` |
 | `applyArmoryTalents(class, payload, root, opts)` | Reset tree, apply spec, `updateAllTalentStates`; optional buff regen |
-| `CHRONICLE_ONLY_TALENT_IDS` | Chronicle-only ids skipped on apply (e.g. warlock affliction id 3) |
+| `CHRONICLE_ONLY_TALENT_IDS` | Deprecated empty map; rank strings align 1:1 with IchaCalc tree-local ids |
 
 ## Enchant handling
 
@@ -48,9 +48,11 @@ Chronicle returns:
 ```
 
 1. Tree array order = `Object.keys(classTalents[class])` (class lowercase).
-2. One digit per talent, sorted by talent **id** (Chronicle may include ids removed in IchaCalc).
-3. `decodeChronicleTalents` → spec `{ "treeKey-talentId": points }`; warlock affliction **id 3** (Sinister Pursuit) is consumed but not applied.
-4. Length / `points_spent` mismatches log warnings (priest/hunter drift) without throwing.
+2. One digit per talent, sorted by tree-local talent **id** (same order as Chronicle `tabIndex`).
+3. `decodeChronicleTalents` → spec `{ "treeKey-talentId": points }`.
+4. Length / `points_spent` mismatches log warnings without throwing.
+
+Source of truth for tree definitions: Chronicle `GET https://octo.chronicleclassic.com/api/v1/wowdb/talent-trees` (`Origin: https://chronicleclassic.com`). IchaCalc mirrors this in `modules/talents/*.js` (Aug 2026 audit). Sinister Pursuit is **Demonology** t1 (not Affliction).
 
 **Character Planner** (`armory.js`): after class change + gear, `applyArmoryTalents` on `#talents-list` and regenerates buffs.
 

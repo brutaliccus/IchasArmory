@@ -170,10 +170,8 @@ export async function applyArmoryEquipment(equipment, options) {
     return { itemsEquipped, itemsNotFound };
 }
 
-/** Chronicle-only talent ids omitted from IchaCalc (e.g. removed Sinister Pursuit). */
-export const CHRONICLE_ONLY_TALENT_IDS = Object.freeze({
-    warlock: Object.freeze({ affliction: [3] }),
-});
+/** @deprecated Chronicle rank strings now align 1:1 with IchaCalc tree-local ids (Sinister Pursuit moved to Demonology). */
+export const CHRONICLE_ONLY_TALENT_IDS = Object.freeze({});
 
 /**
  * Decode Chronicle talent rank strings into IchaCalc spec `{ "treeKey-talentId": points }`.
