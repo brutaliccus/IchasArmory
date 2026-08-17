@@ -48,7 +48,7 @@ Chronicle returns:
 ```
 
 1. Tree array order = `Object.keys(classTalents[class])` (class lowercase).
-2. One digit per talent, sorted by tree-local talent **id** (same order as Chronicle `tabIndex`).
+2. One digit per talent in **tree array order** (Chronicle `tabIndex`); when rank-string length equals talent count, zip 1:1 by index.
 3. `decodeChronicleTalents` → spec `{ "treeKey-talentId": points }`.
 4. Length / `points_spent` mismatches log warnings without throwing.
 

@@ -205,10 +205,9 @@ export function decodeChronicleTalents(className, talentsPayload) {
         }
 
         const ranksStr = String(treeEntry.ranks);
-        const byId = new Map(treeDef.talents.map((t) => [t.id, t]));
-        const ichaIds = treeDef.talents.map((t) => t.id).sort((a, b) => a - b);
-        const extraIds = CHRONICLE_ONLY_TALENT_IDS[classKey]?.[treeKey] || [];
-        const idOrder = [...new Set([...ichaIds, ...extraIds])].sort((a, b) => a - b);
+        const talentsInOrder = treeDef.talents;
+        const idOrder = talentsInOrder.map((t) => t.id);
+        const byId = new Map(talentsInOrder.map((t) => [t.id, t]));
 
         if (ranksStr.length !== idOrder.length) {
             warnings.push(
@@ -218,13 +217,30 @@ export function decodeChronicleTalents(className, talentsPayload) {
 
         const limit = Math.min(ranksStr.length, idOrder.length);
         let appliedPoints = 0;
-        for (let i = 0; i < limit; i++) {
-            const talentId = idOrder[i];
-            const points = parseInt(ranksStr[i], 10);
-            if (!Number.isFinite(points) || points <= 0) continue;
-            if (!byId.has(talentId)) continue;
-            spec[`${treeKey}-${talentId}`] = points;
-            appliedPoints += points;
+
+        if (ranksStr.length === idOrder.length) {
+            // Chronicle rank digits are tabIndex order — zip 1:1 with IchaCalc talents array.
+            for (let i = 0; i < limit; i++) {
+                const talentId = idOrder[i];
+                const points = parseInt(ranksStr[i], 10);
+                if (!Number.isFinite(points) || points <= 0) continue;
+                spec[`${treeKey}-${talentId}`] = points;
+                appliedPoints += points;
+            }
+        } else {
+            // Length mismatch: legacy sorted-id zip (skip unknown ids without consuming extra digits).
+            const ichaIds = [...idOrder].sort((a, b) => a - b);
+            const extraIds = CHRONICLE_ONLY_TALENT_IDS[classKey]?.[treeKey] || [];
+            const legacyOrder = [...new Set([...ichaIds, ...extraIds])].sort((a, b) => a - b);
+            const legacyLimit = Math.min(ranksStr.length, legacyOrder.length);
+            for (let i = 0; i < legacyLimit; i++) {
+                const talentId = legacyOrder[i];
+                const points = parseInt(ranksStr[i], 10);
+                if (!Number.isFinite(points) || points <= 0) continue;
+                if (!byId.has(talentId)) continue;
+                spec[`${treeKey}-${talentId}`] = points;
+                appliedPoints += points;
+            }
         }
 
         if (ranksStr.length > idOrder.length) {
