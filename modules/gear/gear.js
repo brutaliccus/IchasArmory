@@ -7,18 +7,19 @@ import { itemLoader } from './itemLoader.js';
 import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, parseSpellStrikeSourcesFromItem, parseSpellStrikeFromText } from '../character/stats.js';
 
 // Icon constants
+export const CHRONICLE_ICON_BASE = 'https://icons.chronicleclassic.com/turtle';
 export const OCTOWOW_ICON_BASE = 'https://octowow.st/db/images/icons';
-export const PLACEHOLDER_ICON_URL = `${OCTOWOW_ICON_BASE}/large/inventoryslot_`;
+/** @deprecated Prefer resolveIconUrl(`inventoryslot_${slotKey}`) */
+export const PLACEHOLDER_ICON_URL = `${CHRONICLE_ICON_BASE}/inventoryslot_`;
 const RELIC_CLASSES = new Set(['druid', 'shaman', 'paladin']);
-const RELIC_PLACEHOLDER_URL = `${OCTOWOW_ICON_BASE}/large/inventoryslot_relic.png`;
 
 /** Empty paperdoll icon URL. Druid/shaman/paladin ranged uses relic, not bow. */
 export function getEmptySlotPlaceholderUrl(slotId, classId) {
     if (slotId === 'ranged' && RELIC_CLASSES.has(classId)) {
-        return RELIC_PLACEHOLDER_URL;
+        return resolveIconUrl('inventoryslot_relic');
     }
     const iconFileName = slotIconMap[slotId];
-    return iconFileName ? `${PLACEHOLDER_ICON_URL}${iconFileName}.png` : '';
+    return iconFileName ? resolveIconUrl(`inventoryslot_${iconFileName}`) : '';
 }
 
 function resolvePlaceholderClassId(classId) {
@@ -59,14 +60,14 @@ export const slotIconMap = {
     offhand: 'offhand',
     ranged: 'ranged'
 };
-export const ICON_BASE_URL = 'https://octowow.st/db/images/icons/large/';
+export const ICON_BASE_URL = `${CHRONICLE_ICON_BASE}/`;
 /** Local barrens.chat icon pack for Gear Planner save picker */
 export const LOCAL_WOW_ICON_PACK_BASE = '/assets/wow-icons/large/';
-/** Second fallback when primary DB is down (same icon names, .jpg on Wowhead CDN) */
+/** Second fallback when Chronicle + octowow fail (.jpg on Wowhead CDN) */
 export const ICON_CDN_ZAMIMG_LARGE = 'https://wow.zamimg.com/images/wow/icons/large/';
 export const ICON_CDN_ZAMIMG_MEDIUM = 'https://wow.zamimg.com/images/wow/icons/medium/';
-/** @deprecated Use resolveIconUrl / buildOctowowIconUrl; kept as octowow alias for legacy imports */
-export const ICON_BASE_URL_BACKUP = ICON_BASE_URL;
+/** Octowow icon CDN (fallback after Chronicle) */
+export const ICON_BASE_URL_BACKUP = `${OCTOWOW_ICON_BASE}/large/`;
 
 /** Strip path/extension and return lowercase WoW icon basename. */
 export function normalizeIconBasename(iconRef) {
@@ -75,6 +76,15 @@ export function normalizeIconBasename(iconRef) {
     const noQuery = raw.split('?')[0].split('#')[0];
     const leaf = noQuery.replace(/^.*\//, '');
     return leaf.replace(/\.(png|jpg|jpeg|gif|webp)$/i, '').toLowerCase() || 'inv_misc_questionmark';
+}
+
+/**
+ * Build https://icons.chronicleclassic.com/turtle/{basename}.webp
+ * @param {string} iconRef - basename or full/legacy URL
+ */
+export function buildChronicleIconUrl(iconRef) {
+    const basename = normalizeIconBasename(iconRef);
+    return `${CHRONICLE_ICON_BASE}/${basename}.webp`;
 }
 
 /**
@@ -106,34 +116,50 @@ export function resolveGearPlanIconUrl(iconRef, size = 'large') {
 
 /**
  * Resolve icon refs (basename, legacy CDN URL, or assets/ path) to a loadable URL.
- * Remote game icons prefer octowow.st; local assets/ paths pass through unchanged.
+ * Remote game icons prefer Chronicle turtle webp; local assets/ paths pass through unchanged.
  */
 export function resolveIconUrl(iconRef, size = 'large') {
     const raw = String(iconRef || '').trim();
-    if (!raw) return buildOctowowIconUrl('inv_misc_questionmark', size);
+    if (!raw) return buildChronicleIconUrl('inv_misc_questionmark');
     if (raw.startsWith('assets/') || raw.startsWith('/assets/')) return raw;
     if (raw.startsWith('http://') || raw.startsWith('https://')) {
         const journal = raw.match(/ui-ej-boss-[^/?#]+\.png/i);
         if (journal) return `https://octowow.st/db/images/journal/${journal[0]}`;
-        const fromKnownHost = raw.match(/\/icons\/(?:large|medium)\/([^/?#]+)\.(?:png|jpg|jpeg|webp)/i)
+        if (/icons\.chronicleclassic\.com\/turtle\//i.test(raw)) return raw;
+        const fromKnownHost = raw.match(/\/turtle\/([^/?#]+)\.webp/i)
+            || raw.match(/\/icons\/(?:large|medium)\/([^/?#]+)\.(?:png|jpg|jpeg|webp)/i)
             || raw.match(/\/icons\/([^/?#]+)\.(?:png|jpg|jpeg|webp)/i);
-        if (fromKnownHost) return buildOctowowIconUrl(fromKnownHost[1], size);
-        if (/octowow\.st\/db\/images\/icons\//i.test(raw)) return raw;
-        return buildOctowowIconUrl(raw, size);
+        if (fromKnownHost) return buildChronicleIconUrl(fromKnownHost[1]);
+        return buildChronicleIconUrl(raw);
     }
-    return buildOctowowIconUrl(raw, size);
+    return buildChronicleIconUrl(raw);
 }
 
 let _iconFallbackInstalled = false;
 
 function _iconNameFromSrc(src) {
+    const chronicle = src.match(/\/turtle\/([^/?#]+)\.webp/i);
+    if (chronicle) return chronicle[1].toLowerCase();
     const m = src.match(/\/icons\/(?:large|medium)\/([^/?#]+)\.(?:png|jpg|jpeg|webp)/i)
         || src.match(/\/icons\/([^/?#]+)\.(?:png|jpg|jpeg|webp)/i);
     return m ? m[1].toLowerCase() : null;
 }
 
+function _isChronicleIconSrc(src) {
+    return /icons\.chronicleclassic\.com\/turtle\//i.test(src);
+}
+
+function _isOctowowIconSrc(src) {
+    return /octowow\.st\/db\/images\/icons\//i.test(src);
+}
+
+function _zamimgIconUrl(name, size) {
+    const base = size === 'medium' ? ICON_CDN_ZAMIMG_MEDIUM : ICON_CDN_ZAMIMG_LARGE;
+    return `${base}${name}.jpg`;
+}
+
 /**
- * Installs a single capture-phase listener so failed icon loads retry octowow → zamimg.
+ * Installs a single capture-phase listener so failed icon loads retry Chronicle → octowow → zamimg.
  * Call once from app init (covers hardcoded innerHTML URLs as well as createIconImage).
  */
 export function installIconLoadFallbacks() {
@@ -150,10 +176,13 @@ export function installIconLoadFallbacks() {
             const step = el.dataset.iconFb || '0';
             if (step === '0') {
                 el.dataset.iconFb = '1';
-                el.src = buildOctowowIconUrl(name, 'large');
+                el.src = buildChronicleIconUrl(name);
             } else if (step === '1') {
                 el.dataset.iconFb = '2';
-                el.src = `${ICON_CDN_ZAMIMG_LARGE}${name}.jpg`;
+                el.src = buildOctowowIconUrl(name, 'large');
+            } else if (step === '2') {
+                el.dataset.iconFb = '3';
+                el.src = _zamimgIconUrl(name, 'large');
             }
             return;
         }
@@ -163,10 +192,23 @@ export function installIconLoadFallbacks() {
         const step = el.dataset.iconFb || '0';
         if (step === '0') {
             el.dataset.iconFb = '1';
-            el.src = buildOctowowIconUrl(name, size);
+            if (_isChronicleIconSrc(src)) {
+                el.src = buildOctowowIconUrl(name, size);
+            } else if (_isOctowowIconSrc(src)) {
+                el.src = _zamimgIconUrl(name, size);
+            } else {
+                el.src = buildChronicleIconUrl(name);
+            }
         } else if (step === '1') {
             el.dataset.iconFb = '2';
-            el.src = `${ICON_CDN_ZAMIMG_LARGE}${name}.jpg`;
+            if (_isOctowowIconSrc(src)) {
+                el.src = _zamimgIconUrl(name, size);
+            } else {
+                el.src = buildOctowowIconUrl(name, size);
+            }
+        } else if (step === '2') {
+            el.dataset.iconFb = '3';
+            el.src = _zamimgIconUrl(name, size);
         } else {
             el.removeAttribute('data-icon-fb');
         }

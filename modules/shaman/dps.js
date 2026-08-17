@@ -3,7 +3,7 @@
 import { shamanSpells } from './spells.js';
 import { ShamanStats, callOfThunderCritBonusFraction } from '../character/shamanTalents.js';
 import { calculateSpellDPS, calculateSpellDamage, formatDamage, formatDPS } from './damageCalc.js';
-import { getCurrentlyEquippedItem, getAllSpellStrikeSources, getEquippedGearObjects, getItemById, equipItem, clearItem, createIconImage, PLACEHOLDER_ICON_URL, slotIconMap, setVirtualStatWeightItem, clearVirtualStatWeightItem, applyEnchant, getSelectedEnchants, getEnchantableSlots, resolveIconUrl } from '../gear/gear.js';
+import { getCurrentlyEquippedItem, getAllSpellStrikeSources, getEquippedGearObjects, getItemById, equipItem, clearItem, createIconImage, slotIconMap, setVirtualStatWeightItem, clearVirtualStatWeightItem, applyEnchant, getSelectedEnchants, getEnchantableSlots, resolveIconUrl } from '../gear/gear.js';
 import { GEAR_PLAN_SLOTS } from '../gear/gearPlanner.js';
 import { enchantDatabase } from '../gear/enchants.js';
 import { openCustomRadialMenu, openRadialMenu, closeRadialMenu } from '../ui/radialMenu.js';
@@ -3381,7 +3381,7 @@ function generateAbilityRowHTML(key, result, spellResults, stats) {
         const ftSpell = ftResult.spell;
         const ftTooltip = generateAbilityTooltip(ftSpell, ftResult, stats);
         const ftTooltipId = `tooltip-flametongueWeapon`;
-        const ftIconUrl = 'https://octowow.st/db/images/icons/large/spell_fire_flametounge.png';
+        const ftIconUrl = resolveIconUrl('spell_fire_flametounge');
 
         html += '<div class="sub-ability">';
         html += '<div style="display: flex; align-items: center; gap: 8px;">';
@@ -3399,9 +3399,7 @@ function generateAbilityRowHTML(key, result, spellResults, stats) {
         const fbSpell = fbResult.spell;
         const fbTooltip = generateAbilityTooltip(fbSpell, fbResult, stats);
         const fbTooltipId = 'tooltip-frostbrandWeapon';
-        const fbIconUrl = fbSpell.icon && fbSpell.icon.startsWith('http')
-            ? fbSpell.icon
-            : `https://octowow.st/db/images/icons/large/spell_frost_frostbrand.png`;
+        const fbIconUrl = resolveIconUrl(fbSpell.icon || 'spell_frost_frostbrand');
 
         html += '<div class="sub-ability">';
         html += '<div style="display: flex; align-items: center; gap: 8px;">';
@@ -3450,7 +3448,7 @@ function generateAbilityRowHTML(key, result, spellResults, stats) {
     }
 
     if (spell.name === "Earthquake") {
-        const eqIconUrl = 'https://octowow.st/db/images/icons/large/spell_nature_earthquake.png';
+        const eqIconUrl = resolveIconUrl('spell_nature_earthquake');
         const aftershockDmg = `${Math.round(result.min * 0.30)} - ${Math.round(result.max * 0.30)}`;
         const splashDmg = `${Math.round(result.min * 0.35)} - ${Math.round(result.max * 0.35)}`;
         html += '<div class="sub-ability">';
@@ -3470,7 +3468,7 @@ function generateAbilityRowHTML(key, result, spellResults, stats) {
     }
 
     if (spell.name === "Molten Blast" && stats.activeModifiers?.improvedMoltenBlast > 0) {
-        const rekindleIconUrl = 'https://octowow.st/db/images/icons/large/spell_fire_meteorstorm.png';
+        const rekindleIconUrl = resolveIconUrl('spell_fire_meteorstorm');
         const impMbRank = stats.activeModifiers.improvedMoltenBlast;
         let rekindlePercent = impMbRank * 0.30;
         if (stats.totemOfEruption) rekindlePercent += 0.20;
@@ -5847,7 +5845,7 @@ function getAbilityIconUrl(abilityName) {
             const mainhandWeapon = getCurrentlyEquippedItem('mainhand');
             if (mainhandWeapon && mainhandWeapon.icon) {
                 const iconName = mainhandWeapon.icon.toLowerCase();
-                return `https://octowow.st/db/images/icons/large/${iconName}.png`;
+                return resolveIconUrl(iconName);
             }
             return resolveIconUrl('inv_sword_04');
         },
@@ -5859,8 +5857,8 @@ function getAbilityIconUrl(abilityName) {
             const icon = shamanSpells.frostShock.icon;
             return resolveIconUrl(icon);
         },
-        'Freezing Cold': () => 'https://octowow.st/db/images/icons/large/spell_frost_frostshock.png',
-        'Holy Smite': () => 'https://octowow.st/db/images/icons/large/spell_holy_holysmite.png',
+        'Freezing Cold': () => resolveIconUrl('spell_frost_frostshock'),
+        'Holy Smite': () => resolveIconUrl('spell_holy_holysmite'),
         'Flame Shock': () => {
             const icon = shamanSpells.flameShock.icon;
             return resolveIconUrl(icon);
@@ -5895,7 +5893,7 @@ function getAbilityIconUrl(abilityName) {
         },
         'Frostbrand Weapon': () => {
             const icon = shamanSpells.frostbrandWeapon.icon;
-            return icon && icon.startsWith('http') ? icon : `https://octowow.st/db/images/icons/large/spell_frost_frostbrand.png`;
+            return resolveIconUrl(icon || 'spell_frost_frostbrand');
         },
         'Lightning Shield': () => {
             const icon = shamanSpells.lightningShield.icon;
@@ -5913,73 +5911,73 @@ function getAbilityIconUrl(abilityName) {
             const icon = shamanSpells.fireNovaTotem.icon;
             return resolveIconUrl(icon);
         },
-        'Magma Totem': () => 'https://octowow.st/db/images/icons/large/spell_fire_selfdestruct.png',
-        'Tidal Wave': () => 'https://octowow.st/db/images/icons/large/spell_frost_frostnova.png',
-        'Totem of Tides': () => 'https://octowow.st/db/images/icons/large/spell_frost_frostnova.png',
-        'Spell Strike (Fire)': () => 'https://octowow.st/db/images/icons/large/spell_fire_fireball02.png',
-        'Spell Strike (Nature)': () => 'https://octowow.st/db/images/icons/large/spell_nature_callstorm.png',
-        'Spell Strike (Holy)': () => 'https://octowow.st/db/images/icons/large/spell_holy_searinglight.png',
+        'Magma Totem': () => resolveIconUrl('spell_fire_selfdestruct'),
+        'Tidal Wave': () => resolveIconUrl('spell_frost_frostnova'),
+        'Totem of Tides': () => resolveIconUrl('spell_frost_frostnova'),
+        'Spell Strike (Fire)': () => resolveIconUrl('spell_fire_fireball02'),
+        'Spell Strike (Nature)': () => resolveIconUrl('spell_nature_callstorm'),
+        'Spell Strike (Holy)': () => resolveIconUrl('spell_holy_searinglight'),
         'Stoneclaw Totem': () => {
             const icon = (shamanSpells.stoneclawTotem && shamanSpells.stoneclawTotem.icon) || 'spell_nature_stoneclawtotem';
             return resolveIconUrl(icon);
         },
-        'Shard of the Fallen Star': () => 'https://octowow.st/db/images/icons/large/inv_misc_ahnqirajtrinket_04.png',
-        'Incendosaur 3pc (Fire)': () => 'https://octowow.st/db/images/icons/large/spell_fire_fireball02.png',
-        'Might of the Hippogryph': () => 'https://octowow.st/db/images/icons/large/spell_lightning_lightningbolt01.png',
+        'Shard of the Fallen Star': () => resolveIconUrl('inv_misc_ahnqirajtrinket_04'),
+        'Incendosaur 3pc (Fire)': () => resolveIconUrl('spell_fire_fireball02'),
+        'Might of the Hippogryph': () => resolveIconUrl('spell_lightning_lightningbolt01'),
         'Lightning Bolt': () => {
             const icon = shamanSpells.lightningBolt?.icon;
-            return icon && icon.startsWith('http') ? icon : `https://octowow.st/db/images/icons/large/spell_nature_lightning.png`;
+            return resolveIconUrl(icon || 'spell_nature_lightning');
         },
         'Lightning Bolt (T2 8pc)': () => {
             const icon = shamanSpells.lightningBolt?.icon;
-            return icon && icon.startsWith('http') ? icon : `https://octowow.st/db/images/icons/large/spell_nature_lightning.png`;
+            return resolveIconUrl(icon || 'spell_nature_lightning');
         },
-        'Echoed Thunder': () => 'https://octowow.st/db/images/icons/large/spell_nature_callstorm.png',
-        'Windfury Attack': () => 'https://octowow.st/db/images/icons/large/spell_nature_cyclone.png',
-        'Hand of Justice': () => 'https://octowow.st/db/images/icons/large/inv_jewelry_talisman_01.png',
-        'Ornate Bloodstone Dagger': () => 'https://octowow.st/db/images/icons/large/spell_fire_lavaspawn.png',
-        'Blade of Eternal Darkness': () => 'https://octowow.st/db/images/icons/large/spell_shadow_lifedrain02.png',
-        'Elemental Focus': () => 'https://octowow.st/db/images/icons/large/spell_shadow_manaburn.png',
-        'Dragonbreath Chili': () => 'https://octowow.st/db/images/icons/large/spell_fire_incinerate.png',
-        'Sigil of Ancient Accord': () => 'https://octowow.st/db/images/icons/large/inv_misc_rune_03.png',
-        'Sulfuras': () => 'https://octowow.st/db/images/icons/large/spell_fire_firebolt02.png',
-        'Sulfuras (DoT)': () => 'https://octowow.st/db/images/icons/large/spell_fire_fire.png',
-        'Ring of Burning Talons': () => 'https://octowow.st/db/images/icons/large/spell_fire_incinerate.png',
-        'Ring of Burning Talons (DoT)': () => 'https://octowow.st/db/images/icons/large/spell_fire_incinerate.png',
-        'Misplaced Servo Arm': () => 'https://octowow.st/db/images/icons/large/spell_nature_lightning.png',
-        'Deathbringer': () => 'https://octowow.st/db/images/icons/large/spell_shadow_shadowbolt.png',
-        'Neretzek': () => 'https://octowow.st/db/images/icons/large/spell_shadow_lifedrain02.png',
-        'Vial of Potent Venoms': () => 'https://octowow.st/db/images/icons/large/inv_potion_97.png',
-        'Lightning Bolt (HotEO)': () => 'https://octowow.st/db/images/icons/large/spell_nature_lightning.png',
-        'Chain Lightning': () => 'https://octowow.st/db/images/icons/large/spell_nature_chainlightning.png',
-        'Chain Lightning (HotEO)': () => 'https://octowow.st/db/images/icons/large/spell_nature_chainlightning.png',
-        'Molten Blast': () => 'https://octowow.st/db/images/icons/large/spell_fire_meteorstorm.png',
-        'Molten Blast (HotEO)': () => 'https://octowow.st/db/images/icons/large/spell_fire_meteorstorm.png',
-        'Rekindle': () => 'https://octowow.st/db/images/icons/large/spell_fire_meteorstorm.png',
-        "Insomnius' Retribution": () => 'https://octowow.st/db/images/icons/large/spell_nature_earthshock.png',
-        'Jewel of Wild Magics: Fire': () => 'https://octowow.st/db/images/icons/large/spell_holy_excorcism_02.png',
-        'Jewel of Wild Magics: Fire (DoT)': () => 'https://octowow.st/db/images/icons/large/spell_fire_incinerate.png',
-        'Jewel of Wild Magics: Frost': () => 'https://octowow.st/db/images/icons/large/spell_frost_frostnova.png',
-        'Jewel of Wild Magics: Arcane': () => 'https://octowow.st/db/images/icons/large/spell_nature_wispsplode.png',
-        'Jewel of Wild Magics: Holy': () => 'https://octowow.st/db/images/icons/large/spell_holy_holynova.png',
-        'Arcane Surge': () => 'https://octowow.st/db/images/icons/large/spell_nature_astralrecal.png',
-        'Earthquake': () => 'https://octowow.st/db/images/icons/large/spell_nature_earthquake.png',
-        'Earthquake (Splash)': () => 'https://octowow.st/db/images/icons/large/spell_nature_earthquake.png',
-        'Earthquake (Aftershock)': () => 'https://octowow.st/db/images/icons/large/spell_nature_earthquake.png',
-        'Arcane Missiles': () => 'https://octowow.st/db/images/icons/large/spell_nature_starfall.png',
-        'Storm Cloud (Totem of Thundercall)': () => 'https://octowow.st/db/images/icons/large/spell_nature_callstorm.png',
+        'Echoed Thunder': () => resolveIconUrl('spell_nature_callstorm'),
+        'Windfury Attack': () => resolveIconUrl('spell_nature_cyclone'),
+        'Hand of Justice': () => resolveIconUrl('inv_jewelry_talisman_01'),
+        'Ornate Bloodstone Dagger': () => resolveIconUrl('spell_fire_lavaspawn'),
+        'Blade of Eternal Darkness': () => resolveIconUrl('spell_shadow_lifedrain02'),
+        'Elemental Focus': () => resolveIconUrl('spell_shadow_manaburn'),
+        'Dragonbreath Chili': () => resolveIconUrl('spell_fire_incinerate'),
+        'Sigil of Ancient Accord': () => resolveIconUrl('inv_misc_rune_03'),
+        'Sulfuras': () => resolveIconUrl('spell_fire_firebolt02'),
+        'Sulfuras (DoT)': () => resolveIconUrl('spell_fire_fire'),
+        'Ring of Burning Talons': () => resolveIconUrl('spell_fire_incinerate'),
+        'Ring of Burning Talons (DoT)': () => resolveIconUrl('spell_fire_incinerate'),
+        'Misplaced Servo Arm': () => resolveIconUrl('spell_nature_lightning'),
+        'Deathbringer': () => resolveIconUrl('spell_shadow_shadowbolt'),
+        'Neretzek': () => resolveIconUrl('spell_shadow_lifedrain02'),
+        'Vial of Potent Venoms': () => resolveIconUrl('inv_potion_97'),
+        'Lightning Bolt (HotEO)': () => resolveIconUrl('spell_nature_lightning'),
+        'Chain Lightning': () => resolveIconUrl('spell_nature_chainlightning'),
+        'Chain Lightning (HotEO)': () => resolveIconUrl('spell_nature_chainlightning'),
+        'Molten Blast': () => resolveIconUrl('spell_fire_meteorstorm'),
+        'Molten Blast (HotEO)': () => resolveIconUrl('spell_fire_meteorstorm'),
+        'Rekindle': () => resolveIconUrl('spell_fire_meteorstorm'),
+        "Insomnius' Retribution": () => resolveIconUrl('spell_nature_earthshock'),
+        'Jewel of Wild Magics: Fire': () => resolveIconUrl('spell_holy_excorcism_02'),
+        'Jewel of Wild Magics: Fire (DoT)': () => resolveIconUrl('spell_fire_incinerate'),
+        'Jewel of Wild Magics: Frost': () => resolveIconUrl('spell_frost_frostnova'),
+        'Jewel of Wild Magics: Arcane': () => resolveIconUrl('spell_nature_wispsplode'),
+        'Jewel of Wild Magics: Holy': () => resolveIconUrl('spell_holy_holynova'),
+        'Arcane Surge': () => resolveIconUrl('spell_nature_astralrecal'),
+        'Earthquake': () => resolveIconUrl('spell_nature_earthquake'),
+        'Earthquake (Splash)': () => resolveIconUrl('spell_nature_earthquake'),
+        'Earthquake (Aftershock)': () => resolveIconUrl('spell_nature_earthquake'),
+        'Arcane Missiles': () => resolveIconUrl('spell_nature_starfall'),
+        'Storm Cloud (Totem of Thundercall)': () => resolveIconUrl('spell_nature_callstorm'),
         'Elementium Reaper': () => {
             const mh = getCurrentlyEquippedItem('mainhand');
             if (mh && (mh.id === 33094 || String(mh.id) === '33094') && mh.icon) {
                 const n = String(mh.icon).toLowerCase().replace(/\.png$/i, '');
-                return `https://octowow.st/db/images/icons/large/${n}.png`;
+                return resolveIconUrl(n);
             }
             const item = getItemById(33094);
             if (item?.icon) {
                 const n = String(item.icon).toLowerCase().replace(/\.png$/i, '');
-                return `https://octowow.st/db/images/icons/large/${n}.png`;
+                return resolveIconUrl(n);
             }
-            return 'https://octowow.st/db/images/icons/large/inv_axe_09.png';
+            return resolveIconUrl('inv_axe_09');
         }
     };
 
@@ -5991,10 +5989,10 @@ function getAbilityIconUrl(abilityName) {
     // Spell Strike (other schools: Shadow, Arcane, Frost, etc.)
     if (typeof abilityName === 'string' && abilityName.startsWith('Spell Strike (')) {
         const school = abilityName.replace('Spell Strike (', '').replace(')', '');
-        if (school === 'Fire') return 'https://octowow.st/db/images/icons/large/spell_fire_fireball02.png';
-        if (school === 'Nature') return 'https://octowow.st/db/images/icons/large/spell_nature_callstorm.png';
-        if (school === 'Holy') return 'https://octowow.st/db/images/icons/large/spell_holy_searinglight.png';
-        return 'https://octowow.st/db/images/icons/large/spell_nature_callstorm.png';
+        if (school === 'Fire') return resolveIconUrl('spell_fire_fireball02');
+        if (school === 'Nature') return resolveIconUrl('spell_nature_callstorm');
+        if (school === 'Holy') return resolveIconUrl('spell_holy_searinglight');
+        return resolveIconUrl('spell_nature_callstorm');
     }
     
     // Default fallback
@@ -7159,14 +7157,14 @@ function renderProcUptimeTimeline(procStats, duration) {
             const mainhandWeapon = getCurrentlyEquippedItem('mainhand');
             if (mainhandWeapon && mainhandWeapon.icon) {
                 const iconName = mainhandWeapon.icon.toLowerCase();
-                return `https://octowow.st/db/images/icons/large/${iconName}.png`;
+                return resolveIconUrl(iconName);
             }
-            return 'https://octowow.st/db/images/icons/large/inv_sword_04.png';
+            return resolveIconUrl('inv_sword_04');
         }
         // If icon is explicitly provided (e.g., from proc definitions), use it
         if (icon) {
             if (icon.startsWith('http')) return icon;
-            return `https://octowow.st/db/images/icons/large/${icon}.png`;
+            return resolveIconUrl(icon);
         }
         // Otherwise try to get icon from getAbilityIconUrl (handles Stormstrike, Lightning Strike, Shocks, etc.)
         const mappedIcon = getAbilityIconUrl(abilityName);
@@ -7243,8 +7241,7 @@ function renderProcUptimeTimeline(procStats, duration) {
         reverseMapping[buffKey] = procsJsId;
     }
 
-    // Base URL for item icons (match item database)
-    const ICON_BASE = 'https://octowow.st/db/images/icons/large';
+    // Resolve item icons via Chronicle CDN (fallback chain on load error)
 
     // Fallback icon names by item ID (from item DB) when getItemById not yet loaded
     const ITEM_ICON_BY_ID = {
@@ -7272,7 +7269,7 @@ function renderProcUptimeTimeline(procStats, duration) {
         }
         
         if (procDef) {
-            let icon = procDef.icon || `${ICON_BASE}/inv_misc_questionmark.png`;
+            let icon = resolveIconUrl(procDef.icon || 'inv_misc_questionmark');
             // For trinkets (no slot) that don't have an explicit full-URL icon,
             // prefer item DB icon. If the proc already specifies a full URL icon
             // (e.g. a spell effect icon), respect that instead.
@@ -7281,8 +7278,7 @@ function renderProcUptimeTimeline(procStats, duration) {
                 const item = getItemById(procDef.itemId);
                 let iconName = item && item.icon ? String(item.icon) : ITEM_ICON_BY_ID[procDef.itemId];
                 if (iconName) {
-                    iconName = iconName.toLowerCase();
-                    icon = iconName.startsWith('http') ? iconName : `${ICON_BASE}/${iconName}.png`;
+                    icon = resolveIconUrl(iconName);
                 }
             }
             return {
@@ -7311,74 +7307,74 @@ function renderProcUptimeTimeline(procStats, duration) {
         seekingThunder: {
             name: 'Seeking Thunder',
             color: '#9370DB', // Medium purple
-            icon: 'https://octowow.st/db/images/icons/large/spell_shadow_teleport.png'
+            icon: resolveIconUrl('spell_shadow_teleport')
         },
         stormwolfFrenzy: {
             name: "Stormwolf's Frenzy",
             color: '#00CED1', // Dark turquoise
-            icon: 'https://octowow.st/db/images/icons/large/spell_nature_shamanrage.png'
+            icon: resolveIconUrl('spell_nature_shamanrage')
         },
         stormwolfCunning: {
             name: "Stormwolf's Cunning",
             color: '#87CEEB', // Sky blue
-            icon: 'https://octowow.st/db/images/icons/large/ability_mount_whitedirewolf.png'
+            icon: resolveIconUrl('ability_mount_whitedirewolf')
         },
         towerforgeFury: {
             name: 'Towerforge Fury',
             color: '#C0C0C0', // Silver
-            icon: 'https://octowow.st/db/images/icons/large/inv_hammer_19.png'
+            icon: resolveIconUrl('inv_hammer_19')
         },
         hippogryphMight: {
             name: 'Might of the Hippogryph (3pc)',
             color: '#20B2AA', // Light sea green
-            icon: 'https://octowow.st/db/images/icons/large/spell_lightning_lightningbolt01.png'
+            icon: resolveIconUrl('spell_lightning_lightningbolt01')
         },
         // Talent buffs
         bloodlust: {
             name: 'Bloodlust',
             color: '#DC143C', // Crimson
-            icon: 'https://octowow.st/db/images/icons/large/spell_nature_bloodlust.png'
+            icon: resolveIconUrl('spell_nature_bloodlust')
         },
         flurry: {
             name: 'Flurry',
             color: '#4169E1', // Royal blue
-            icon: 'https://octowow.st/db/images/icons/large/ability_ghoulfrenzy.png'
+            icon: resolveIconUrl('ability_ghoulfrenzy')
         },
         // Raid debuffs
         nightfall: {
             name: 'Nightfall',
             color: '#8B008B', // Dark magenta
-            icon: 'https://octowow.st/db/images/icons/large/spell_shadow_twilight.png'
+            icon: resolveIconUrl('spell_shadow_twilight')
         },
         hemorrhage: {
             name: 'Hemorrhage',
             color: '#B22222', // Firebrick
-            icon: 'https://octowow.st/db/images/icons/large/spell_shadow_lifedrain.png'
+            icon: resolveIconUrl('spell_shadow_lifedrain')
         },
         corrosiveSpit: {
             name: 'Feast of Hakkar',
             color: '#6B8E23', // Olive drab (poison/acid green)
-            icon: 'https://octowow.st/db/images/icons/large/spell_shadow_bloodboil.png'
+            icon: resolveIconUrl('spell_shadow_bloodboil')
         },
         waterShield: {
             name: 'Water Shield',
             color: '#00BFFF', // Deep sky blue
-            icon: 'https://octowow.st/db/images/icons/large/ability_shaman_watershield.png'
+            icon: resolveIconUrl('ability_shaman_watershield')
         },
         arcaneSurge: {
             name: 'Arcane Surge',
             color: '#9C27B0', // Purple (Jewel Arcane outcome)
-            icon: 'https://octowow.st/db/images/icons/large/spell_nature_astralrecal.png'
+            icon: resolveIconUrl('spell_nature_astralrecal')
         },
         ewFlametongueBuff: {
             name: 'Elemental Weapons (Fire)',
             color: '#FF6347', // Tomato red
-            icon: 'https://octowow.st/db/images/icons/large/spell_fire_flametounge.png'
+            icon: resolveIconUrl('spell_fire_flametounge')
         },
         ewWindfuryHaste: {
             name: 'Elemental Weapons (Haste)',
             color: '#00CED1', // Turquoise
-            icon: 'https://octowow.st/db/images/icons/large/spell_nature_cyclone.png'
+            icon: resolveIconUrl('spell_nature_cyclone')
         }
     };
 
@@ -7387,10 +7383,10 @@ function renderProcUptimeTimeline(procStats, duration) {
         // 0. Auto Attack: use equipped mainhand weapon icon
         if (buffKey === 'autoAttack') {
             const mainhandWeapon = getCurrentlyEquippedItem('mainhand');
-            let icon = 'https://octowow.st/db/images/icons/large/inv_misc_questionmark.png';
+            let icon = resolveIconUrl('inv_misc_questionmark');
             if (mainhandWeapon && mainhandWeapon.icon) {
                 const iconName = mainhandWeapon.icon.toLowerCase();
-                icon = `https://octowow.st/db/images/icons/large/${iconName}.png`;
+                icon = resolveIconUrl(iconName);
             }
             return {
                 name: 'Auto Attack',
@@ -7411,7 +7407,7 @@ function renderProcUptimeTimeline(procStats, duration) {
         return {
             name: buffKey.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').trim(), // camelCase/snake_case to Title Case
             color: generateColorFromId(buffKey),
-            icon: 'https://octowow.st/db/images/icons/large/inv_misc_questionmark.png'
+            icon: resolveIconUrl('inv_misc_questionmark')
         };
     };
 
@@ -7584,7 +7580,7 @@ function renderProcUptimeTimeline(procStats, duration) {
                     const leftPercent = (empowered.time / duration) * 100;
                     let iconUrl = empowered.icon || '';
                     if (iconUrl && !iconUrl.startsWith('http')) {
-                        iconUrl = `https://octowow.st/db/images/icons/large/${iconUrl}.png`;
+                        iconUrl = resolveIconUrl(iconUrl);
                     }
                     html += `<div style="position: absolute; left: ${leftPercent}%; top: 50%; transform: translate(-50%, -50%); z-index: 15;">`;
                     if (iconUrl) {
@@ -8869,12 +8865,9 @@ export function getPresetShamanDpsPriority(presetName) {
 }
 
 /** WoW Totemic hero talent atlas — static first slot in priority rows */
-const PRIORITY_PRESET_MENU_ICON_URL = 'https://octowow.st/db/images/icons/large/spell_nature_bloodlust.png';
+const PRIORITY_PRESET_MENU_ICON_URL = resolveIconUrl('spell_nature_bloodlust');
 
-const TURTLE_ICON_LARGE = 'https://octowow.st/db/images/icons/large';
-
-/** Fallback for preset wedges not listed in SHAMAN_PRESET_SPEC_ICONS */
-const PRIORITY_PRESET_RADIAL_FALLBACK_ICON_URL = `${TURTLE_ICON_LARGE}/inv_misc_questionmark.png`;
+const PRIORITY_PRESET_RADIAL_FALLBACK_ICON_URL = resolveIconUrl('inv_misc_questionmark');
 
 /** Radial menu order for onboarding presets (keys in JSON) */
 const ONBOARDING_PRIORITY_PRESET_ORDER = [
@@ -8977,7 +8970,7 @@ function resolveOnUseTrinketIconForPriority(proc) {
     }
 
     if (proc.icon) return toLargeUrl(proc.icon);
-    return `${TURTLE_ICON_LARGE}/inv_misc_questionmark.png`;
+    return resolveIconUrl('inv_misc_questionmark');
 }
 
 /**
@@ -8993,7 +8986,6 @@ function showJewelForcedOutcomePopup(anchorElement, currentValue, onSelect) {
         return;
     }
     const current = (currentValue || '').trim().toLowerCase();
-    const ICON_BASE = 'https://octowow.st/db/images/icons/large';
     const popup = document.createElement('div');
     popup.id = 'jewel-forced-outcome-popup';
     popup.style.cssText = 'position: fixed; background: rgba(28,28,32,0.98); border: 1px solid #9C27B0; border-radius: 6px; padding: 14px 16px; z-index: 10001; box-shadow: 0 4px 16px rgba(0,0,0,0.6); min-width: 200px;';
@@ -9003,27 +8995,27 @@ function showJewelForcedOutcomePopup(anchorElement, currentValue, onSelect) {
         <div style="display: flex; flex-direction: column; gap: 2px;">
             <label style="${rowStyle}">
                 <input type="radio" name="jewel-outcome" value="" ${!current ? 'checked' : ''} style="accent-color: #9C27B0; margin: 0;">
-                <img src="${ICON_BASE}/inv_misc_questionmark.png" width="20" height="20" alt="" style="display: block; object-fit: contain;">
+                <img src="${resolveIconUrl('inv_misc_questionmark')}" width="20" height="20" alt="" style="display: block; object-fit: contain;">
                 <span>Random</span>
             </label>
             <label style="${rowStyle}">
                 <input type="radio" name="jewel-outcome" value="frost" ${current === 'frost' ? 'checked' : ''} style="accent-color: #9C27B0; margin: 0;">
-                <img src="${ICON_BASE}/spell_frost_frostnova.png" width="20" height="20" alt="" style="display: block; object-fit: contain;">
+                <img src="${resolveIconUrl('spell_frost_frostnova')}" width="20" height="20" alt="" style="display: block; object-fit: contain;">
                 <span>Frost</span>
             </label>
             <label style="${rowStyle}">
                 <input type="radio" name="jewel-outcome" value="fire" ${current === 'fire' ? 'checked' : ''} style="accent-color: #9C27B0; margin: 0;">
-                <img src="${ICON_BASE}/spell_holy_excorcism_02.png" width="20" height="20" alt="" style="display: block; object-fit: contain;">
+                <img src="${resolveIconUrl('spell_holy_excorcism_02')}" width="20" height="20" alt="" style="display: block; object-fit: contain;">
                 <span>Fire</span>
             </label>
             <label style="${rowStyle}">
                 <input type="radio" name="jewel-outcome" value="arcane" ${current === 'arcane' ? 'checked' : ''} style="accent-color: #9C27B0; margin: 0;">
-                <img src="${ICON_BASE}/spell_nature_wispsplode.png" width="20" height="20" alt="" style="display: block; object-fit: contain;">
+                <img src="${resolveIconUrl('spell_nature_wispsplode')}" width="20" height="20" alt="" style="display: block; object-fit: contain;">
                 <span>Arcane <span style="color: #888; font-size: 11px;">(12s buff)</span></span>
             </label>
             <label style="${rowStyle}">
                 <input type="radio" name="jewel-outcome" value="holy" ${current === 'holy' ? 'checked' : ''} style="accent-color: #9C27B0; margin: 0;">
-                <img src="${ICON_BASE}/spell_holy_holynova.png" width="20" height="20" alt="" style="display: block; object-fit: contain;">
+                <img src="${resolveIconUrl('spell_holy_holynova')}" width="20" height="20" alt="" style="display: block; object-fit: contain;">
                 <span>Holy</span>
             </label>
         </div>
@@ -9162,7 +9154,7 @@ function refreshPriorityList(priorityList, container, stats, isAoePriority = fal
         `;
         const searingIconName = shamanSpells.searingTotem?.icon || 'spell_fire_searingtotem';
         const searingImg = document.createElement('img');
-        searingImg.src = searingIconName.startsWith('http') ? searingIconName : `${TURTLE_ICON_LARGE}/${searingIconName.replace(/\.png$/i, '')}.png`;
+        searingImg.src = resolveIconUrl(searingIconName);
         searingImg.alt = 'Searing Totem';
         searingImg.draggable = false;
         const searingBorder = searingEnabled ? '#FF6B35' : '#666';
@@ -9352,7 +9344,7 @@ function refreshPriorityList(priorityList, container, stats, isAoePriority = fal
         // Construct icon URL (spell icon name, full URL, or site-root path like /assets/...)
         let iconUrl = ability.icon;
         if (!isAbsoluteIconUrl(iconUrl)) {
-            iconUrl = `https://octowow.st/db/images/icons/large/${iconUrl}.png`;
+            iconUrl = resolveIconUrl(iconUrl);
         } else if (typeof iconUrl === 'string' && iconUrl.startsWith('//')) {
             iconUrl = `https:${iconUrl}`;
         }
@@ -9693,7 +9685,6 @@ function showPriorityConfigModal(abilityKey, abilityName, config, onSave, isAoeP
     }
 
     // Get ability icon (trinkets/cooldowns use their item icon; spells use shamanSpells)
-    const ICON_BASE = 'https://octowow.st/db/images/icons/large';
     const trinketAndCooldownIcons = {
         elementalMastery: 'spell_nature_wispheal',
         bloodlust: (shamanSpells.bloodlust?.icon || 'spell_nature_bloodlust'),
@@ -9717,27 +9708,26 @@ function showPriorityConfigModal(abilityKey, abilityName, config, onSave, isAoeP
     };
     let iconUrl = null;
     if (trinketAndCooldownIcons[abilityKey]) {
-        const icon = trinketAndCooldownIcons[abilityKey];
-        iconUrl = (icon && icon.startsWith('http')) ? icon : `${ICON_BASE}/${icon}.png`;
+        iconUrl = resolveIconUrl(trinketAndCooldownIcons[abilityKey]);
     }
     if (!iconUrl && abilityKey === 'flameShock') {
-        iconUrl = shamanSpells.flameShock.icon?.startsWith('http') ? shamanSpells.flameShock.icon : `${ICON_BASE}/${shamanSpells.flameShock.icon || 'spell_fire_flameshock'}.png`;
+        iconUrl = resolveIconUrl(shamanSpells.flameShock.icon || 'spell_fire_flameshock');
     } else if (!iconUrl && abilityKey === 'stormstrike') {
-        iconUrl = shamanSpells.stormstrike.icon?.startsWith('http') ? shamanSpells.stormstrike.icon : `${ICON_BASE}/${shamanSpells.stormstrike.icon || 'ability_shaman_stormstrike'}.png`;
+        iconUrl = resolveIconUrl(shamanSpells.stormstrike.icon || 'ability_shaman_stormstrike');
     } else if (!iconUrl && abilityKey === 'lightningStrike') {
-        iconUrl = shamanSpells.lightningStrike.icon?.startsWith('http') ? shamanSpells.lightningStrike.icon : `${ICON_BASE}/${shamanSpells.lightningStrike.icon || 'spell_nature_thunderclap'}.png`;
+        iconUrl = resolveIconUrl(shamanSpells.lightningStrike.icon || 'spell_nature_thunderclap');
     } else if (!iconUrl && abilityKey === 'earthShock') {
-        iconUrl = shamanSpells.earthShock.icon?.startsWith('http') ? shamanSpells.earthShock.icon : `${ICON_BASE}/${shamanSpells.earthShock.icon || 'spell_nature_earthshock'}.png`;
+        iconUrl = resolveIconUrl(shamanSpells.earthShock.icon || 'spell_nature_earthshock');
     } else if (!iconUrl && abilityKey === 'fireNovaTotem') {
-        iconUrl = shamanSpells.fireNovaTotem.icon?.startsWith('http') ? shamanSpells.fireNovaTotem.icon : `${ICON_BASE}/${shamanSpells.fireNovaTotem.icon || 'spell_fire_sealoffire'}.png`;
+        iconUrl = resolveIconUrl(shamanSpells.fireNovaTotem.icon || 'spell_fire_sealoffire');
     } else if (!iconUrl && abilityKey === 'magmaTotem') {
-        iconUrl = shamanSpells.magmaTotem?.icon?.startsWith('http') ? shamanSpells.magmaTotem.icon : `${ICON_BASE}/spell_fire_selfdestruct.png`;
+        iconUrl = resolveIconUrl(shamanSpells.magmaTotem?.icon || 'spell_fire_selfdestruct');
     } else if (!iconUrl && abilityKey === 'lightningShieldCritical') {
         iconUrl = LS_PRIORITY_ASSET_EMERGENCY;
     } else if (!iconUrl && abilityKey === 'lightningShieldProactive') {
         iconUrl = LS_PRIORITY_ASSET_PROACTIVE;
     } else if (!iconUrl && abilityKey.includes('lightningShield')) {
-        iconUrl = shamanSpells.lightningShield.icon?.startsWith('http') ? shamanSpells.lightningShield.icon : `${ICON_BASE}/${shamanSpells.lightningShield.icon || 'spell_nature_lightningshield'}.png`;
+        iconUrl = resolveIconUrl(shamanSpells.lightningShield.icon || 'spell_nature_lightningshield');
     }
     if (!iconUrl) {
         const onUseProc = getOnUseTrinketProcs().find(p => procIdToCamelCase(p.id) === abilityKey);
@@ -9748,7 +9738,7 @@ function showPriorityConfigModal(abilityKey, abilityName, config, onSave, isAoeP
         }
     }
     if (!iconUrl) {
-        iconUrl = `${ICON_BASE}/spell_nature_lightningshield.png`;
+        iconUrl = resolveIconUrl('spell_nature_lightningshield');
     }
 
     // Generate ability-specific rules HTML
@@ -10070,13 +10060,11 @@ function hasKissOfTheSpider() {
  * Get all available opener items (abilities and trinkets)
  */
 function getOpenerItems(isCasterMode = false, isCasterAoe = false) {
-    const ICON_BASE = 'https://octowow.st/db/images/icons/large';
-
     // Auto-generate on-use trinket/consumable entries from proc definitions
     const trinketItems = getOnUseTrinketProcs().map(proc => {
         let icon = resolveOnUseTrinketIconForPriority(proc);
         if (typeof icon === 'string' && !icon.startsWith('http://') && !icon.startsWith('https://') && !icon.startsWith('/')) {
-            icon = `${ICON_BASE}/${String(icon).replace(/\.png$/i, '')}.png`;
+            icon = resolveIconUrl(icon);
         }
         return {
             key: procIdToCamelCase(proc.id),
@@ -10094,7 +10082,7 @@ function getOpenerItems(isCasterMode = false, isCasterAoe = false) {
         {
             key: 'elementalMastery',
             name: 'Elemental Mastery',
-            icon: 'https://octowow.st/db/images/icons/large/spell_nature_wispheal.png',
+            icon: resolveIconUrl('spell_nature_wispheal'),
             type: 'ability'
         },
         
@@ -10102,67 +10090,67 @@ function getOpenerItems(isCasterMode = false, isCasterAoe = false) {
         {
             key: 'flameShock',
             name: 'Flame Shock',
-            icon: shamanSpells.flameShock.icon?.startsWith('http') ? shamanSpells.flameShock.icon : `https://octowow.st/db/images/icons/large/${shamanSpells.flameShock.icon || 'spell_fire_flameshock'}.png`,
+            icon: shamanSpells.flameShock.icon?.startsWith('http') ? shamanSpells.flameShock.icon : resolveIconUrl(shamanSpells.flameShock.icon || 'spell_fire_flameshock'),
             type: 'ability'
         },
         {
             key: 'stormstrike',
             name: 'Stormstrike',
-            icon: shamanSpells.stormstrike.icon?.startsWith('http') ? shamanSpells.stormstrike.icon : `https://octowow.st/db/images/icons/large/${shamanSpells.stormstrike.icon || 'ability_shaman_stormstrike'}.png`,
+            icon: shamanSpells.stormstrike.icon?.startsWith('http') ? shamanSpells.stormstrike.icon : resolveIconUrl(shamanSpells.stormstrike.icon || 'ability_shaman_stormstrike'),
             type: 'ability'
         },
         {
             key: 'lightningStrike',
             name: 'Lightning Strike',
-            icon: shamanSpells.lightningStrike.icon?.startsWith('http') ? shamanSpells.lightningStrike.icon : `https://octowow.st/db/images/icons/large/${shamanSpells.lightningStrike.icon || 'spell_nature_thunderclap'}.png`,
+            icon: shamanSpells.lightningStrike.icon?.startsWith('http') ? shamanSpells.lightningStrike.icon : resolveIconUrl(shamanSpells.lightningStrike.icon || 'spell_nature_thunderclap'),
             type: 'ability'
         },
         {
             key: 'earthShock',
             name: 'Earth Shock',
-            icon: shamanSpells.earthShock.icon?.startsWith('http') ? shamanSpells.earthShock.icon : `https://octowow.st/db/images/icons/large/${shamanSpells.earthShock.icon || 'spell_nature_earthshock'}.png`,
+            icon: shamanSpells.earthShock.icon?.startsWith('http') ? shamanSpells.earthShock.icon : resolveIconUrl(shamanSpells.earthShock.icon || 'spell_nature_earthshock'),
             type: 'ability'
         },
         {
             key: 'chainLightning',
             name: 'Chain Lightning',
-            icon: shamanSpells.chainLightning?.icon?.startsWith('http') ? shamanSpells.chainLightning.icon : `https://octowow.st/db/images/icons/large/spell_nature_chainlightning.png`,
+            icon: resolveIconUrl(shamanSpells.chainLightning?.icon || 'spell_nature_chainlightning'),
             type: 'ability'
         },
         {
             key: 'fireNovaTotem',
             name: 'Fire Nova Totem',
-            icon: shamanSpells.fireNovaTotem.icon?.startsWith('http') ? shamanSpells.fireNovaTotem.icon : `https://octowow.st/db/images/icons/large/${shamanSpells.fireNovaTotem.icon || 'spell_fire_sealoffire'}.png`,
+            icon: shamanSpells.fireNovaTotem.icon?.startsWith('http') ? shamanSpells.fireNovaTotem.icon : resolveIconUrl(shamanSpells.fireNovaTotem.icon || 'spell_fire_sealoffire'),
             type: 'ability'
         },
         {
             key: 'magmaTotem',
             name: 'Magma Totem',
-            icon: shamanSpells.magmaTotem?.icon?.startsWith('http') ? shamanSpells.magmaTotem.icon : `https://octowow.st/db/images/icons/large/spell_fire_selfdestruct.png`,
+            icon: resolveIconUrl(shamanSpells.magmaTotem?.icon || 'spell_fire_selfdestruct'),
             type: 'ability'
         },
         {
             key: 'bloodlust',
             name: 'Bloodlust',
-            icon: shamanSpells.bloodlust?.icon || 'https://octowow.st/db/images/icons/large/spell_nature_bloodlust.png',
+            icon: shamanSpells.bloodlust?.icon || resolveIconUrl('spell_nature_bloodlust'),
             type: 'ability'
         },
         {
             key: 'lightningBoltCast',
             name: 'Lightning Bolt (Cast)',
-            icon: shamanSpells.lightningBolt?.icon?.startsWith('http') ? shamanSpells.lightningBolt.icon : `https://octowow.st/db/images/icons/large/${shamanSpells.lightningBolt?.icon || 'spell_nature_lightning'}.png`,
+            icon: shamanSpells.lightningBolt?.icon?.startsWith('http') ? shamanSpells.lightningBolt.icon : resolveIconUrl(shamanSpells.lightningBolt?.icon || 'spell_nature_lightning'),
             type: 'ability'
         },
         {
             key: 'moltenBlastCast',
             name: 'Molten Blast (Cast)',
-            icon: shamanSpells.moltenBlast?.icon?.startsWith('http') ? shamanSpells.moltenBlast.icon : `https://octowow.st/db/images/icons/large/spell_fire_meteorstorm.png`,
+            icon: resolveIconUrl(shamanSpells.moltenBlast?.icon || 'spell_fire_meteorstorm'),
             type: 'ability'
         },
         {
             key: 'earthquake',
             name: 'Earthquake',
-            icon: shamanSpells.earthquake?.icon?.startsWith('http') ? shamanSpells.earthquake.icon : `https://octowow.st/db/images/icons/large/spell_nature_earthquake.png`,
+            icon: resolveIconUrl(shamanSpells.earthquake?.icon || 'spell_nature_earthquake'),
             type: 'ability'
         }
     ];
@@ -10899,7 +10887,7 @@ function handleGearCompareSlotSelection(slotId, item) {
             el.style.borderColor = getItemQualityColor(itm);
         } else {
             const slotIcon = slotIconMap[slotId] || 'chest';
-            el.innerHTML = `<img src="${PLACEHOLDER_ICON_URL}${slotIcon}.jpg" alt="${slotId}" style="width: 100%; height: 100%; object-fit: contain; border-radius: 4px;">`;
+            el.innerHTML = `<img src="${resolveIconUrl(`inventoryslot_${slotIcon}`)}" alt="${slotId}" style="width: 100%; height: 100%; object-fit: contain; border-radius: 4px;">`;
             el.style.borderColor = 'rgba(255,255,255,0.2)';
         }
     }
@@ -11023,7 +11011,7 @@ function renderComparisonItemCards(container) {
         iconDiv.style.cssText = `flex: 0 0 32px; width: 32px; height: 32px; border-radius: 4px; overflow: hidden; border: 1px solid ${qualityColor}; background: rgba(0,0,0,0.4);`;
         if (item.icon) {
             const iconFileName = (item.icon || '').toLowerCase();
-            iconDiv.innerHTML = `<img src="https://octowow.st/db/images/icons/large/${iconFileName}.png" alt="${item.name || ''}" style="width: 100%; height: 100%; object-fit: cover;">`;
+            iconDiv.innerHTML = `<img src="${resolveIconUrl(iconFileName)}" alt="${item.name || ''}" style="width: 100%; height: 100%; object-fit: cover;">`;
         }
 
         const nameSpan = document.createElement('span');
@@ -11070,7 +11058,7 @@ function renderComparisonItemCards(container) {
                 bIconDiv.style.cssText = `flex: 0 0 24px; width: 24px; height: 24px; border-radius: 3px; overflow: hidden; border: 1px solid ${bColor}; background: rgba(0,0,0,0.4);`;
                 if (bItem.icon) {
                     const bIconFn = (bItem.icon || '').toLowerCase();
-                    bIconDiv.innerHTML = `<img src="https://octowow.st/db/images/icons/large/${bIconFn}.png" alt="${bItem.name || ''}" style="width: 100%; height: 100%; object-fit: cover;">`;
+                    bIconDiv.innerHTML = `<img src="${resolveIconUrl(bIconFn)}" alt="${bItem.name || ''}" style="width: 100%; height: 100%; object-fit: cover;">`;
                 }
 
                 const slotLabel = document.createElement('span');
@@ -11356,16 +11344,16 @@ function createBuildCompareSlotCell(slotId, itemId) {
             wrap.style.borderColor = getItemQualityColor(item);
             if (item.icon) {
                 const iconFileName = String(item.icon).toLowerCase();
-                wrap.innerHTML = `<img src="https://octowow.st/db/images/icons/large/${iconFileName}.png" alt="${item.name || ''}" style="width: 100%; height: 100%; object-fit: cover;">`;
+                wrap.innerHTML = `<img src="${resolveIconUrl(iconFileName)}" alt="${item.name || ''}" style="width: 100%; height: 100%; object-fit: cover;">`;
             }
             attachItemTooltip(wrap, item);
         } else {
             const slotIcon = slotIconMap[slotId] || 'chest';
-            wrap.innerHTML = `<img src="${PLACEHOLDER_ICON_URL}${slotIcon}.jpg" alt="${slotTitle}" style="width: 100%; height: 100%; object-fit: contain; border-radius: 3px;">`;
+            wrap.innerHTML = `<img src="${resolveIconUrl(`inventoryslot_${slotIcon}`)}" alt="${slotTitle}" style="width: 100%; height: 100%; object-fit: contain; border-radius: 3px;">`;
         }
     } else {
         const slotIcon = slotIconMap[slotId] || 'chest';
-        wrap.innerHTML = `<img src="${PLACEHOLDER_ICON_URL}${slotIcon}.jpg" alt="${slotTitle}" style="width: 100%; height: 100%; object-fit: contain; border-radius: 3px;">`;
+        wrap.innerHTML = `<img src="${resolveIconUrl(`inventoryslot_${slotIcon}`)}" alt="${slotTitle}" style="width: 100%; height: 100%; object-fit: contain; border-radius: 3px;">`;
     }
     return wrap;
 }
@@ -12045,7 +12033,7 @@ function renderItemBadge(item) {
     html += `<div style="flex: 0 0 32px; width: 32px; height: 32px; border-radius: 4px; overflow: hidden; border: 1px solid ${qualityColor}; background: rgba(0,0,0,0.4);">`;
     if (item.icon) {
         const iconFileName = (item.icon || '').toLowerCase();
-        const iconUrl = `https://octowow.st/db/images/icons/large/${iconFileName}.png`;
+        const iconUrl = resolveIconUrl(iconFileName);
         html += `<img src="${iconUrl}" alt="${item.name || ''}" style="width: 100%; height: 100%; object-fit: cover;">`;
     }
     html += '</div>';
