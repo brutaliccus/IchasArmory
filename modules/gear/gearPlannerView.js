@@ -1551,8 +1551,6 @@ const GP_STAT_GROUPS = [
     { title: 'Melee', rows: [
         ['attackPower', 'Attack Power'], ['crit', 'Melee Crit', 'pct'],
         ['hit', 'Melee Hit', 'pct'], ['haste', 'Haste', 'pct'], ['armorPen', 'Armor Pen'],
-        ['weaponSkill', 'Weapon Skill'], ['enemyDodgeChance', 'Enemy Dodge', 'pct'],
-        ['glancingDamage', 'Glancing Damage', 'pct'],
     ]},
     { title: 'Ranged', rows: [
         ['rangedAttackPower', 'Attack Power'], ['rangedCrit', 'Ranged Crit', 'pct'],
@@ -1575,23 +1573,46 @@ const GP_STAT_GROUPS = [
     ]},
 ];
 
+/** Smart percent for modified-stats drawer: 3%, 3.5%, not 3.00%. */
+function formatGpSmartPercent(value) {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return '0%';
+    const rounded = Math.round(n * 100) / 100;
+    if (Math.abs(rounded - Math.round(rounded)) < 1e-9) return `${Math.round(rounded)}%`;
+    return `${parseFloat(rounded.toFixed(2))}%`;
+}
+
 function formatGpStatValue(value, kind) {
-    if (kind === 'frac') return `${(Number(value) * 100).toFixed(2)}%`;
-    if (kind === 'pct') return `${Number(value).toFixed(2)}%`;
+    if (kind === 'frac') return formatGpSmartPercent(Number(value) * 100);
+    if (kind === 'pct') return formatGpSmartPercent(Number(value));
     if (Number.isInteger(value)) return String(value);
     return Number(value).toFixed(1);
 }
 
-function gpStatRowHtml(label, total, gearBonus, kind) {
+function gpStatRowHtml(label, total, gearBonus, kind, nested = false) {
     if (Math.abs(gearBonus) < 0.005 && Math.abs(total) < 0.005) return '';
     const bonusSign = gearBonus > 0 ? '+' : '';
     const bonusHtml = Math.abs(gearBonus) >= 0.005
         ? ` (${bonusSign}${formatGpStatValue(gearBonus, kind)})`
         : '';
-    return `<div class="gp-stat-item"><span>${escapeHtml(label)}</span><strong>${formatGpStatValue(total, kind)}${bonusHtml}</strong></div>`;
+    const nestedClass = nested ? ' gp-stat-item--nested' : '';
+    return `<div class="gp-stat-item${nestedClass}"><span>${escapeHtml(label)}</span><strong>${formatGpStatValue(total, kind)}${bonusHtml}</strong></div>`;
 }
 
-function renderGpMeleeExtraRows(full, ungeared, naked) {
+const GP_WEAPON_SKILL_CHILDREN = [
+    ['enemyDodgeChance', 'Dodge', 'pct'],
+    ['glancingDamage', 'Glancing', 'pct'],
+];
+
+function renderGpStatEntry(key, label, kind, nested, full, ungeared, naked) {
+    const total = Number(full[key]) || 0;
+    const gearBonus = total - (Number(ungeared[key]) || 0);
+    const vsNaked = total - (Number(naked[key]) || 0);
+    if (Math.abs(gearBonus) < 0.005 && Math.abs(vsNaked) < 0.005) return '';
+    return gpStatRowHtml(label, total, gearBonus, kind, nested);
+}
+
+function renderGpWeaponSkillSection(full, ungeared, naked) {
     const parts = [];
     if (full.isDualWielding) {
         const mhTotal = Number(full.mhWeaponSkill) || 300;
@@ -1602,7 +1623,19 @@ function renderGpMeleeExtraRows(full, ungeared, naked) {
         const ohRow = gpStatRowHtml('OH Weapon Skill', ohTotal, ohGear, null);
         if (mhRow) parts.push(mhRow);
         if (ohRow) parts.push(ohRow);
+    } else {
+        const row = renderGpStatEntry('weaponSkill', 'Weapon Skill', null, false, full, ungeared, naked);
+        if (row) parts.push(row);
     }
+    for (const [key, label, kind] of GP_WEAPON_SKILL_CHILDREN) {
+        const row = renderGpStatEntry(key, label, kind, true, full, ungeared, naked);
+        if (row) parts.push(row);
+    }
+    return parts.join('');
+}
+
+function renderGpMeleeExtraRows(full, ungeared, naked) {
+    const parts = [];
     for (const key of AP_VS_DISPLAY_ORDER) {
         const total = Number(full[key]) || 0;
         const gearBonus = total - (Number(ungeared[key]) || 0);
@@ -1630,15 +1663,13 @@ function renderStatsSidebar() {
     const ungeared = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: false, includeTalents: true, includeBuffs: true }));
     const naked = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: false, includeTalents: false, includeBuffs: false }));
     const cards = GP_STAT_GROUPS.map(group => {
-        const rows = group.rows.map(([key, label, kind]) => {
-            if (key === 'weaponSkill' && full.isDualWielding) return '';
-            const total = Number(full[key]) || 0;
-            const gearBonus = total - (Number(ungeared[key]) || 0);
-            const vsNaked = total - (Number(naked[key]) || 0);
-            if (Math.abs(gearBonus) < 0.005 && Math.abs(vsNaked) < 0.005) return '';
-            return gpStatRowHtml(label, total, gearBonus, kind);
-        }).filter(Boolean).join('');
-        const extra = group.title === 'Melee' ? renderGpMeleeExtraRows(full, ungeared, naked) : '';
+        const rows = group.rows.map(([key, label, kind]) =>
+            renderGpStatEntry(key, label, kind, false, full, ungeared, naked)
+        ).filter(Boolean).join('');
+        let extra = '';
+        if (group.title === 'Melee') {
+            extra = renderGpWeaponSkillSection(full, ungeared, naked) + renderGpMeleeExtraRows(full, ungeared, naked);
+        }
         const allRows = rows + extra;
         if (!allRows) return '';
         return `<div class="gp-stat-card"><h4 class="gp-locations-group-heading">${escapeHtml(group.title)}</h4>${allRows}</div>`;

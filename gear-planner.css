@@ -81,6 +81,11 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
 .gp-stat-item strong {
     color: var(--accent-color, #ffd700);
     font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.gp-stat-item--nested {
+    padding-left: 1.25em;
 }
 
 .gp-talents-host {
