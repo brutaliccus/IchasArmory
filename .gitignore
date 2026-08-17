@@ -22,6 +22,11 @@ data/community-gear-plans/
 data/items_old/
 data/items.zip
 
+# Generated from assets/wow-icons/wowiconpack.zip (npm run icons:unpack)
+assets/wow-icons/_unpack/
+assets/wow-icons/large/*.png
+assets/wow-icons/wowclassiciconpack.zip
+
 # Local / IDE / agent
 .vscode/
 .idea/

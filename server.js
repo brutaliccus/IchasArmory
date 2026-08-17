@@ -296,6 +296,7 @@ function publishCommunityGearPlan(plan, author) {
     const sanitizedPlan = {
         ...plan,
         id: entry.id,
+        name: entry.name,
         role: entry.role,
         spec: entry.spec,
         icon: entry.icon,

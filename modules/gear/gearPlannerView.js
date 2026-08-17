@@ -21,10 +21,10 @@ import {
     GEAR_PLAN_DESCRIPTION_MAX,
     GEAR_PLAN_NAME_MAX,
 } from './gearPlanner.js';
-import { getEmptySlotPlaceholderUrl, getMeleeWeaponType, getEnchantableSlots, resolveIconUrl } from './gear.js';
+import { getEmptySlotPlaceholderUrl, getMeleeWeaponType, getEnchantableSlots, resolveIconUrl, buildLocalWowIconPackUrl, resolveGearPlanIconUrl } from './gear.js';
 import { enchantDatabase } from './enchants.js';
 import { getEnchantCompactLabel } from './enchantStatLabels.js';
-import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, getItemType, filterEnchantsByItemType } from '../character/stats.js';
+import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, getItemType, filterEnchantsByItemType, AP_VS_DISPLAY_ORDER, getApVsRowLabel } from '../character/stats.js';
 import { baseStats, raceIconData, getSelectedRaceBonuses } from '../character/races.js';
 import { calculateEffectiveHealth } from '../ui/calculator.js';
 import { generateTalentInputs, updateTalentPoints, updateAllTalentStates, getTalentBonusesFromSpec, classTalents } from '../talents_new.js';
@@ -98,12 +98,12 @@ const SLOT_LABELS = {
 const classIconData = {
     warrior: { name: 'Warrior', icon: 'assets/icons/classicon_warrior.jpg' },
     paladin: { name: 'Paladin', icon: 'assets/icons/classicon_paladin.jpg' },
-    hunter: { name: 'Hunter', icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_weapon_bow_07.jpg' },
-    rogue: { name: 'Rogue', icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_throwingknife_04.jpg' },
-    priest: { name: 'Priest', icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_staff_30.jpg' },
+    hunter: { name: 'Hunter', icon: 'inv_weapon_bow_07' },
+    rogue: { name: 'Rogue', icon: 'inv_throwingknife_04' },
+    priest: { name: 'Priest', icon: 'inv_staff_30' },
     shaman: { name: 'Shaman', icon: 'assets/icons/Spell_Nature_BloodLust.png' },
-    mage: { name: 'Mage', icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_staff_13.jpg' },
-    warlock: { name: 'Warlock', icon: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_drowsy.jpg' },
+    mage: { name: 'Mage', icon: 'inv_staff_13' },
+    warlock: { name: 'Warlock', icon: 'spell_nature_drowsy' },
     druid: { name: 'Druid', icon: 'assets/icons/classicon_druid.jpg' },
 };
 
@@ -307,14 +307,15 @@ export function getCurrentGearPlan() {
 }
 
 export function setGearPlan(plan) {
-    if (gpOverlay) closeGpTalentsModal();
     currentPlan = getGearPlanData(plan);
     mergePlanCommunityFields(currentPlan, plan);
     currentPlan.name = sanitizeGearPlanName(currentPlan.name, 'Gear Plan');
     editMode = !currentPlan.id;
     persistSession();
     hydrateCommunityVoteMeta();
-    return refreshGearPlannerWhenItemsReady(currentPlan);
+    const ready = refreshGearPlannerWhenItemsReady(currentPlan);
+    ready.then(() => applyLoadedPlanToLiveUi());
+    return ready;
 }
 
 export function handleGearPlanItemSelected(item) {
@@ -386,6 +387,7 @@ function wireHeaderControls() {
     });
     document.getElementById('gp-community-search-btn')?.addEventListener('click', () => openCommunitySearchDialog());
     document.getElementById('gp-share-btn')?.addEventListener('click', () => shareCurrentPlan());
+    document.getElementById('gp-clear-btn')?.addEventListener('click', () => requestClearCurrentPlan());
     document.getElementById('gp-quick-sim-btn')?.addEventListener('click', () => runQuickSim());
     document.getElementById('gp-st-rotation-row')?.addEventListener('click', (e) => {
         const btn = e.target.closest('[data-gp-st-rot]');
@@ -483,7 +485,7 @@ function generateGpClassIcons() {
     container.innerHTML = sortedIds.map(classId => {
         const data = classIconData[classId];
         return `<div class="class-icon gp-class-icon" data-class-id="${classId}" data-class-name="${data.name}">
-            <img src="${data.icon}" alt="${data.name}">
+            <img src="${resolveIconUrl(data.icon)}" alt="${data.name}">
         </div>`;
     }).join('');
 
@@ -519,7 +521,7 @@ function syncGpClassToggle() {
     const cls = currentPlan.class || 'warrior';
     const data = classIconData[cls];
     if (img && data) {
-        img.src = data.icon;
+        img.src = resolveIconUrl(data.icon);
         img.alt = data.name;
     }
 }
@@ -573,7 +575,7 @@ function generateGpRaceIcons() {
     container.innerHTML = listIds.map(raceId => {
         const data = raceIconData[raceId];
         return `<div class="race-icon gp-race-icon" data-race-id="${raceId}" data-race-name="${data.name}">
-            <img src="${data.icon}" alt="${data.name}">
+            <img src="${resolveIconUrl(data.icon)}" alt="${data.name}">
         </div>`;
     }).join('');
     container.querySelectorAll('.gp-race-icon').forEach(el => {
@@ -593,7 +595,7 @@ function syncGpRaceToggle() {
     const race = currentPlan.race || 'human';
     const data = raceIconData[race];
     if (img && data) {
-        img.src = data.icon;
+        img.src = resolveIconUrl(data.icon);
         img.alt = data.name;
     }
 }
@@ -1246,6 +1248,60 @@ function toggleGpBuffsView() {
     else openGpBuffsView();
 }
 
+async function refreshGpTalentsHost() {
+    const host = document.getElementById('gp-talents-host');
+    if (!host) return;
+    generateTalentInputs(host, currentPlan.class || 'warrior');
+    await applyTalentSpec(host, currentPlan.talents || {});
+    updateAllTalentStates(false);
+    requestAnimationFrame(() => fitGpTalentTree());
+}
+
+/** Re-bind all plan-driven UI when loading a plan without closing the active overlay. */
+async function applyLoadedPlanToLiveUi() {
+    const nameInput = document.getElementById('gp-plan-name');
+    if (nameInput && nameInput !== document.activeElement) {
+        nameInput.value = sanitizeGearPlanName(currentPlan.name, 'Gear Plan');
+        syncGpPlanNameInputWidth(nameInput);
+    }
+    generateGpClassIcons();
+    generateGpRaceIcons();
+    ensurePlanRace();
+    updateQuickSimVisibility();
+    updateStatWeightsBtnVisibility();
+    updateHeaderVotesUi();
+    syncEditModeUi();
+    syncGpStRotationUi();
+    renderLocationsSidebar();
+    renderStatsSidebar();
+
+    if (gpOverlay === 'talents') {
+        syncGpTalentsTitle();
+        syncGpTalentPresetTools();
+        await refreshGpTalentsHost();
+    } else if (gpOverlay === 'buffs') {
+        await refreshGpBuffsHost();
+    } else if (gpOverlay === 'weights') {
+        renderGpStatWeightsPanels();
+    }
+}
+
+function requestClearCurrentPlan() {
+    if (!window.confirm('Clear this gear plan? Gear, talents, buffs, and weights will be reset.')) return;
+    const cls = currentPlan.class || 'warrior';
+    const race = currentPlan.race || 'human';
+    currentPlan = createEmptyGearPlan(cls, 'New Gear Plan');
+    currentPlan.race = race;
+    editMode = true;
+    try {
+        localStorage.removeItem(gpLocalWeightsStorageKey());
+    } catch { /* ignore */ }
+    persistSession();
+    updateHeaderVotesUi();
+    refreshGearPlannerWhenItemsReady(currentPlan).then(() => applyLoadedPlanToLiveUi());
+    window.notify?.success?.('Gear plan cleared', 2500, 'Gear Planner');
+}
+
 async function openGpTalentsView() {
     if (gpOverlay === 'buffs' || gpOverlay === 'weights') await closeGpTalentsModal();
     const host = document.getElementById('gp-talents-host');
@@ -1258,10 +1314,7 @@ async function openGpTalentsView() {
     gpOverlay = 'talents';
     syncGpOverlayUi();
     syncGpTalentPresetTools();
-    generateTalentInputs(host, currentPlan.class || 'warrior');
-    await applyTalentSpec(host, currentPlan.talents || {});
-    updateAllTalentStates(false);
-    requestAnimationFrame(() => fitGpTalentTree());
+    await refreshGpTalentsHost();
 }
 
 async function refreshGpBuffsHost() {
@@ -1498,6 +1551,8 @@ const GP_STAT_GROUPS = [
     { title: 'Melee', rows: [
         ['attackPower', 'Attack Power'], ['crit', 'Melee Crit', 'pct'],
         ['hit', 'Melee Hit', 'pct'], ['haste', 'Haste', 'pct'], ['armorPen', 'Armor Pen'],
+        ['weaponSkill', 'Weapon Skill'], ['enemyDodgeChance', 'Enemy Dodge', 'pct'],
+        ['glancingDamage', 'Glancing Damage', 'pct'],
     ]},
     { title: 'Ranged', rows: [
         ['rangedAttackPower', 'Attack Power'], ['rangedCrit', 'Ranged Crit', 'pct'],
@@ -1527,6 +1582,38 @@ function formatGpStatValue(value, kind) {
     return Number(value).toFixed(1);
 }
 
+function gpStatRowHtml(label, total, gearBonus, kind) {
+    if (Math.abs(gearBonus) < 0.005 && Math.abs(total) < 0.005) return '';
+    const bonusSign = gearBonus > 0 ? '+' : '';
+    const bonusHtml = Math.abs(gearBonus) >= 0.005
+        ? ` (${bonusSign}${formatGpStatValue(gearBonus, kind)})`
+        : '';
+    return `<div class="gp-stat-item"><span>${escapeHtml(label)}</span><strong>${formatGpStatValue(total, kind)}${bonusHtml}</strong></div>`;
+}
+
+function renderGpMeleeExtraRows(full, ungeared, naked) {
+    const parts = [];
+    if (full.isDualWielding) {
+        const mhTotal = Number(full.mhWeaponSkill) || 300;
+        const ohTotal = Number(full.ohWeaponSkill) || 300;
+        const mhGear = mhTotal - (Number(ungeared.mhWeaponSkill) || 300);
+        const ohGear = ohTotal - (Number(ungeared.ohWeaponSkill) || 300);
+        const mhRow = gpStatRowHtml('MH Weapon Skill', mhTotal, mhGear, null);
+        const ohRow = gpStatRowHtml('OH Weapon Skill', ohTotal, ohGear, null);
+        if (mhRow) parts.push(mhRow);
+        if (ohRow) parts.push(ohRow);
+    }
+    for (const key of AP_VS_DISPLAY_ORDER) {
+        const total = Number(full[key]) || 0;
+        const gearBonus = total - (Number(ungeared[key]) || 0);
+        const vsNaked = total - (Number(naked[key]) || 0);
+        if (Math.abs(gearBonus) < 0.005 && Math.abs(vsNaked) < 0.005) continue;
+        const row = gpStatRowHtml(getApVsRowLabel(key), total, gearBonus, null);
+        if (row) parts.push(row);
+    }
+    return parts.join('');
+}
+
 function renderStatsSidebar() {
     const list = document.getElementById('gp-stats-list');
     if (!list) return;
@@ -1544,18 +1631,17 @@ function renderStatsSidebar() {
     const naked = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: false, includeTalents: false, includeBuffs: false }));
     const cards = GP_STAT_GROUPS.map(group => {
         const rows = group.rows.map(([key, label, kind]) => {
+            if (key === 'weaponSkill' && full.isDualWielding) return '';
             const total = Number(full[key]) || 0;
             const gearBonus = total - (Number(ungeared[key]) || 0);
             const vsNaked = total - (Number(naked[key]) || 0);
             if (Math.abs(gearBonus) < 0.005 && Math.abs(vsNaked) < 0.005) return '';
-            const bonusSign = gearBonus > 0 ? '+' : '';
-            const bonusHtml = Math.abs(gearBonus) >= 0.005
-                ? ` (${bonusSign}${formatGpStatValue(gearBonus, kind)})`
-                : '';
-            return `<div class="gp-stat-item"><span>${escapeHtml(label)}</span><strong>${formatGpStatValue(total, kind)}${bonusHtml}</strong></div>`;
+            return gpStatRowHtml(label, total, gearBonus, kind);
         }).filter(Boolean).join('');
-        if (!rows) return '';
-        return `<div class="gp-stat-card"><h4 class="gp-locations-group-heading">${escapeHtml(group.title)}</h4>${rows}</div>`;
+        const extra = group.title === 'Melee' ? renderGpMeleeExtraRows(full, ungeared, naked) : '';
+        const allRows = rows + extra;
+        if (!allRows) return '';
+        return `<div class="gp-stat-card"><h4 class="gp-locations-group-heading">${escapeHtml(group.title)}</h4>${allRows}</div>`;
     }).filter(Boolean).join('');
     list.innerHTML = cards || '<p class="gp-locations-empty">No modified stats yet</p>';
 }
@@ -1659,7 +1745,7 @@ function setSaveIconPreview(iconKey, { userPicked = false } = {}) {
     const nameEl = document.getElementById('gp-save-icon-name');
     if (hidden) hidden.value = key;
     if (img) {
-        img.src = resolveIconUrl(key);
+        img.src = resolveGearPlanIconUrl(key);
         img.alt = key;
     }
     if (nameEl) nameEl.textContent = key;
@@ -1682,16 +1768,19 @@ function readSaveMetaFromDialog() {
         || currentPlan.icon
         || defaultIconForClassSpec(currentPlan.class, spec);
     const rawDesc = document.getElementById('gp-save-description')?.value ?? '';
+    const rawName = document.getElementById('gp-save-name')?.value ?? '';
     let description = sanitizeGearPlanDescription(rawDesc);
     if (!description && currentPlan?.description) {
         description = sanitizeGearPlanDescription(currentPlan.description);
     }
-    return { roles, spec, icon, description };
+    const name = sanitizeGearPlanName(rawName || currentPlan?.name, 'Gear Plan');
+    return { roles, spec, icon, description, name };
 }
 
 function applySaveMetaToPlan(meta) {
     currentPlan.role = meta.roles;
     currentPlan.spec = meta.spec;
+    if (meta.name) currentPlan.name = sanitizeGearPlanName(meta.name, 'Gear Plan');
     if (meta.icon) currentPlan.icon = meta.icon;
     else if (!currentPlan.icon) currentPlan.icon = defaultIconForClassSpec(currentPlan.class, meta.spec);
     currentPlan.description = meta.description != null
@@ -1761,6 +1850,8 @@ function populateSaveDialogFields() {
     const icon = currentPlan.icon || defaultIcon;
     saveIconUserPicked = !!(currentPlan.icon && currentPlan.icon !== defaultIcon);
     setSaveIconPreview(icon);
+    const nameField = document.getElementById('gp-save-name');
+    if (nameField) nameField.value = sanitizeGearPlanName(currentPlan.name, 'Gear Plan');
     const desc = document.getElementById('gp-save-description');
     if (desc) desc.value = sanitizeGearPlanDescription(currentPlan.description || '');
     updateSaveDescCounter();
@@ -1885,11 +1976,11 @@ function renderSaveIconGrid() {
     if (!grid) return;
     const q = String(document.getElementById('gp-save-icon-q')?.value || '').trim().toLowerCase();
     const all = wowIconsCache || [];
-    const filtered = (q ? all.filter((n) => n.includes(q)) : all).slice(0, 400);
+    const filtered = (q ? all.filter((n) => n.includes(q)) : all).slice(0, 800);
     const selected = document.getElementById('gp-save-icon-value')?.value || '';
     grid.innerHTML = filtered.map((name) =>
         `<button type="button" class="gp-icon-pick ${name === selected ? 'is-selected' : ''}" data-icon="${escapeHtml(name)}" title="${escapeHtml(name)}" role="option" aria-selected="${name === selected ? 'true' : 'false'}">
-            <img src="${resolveIconUrl(name)}" alt="" loading="lazy" width="34" height="34" />
+            <img src="${buildLocalWowIconPackUrl(name)}" alt="" loading="lazy" width="34" height="34" />
         </button>`
     ).join('') || '<p class="gp-locations-empty">No icons match</p>';
     grid.querySelectorAll('.gp-icon-pick').forEach((btn) => {
@@ -2157,7 +2248,7 @@ function renderCommunityResults(plans) {
         const down = Number(p.downvotes) || 0;
         const my = p.myVote === 'up' || p.myVote === 'down' ? p.myVote : '';
         return `<article class="gp-community-card" data-id="${escapeHtml(p.id || '')}" role="listitem" tabindex="0">
-            <img class="gp-community-card-icon" src="${resolveIconUrl(p.icon)}" alt="" width="48" height="48" loading="lazy" />
+            <img class="gp-community-card-icon" src="${resolveGearPlanIconUrl(p.icon)}" alt="" width="48" height="48" loading="lazy" />
             <div class="gp-community-card-body">
                 <div class="gp-community-card-title">${escapeHtml(p.name || 'Untitled')}</div>
                 ${desc ? `<div class="gp-community-card-desc">${escapeHtml(desc)}</div>` : ''}
@@ -3125,6 +3216,7 @@ function loadPlanIntoView(plan) {
     updateHeaderVotesUi();
     updateStatWeightsBtnVisibility();
     const ready = refreshGearPlannerWhenItemsReady(currentPlan);
+    ready.then(() => applyLoadedPlanToLiveUi());
     hydrateCommunityVoteMeta();
     return ready;
 }

@@ -60,6 +60,8 @@ export const slotIconMap = {
 };
 export const ICON_BASE_URL = 'https://octowow.st/db/images/icons/large/';
 export const OCTOWOW_ICON_BASE = 'https://octowow.st/db/images/icons';
+/** Local barrens.chat icon pack for Gear Planner save picker */
+export const LOCAL_WOW_ICON_PACK_BASE = '/assets/wow-icons/large/';
 /** Second fallback when primary DB is down (same icon names, .jpg on Wowhead CDN) */
 export const ICON_CDN_ZAMIMG_LARGE = 'https://wow.zamimg.com/images/wow/icons/large/';
 export const ICON_CDN_ZAMIMG_MEDIUM = 'https://wow.zamimg.com/images/wow/icons/medium/';
@@ -84,6 +86,22 @@ export function buildOctowowIconUrl(iconRef, size = 'large') {
     const basename = normalizeIconBasename(iconRef);
     const folder = size === 'medium' ? 'medium' : 'large';
     return `${OCTOWOW_ICON_BASE}/${folder}/${basename}.png`;
+}
+
+/** Local save-picker icon URL (assets/wow-icons/large/{basename}.png). */
+export function buildLocalWowIconPackUrl(iconRef) {
+    return `${LOCAL_WOW_ICON_PACK_BASE}${normalizeIconBasename(iconRef)}.png`;
+}
+
+/**
+ * Resolve Gear Plan stored icon keys: local pack first, legacy URLs via resolveIconUrl.
+ */
+export function resolveGearPlanIconUrl(iconRef, size = 'large') {
+    const raw = String(iconRef || '').trim();
+    if (!raw) return buildLocalWowIconPackUrl('inv_misc_questionmark');
+    if (raw.startsWith('assets/') || raw.startsWith('/assets/')) return raw.startsWith('/') ? raw : `/${raw}`;
+    if (raw.startsWith('http://') || raw.startsWith('https://')) return resolveIconUrl(raw, size);
+    return buildLocalWowIconPackUrl(raw);
 }
 
 /**
@@ -124,6 +142,19 @@ export function installIconLoadFallbacks() {
         if (!el || el.tagName !== 'IMG') return;
         const src = el.currentSrc || el.src || '';
         if (src.startsWith('assets/') || src.includes('/assets/icons/')) return;
+        if (src.includes('/assets/wow-icons/large/')) {
+            const name = src.split('/').pop()?.replace(/\.png$/i, '');
+            if (!name) return;
+            const step = el.dataset.iconFb || '0';
+            if (step === '0') {
+                el.dataset.iconFb = '1';
+                el.src = buildOctowowIconUrl(name, 'large');
+            } else if (step === '1') {
+                el.dataset.iconFb = '2';
+                el.src = `${ICON_CDN_ZAMIMG_LARGE}${name}.jpg`;
+            }
+            return;
+        }
         const name = _iconNameFromSrc(src);
         if (!name) return;
         const size = /\/icons\/medium\//i.test(src) ? 'medium' : 'large';

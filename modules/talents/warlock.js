@@ -25,16 +25,6 @@ export const warlockTalents = {
         spellIds: {"rank1":17810,"rank2":17811,"rank3":17812,"rank4":17813,"rank5":17814},
       },
       {
-        id: 3,
-        name: "Sinister Pursuit",
-        icon: "ability_rogue_envelopingshadows",
-        ranks: 3,
-        row: 1,
-        col: 4,
-        description: ["Sinister PursuitInstantIncreases the movement speed of your demons by ",["$","$L22","1",{"tree":0,"talent":3,"values":["5","10","15"]}],"% for 3 sec after they attack a target affected by Affliction effects."],
-        spellIds: {"rank1":52737,"rank2":52739,"rank3":52740},
-      },
-      {
         id: 4,
         name: "Improved Curse of Weakness",
         icon: "spell_shadow_curseofmannoroth",

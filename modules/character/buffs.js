@@ -417,7 +417,7 @@ export const paladinAuras = [
     {
         id: 'righteous_fury',
         name: 'Righteous Fury',
-        icon: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_sealoffury.jpg',
+        icon: 'spell_holy_sealoffury',
         base_stats: {},
         // Righteous Defense talent adds damage reduction when this is active
         // The talent bonus is applied in calculator based on talent points

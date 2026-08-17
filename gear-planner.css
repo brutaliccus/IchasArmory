@@ -105,7 +105,7 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
     margin: 0;
     padding: 4px 8px 10px;
     color: var(--accent-color, #ffd700);
-    font-size: 1.35rem;
+    font-size: 1.5em;
     font-weight: 700;
     letter-spacing: 0.03em;
     text-align: center;
@@ -536,7 +536,7 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
 
 .gp-header {
     display: grid;
-    grid-template-columns: minmax(0, max-content) 1fr auto;
+    grid-template-columns: minmax(0, max-content) auto 1fr 1fr 1fr;
     align-items: center;
     gap: 10px 14px;
     padding: 14px 18px;
@@ -557,6 +557,39 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     justify-self: start;
 }
 
+.gp-header-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+}
+
+.gp-header-col--build {
+    justify-self: start;
+}
+
+.gp-header-col--plans {
+    justify-self: center;
+}
+
+.gp-header-col-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #c9a227;
+    line-height: 1;
+}
+
+.gp-header-col-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+}
+
 .gp-plan-name-wrap {
     display: inline-grid;
     align-items: center;
@@ -569,7 +602,7 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     grid-area: 1 / 1;
     font-family: inherit;
     font-weight: 700;
-    font-size: 1.05rem;
+    font-size: 1.35rem;
     line-height: 1.35;
     box-sizing: border-box;
 }
@@ -594,7 +627,7 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     border-radius: 6px;
     color: var(--text-color);
     font-weight: 700;
-    font-size: 1.05rem;
+    font-size: 1.35rem;
 }
 
 .gp-plan-name-input:hover:not(:focus) {
@@ -614,6 +647,11 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     align-items: center;
     justify-content: center;
     justify-self: center;
+}
+
+.gp-save-name-input {
+    width: 100%;
+    margin-top: 4px;
 }
 
 .gp-header-sim {
@@ -685,11 +723,12 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    margin-top: 2px;
-    font-size: 0.72rem;
+    margin-top: 4px;
+    font-size: 0.88rem;
     font-weight: 650;
     font-variant-numeric: tabular-nums;
     justify-content: flex-start;
+    line-height: 1.35;
 }
 
 .gp-slot-card--right .gp-item-scores {
@@ -723,7 +762,7 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     .gp-header {
         grid-template-columns: 1fr;
     }
-    .gp-header-actions,
+    .gp-header-col,
     .gp-header-sim {
         justify-self: stretch;
     }

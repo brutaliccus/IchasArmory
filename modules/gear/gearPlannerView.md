@@ -18,8 +18,14 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 - **Stat weights:** Dual-role plans show **Tank** and **Single Target (DPS)** panels side by side (`gp-dual-weights`), centered as a pair in `.gp-stat-weights-view`; single panels stay centered too. Shaman AoE panel is hidden in dual layout. **Non-shaman** DPS weights use manual fields with placeholder **"-"** until the user enters values (not 0). GP stat weight tables include `.sort-indicator` spans for sort UI. Generate re-queries live DOM after `renderGearPlanner()` so progress/button updates do not throw on detached nodes.
 - **Class/race sidebar:** `#gp-class-sidebar` lives inside `.gp-main` (`position: absolute; top: 0; left: 0; transform: translateX(calc(-100% - 8px))`) so it anchors to the top-left edge of the centered main column, not over `#gp-locations`.
 - **Item scores:** `~DPS` (gold) and **Tank score: X (EHP Y · MIT Z)** (blue) on slot cards when weights exist; right-column cards right-align via `.gp-slot-card--right .gp-item-scores { justify-content: flex-end }`. Tank total uses `calculateItemTankScore` (`tankScore = ehp + mitScore`).
-- Header: main icon buttons centered; **Sim** group (label + settings + Quick DPS) right-aligned, **hidden entirely** for non-shaman plans (`#gp-header-sim` hidden + `display:none`).
-- Larger type in `gear-planner.css` (~1rem instance names, gold headings); independent scroll if the list is long.
+- `#gp-stats-sidebar` … Modified stats Melee group includes weapon skill, enemy dodge, glancing damage, dual-wield MH/OH skill, and AP-vs-creature rows (merged into Melee, not a separate category).
+- **Plan load refresh:** `applyLoadedPlanToLiveUi()` re-applies talents, buffs, stat weights, header, and sidebars when loading a plan without closing the active overlay (`loadPlanIntoView`, `setGearPlan`).
+- **Clear build:** `#gp-clear-btn` (brush icon) in Plans column resets gear/talents/buffs with confirm.
+- Save dialog includes `#gp-save-name`; overwrite updates community browser name via server `publishCommunityGearPlan`.
+- **Save icon picker:** loads ~4300 icons from local pack (`assets/wow-icons/wowiconpack.zip` → `assets/wow-icons/large/` via `npm run icons:unpack`); manifest `data/wow-icons.json`. Picker uses `buildLocalWowIconPackUrl`; stored plan icons use `resolveGearPlanIconUrl` (local → octowow fallback on error).
+- Header: 5-column grid — plan name, votes, **Build** (talents/buffs/weights), **Plans** (save/edit/load/community/share/clear), **Sim** (shaman only).
+- **Item scores:** larger `.gp-item-scores` (~0.88rem) for ~DPS and tank score badges.
+- Header: `#gp-plan-name` + `#gp-header-votes` then three titled columns; icon buttons Save / **Edit mode** / **My Gear Plans** …
 
 ## Integration (app.js)
 
@@ -32,7 +38,7 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 ## UI elements (index.html)
 
 - `#gear-planner-shell`, `#gp-locations-sidebar`, `#gp-class-sidebar`, `#gp-slots-left`, `#gp-slots-right`
-- Header: `#gp-plan-name` in `.gp-plan-name-wrap` (hidden `.gp-plan-name-sizer` mirror + input; width tracks text up to **64** chars, not a fixed wide box) + `#gp-header-votes` in `.gp-plan-title-row` (votes `flex-shrink: 0` at end); icon buttons Save / **Edit mode** / **My Gear Plans** dropdown (`#gear-plans-dropdown`, same classes as My Builds: share/delete/favorite) / **Community search** (`#gp-community-search-btn`) / Share
+- Header: `#gp-plan-name` + `#gp-header-votes` then **Build** / **Plans** / **Sim** columns; icon buttons Save / **Edit mode** / **My Gear Plans** dropdown … **Clear build** (`#gp-clear-btn`)
 - Talents view: `#gp-talent-preset-tools` hamburger (shaman only) applies `SHAMAN_TALENT_PRESETS`; **`#gp-talents-title`** shows the plan class name (e.g. “Shaman”); talent tree is **top-aligned** in `#gp-talents-host` (scale transform from top center).
 - `#gp-quick-sim-btn`: Shaman-only header icon … `#gp-sim-settings-btn`: shaman-only cog wired via **direct click listener** on the button (`openGpSimConfigModal()` → `prepareDpsSimConfigForGearPlanner()` + `openDpsSimConfigModal()`). Talents/buffs apply to `currentPlan` **on change** (`wireGpTalentSync`, `wireGpConsumeToolsSync`, buff icon clicks) — not only when leaving the overlay view.
 - **Quick DPS sim running state:** `runQuickSim()` calls **`flushGpOverlayStateToPlan()`** then **`runGearPlanQuickSim(getGearPlanData(currentPlan))`**. Quick sim uses **`withGearPlanCharacterContext`** (same as GP stat weights): GP class/race/talents/buffs/gear/enchants are applied to CP calculator state for the run, then restored. Combat config (boss, duration, iterations, threat, etc.) comes from the GP sim settings modal (`#gp-sim-settings-btn` → `openGpSimConfigModal()`). Sets `gpQuickSimRunning`, disables `#gp-quick-sim-btn` and `#gp-sim-settings-btn`, swaps the sword icon for `.loading-spinner-small`, and shows **Simming…** (with **%** from progress) in `#gp-quick-sim-result`. UI helpers re-query live DOM nodes so `renderGearPlanner()` during a run does not orphan state. Restores icon/labels on success, error, or throw.

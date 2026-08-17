@@ -22,6 +22,8 @@ Gear management module — handles equipping/unequipping items, computing aggreg
 | `getEmptySlotPlaceholderUrl(slotId, classId)` | Empty paperdoll icon URL. Ranged uses relic for druid/shaman/paladin; otherwise `inventoryslot_{slotIconMap}`. |
 | `refreshEmptySlotPlaceholders(classId)` | Rewrites empty character-planner slot imgs; skips slots with equipped items. |
 | `getItemById(itemId)` | Passthrough to `itemLoader.getItemById`. |
+| `buildLocalWowIconPackUrl(iconRef)` | Local save-picker URL under `/assets/wow-icons/large/`. |
+| `resolveGearPlanIconUrl(iconRef, size?)` | Gear plan stored icons: local pack; passes through assets/ and legacy URLs. |
 | `buildOctowowIconUrl(iconRef, size?)` | Builds `https://octowow.st/db/images/icons/{large\|medium}/{basename}.png` from a basename or legacy URL. |
 | `resolveIconUrl(iconRef, size?)` | Preferred icon URL for items/UI: octowow.st for game icons; passes through `assets/` paths. |
 | `createIconImage(iconName, altText)` | Creates `<img>` using `resolveIconUrl` (fallback chain via `installIconLoadFallbacks`). |

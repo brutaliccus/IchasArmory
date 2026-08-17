@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "icons:unpack": "python scripts/unpack_wow_icon_pack.py",
+    "prebuild": "npm run icons:unpack",
     "deploy:pi": "bash scripts/deploy_to_pi.sh",
     "gen:dps-boss-stats": "python scripts/export-dps-raid-boss-stats.py",
     "gen:dps-boss-stats:defaults": "node scripts/generate-dps-raid-boss-stats.mjs",

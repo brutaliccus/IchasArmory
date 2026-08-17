@@ -1,4 +1,5 @@
 // modules/talents_new.js - New talent tree system for Turtle WoW
+import { resolveIconUrl } from './gear/gear.js';
 import { shamanTalents } from './talents/shaman.js';
 import { druidTalents } from './talents/druid.js';
 import { paladinTalents } from './talents/paladin.js';
@@ -162,7 +163,7 @@ function generateRankDescriptions(talent) {
 // New tree-based talent display for Shaman
 function generateTalentTrees(container, treeData, className) {
     const treesHTML = Object.entries(treeData).map(([treeKey, tree]) => {
-        const iconUrl = `https://octowow.st/db/images/icons/large/${tree.icon}.png`;
+        const iconUrl = resolveIconUrl(tree.icon);
 
         // Create 4x8 grid
         const grid = createTalentGrid(tree.talents, treeKey);
@@ -245,7 +246,7 @@ function createTalentGrid(talents, treeKey) {
         for (let col = 0; col < 4; col++) {
             const talent = grid[row][col];
             if (talent) {
-                const iconUrl = `https://octowow.st/db/images/icons/large/${talent.icon}.png`;
+        const iconUrl = resolveIconUrl(talent.icon);
                 const talentId = `${treeKey}-${talent.id}`;
 
                 // Process description - handle both array format and string format
@@ -320,7 +321,7 @@ function generateLegacyTalents(container, talents) {
         return `
             <div class="talent-row">
                 <div class="talent-icon-container" id="${talent.id}" data-points="0" data-max-points="${talent.max}">
-                    <img src="${talent.icon}" alt="${talent.name} icon">
+                    <img src="${resolveIconUrl(talent.icon)}" alt="${talent.name} icon">
                     <div class="talent-counter">0/${talent.max}</div>
                 </div>
                 <div class="talent-info">
