@@ -280,6 +280,8 @@ def fetch_chronicle_armory(character_name, server_key):
     character_race = map_chronicle_race(char_data.get('race'))
     display_name = char_data.get('name') or match.get('name') or character_name
 
+    talents = char_data.get('talents')
+
     return {
         'success': True,
         'equipment': equipment_list,
@@ -289,6 +291,7 @@ def fetch_chronicle_armory(character_name, server_key):
         'race': character_race,
         'character': display_name,
         'server': server_key,
+        'talents': talents,
     }, None
 
 

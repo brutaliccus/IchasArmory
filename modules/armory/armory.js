@@ -5,6 +5,7 @@ import {
     getArmoryProxyURL,
     fetchArmoryData,
     applyArmoryEquipment,
+    applyArmoryTalents,
     CHRONICLE_REALM_OPTIONS,
 } from './armoryImport.js';
 
@@ -219,6 +220,22 @@ export async function importFromArmoryAPI(options) {
         });
 
         console.log(`[Armory] Import summary: ${summary.itemsEquipped} equipped, ${summary.itemsNotFound} not found`);
+
+        if (data.talents) {
+            const talentRoot = elements.talentsList || document.getElementById('talents-list');
+            const classForTalents = data.class || (getCurrentClass ? getCurrentClass() : null);
+            if (talentRoot && classForTalents) {
+                const { warnings } = await applyArmoryTalents(classForTalents, data.talents, talentRoot, {
+                    regenerateBuffs: async (cls) => {
+                        const buffsListElement = elements.buffsList || document.getElementById('buffs-list');
+                        if (!buffsListElement) return;
+                        const { generateBuffIcons } = await import('../character/buffs.js');
+                        await generateBuffIcons(buffsListElement, cls);
+                    },
+                });
+                warnings.forEach((w) => console.warn(w));
+            }
+        }
 
         updateAllCalculations();
         updateCharacterStatusBar(data);

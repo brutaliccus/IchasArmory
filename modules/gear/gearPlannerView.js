@@ -22,7 +22,7 @@ import {
     GEAR_PLAN_NAME_MAX,
 } from './gearPlanner.js';
 import { getEmptySlotPlaceholderUrl, getMeleeWeaponType, getEnchantableSlots, resolveIconUrl, buildLocalWowIconPackUrl, resolveGearPlanIconUrl } from './gear.js';
-import { fetchArmoryData, applyArmoryEquipment } from '../armory/armoryImport.js';
+import { fetchArmoryData, applyArmoryEquipment, decodeChronicleTalents } from '../armory/armoryImport.js';
 import { enchantDatabase } from './enchants.js';
 import { getEnchantCompactLabel } from './enchantStatLabels.js';
 import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, getItemType, filterEnchantsByItemType, AP_VS_DISPLAY_ORDER, getApVsRowLabel } from '../character/stats.js';
@@ -1416,6 +1416,13 @@ async function importGearPlanFromArmory(characterName, server) {
     });
 
     console.log(`[GP Armory] ${summary.itemsEquipped} equipped, ${summary.itemsNotFound} not found`);
+
+    if (data.talents && currentPlan.class) {
+        const { spec, warnings } = decodeChronicleTalents(currentPlan.class, data.talents);
+        currentPlan.talents = spec;
+        warnings.forEach((w) => console.warn(w));
+    }
+
     editMode = true;
     persistSession();
     await refreshGearPlannerWhenItemsReady(currentPlan);

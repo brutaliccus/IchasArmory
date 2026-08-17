@@ -7,8 +7,8 @@ Character Planner armory import UI: status bar, imported-state chrome, and `impo
 ## Data flow
 
 1. User enters name + Chronicle realm → `importFromArmoryAPI` in this file.
-2. Fetch + equip delegated to **`armoryImport.js`** (`fetchArmoryData`, `applyArmoryEquipment`).
-3. Class/race applied to `#class-race-sidebar`; gear via `gear.js` `equipItem` / `applyEnchant`.
+2. Fetch + equip delegated to **`armoryImport.js`** (`fetchArmoryData`, `applyArmoryEquipment`, `applyArmoryTalents`).
+3. Class/race applied to `#class-race-sidebar`; gear via `gear.js` `equipItem` / `applyEnchant`; talents via `applyArmoryTalents` on `#talents-list`.
 
 Gear Planner uses the same `armoryImport.js` pipeline with GP plan-slot hooks (see `gearPlannerView.js`).
 

@@ -15,6 +15,9 @@ Single client-side pipeline for Chronicle (and Turtle rollback) armory imports. 
 | `remapArmoryEnchantEffectId(id)` | Chronicle alias `464→930`; skip Rockbiter `3026` |
 | `CHRONICLE_ENCHANT_ALIASES` | Armory-only effect ID remap table |
 | `CHRONICLE_REALM_OPTIONS` | Realm dropdown values for Chronicle |
+| `decodeChronicleTalents(class, payload)` | Chronicle `talents.trees[].ranks` → `{ "treeKey-id": points }` |
+| `applyArmoryTalents(class, payload, root, opts)` | Reset tree, apply spec, `updateAllTalentStates`; optional buff regen |
+| `CHRONICLE_ONLY_TALENT_IDS` | Chronicle-only ids skipped on apply (e.g. warlock affliction id 3) |
 
 ## Enchant handling
 
@@ -36,6 +39,23 @@ Single client-side pipeline for Chronicle (and Turtle rollback) armory imports. 
 
 Both preload item JSON via `itemLoader` before applying rows.
 
+## Talent handling
+
+Chronicle returns:
+
+```json
+"talents": { "trees": [{ "points_spent": 37, "ranks": "305322105233311201" }, ...] }
+```
+
+1. Tree array order = `Object.keys(classTalents[class])` (class lowercase).
+2. One digit per talent, sorted by talent **id** (Chronicle may include ids removed in IchaCalc).
+3. `decodeChronicleTalents` → spec `{ "treeKey-talentId": points }`; warlock affliction **id 3** (Sinister Pursuit) is consumed but not applied.
+4. Length / `points_spent` mismatches log warnings (priest/hunter drift) without throwing.
+
+**Character Planner** (`armory.js`): after class change + gear, `applyArmoryTalents` on `#talents-list` and regenerates buffs.
+
+**Gear Planner** (`gearPlannerView.js`): `decodeChronicleTalents` → `currentPlan.talents`; `applyLoadedPlanToLiveUi` refreshes `#gp-talents-host` when the talents overlay is open.
+
 ## Server contract
 
 `GET /api/armory?character=&server=` returns:
@@ -44,7 +64,8 @@ Both preload item JSON via `itemLoader` before applying rows.
 {
   "success": true,
   "equipment": [{ "itemId", "enchantId", "slot", "inventoryType", "name" }],
-  "class", "race", "character", "server"
+  "class", "race", "character", "server",
+  "talents": { "trees": [{ "points_spent", "ranks" }] }
 }
 ```
 

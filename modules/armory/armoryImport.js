@@ -1,6 +1,12 @@
 // modules/armory/armoryImport.js — shared Chronicle/Turtle armory fetch + equip pipeline
 import { enchantDatabase } from '../gear/enchants.js';
 import { findEnchantIndexByEffectId } from '../gear/enchantEffectIds.js';
+import {
+    classTalents,
+    generateTalentInputs,
+    updateTalentPoints,
+    updateAllTalentStates,
+} from '../talents_new.js';
 
 /** Chronicle armory import only: remap Chronicle effect IDs to IchaCalc effect IDs. */
 export const CHRONICLE_ENCHANT_ALIASES = Object.freeze({
@@ -162,4 +168,118 @@ export async function applyArmoryEquipment(equipment, options) {
     }
 
     return { itemsEquipped, itemsNotFound };
+}
+
+/** Chronicle-only talent ids omitted from IchaCalc (e.g. removed Sinister Pursuit). */
+export const CHRONICLE_ONLY_TALENT_IDS = Object.freeze({
+    warlock: Object.freeze({ affliction: [3] }),
+});
+
+/**
+ * Decode Chronicle talent rank strings into IchaCalc spec `{ "treeKey-talentId": points }`.
+ * Tree order matches `Object.keys(classTalents[class])`; one digit per talent id (sorted).
+ * @param {string} className
+ * @param {{ trees?: Array<{ ranks?: string, points_spent?: number }> }} talentsPayload
+ * @returns {{ spec: Record<string, number>, warnings: string[] }}
+ */
+export function decodeChronicleTalents(className, talentsPayload) {
+    const spec = {};
+    const warnings = [];
+    const classKey = String(className || '').toLowerCase();
+    const classTrees = classTalents[classKey];
+    const chronicleTrees = talentsPayload?.trees;
+
+    if (!classTrees || !Array.isArray(chronicleTrees)) {
+        if (chronicleTrees) warnings.push(`[Armory] Unknown class for talent decode: ${className}`);
+        return { spec, warnings };
+    }
+
+    const treeKeys = Object.keys(classTrees);
+
+    treeKeys.forEach((treeKey, treeIdx) => {
+        const treeDef = classTrees[treeKey];
+        if (!treeDef?.talents) return;
+
+        const treeEntry = chronicleTrees[treeIdx];
+        if (!treeEntry?.ranks) {
+            warnings.push(`[Armory] Missing talent ranks for ${classKey}/${treeKey}`);
+            return;
+        }
+
+        const ranksStr = String(treeEntry.ranks);
+        const byId = new Map(treeDef.talents.map((t) => [t.id, t]));
+        const ichaIds = treeDef.talents.map((t) => t.id).sort((a, b) => a - b);
+        const extraIds = CHRONICLE_ONLY_TALENT_IDS[classKey]?.[treeKey] || [];
+        const idOrder = [...new Set([...ichaIds, ...extraIds])].sort((a, b) => a - b);
+
+        if (ranksStr.length !== idOrder.length) {
+            warnings.push(
+                `[Armory] ${classKey}/${treeKey}: rank length ${ranksStr.length} vs expected ${idOrder.length} (best-effort apply)`
+            );
+        }
+
+        const limit = Math.min(ranksStr.length, idOrder.length);
+        let appliedPoints = 0;
+        for (let i = 0; i < limit; i++) {
+            const talentId = idOrder[i];
+            const points = parseInt(ranksStr[i], 10);
+            if (!Number.isFinite(points) || points <= 0) continue;
+            if (!byId.has(talentId)) continue;
+            spec[`${treeKey}-${talentId}`] = points;
+            appliedPoints += points;
+        }
+
+        if (ranksStr.length > idOrder.length) {
+            warnings.push(
+                `[Armory] ${classKey}/${treeKey}: ${ranksStr.length - idOrder.length} extra rank digit(s) ignored`
+            );
+        }
+
+        const expectedSpent = Number(treeEntry.points_spent);
+        if (Number.isFinite(expectedSpent) && appliedPoints !== expectedSpent) {
+            warnings.push(
+                `[Armory] ${classKey}/${treeKey}: decoded ${appliedPoints} pts vs Chronicle points_spent ${expectedSpent}`
+            );
+        }
+    });
+
+    return { spec, warnings };
+}
+
+function applyTalentSpecToRoot(root, spec) {
+    if (!root || !spec) return;
+    for (const [key, points] of Object.entries(spec)) {
+        let tree;
+        let talentId;
+        if (key.includes('-')) [tree, talentId] = key.split('-');
+        else talentId = key;
+        const selector = tree
+            ? `.talent-icon-container[data-tree="${tree}"][data-talent-id="${talentId}"]`
+            : `.talent-icon-container[data-talent-id="${talentId}"]`;
+        const talentEl = root.querySelector(selector);
+        if (talentEl) updateTalentPoints(talentEl, points);
+    }
+}
+
+/**
+ * Reset talent trees, apply decoded Chronicle spec, refresh states; optional buff regen.
+ * @param {string} className
+ * @param {{ trees?: Array }} chronicleTalents
+ * @param {HTMLElement|null} root - `#talents-list` or `#gp-talents-host`
+ * @param {{ regenerateBuffs?: (className: string) => Promise<void> }} [options]
+ * @returns {Promise<{ spec: Record<string, number>, warnings: string[] }>}
+ */
+export async function applyArmoryTalents(className, chronicleTalents, root, options = {}) {
+    const { spec, warnings } = decodeChronicleTalents(className, chronicleTalents);
+    if (!root) return { spec, warnings };
+
+    generateTalentInputs(root, String(className || 'warrior').toLowerCase());
+    applyTalentSpecToRoot(root, spec);
+    updateAllTalentStates(false);
+
+    if (options.regenerateBuffs) {
+        await options.regenerateBuffs(String(className || 'warrior').toLowerCase());
+    }
+
+    return { spec, warnings };
 }
