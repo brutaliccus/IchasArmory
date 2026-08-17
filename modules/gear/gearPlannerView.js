@@ -511,7 +511,7 @@ function generateGpClassIcons() {
                     generateTalentInputs(host, currentPlan.class || 'warrior');
                     fitGpTalentTree();
                 }
-                syncGpTalentPresetTools();
+                syncGpTalentsTitle();
             }
             if (gpOverlay === 'buffs') refreshGpBuffsHost();
             if (gpOverlay === 'weights') renderGpStatWeightsPanels();
@@ -707,11 +707,30 @@ function setHeaderBtnIcon(btn, svg, title) {
 
 function syncGpTalentsTitle() {
     const title = document.getElementById('gp-talents-title');
+    const header = document.getElementById('gp-talents-header');
     if (!title) return;
     const cls = getGpClassId();
     const label = classIconData[cls]?.name || (cls.charAt(0).toUpperCase() + cls.slice(1));
     title.textContent = label;
-    title.hidden = gpOverlay !== 'talents';
+    const show = gpOverlay === 'talents';
+    if (header) header.hidden = !show;
+    syncGpTalentPresetTools();
+}
+
+function syncGpTalentsHeaderLayout(treeW, scale, tree) {
+    const header = document.getElementById('gp-talents-header');
+    const title = document.getElementById('gp-talents-title');
+    if (!header || !tree || !Number.isFinite(treeW) || !Number.isFinite(scale)) return;
+
+    header.style.width = `${treeW * scale}px`;
+
+    const treeName = tree.querySelector('.tree-name');
+    if (treeName && title) {
+        const cs = getComputedStyle(treeName);
+        title.style.fontSize = cs.fontSize;
+        title.style.fontWeight = cs.fontWeight;
+        title.style.lineHeight = cs.lineHeight;
+    }
 }
 
 function syncGpOverlayUi() {
@@ -777,15 +796,19 @@ function fitGpTalentTree() {
     const boxH = Math.max(host.clientHeight, 1);
     const scale = Math.min(boxW / treeW, boxH / treeH);
     if (!Number.isFinite(scale) || scale <= 0) return;
-    if (Math.abs(scale - gpTalentLastScale) < 0.002) return;
 
-    gpTalentFitLock = true;
-    gpTalentLastScale = scale;
-    tree.style.transformOrigin = 'top center';
-    tree.style.transform = `scale(${scale})`;
-    tree.style.width = `${treeW}px`;
-    tree.style.margin = `0 auto ${Math.round(treeH * (scale - 1))}px`;
-    gpTalentFitLock = false;
+    const scaleChanged = Math.abs(scale - gpTalentLastScale) >= 0.002;
+    if (scaleChanged) {
+        gpTalentFitLock = true;
+        gpTalentLastScale = scale;
+        tree.style.transformOrigin = 'top center';
+        tree.style.transform = `scale(${scale})`;
+        tree.style.width = `${treeW}px`;
+        tree.style.margin = `0 auto ${Math.round(treeH * (scale - 1))}px`;
+        gpTalentFitLock = false;
+    }
+
+    syncGpTalentsHeaderLayout(treeW, scale, tree);
 
     if (!gpTalentFitObserver) {
         const view = document.getElementById('gp-talents-view');
@@ -2206,9 +2229,10 @@ async function hydrateCommunityVoteMeta(plan = currentPlan) {
 function syncGpTalentPresetTools() {
     const tools = document.getElementById('gp-talent-preset-tools');
     if (!tools) return;
-    const show = gpOverlay === 'talents' && String(currentPlan?.class || '').toLowerCase() === 'shaman';
+    const show = gpOverlay === 'talents' && getGpClassId() === 'shaman';
     tools.hidden = !show;
     tools.style.display = show ? 'flex' : 'none';
+    if (!show) closeGpTalentPresetDropdown();
 }
 
 function closeGpTalentPresetDropdown() {
