@@ -153,6 +153,22 @@ This document provides an index of all documentation files created for the IchaC
 
 ---
 
+### 5b. modules/gear/enchantEffectIds.js - Armory effect ID map
+**File:** `modules/gear/enchantEffectIds.md`
+**Source:** `modules/gear/enchantEffectIds.js`
+
+**Contents:** Manual effect_id → name map for `findEnchantIndexByEffectId`; Chronicle alias `464→930` in `armoryImport.js`; Rockbiter `3026` skipped on import.
+
+---
+
+### 5c. modules/armory/ - Armory import
+**Files:** `modules/armory/armory.js`, `modules/armory/armoryImport.js`, `armory_proxy.py`
+**Docs:** `modules/armory/armory.md`, `modules/armory/armoryImport.md`
+
+**Contents:** Chronicle Octo API proxy (default), Turtle rollback (`ARMORY_UPSTREAM=turtle`), shared client fetch/apply for Character Planner and Gear Planner.
+
+---
+
 ### 6. modules/gear/procs.js - Proc Effect Definitions
 **File:** `modules/gear/procs.md` (existing comprehensive documentation)
 **Source:** `modules/gear/procs.js` (1,591 LOC)
