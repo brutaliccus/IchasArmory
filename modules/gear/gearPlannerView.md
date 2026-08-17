@@ -20,7 +20,7 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 - **Item scores:** `~DPS` (gold) and **Tank score: X (EHP Y · MIT Z)** (blue) on slot cards when weights exist; right-column cards right-align via `.gp-slot-card--right .gp-item-scores { justify-content: flex-end }`. Tank total uses `calculateItemTankScore` (`tankScore = ehp + mitScore`).
 - `#gp-stats-sidebar` … Modified stats Melee group includes weapon skill, enemy dodge, glancing damage, dual-wield MH/OH skill, and AP-vs-creature rows (merged into Melee, not a separate category).
 - **Plan load refresh:** `applyLoadedPlanToLiveUi()` re-applies talents, buffs, stat weights, header, and sidebars when loading a plan without closing the active overlay (`loadPlanIntoView`, `setGearPlan`).
-- **Clear build:** `#gp-clear-btn` (brush icon) in Plans column resets gear/talents/buffs with confirm.
+- **Clear build:** `#gp-clear-btn` (clear-all icon, SVG Repo 375990) in Plans column resets gear/talents/buffs with confirm.
 - Save dialog includes `#gp-save-name`; overwrite updates community browser name via server `publishCommunityGearPlan`.
 - **Save icon picker:** loads ~4300 icons from local pack (`assets/wow-icons/wowiconpack.zip` → `assets/wow-icons/large/` via `npm run icons:unpack`); manifest `data/wow-icons.json`. Picker uses `buildLocalWowIconPackUrl`; stored plan icons use `resolveGearPlanIconUrl` (local → octowow fallback on error).
 - Header: 5-column grid — plan name, votes, **Build** (talents/buffs/weights), **Plans** (save/edit/load/community/share/clear), **Sim** (shaman only).
