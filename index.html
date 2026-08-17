@@ -119,9 +119,9 @@
                     <div class="onboarding-import-row">
                         <input type="text" id="onboarding-char-name" placeholder="Character name" autocomplete="off" />
                         <select id="onboarding-server-select">
-                            <option value="nordanaar">Nordanaar</option>
-                            <option value="telabim">Tel'Abim</option>
-                            <option value="ambershire">Ambershire</option>
+                            <option value="nzoth">N'Zoth</option>
+                            <option value="cthun">C'Thun (Hardcore)</option>
+                            <option value="yshaarj">Y'Shaarj</option>
                         </select>
                     </div>
                     <button id="onboarding-import-btn" class="onboarding-primary-btn">Import from Armory</button>
@@ -363,9 +363,9 @@
                                             <input type="text" id="characterName" placeholder="Import from Armory" class="character-name-input" />
                                             <div id="characterNameDisplay" class="character-name-display-text" style="display: none;">Character</div>
                                             <select id="serverSelect" class="server-select">
-                                                <option value="nordanaar">Nordanaar</option>
-                                                <option value="telabim">Tel'Abim</option>
-                                                <option value="ambershire">Ambershire</option>
+                                                <option value="nzoth">N'Zoth</option>
+                                                <option value="cthun">C'Thun (Hardcore)</option>
+                                                <option value="yshaarj">Y'Shaarj</option>
                                             </select>
                                             <div id="serverDisplay" class="server-display-text" style="display: none;">Nordanaar</div>
                                             <button id="importArmoryBtn" class="import-armory-btn" title="Import from Armory">
@@ -957,6 +957,13 @@
                 <div class="gp-header-col gp-header-col--plans">
                     <span class="gp-header-col-label">Plans</span>
                     <div class="gp-header-col-btns">
+                    <button type="button" id="gp-import-armory-btn" class="gp-btn gp-btn-icon" title="Import from Armory" aria-label="Import from Armory">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </button>
                     <button type="button" id="gp-save-btn" class="gp-btn gp-btn-icon" title="Save" aria-label="Save">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
@@ -1093,6 +1100,29 @@
                 <p id="gp-weights-unsupported" class="gp-weights-hint" hidden>Choose a DPS or Tank role (and class) to unlock the matching stat weight tools.</p>
             </div>
         </div>
+        <dialog id="gp-armory-import-dialog" class="gp-armory-import-dialog">
+            <form method="dialog" id="gp-armory-import-form" class="gp-armory-import-form">
+                <h3>Import from Armory</h3>
+                <p class="gp-armory-import-hint">Load equipped gear and enchants into this plan's primary slots.</p>
+                <label class="gp-armory-import-field">
+                    <span>Character name</span>
+                    <input type="text" id="gp-armory-char-name" autocomplete="off" required />
+                </label>
+                <label class="gp-armory-import-field">
+                    <span>Realm</span>
+                    <select id="gp-armory-server" required>
+                        <option value="nzoth">N'Zoth</option>
+                        <option value="cthun">C'Thun (Hardcore)</option>
+                        <option value="yshaarj">Y'Shaarj</option>
+                    </select>
+                </label>
+                <p id="gp-armory-import-error" class="gp-armory-import-error" hidden></p>
+                <div class="gp-armory-import-actions">
+                    <button type="button" id="gp-armory-import-cancel" class="gp-btn">Cancel</button>
+                    <button type="submit" id="gp-armory-import-submit" class="gp-btn gp-btn-primary">Import</button>
+                </div>
+            </form>
+        </dialog>
     </div>
 
     <script>

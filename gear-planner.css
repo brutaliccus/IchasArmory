@@ -1717,3 +1717,47 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     color: #e08080;
 }
 .gp-vote-count { font-variant-numeric: tabular-nums; min-width: 1em; text-align: left; }
+
+.gp-armory-import-dialog {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    padding: 0;
+    background: #1a1d24;
+    color: #e8e8e8;
+    max-width: 420px;
+    width: calc(100vw - 32px);
+}
+.gp-armory-import-dialog::backdrop { background: rgba(0, 0, 0, 0.55); }
+.gp-armory-import-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 18px 20px 16px;
+}
+.gp-armory-import-form h3 { margin: 0; font-size: 1.1rem; }
+.gp-armory-import-hint { margin: 0; font-size: 0.85rem; opacity: 0.8; }
+.gp-armory-import-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.85rem;
+}
+.gp-armory-import-field input,
+.gp-armory-import-field select {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: #12151a;
+    color: inherit;
+}
+.gp-armory-import-error {
+    margin: 0;
+    color: #e08080;
+    font-size: 0.85rem;
+}
+.gp-armory-import-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 4px;
+}

@@ -239,7 +239,7 @@ function getBuildData() {
         race: getCurrentRace(),
         attackerLevel: parseFloat(elements.attackerLevel?.value) || 63,
         characterName: elements.characterName?.value || '',
-        server: elements.serverSelect?.value || 'nordanaar',
+        server: elements.serverSelect?.value || 'nzoth',
         gear: {},
         enchants: {},
         talents: {},

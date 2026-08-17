@@ -22,6 +22,7 @@ import {
     GEAR_PLAN_NAME_MAX,
 } from './gearPlanner.js';
 import { getEmptySlotPlaceholderUrl, getMeleeWeaponType, getEnchantableSlots, resolveIconUrl, buildLocalWowIconPackUrl, resolveGearPlanIconUrl } from './gear.js';
+import { fetchArmoryData, applyArmoryEquipment } from '../armory/armoryImport.js';
 import { enchantDatabase } from './enchants.js';
 import { getEnchantCompactLabel } from './enchantStatLabels.js';
 import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, getItemType, filterEnchantsByItemType, AP_VS_DISPLAY_ORDER, getApVsRowLabel } from '../character/stats.js';
@@ -244,6 +245,7 @@ export function initGearPlannerView(cbs) {
     if (!currentPlan.buffs) currentPlan.buffs = [];
     ensurePlanStRotation();
     wireHeaderControls();
+    wireGpArmoryImportDialog();
     wireClassDrawer();
     wireRaceDrawer();
     wireBuffsView();
@@ -371,6 +373,7 @@ function wireHeaderControls() {
         syncGpPlanNameInputWidth(nameInput);
     }
 
+    document.getElementById('gp-import-armory-btn')?.addEventListener('click', () => openGpArmoryImportDialog());
     document.getElementById('gp-save-btn')?.addEventListener('click', () => requestSaveCurrentPlan());
     document.getElementById('gp-talents-btn')?.addEventListener('click', () => toggleGpTalentsView());
     document.getElementById('gp-buffs-btn')?.addEventListener('click', () => toggleGpBuffsView());
@@ -1300,6 +1303,101 @@ function requestClearCurrentPlan() {
     updateHeaderVotesUi();
     refreshGearPlannerWhenItemsReady(currentPlan).then(() => applyLoadedPlanToLiveUi());
     window.notify?.success?.('Gear plan cleared', 2500, 'Gear Planner');
+}
+
+function openGpArmoryImportDialog() {
+    const dialog = document.getElementById('gp-armory-import-dialog');
+    const err = document.getElementById('gp-armory-import-error');
+    if (!dialog) return;
+    if (err) {
+        err.hidden = true;
+        err.textContent = '';
+    }
+    dialog.showModal();
+}
+
+function wireGpArmoryImportDialog() {
+    const dialog = document.getElementById('gp-armory-import-dialog');
+    const form = document.getElementById('gp-armory-import-form');
+    const cancelBtn = document.getElementById('gp-armory-import-cancel');
+    const submitBtn = document.getElementById('gp-armory-import-submit');
+    if (!dialog || !form) return;
+
+    cancelBtn?.addEventListener('click', () => dialog.close());
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const nameInput = document.getElementById('gp-armory-char-name');
+        const serverSelect = document.getElementById('gp-armory-server');
+        const err = document.getElementById('gp-armory-import-error');
+        const rawName = nameInput?.value?.trim();
+        const server = serverSelect?.value || 'nzoth';
+        if (!rawName) {
+            if (err) {
+                err.hidden = false;
+                err.textContent = 'Please enter a character name.';
+            }
+            return;
+        }
+
+        const characterName = rawName.charAt(0).toUpperCase() + rawName.slice(1).toLowerCase();
+        if (nameInput) nameInput.value = characterName;
+        if (submitBtn) submitBtn.disabled = true;
+        if (err) err.hidden = true;
+
+        try {
+            await importGearPlanFromArmory(characterName, server);
+            dialog.close();
+            window.notify?.success?.(`Imported ${characterName}`, 3000, 'Gear Planner');
+        } catch (error) {
+            console.error('[GP Armory import]', error);
+            if (err) {
+                err.hidden = false;
+                err.textContent = error.message || 'Import failed';
+            }
+        } finally {
+            if (submitBtn) submitBtn.disabled = false;
+        }
+    });
+}
+
+async function importGearPlanFromArmory(characterName, server) {
+    const data = await fetchArmoryData(characterName, server);
+
+    if (data.class) {
+        currentPlan.class = data.class;
+        currentPlan.talents = {};
+    }
+    if (data.race) {
+        currentPlan.race = data.race;
+    }
+    if (data.character) {
+        currentPlan.name = sanitizeGearPlanName(`${data.character} Import`, 'Gear Plan');
+    }
+
+    for (const slotId of GEAR_PLAN_SLOTS) {
+        if (!currentPlan.slots[slotId]) continue;
+        currentPlan.slots[slotId].primary = null;
+        currentPlan.slots[slotId].enchant = null;
+        currentPlan.slots[slotId].alternatives = [];
+    }
+
+    const summary = await applyArmoryEquipment(data.equipment, {
+        getItemById: (id) => itemLoader.itemsById[String(id)],
+        preloadSlots: (slots) => Promise.all(slots.map((slot) => itemLoader.loadSlot(slot))),
+        onEquip: (slotName, itemId) => {
+            if (currentPlan.slots[slotName]) currentPlan.slots[slotName].primary = itemId;
+        },
+        onEnchant: (slotName, enchantIndex) => {
+            if (currentPlan.slots[slotName]) currentPlan.slots[slotName].enchant = enchantIndex;
+        },
+    });
+
+    console.log(`[GP Armory] ${summary.itemsEquipped} equipped, ${summary.itemsNotFound} not found`);
+    editMode = true;
+    persistSession();
+    await refreshGearPlannerWhenItemsReady(currentPlan);
+    await applyLoadedPlanToLiveUi();
+    renderGearPlanner();
 }
 
 async function openGpTalentsView() {

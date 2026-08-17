@@ -230,6 +230,12 @@ export const enchantDatabase = {
       "effect_id": 247
     },
     {
+      "name": "Enchant Boots - Minor Speed (+8% Run Speed)",
+      "stats": {},
+      "description": "permanently enchant a pair of boots to give a minor increase to run speed.",
+      "effect_id": 911
+    },
+    {
       "name": "Enchant Boots - Minor Stamina (+1 Stam)",
       "stats": {
         "sta": 1
@@ -792,6 +798,23 @@ export const enchantDatabase = {
       "effect_id": 865
     },
     {
+      "name": "Enchant Gloves - Strength (+5 Str)",
+      "stats": {
+        "str": 5
+      },
+      "description": "permanently enchant gloves to give +5 Strength.",
+      "effect_id": 856
+    },
+    {
+      "name": "Enchant Gloves - Strength and Hit (+5 Str, +4 Hit)",
+      "stats": {
+        "str": 5,
+        "hit": 4
+      },
+      "description": "permanently enchant gloves to give +5 Strength and +4 Hit Rating.",
+      "effect_id": 3057
+    },
+    {
       "name": "Enchant Gloves - Superior Agility (+15 Agi)",
       "stats": {
         "agi": 15
@@ -943,6 +966,14 @@ export const enchantDatabase = {
       "stats": {},
       "description": "permanently enchant a chest armor to increase mana by 150.",
       "effect_id": 1483
+    },
+    {
+      "name": "Enchant Chest - Minor Health (+50 Health)",
+      "stats": {
+        "health": 50
+      },
+      "description": "permanently enchant a piece of chest armor to give +50 health.",
+      "effect_id": 908
     },
     {
       "name": "Enchant Chest - Minor Mana (+5 Mana)",
@@ -1180,6 +1211,14 @@ export const enchantDatabase = {
       "effect_id": 1888
     },
     {
+      "name": "Enchant Cloak - Fire Resistance (+7 Fire Resist)",
+      "stats": {
+        "fireResist": 7
+      },
+      "description": "permanently enchant a cloak to increase Fire Resistance by 7.",
+      "effect_id": 2463
+    },
+    {
       "name": "Enchant Cloak - Lesser Agility (+3 Agi)",
       "stats": {
         "agi": 3
@@ -1202,6 +1241,14 @@ export const enchantDatabase = {
       },
       "description": "permanently enchant a cloak so it grants +1 Agility.",
       "effect_id": 247
+    },
+    {
+      "name": "Enchant Cloak - Minor Protection (+50 Armor)",
+      "stats": {
+        "armor": 50
+      },
+      "description": "permanently enchant a cloak to give 50 additional armor.",
+      "effect_id": 884
     },
     {
       "name": "Enchant Cloak - Stealth",
@@ -1292,6 +1339,20 @@ export const enchantDatabase = {
       },
       "description": "permanently enchant a two-handed weapon to do 9 additional damage.",
       "effect_id": 1896
+    },
+    {
+      "name": "Mithril Spike (16-20 Shield Damage)",
+      "stats": {},
+      "description": "Attaches a spike to a shield that sometimes deals 16 to 20 damage to enemies when blocking.",
+      "effect_id": 463,
+      "requiresItemType": "shield"
+    },
+    {
+      "name": "Thorium Spike (20-30 Shield Damage)",
+      "stats": {},
+      "description": "Attaches a spike to a shield that sometimes deals 20 to 30 damage to enemies when blocking.",
+      "effect_id": 1704,
+      "requiresItemType": "shield"
     },
     {
       "name": "Enchant Shield - Frost Resistance (+8 Frostresist)",
@@ -1439,6 +1500,14 @@ export const enchantDatabase = {
       },
       "description": "permanently enchant a weapon to increase your strength by 15.",
       "effect_id": 2563
+    },
+    {
+      "name": "Enchant Weapon - Striking (+3 Dmg)",
+      "stats": {
+        "weaponDamage": 3
+      },
+      "description": "permanently enchant a weapon to do 3 additional damage.",
+      "effect_id": 943
     },
     {
       "name": "Enchant Weapon - Superior Striking (+5 Dmg)",
@@ -1639,6 +1708,14 @@ export const enchantDatabase = {
       },
       "description": "permanently enchant a weapon to increase your strength by 15.",
       "effect_id": 2563
+    },
+    {
+      "name": "Enchant Weapon - Striking (+3 Dmg)",
+      "stats": {
+        "weaponDamage": 3
+      },
+      "description": "permanently enchant a weapon to do 3 additional damage.",
+      "effect_id": 943
     },
     {
       "name": "Enchant Weapon - Superior Striking (+5 Dmg)",

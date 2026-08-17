@@ -4,4 +4,5 @@
  */
 
 export * from './armory.js';
+export * from './armoryImport.js';
 export * from './buildManager.js';
