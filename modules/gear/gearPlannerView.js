@@ -720,16 +720,29 @@ function syncGpTalentsTitle() {
 function syncGpTalentsHeaderLayout(treeW, scale, tree) {
     const header = document.getElementById('gp-talents-header');
     const title = document.getElementById('gp-talents-title');
-    if (!header || !tree || !Number.isFinite(treeW) || !Number.isFinite(scale)) return;
+    const view = header?.parentElement;
+    if (!header || !tree || !view || !Number.isFinite(treeW) || !Number.isFinite(scale) || scale <= 0) return;
 
-    header.style.width = `${treeW * scale}px`;
+    const scaledW = treeW * scale;
+    header.style.width = `${scaledW}px`;
+
+    const treeRect = tree.getBoundingClientRect();
+    const viewRect = view.getBoundingClientRect();
+    header.style.marginLeft = `${Math.max(0, treeRect.left - viewRect.left)}px`;
+    header.style.marginRight = 'auto';
 
     const treeName = tree.querySelector('.tree-name');
     if (treeName && title) {
         const cs = getComputedStyle(treeName);
-        title.style.fontSize = cs.fontSize;
+        const basePx = parseFloat(cs.fontSize);
+        if (Number.isFinite(basePx) && basePx > 0) {
+            title.style.fontSize = `${basePx * scale}px`;
+        }
         title.style.fontWeight = cs.fontWeight;
-        title.style.lineHeight = cs.lineHeight;
+        const lhPx = parseFloat(cs.lineHeight);
+        title.style.lineHeight = Number.isFinite(lhPx) && lhPx > 0
+            ? `${lhPx * scale}px`
+            : cs.lineHeight;
     }
 }
 
