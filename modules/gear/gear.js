@@ -66,6 +66,8 @@ export const LOCAL_WOW_ICON_PACK_BASE = '/assets/wow-icons/large/';
 /** Second fallback when Chronicle + octowow fail (.jpg on Wowhead CDN) */
 export const ICON_CDN_ZAMIMG_LARGE = 'https://wow.zamimg.com/images/wow/icons/large/';
 export const ICON_CDN_ZAMIMG_MEDIUM = 'https://wow.zamimg.com/images/wow/icons/medium/';
+/** Empty enchant scroll button (`.enchant-btn` default). Not routed through `resolveIconUrl`. */
+export const EMPTY_ENCHANT_ICON_URL = 'https://wow.zamimg.com/images/wow/icons/small/inventoryslot_enchant.jpg';
 /** Octowow icon CDN (fallback after Chronicle) */
 export const ICON_BASE_URL_BACKUP = `${OCTOWOW_ICON_BASE}/large/`;
 

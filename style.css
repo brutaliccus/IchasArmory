@@ -795,7 +795,7 @@ input, select {
     width: 24px; height: 24px;
     flex-shrink: 0; /* Prevent the button from shrinking */
     padding: 0;
-    background-image: url('https://octowow.st/db/images/icons/medium/inventoryslot_enchant.png');
+    background-image: url('https://wow.zamimg.com/images/wow/icons/small/inventoryslot_enchant.jpg');
     background-size: cover;
     border: 1px solid var(--border-color);
     border-radius: 50%;

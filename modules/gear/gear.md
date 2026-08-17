@@ -27,6 +27,7 @@ Gear management module — handles equipping/unequipping items, computing aggreg
 | `buildChronicleIconUrl(iconRef)` | Builds `https://icons.chronicleclassic.com/turtle/{basename}.webp` from a basename or legacy URL. |
 | `buildOctowowIconUrl(iconRef, size?)` | Fallback: `https://octowow.st/db/images/icons/{large\|medium}/{basename}.png`. |
 | `resolveIconUrl(iconRef, size?)` | Preferred icon URL for items/UI: Chronicle turtle webp for game icons; passes through `assets/` paths. |
+| `EMPTY_ENCHANT_ICON_URL` | Hardcoded zamimg URL for the **unequipped** enchant scroll (`.enchant-btn` default in `style.css`). Not passed through `resolveIconUrl`. Applied enchants use the gold scroll via `.is-enchanted` CSS (Chronicle/octowow `inv_scroll_05`). |
 | `createIconImage(iconName, altText)` | Creates `<img>` using `resolveIconUrl` (fallback chain via `installIconLoadFallbacks`). |
 | `installIconLoadFallbacks()` | Global capture-phase `error` listener: failed icons retry Chronicle → octowow → zamimg (last resort). |
 | `applyEnchant(slotId, enchantIndex)` | Apply an enchant to a slot. |
