@@ -577,6 +577,148 @@ function tryParseBonusDmgHealingVsLine(line, stats) {
  * @param {Object} item - Item object with tooltip_lines_raw
  * @returns {Object} Parsed stats
  */
+/**
+ * Parse pure sheet stats from a set bonus description line.
+ * Returns null when the bonus is conditional, proc-like, or otherwise not a flat sheet modifier.
+ * @param {string} text - Set bonus description (line after "(N) Set:")
+ * @returns {Object|null} Partial STAT_TEMPLATE values
+ */
+export function parseSetBonusSheetStats(text) {
+    if (!text || typeof text !== 'string') return null;
+    const line = text.trim();
+    const lower = line.toLowerCase();
+
+    const skipPatterns = [
+        /\bchance\b/, /\bwhen you\b/, /\bwhen fighting\b/, /\bfor \d+ sec/, /\bwhile\b/,
+        /\bcritical\b/, /\brestores?\b/, /\bheals?\b/, /\bgrants?\b/, /\bpet\b/,
+        /\bstacking\b/, /\beach time\b/, /\busing a\b/, /\bblocking\b/, /\bdodging\b/,
+        /\bparrying\b/, /\breduces the (?:mana|threat|cast time|cooldown)\b/,
+        /\bincreases the .* by \d+%/, /\byour .* spells\b/, /\band threat\b/,
+        /\bdisplace\b/, /\bempowers\b/, /\breturned as healing\b/, /\badditionally\b/,
+        /\bfor both you and\b/, /\ballows an additional\b/, /\bdeals \d+%\b/,
+        /\blast \d+ sec longer\b/, /\baffects all\b/, /\bnow hits\b/,
+    ];
+    if (skipPatterns.some((re) => re.test(lower))) return null;
+
+    const out = {};
+    const add = (key, val) => { out[key] = (out[key] || 0) + val; };
+
+    let m;
+    if ((m = line.match(/^\+(\d+)\s+(Strength|Stamina|Agility|Intellect|Spirit)\.?$/i))) {
+        const key = { strength: 'strength', stamina: 'stamina', agility: 'agility', intellect: 'intellect', spirit: 'spirit' }[m[2].toLowerCase()];
+        add(key, parseInt(m[1], 10));
+        return out;
+    }
+    if ((m = line.match(/^\+(\d+)\s+(Fire|Nature|Frost|Shadow|Arcane)\s+Resistance\.?$/i))) {
+        add(`${m[2].toLowerCase()}Resist`, parseInt(m[1], 10));
+        return out;
+    }
+    if ((m = line.match(/^\+(\d+)\s+All Resistances\.?$/i))) {
+        add('allResist', parseInt(m[1], 10));
+        return out;
+    }
+    if ((m = line.match(/^\+(\d+)\s+Attack Power\.?$/i))) {
+        add('attackPower', parseInt(m[1], 10));
+        return out;
+    }
+    if ((m = line.match(/^\+(\d+)\s+ranged Attack Power\.?$/i))) {
+        add('rangedAttackPower', parseInt(m[1], 10));
+        return out;
+    }
+    if ((m = line.match(/^\+(\d+)\s+Armor\.?$/i))) {
+        add('armor', parseInt(m[1], 10));
+        return out;
+    }
+    if ((m = line.match(/^\+(\d+)\s+to All Weapons$/i))) {
+        const n = parseInt(m[1], 10);
+        add('weaponDamageMin', n);
+        add('weaponDamageMax', n);
+        return out;
+    }
+    if ((m = line.match(/^\+(\d+)\s+Attack Power in Cat, Bear, Dire Bear, and Moonkin forms only\.?$/i))) {
+        add('druidAP', parseInt(m[1], 10));
+        return out;
+    }
+    if ((m = line.match(/^\+(\d+)\s+Attack Power when fighting ([A-Za-z]+)\.?$/i))) {
+        const creature = m[2].toLowerCase().replace(/s$/, '');
+        const vsKey = FACTION_TAG_TO_AP_VS_KEY[creature] || FACTION_TAG_TO_AP_VS_KEY[`${creature}s`];
+        if (vsKey) {
+            add(vsKey, parseInt(m[1], 10));
+            return out;
+        }
+        return null;
+    }
+    if ((m = line.match(/Increases damage and healing done by magical spells and effects by up to (\d+)\.?$/i))) {
+        add('dmgAndHealing', parseInt(m[1], 10));
+        return out;
+    }
+    if ((m = line.match(/Increases healing done by spells and effects by up to (\d+)\.?$/i))) {
+        add('healing', parseInt(m[1], 10));
+        return out;
+    }
+    if ((m = line.match(/Increases damage done by (Fire|Frost|Nature|Shadow|Arcane) spells and effects by up to (\d+)\.?$/i))) {
+        add(`${m[1].toLowerCase()}Damage`, parseInt(m[2], 10));
+        return out;
+    }
+    if ((m = line.match(/Improves your chance to hit(?: with attacks)? by (\d+)%\.?$/i))) {
+        add('hit', parseInt(m[1], 10));
+        return out;
+    }
+    if ((m = line.match(/Improves your chance to get a critical strike(?: with attacks)? by (\d+)%\.?$/i))) {
+        add('crit', parseInt(m[1], 10));
+        return out;
+    }
+    if ((m = line.match(/Improves your chance to hit with spells by (\d+)%\.?$/i))) {
+        add('spellHit', parseInt(m[1], 10));
+        return out;
+    }
+    if ((m = line.match(/Improves your chance to get a critical strike with spells by (\d+)%\.?$/i))) {
+        add('spellCrit', parseInt(m[1], 10));
+        return out;
+    }
+    if ((m = line.match(/Increases your chance to block attacks with a shield by (\d+)%\.?$/i))) {
+        add('blockChance', parseInt(m[1], 10));
+        return out;
+    }
+    if ((m = line.match(/Increases the block value of your shield by (\d+)\.?$/i))) {
+        add('blockValue', parseInt(m[1], 10));
+        return out;
+    }
+    if ((m = line.match(/^Increased Defense \+(\d+)\.?$/i))) {
+        add('defense', parseInt(m[1], 10));
+        return out;
+    }
+    if ((m = line.match(/^Increases Attack Power by (\d+)\.?$/i))) {
+        add('attackPower', parseInt(m[1], 10));
+        return out;
+    }
+    if ((m = line.match(/^Adds (\d+) (fire|frost|nature|shadow|arcane|holy) damage to your melee attacks\.?$/i))) {
+        const school = m[2].charAt(0).toUpperCase() + m[2].slice(1).toLowerCase();
+        const key = `${m[2].toLowerCase()}Damage`;
+        if (school === 'Fire' || school === 'Frost' || school === 'Nature' || school === 'Shadow' || school === 'Arcane' || school === 'Holy') {
+            add(key === 'holyDamage' ? 'holyDamage' : key, parseInt(m[1], 10));
+            return out;
+        }
+        return null;
+    }
+    if ((m = line.match(/Decreases the magical resistances of your spell targets by (\d+)\.?$/i))) {
+        add('spellPen', parseInt(m[1], 10));
+        return out;
+    }
+    if ((m = line.match(/Increases your attack and casting speed by (\d+)%\.?$/i))) {
+        add('haste', parseInt(m[1], 10));
+        return out;
+    }
+    if ((m = line.match(/^Increased (Two[- ]handed )?(Axes|Swords|Maces|Daggers|Fist Weapons|Polearms|Staves|Bows|Crossbows|Guns|Thrown) \+(\d+)\.?$/i))) {
+        const twoHanded = m[1] ? 'Two-handed ' : '';
+        const weaponType = `${twoHanded}${m[2]}`;
+        out.weaponSkillByType = { [weaponType]: parseInt(m[3], 10) };
+        return out;
+    }
+
+    return null;
+}
+
 export function parseStatsFromTooltip(item) {
     const stats = {};
     if (!item.tooltip_lines_raw) return stats;

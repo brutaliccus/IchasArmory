@@ -1,8 +1,6 @@
 // modules/ui/calculator.js (Corrected)
 import { baseStats } from '../character/races.js';
 import { AP_VS_GEAR_STAT_KEYS, DMG_HEALING_VS_GEAR_STAT_KEYS } from '../character/stats.js';
-
-// Your existing class avoidance data
 const classAvoStats = {
     druid:   { dodge: 0.9, parry: 0,   block: 0,   agiPerDodge: 20.0 },
     warrior: { dodge: 0.0, parry: 5.0, block: 5.0, agiPerDodge: 20.0 },
@@ -27,6 +25,7 @@ const classFormulas = {
 export function calculateEffectiveHealth(data) {
     // --- Stat Aggregation ---
     const { selectedClass, selectedRace, attackerLevel, gearStats, talentBonuses, racialBonuses, activeBuffs, enchantStats, offhandArmor, setBonuses = {} } = data;
+    const setSheet = setBonuses.sheetStats || {};
 
     const classBase = baseStats[selectedClass] || {};
     const raceClassBase = classBase[selectedRace] || { sta: 0, agi: 0, str: 0, int: 0, spi: 0 };
@@ -43,8 +42,8 @@ export function calculateEffectiveHealth(data) {
 
     console.log('Base stats:', { stamina: totalStamina, strength: totalStrength, spirit: totalSpirit });
 
-    // Handle "allStats" from gear and enchants first
-    const allStatsBonus = (gearStats.allStats || 0) + (enchantStats.allStats || 0);
+    // Handle "allStats" from gear, enchants, and set bonuses first
+    const allStatsBonus = (gearStats.allStats || 0) + (enchantStats.allStats || 0) + (setSheet.allStats || 0);
     if (allStatsBonus > 0) {
         totalStamina += allStatsBonus;
         totalAgility += allStatsBonus;
@@ -54,18 +53,18 @@ export function calculateEffectiveHealth(data) {
     }
     console.log('After allStats:', { stamina: totalStamina, strength: totalStrength, spirit: totalSpirit, allStatsBonus });
 
-    // Add flat stats from Gear and Enchants
-    totalStamina += (gearStats.stamina || 0) + (enchantStats.stamina || 0);
-    totalAgility += (gearStats.agility || 0) + (enchantStats.agility || 0);
-    totalStrength += (gearStats.strength || 0) + (enchantStats.strength || 0);
-    totalIntellect += (gearStats.intellect || 0) + (enchantStats.intellect || 0);
-    totalSpirit += (gearStats.spirit || 0) + (enchantStats.spirit || 0);
+    // Add flat stats from Gear, Enchants, and set bonus sheet stats
+    totalStamina += (gearStats.stamina || 0) + (enchantStats.stamina || 0) + (setSheet.stamina || 0);
+    totalAgility += (gearStats.agility || 0) + (enchantStats.agility || 0) + (setSheet.agility || 0);
+    totalStrength += (gearStats.strength || 0) + (enchantStats.strength || 0) + (setSheet.strength || 0);
+    totalIntellect += (gearStats.intellect || 0) + (enchantStats.intellect || 0) + (setSheet.intellect || 0);
+    totalSpirit += (gearStats.spirit || 0) + (enchantStats.spirit || 0) + (setSheet.spirit || 0);
     console.log('After gear/enchants:', { stamina: totalStamina, strength: totalStrength, spirit: totalSpirit,
         'gear.stamina': gearStats.stamina, 'enchant.stamina': enchantStats.stamina,
         'gear.strength': gearStats.strength, 'enchant.strength': enchantStats.strength,
         'gear.spirit': gearStats.spirit, 'enchant.spirit': enchantStats.spirit });
-    totalHealth += (gearStats.health || 0) + (enchantStats.health || 0);
-    totalDefense += (gearStats.defense || 0) + (enchantStats.defense || 0);
+    totalHealth += (gearStats.health || 0) + (enchantStats.health || 0) + (setSheet.health || 0);
+    totalDefense += (gearStats.defense || 0) + (enchantStats.defense || 0) + (setSheet.defense || 0);
 
     // Handle armor with talent multipliers
     // IMPORTANT: Enchant armor is NOT affected by talent/buff armor bonuses, only gear armor is
@@ -95,7 +94,7 @@ export function calculateEffectiveHealth(data) {
     const shieldBonusArmor = shieldArmor * shieldArmorMultiplier;
 
     // Total armor = base gear + buff boost + talent boost + shield bonus + enchants
-    totalArmor += (nonShieldGearArmor + shieldArmor) + buffBoostedArmor + talentBoostedArmor + shieldBonusArmor + enchantArmor;
+    totalArmor += (nonShieldGearArmor + shieldArmor) + buffBoostedArmor + talentBoostedArmor + shieldBonusArmor + enchantArmor + (setSheet.armor || 0);
 
     // Add flat stats from Buffs
     activeBuffs.forEach(buff => {
@@ -258,7 +257,7 @@ export function calculateEffectiveHealth(data) {
     let totalAttackPower = baseAP;
     
     // Add AP from gear, enchants, and talents
-    totalAttackPower += (gearStats.attackPower || 0) + (enchantStats.attackPower || 0) + (talentBonuses.attackPower || 0);
+    totalAttackPower += (gearStats.attackPower || 0) + (enchantStats.attackPower || 0) + (talentBonuses.attackPower || 0) + (setSheet.attackPower || 0);
     
     // Add AP from buffs (with set bonus multiplier for Rockbiter)
     activeBuffs.forEach(buff => {
@@ -300,7 +299,7 @@ export function calculateEffectiveHealth(data) {
 
     // --- Ranged Attack Power ---
     let totalRangedAttackPower = (formulas.rapPerAgi ? totalAgility * formulas.rapPerAgi : 0)
-        + (gearStats.rangedAttackPower || 0) + (enchantStats.rangedAttackPower || 0);
+        + (gearStats.rangedAttackPower || 0) + (enchantStats.rangedAttackPower || 0) + (setSheet.rangedAttackPower || 0);
     activeBuffs.forEach(buff => {
         totalRangedAttackPower += (buff.rangedAttackPower || buff.rangedAP || 0);
     });
@@ -320,6 +319,9 @@ export function calculateEffectiveHealth(data) {
         }
 
         // Add weapon-type-specific bonuses from gear (e.g., Carapace Handguards: {'Two-handed Axe': 6, ...})
+        if (weaponTypeKey && setSheet.weaponSkillByType && setSheet.weaponSkillByType[weaponTypeKey]) {
+            skillValue += setSheet.weaponSkillByType[weaponTypeKey];
+        }
         if (weaponTypeKey && gearStats.weaponSkillByType && gearStats.weaponSkillByType[weaponTypeKey]) {
             skillValue += gearStats.weaponSkillByType[weaponTypeKey];
         }
@@ -475,7 +477,7 @@ export function calculateEffectiveHealth(data) {
     });
 
     // Calculate crit with base crit + weapon skill crit
-    const baseCrit = (formulas.baseCrit || 0) + (gearStats.crit || 0) + (enchantStats.crit || 0) + (talentBonuses.crit || 0) + buffCrit + (setBonuses.black_dragon_mail_3pc_crit || 0);
+    const baseCrit = (formulas.baseCrit || 0) + (gearStats.crit || 0) + (enchantStats.crit || 0) + (talentBonuses.crit || 0) + buffCrit + (setBonuses.black_dragon_mail_3pc_crit || 0) + (setSheet.crit || 0);
     const agiCrit = (formulas.agiPerCrit > 0) ? totalAgility / formulas.agiPerCrit : 0;
 
     let totalCrit = baseCrit + agiCrit + weaponSkillCritBonus;
@@ -483,7 +485,7 @@ export function calculateEffectiveHealth(data) {
     const ohCrit = baseCrit + agiCrit + ohWeaponSkillCritBonus;
 
     // Calculate spell crit with base spell crit
-    let totalSpellCrit = (formulas.baseSpellCrit || 0) + (gearStats.spellCrit || 0) + (enchantStats.spellCrit || 0) + (talentBonuses.spellCrit || 0) + buffSpellCrit;
+    let totalSpellCrit = (formulas.baseSpellCrit || 0) + (gearStats.spellCrit || 0) + (enchantStats.spellCrit || 0) + (talentBonuses.spellCrit || 0) + buffSpellCrit + (setSheet.spellCrit || 0);
     if (formulas.intPerSpellCrit > 0) { totalSpellCrit += totalIntellect / formulas.intPerSpellCrit; }
 
     // --- Mitigation Logic ---
@@ -503,14 +505,14 @@ export function calculateEffectiveHealth(data) {
     activeBuffs.forEach(buff => {
         buffDodge += buff.dodge || 0;
     });
-    let totalDodge = (avo.dodge || 0) + (totalAgility / avo.agiPerDodge) + (gearStats.dodge || 0) + (enchantStats.dodge || 0) + (talentBonuses.dodge || 0) + buffDodge + (setBonuses.dodge || 0) + defenseSkillModifier;
+    let totalDodge = (avo.dodge || 0) + (totalAgility / avo.agiPerDodge) + (gearStats.dodge || 0) + (enchantStats.dodge || 0) + (talentBonuses.dodge || 0) + buffDodge + (setBonuses.dodge || 0) + (setSheet.dodge || 0) + defenseSkillModifier;
     // Improved Primal Aspects (Hunter): +2/4/6% dodge when Aspect of the Monkey is active
     if (selectedClass === 'hunter' && (talentBonuses.improved_primal_aspects_dodge || 0) > 0 &&
         activeBuffs.some(b => b.id === 'aspectOfTheMonkey' || (b.name && b.name.includes('Aspect of the Monkey')))) {
         totalDodge += talentBonuses.improved_primal_aspects_dodge;
     }
-    let totalParry = (avo.parry || 0) + (gearStats.parry || 0) + (enchantStats.parry || 0) + (talentBonuses.parry || 0) + defenseSkillModifier;
-    let totalBlock = (avo.block || 0) + (gearStats.blockChance || 0) + (enchantStats.blockChance || 0) + (talentBonuses.blockChance || 0) + (setBonuses.blockChance || 0) + defenseSkillModifier;
+    let totalParry = (avo.parry || 0) + (gearStats.parry || 0) + (enchantStats.parry || 0) + (talentBonuses.parry || 0) + (setSheet.parry || 0) + defenseSkillModifier;
+    let totalBlock = (avo.block || 0) + (gearStats.blockChance || 0) + (enchantStats.blockChance || 0) + (talentBonuses.blockChance || 0) + (setBonuses.blockChance || 0) + (setSheet.blockChance || 0) + defenseSkillModifier;
 
     // Add blockChance from buffs (e.g., Holy Shield)
     activeBuffs.forEach(buff => {
@@ -600,11 +602,11 @@ export function calculateEffectiveHealth(data) {
     const effectiveHP = (totalHealth / (1 - totalDR)) / damageTakenMultiplier;
 
     // --- Resistances ---
-    let totalFireResist = (gearStats.fireResist || 0) + (enchantStats.fireResist || 0);
-    let totalNatureResist = (gearStats.natureResist || 0) + (enchantStats.natureResist || 0);
-    let totalFrostResist = (gearStats.frostResist || 0) + (enchantStats.frostResist || 0);
-    let totalShadowResist = (gearStats.shadowResist || 0) + (enchantStats.shadowResist || 0);
-    let totalArcaneResist = (gearStats.arcaneResist || 0) + (enchantStats.arcaneResist || 0);
+    let totalFireResist = (gearStats.fireResist || 0) + (enchantStats.fireResist || 0) + (setSheet.fireResist || 0);
+    let totalNatureResist = (gearStats.natureResist || 0) + (enchantStats.natureResist || 0) + (setSheet.natureResist || 0);
+    let totalFrostResist = (gearStats.frostResist || 0) + (enchantStats.frostResist || 0) + (setSheet.frostResist || 0);
+    let totalShadowResist = (gearStats.shadowResist || 0) + (enchantStats.shadowResist || 0) + (setSheet.shadowResist || 0);
+    let totalArcaneResist = (gearStats.arcaneResist || 0) + (enchantStats.arcaneResist || 0) + (setSheet.arcaneResist || 0);
 
     // Add resistances from buffs
     activeBuffs.forEach(buff => {
@@ -615,7 +617,7 @@ export function calculateEffectiveHealth(data) {
         totalArcaneResist += buff.arcaneResist || 0;
     });
 
-    const allResistBonus = (gearStats.allResist || 0) + (enchantStats.allResist || 0) + (talentBonuses.allResist || 0);
+    const allResistBonus = (gearStats.allResist || 0) + (enchantStats.allResist || 0) + (talentBonuses.allResist || 0) + (setSheet.allResist || 0);
     if (allResistBonus > 0) {
         totalFireResist += allResistBonus;
         totalNatureResist += allResistBonus;
@@ -686,14 +688,14 @@ export function calculateEffectiveHealth(data) {
     });
 
     // Each school gets base spell damage + school-specific bonus
-    const baseSpellDamage = (gearStats.dmgAndHealing || 0) + (enchantStats.dmgAndHealing || 0) + buffSpellDamage;
-    const fireDamage = baseSpellDamage + (gearStats.fireDamage || 0) + (enchantStats.fireDamage || 0) + buffFireSpellDamage;
-    const frostDamage = baseSpellDamage + (gearStats.frostDamage || 0) + (enchantStats.frostDamage || 0) + buffFrostSpellDamage;
-    const natureDamage = baseSpellDamage + (gearStats.natureDamage || 0) + (enchantStats.natureDamage || 0) + buffNatureSpellDamage;
-    const shadowDamage = baseSpellDamage + (gearStats.shadowDamage || 0) + (enchantStats.shadowDamage || 0);
-    const arcaneDamage = baseSpellDamage + (gearStats.arcaneDamage || 0) + (enchantStats.arcaneDamage || 0);
-    const holyDamage = baseSpellDamage + (gearStats.holyDamage || 0) + (enchantStats.holyDamage || 0);
-    const spellPen = (gearStats.spellPen || 0) + (enchantStats.spellPen || 0) + (talentBonuses.spellPen || 0);
+    const baseSpellDamage = (gearStats.dmgAndHealing || 0) + (enchantStats.dmgAndHealing || 0) + (setSheet.dmgAndHealing || 0) + buffSpellDamage;
+    const fireDamage = baseSpellDamage + (gearStats.fireDamage || 0) + (enchantStats.fireDamage || 0) + (setSheet.fireDamage || 0) + buffFireSpellDamage;
+    const frostDamage = baseSpellDamage + (gearStats.frostDamage || 0) + (enchantStats.frostDamage || 0) + (setSheet.frostDamage || 0) + buffFrostSpellDamage;
+    const natureDamage = baseSpellDamage + (gearStats.natureDamage || 0) + (enchantStats.natureDamage || 0) + (setSheet.natureDamage || 0) + buffNatureSpellDamage;
+    const shadowDamage = baseSpellDamage + (gearStats.shadowDamage || 0) + (enchantStats.shadowDamage || 0) + (setSheet.shadowDamage || 0);
+    const arcaneDamage = baseSpellDamage + (gearStats.arcaneDamage || 0) + (enchantStats.arcaneDamage || 0) + (setSheet.arcaneDamage || 0);
+    const holyDamage = baseSpellDamage + (gearStats.holyDamage || 0) + (enchantStats.holyDamage || 0) + (setSheet.holyDamage || 0);
+    const spellPen = (gearStats.spellPen || 0) + (enchantStats.spellPen || 0) + (talentBonuses.spellPen || 0) + (setSheet.spellPen || 0);
     // Debug: Log spell pen sources
     if (talentBonuses.spellPen) {
         console.log('Spell Penetration:', {
@@ -705,7 +707,7 @@ export function calculateEffectiveHealth(data) {
     }
 
     // Calculate hit stats for each hand
-    const baseHit = (gearStats.hit || 0) + (enchantStats.hit || 0) + (talentBonuses.hit || 0) + (setBonuses.black_dragon_mail_2pc_hit || 0);
+    const baseHit = (gearStats.hit || 0) + (enchantStats.hit || 0) + (talentBonuses.hit || 0) + (setBonuses.black_dragon_mail_2pc_hit || 0) + (setSheet.hit || 0);
     const totalHit = baseHit + weaponSkillHitBonus - dualWieldMissPenalty;
     const mhHit = baseHit + mhWeaponSkillHitBonus - dualWieldMissPenalty;
     const ohHit = baseHit + ohWeaponSkillHitBonus - dualWieldMissPenalty;
@@ -722,15 +724,15 @@ export function calculateEffectiveHealth(data) {
 
     // --- Return Object ---
     const buffHaste = activeBuffs.reduce((sum, buff) => sum + (buff.haste || 0), 0);
-    const baseHaste = (gearStats.haste || 0) + (enchantStats.haste || 0) + (talentBonuses.haste || 0) + buffHaste;
+    const baseHaste = (gearStats.haste || 0) + (enchantStats.haste || 0) + (talentBonuses.haste || 0) + buffHaste + (setSheet.haste || 0);
 
     const apVsFromGear = {};
     for (const k of AP_VS_GEAR_STAT_KEYS) {
-        apVsFromGear[k] = (gearStats[k] || 0) + (enchantStats[k] || 0);
+        apVsFromGear[k] = (gearStats[k] || 0) + (enchantStats[k] || 0) + (setSheet[k] || 0);
     }
     const dmgHealingVsFromGear = {};
     for (const k of DMG_HEALING_VS_GEAR_STAT_KEYS) {
-        dmgHealingVsFromGear[k] = (gearStats[k] || 0) + (enchantStats[k] || 0);
+        dmgHealingVsFromGear[k] = (gearStats[k] || 0) + (enchantStats[k] || 0) + (setSheet[k] || 0);
     }
     // Passive haste for sim baseline: gear + enchant + talent + UI buffs (auras like Atiesh, food).
     // Excludes sim-internal procs (Bloodlust, Kiss, Flurry) which are applied dynamically.
@@ -740,7 +742,7 @@ export function calculateEffectiveHealth(data) {
         stamina: totalStamina, agility: totalAgility, strength: totalStrength, intellect: totalIntellect, spirit: totalSpirit,
         hpPerStamina: hpPerStamina,
         attackPower: Math.floor(totalAttackPower),
-        druidAP: (gearStats.druidAP || 0) + (enchantStats.druidAP || 0),
+        druidAP: (gearStats.druidAP || 0) + (enchantStats.druidAP || 0) + (setSheet.druidAP || 0),
         crit: totalCrit,
         hit: totalHit,
         haste: baseHaste,
@@ -751,7 +753,7 @@ export function calculateEffectiveHealth(data) {
         rangedHit: rangedHit,
         ranged_weapon_damage_percent: talentBonuses.ranged_weapon_damage_percent || 0,
         spellCrit: totalSpellCrit,
-        spellHit: (gearStats.spellHit || 0) + (enchantStats.spellHit || 0) + (talentBonuses.spellHit || 0) + buffSpellHit,
+        spellHit: (gearStats.spellHit || 0) + (enchantStats.spellHit || 0) + (talentBonuses.spellHit || 0) + buffSpellHit + (setSheet.spellHit || 0),
         weaponSkill: totalWeaponSkill,
         enemyDodgeChance: enemyDodgeChance,
         glancingDamage: glancingDamagePercent,
@@ -764,13 +766,13 @@ export function calculateEffectiveHealth(data) {
         ohHit: ohHit,
         mhEnemyDodgeChance: mhEnemyDodgeChance,
         ohEnemyDodgeChance: ohEnemyDodgeChance,
-        healing: (gearStats.healing || 0) + (enchantStats.healing || 0) + (activeBuffs.reduce((sum, buff) => sum + (buff.healing || 0), 0)),
-        dmgAndHealing: (gearStats.dmgAndHealing || 0) + (enchantStats.dmgAndHealing || 0) + (setBonuses.dmgAndHealing || 0) + buffSpellDamage,
-        mp5: (gearStats.mp5 || 0) + (enchantStats.mp5 || 0) + (activeBuffs.reduce((sum, buff) => sum + (buff.mp5 || 0), 0)),
+        healing: (gearStats.healing || 0) + (enchantStats.healing || 0) + (setSheet.healing || 0) + (activeBuffs.reduce((sum, buff) => sum + (buff.healing || 0), 0)),
+        dmgAndHealing: (gearStats.dmgAndHealing || 0) + (enchantStats.dmgAndHealing || 0) + (setBonuses.dmgAndHealing || 0) + (setSheet.dmgAndHealing || 0) + buffSpellDamage,
+        mp5: (gearStats.mp5 || 0) + (enchantStats.mp5 || 0) + (setSheet.mp5 || 0) + (activeBuffs.reduce((sum, buff) => sum + (buff.mp5 || 0), 0)),
         defense: Math.floor(totalDefense), dodge: totalDodge, parry: totalParry, block: totalBlock,
         blockValue: (selectedClass === 'druid' || selectedClass === 'hunter' || (offhandArmor || 0) <= 0) ? 0 : (() => {
             // Base block value calculation
-            const baseBlockValue = Math.floor((gearStats.blockValue || 0) + (enchantStats.blockValue || 0) + (setBonuses.blockValue || 0) + Math.floor(totalStrength / 20));
+            const baseBlockValue = Math.floor((gearStats.blockValue || 0) + (enchantStats.blockValue || 0) + (setBonuses.blockValue || 0) + (setSheet.blockValue || 0) + Math.floor(totalStrength / 20));
             
             // Apply talent-based block value multipliers (multiplicative)
             let blockValueMultiplier = 1 + (talentBonuses.blockValue_percent || 0);

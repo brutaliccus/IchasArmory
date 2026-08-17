@@ -169,7 +169,21 @@ This document provides an index of all documentation files created for the IchaC
 
 ---
 
-### 6. modules/gear/procs.js - Proc Effect Definitions
+### 6. modules/gear/setDatabase.js + setBonuses.js - Set Bonus Registry
+**Files:** `modules/gear/setDatabase.md`, `modules/gear/setBonuses.md`  
+**Sources:** `setDatabase.js`, `setBonuses.js`, `setDatabaseSheetStats.generated.js`
+
+**Contents:**
+- Item ID → set mapping and bonus tier definitions
+- `modeledInSim` for tooltip ★ markers (`tooltips.js`)
+- `sheetStats` for pure stat bonuses (all classes; generated file)
+- `getSetBonuses()` used by `app.js`, `calculator.js`, combat sim
+
+**Regenerate sheet stats:** `npm run generate:set-sheet-stats`
+
+---
+
+### 6b. modules/gear/procs.js - Proc Effect Definitions
 **File:** `modules/gear/procs.md` (existing comprehensive documentation)
 **Source:** `modules/gear/procs.js` (1,591 LOC)
 

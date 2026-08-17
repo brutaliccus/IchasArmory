@@ -118,6 +118,8 @@ window.getFreshCalculatorTotals = function() {
     };
     
     const totals = calculateEffectiveHealth(characterData);
+    const setWeaponMin = characterData.setBonuses?.sheetStats?.weaponDamageMin || 0;
+    const setWeaponMax = characterData.setBonuses?.sheetStats?.weaponDamageMax || 0;
     
     // Calculate weapon damage with AP contribution (needed for auto attacks in sim)
     const mainhandWeapon = getEquippedGearObjects().mainhand;
@@ -130,8 +132,8 @@ window.getFreshCalculatorTotals = function() {
             const weaponDamageMultiplier = 1 + (talentBonuses.weaponDamageMultiplier || 0);
 
             // Calculate weapon damage with AP bonus: (Base Damage + (AP / 14) × Weapon Speed) × Multiplier
-            totals.weaponDamageMin = Math.floor((weaponStats.weaponDamageMin + (ap / 14) * baseWeaponSpeed) * weaponDamageMultiplier);
-            totals.weaponDamageMax = Math.ceil((weaponStats.weaponDamageMax + (ap / 14) * baseWeaponSpeed) * weaponDamageMultiplier);
+            totals.weaponDamageMin = Math.floor((weaponStats.weaponDamageMin + setWeaponMin + (ap / 14) * baseWeaponSpeed) * weaponDamageMultiplier);
+            totals.weaponDamageMax = Math.ceil((weaponStats.weaponDamageMax + setWeaponMax + (ap / 14) * baseWeaponSpeed) * weaponDamageMultiplier);
             
             // Base (pre-haste) weapon speed: for PPM procs (e.g. Crusader)
             totals.baseWeaponSpeed = baseWeaponSpeed;

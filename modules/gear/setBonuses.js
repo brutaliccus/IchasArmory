@@ -15,6 +15,40 @@
  */
 
 import { setDatabase } from './setDatabase.js';
+import { createEmptyStats } from '../character/stats.js';
+
+/**
+ * Merge sheetStats objects (sums numeric keys; merges weaponSkillByType).
+ * @param {Object} target
+ * @param {Object} source
+ */
+function mergeSheetStats(target, source) {
+    if (!source || typeof source !== 'object') return;
+    for (const [key, value] of Object.entries(source)) {
+        if (key === 'weaponSkillByType' && value && typeof value === 'object') {
+            target.weaponSkillByType = target.weaponSkillByType || {};
+            for (const [weaponType, amount] of Object.entries(value)) {
+                target.weaponSkillByType[weaponType] = (target.weaponSkillByType[weaponType] || 0) + amount;
+            }
+        } else if (typeof value === 'number') {
+            target[key] = (target[key] || 0) + value;
+        }
+    }
+}
+
+/**
+ * Flatten sheet stats onto setBonuses for calculator keys (stamina, hit, etc.).
+ * Mechanic-specific keys (e.g. rockbiter_weapon_bonus) are left untouched.
+ */
+function applySheetStatsToBonuses(setBonuses, sheetStats) {
+    setBonuses.sheetStats = sheetStats;
+    for (const [key, value] of Object.entries(sheetStats)) {
+        if (key === 'weaponSkillByType') continue;
+        if (typeof value === 'number') {
+            setBonuses[key] = (setBonuses[key] || 0) + value;
+        }
+    }
+}
 
 /**
  * Reverse lookup map: itemId → setKey
@@ -95,8 +129,12 @@ export function getActiveBonuses(setCounts) {
  */
 export function bonusesToStats(activeBonuses) {
     const stats = {};
+    const sheetStats = createEmptyStats();
 
     for (const bonus of activeBonuses) {
+        if (bonus.sheetStats) {
+            mergeSheetStats(sheetStats, bonus.sheetStats);
+        }
         if (bonus.statsKeys && typeof bonus.statsKeys === 'object') {
             Object.assign(stats, bonus.statsKeys);
         }
@@ -105,6 +143,7 @@ export function bonusesToStats(activeBonuses) {
         }
     }
 
+    applySheetStatsToBonuses(stats, sheetStats);
     return stats;
 }
 
@@ -120,8 +159,10 @@ export function bonusesToStats(activeBonuses) {
  */
 export function getSetBonuses(equippedGear, debug = false) {
     const setBonuses = {};
+    const sheetStats = createEmptyStats();
 
     if (!equippedGear || typeof equippedGear !== 'object') {
+        setBonuses.sheetStats = sheetStats;
         return setBonuses;
     }
 
@@ -162,6 +203,12 @@ export function getSetBonuses(equippedGear, debug = false) {
 
         for (const [tier, bonus] of Object.entries(setData.bonuses)) {
             if (count >= bonus.pieces) {
+                if (bonus.sheetStats) {
+                    mergeSheetStats(sheetStats, bonus.sheetStats);
+                    if (debug) {
+                        console.log(`[SetBonus] Activated: ${bonus.name} (${count}/${bonus.pieces} pieces) [ID: ${bonus.bonusId}] -> sheetStats`, bonus.sheetStats);
+                    }
+                }
                 if (bonus.statsKeys && typeof bonus.statsKeys === 'object') {
                     Object.assign(setBonuses, bonus.statsKeys);
                     if (debug) {
@@ -178,6 +225,7 @@ export function getSetBonuses(equippedGear, debug = false) {
         }
     }
 
+    applySheetStatsToBonuses(setBonuses, sheetStats);
     return setBonuses;
 }
 

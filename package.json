@@ -11,6 +11,7 @@
     "deploy:pi": "bash scripts/deploy_to_pi.sh",
     "gen:dps-boss-stats": "python scripts/export-dps-raid-boss-stats.py",
     "gen:dps-boss-stats:defaults": "node scripts/generate-dps-raid-boss-stats.mjs",
+    "generate:set-sheet-stats": "node scripts/generate-set-database-sheet-stats.mjs",
     "import:loot": "node scripts/import-turtle-atlas-loot.mjs",
     "gen:dps-boss-icons:zam": "python scripts/apply-zam-ej-icons-to-dps-boss-json.py",
     "preview": "vite preview --port 5174",

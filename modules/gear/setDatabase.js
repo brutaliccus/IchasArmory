@@ -3,13 +3,31 @@
  *
  * This file contains all set bonus definitions with numeric item ID mappings.
  * Bonuses are assigned unique numeric IDs for unambiguous identification.
+ * Sheet-stat-only tiers for all classes are merged from setDatabaseSheetStats.generated.js.
  *
- * @version 2.0.0
+ * @version 2.1.0
  * @since 2026-02-24
  */
 
-export const setDatabase = {
-  sets: {
+import { sheetStatSets } from './setDatabaseSheetStats.generated.js';
+
+function mergeSetDefinitions(baseSets, extraSets) {
+  const merged = { ...baseSets };
+  for (const [key, extra] of Object.entries(extraSets)) {
+    if (!merged[key]) {
+      merged[key] = extra;
+      continue;
+    }
+    merged[key] = {
+      ...merged[key],
+      itemIds: merged[key].itemIds?.length ? merged[key].itemIds : extra.itemIds,
+      bonuses: { ...merged[key].bonuses, ...extra.bonuses },
+    };
+  }
+  return merged;
+}
+
+const coreSets = {
     battlegear_ten_storms: {
       name: "battlegear_ten_storms",
       displayName: "Battlegear of the Ten Storms",
@@ -239,10 +257,16 @@ export const setDatabase = {
       displayName: "Incendosaur",
       itemIds: [60572, 60568, 60582],
       bonuses: {
+        "2pc": {
+          bonusId: 28,
+          pieces: 2,
+          name: "Incendosaur 2pc",
+          description: "Adds 2 fire damage to your melee attacks",
+          modeledInSim: true,
+          statsKey: "incendosaur_2pc_fire_spell_strike",
+          statsValue: 2
+        },
         "3pc": {
-          bonusId: 8,
-          pieces: 3,
-          name: "Incendosaur 3pc",
           description: "5% chance on melee attacks to trigger a Spellstrike dealing 15-26 fire damage",
           modeledInSim: true,
           effect: {
@@ -345,6 +369,19 @@ export const setDatabase = {
           },
           statsKey: "black_dragon_mail_3pc_crit",
           statsValue: 2
+        },
+        "4pc": {
+          bonusId: 29,
+          pieces: 4,
+          name: "Black Dragon Mail 4pc",
+          description: "+18 Fire Resistance",
+          modeledInSim: true,
+          effect: {
+            type: "statBonus",
+            stat: "fireResist",
+            value: 18
+          },
+          sheetStats: { fireResist: 18 }
         }
       }
     },
@@ -562,7 +599,10 @@ export const setDatabase = {
         }
       }
     }
-  }
+};
+
+export const setDatabase = {
+  sets: mergeSetDefinitions(coreSets, sheetStatSets)
 };
 
 export default setDatabase;
