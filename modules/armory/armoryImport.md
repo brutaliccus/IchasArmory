@@ -17,7 +17,7 @@ Single client-side pipeline for Chronicle (and Turtle rollback) armory imports. 
 | `CHRONICLE_REALM_OPTIONS` | Realm dropdown values for Chronicle |
 | `decodeChronicleTalents(class, payload)` | Chronicle `talents.trees[].ranks` → `{ "treeKey-id": points }` |
 | `applyArmoryTalents(class, payload, root, opts)` | Reset tree, apply spec, `updateAllTalentStates`; optional buff regen |
-| `CHRONICLE_ONLY_TALENT_IDS` | Deprecated empty map; rank strings align 1:1 with IchaCalc tree-local ids |
+| `CHRONICLE_ONLY_TALENT_IDS` | Deprecated empty map; do not inject phantom ids into decode order |
 
 ## Enchant handling
 
@@ -48,11 +48,11 @@ Chronicle returns:
 ```
 
 1. Tree array order = `Object.keys(classTalents[class])` (class lowercase).
-2. One digit per talent in **tree array order** (Chronicle `tabIndex`); when rank-string length equals talent count, zip 1:1 by index.
-3. `decodeChronicleTalents` → spec `{ "treeKey-talentId": points }`.
-4. Length / `points_spent` mismatches log warnings without throwing.
+2. One digit per talent in **tabIndex order** (same sequence as each tree's `talents` array in `modules/talents/*.js`). Zip `ranks[i]` → `talents[i]` when lengths match; never sort by local id or inject phantom ids.
+3. `decodeChronicleTalents` → spec `{ "treeKey-talentId": points }`; warns when applied points or rank-digit sum ≠ `points_spent`.
+4. Length mismatches log warnings without throwing.
 
-Source of truth for tree definitions: Chronicle `GET https://octo.chronicleclassic.com/api/v1/wowdb/talent-trees` (`Origin: https://chronicleclassic.com`). IchaCalc mirrors this in `modules/talents/*.js` (Aug 2026 audit). Sinister Pursuit is **Demonology** t1 (not Affliction).
+Source of truth for tree definitions: Chronicle `GET https://octo.chronicleclassic.com/api/v1/wowdb/talent-trees` (`Origin: https://chronicleclassic.com`). IchaCalc mirrors tabIndex order in `modules/talents/*.js`. Legacy decoders that inserted Affliction id `3` into a sorted-id list consumed one rank digit without applying it, shifting all later talents (e.g. Shadow Mastery `1/5` vs `5/5`, Affliction 27 vs 34). Sinister Pursuit is **Demonology** t1 (not Affliction).
 
 **Character Planner** (`armory.js`): after class change + gear, `applyArmoryTalents` on `#talents-list` and regenerates buffs.
 

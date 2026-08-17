@@ -170,12 +170,13 @@ export async function applyArmoryEquipment(equipment, options) {
     return { itemsEquipped, itemsNotFound };
 }
 
-/** @deprecated Chronicle rank strings now align 1:1 with IchaCalc tree-local ids (Sinister Pursuit moved to Demonology). */
+/** @deprecated No longer used — Chronicle rank digits zip 1:1 with `treeDef.talents` tabIndex order. */
 export const CHRONICLE_ONLY_TALENT_IDS = Object.freeze({});
 
 /**
  * Decode Chronicle talent rank strings into IchaCalc spec `{ "treeKey-talentId": points }`.
- * Tree order matches `Object.keys(classTalents[class])`; one digit per talent id (sorted).
+ * Tree order matches `Object.keys(classTalents[class])`; one digit per talent in tabIndex
+ * order (same sequence as each tree's `talents` array in modules/talents/*.js).
  * @param {string} className
  * @param {{ trees?: Array<{ ranks?: string, points_spent?: number }> }} talentsPayload
  * @returns {{ spec: Record<string, number>, warnings: string[] }}
@@ -206,54 +207,50 @@ export function decodeChronicleTalents(className, talentsPayload) {
 
         const ranksStr = String(treeEntry.ranks);
         const talentsInOrder = treeDef.talents;
-        const idOrder = talentsInOrder.map((t) => t.id);
-        const byId = new Map(talentsInOrder.map((t) => [t.id, t]));
+        const talentCount = talentsInOrder.length;
 
-        if (ranksStr.length !== idOrder.length) {
+        if (ranksStr.length !== talentCount) {
             warnings.push(
-                `[Armory] ${classKey}/${treeKey}: rank length ${ranksStr.length} vs expected ${idOrder.length} (best-effort apply)`
+                `[Armory] ${classKey}/${treeKey}: rank length ${ranksStr.length} vs expected ${talentCount} (best-effort apply)`
             );
         }
 
-        const limit = Math.min(ranksStr.length, idOrder.length);
+        const limit = Math.min(ranksStr.length, talentCount);
         let appliedPoints = 0;
+        let rankDigitSum = 0;
 
-        if (ranksStr.length === idOrder.length) {
-            // Chronicle rank digits are tabIndex order — zip 1:1 with IchaCalc talents array.
-            for (let i = 0; i < limit; i++) {
-                const talentId = idOrder[i];
-                const points = parseInt(ranksStr[i], 10);
-                if (!Number.isFinite(points) || points <= 0) continue;
-                spec[`${treeKey}-${talentId}`] = points;
-                appliedPoints += points;
-            }
-        } else {
-            // Length mismatch: legacy sorted-id zip (skip unknown ids without consuming extra digits).
-            const ichaIds = [...idOrder].sort((a, b) => a - b);
-            const extraIds = CHRONICLE_ONLY_TALENT_IDS[classKey]?.[treeKey] || [];
-            const legacyOrder = [...new Set([...ichaIds, ...extraIds])].sort((a, b) => a - b);
-            const legacyLimit = Math.min(ranksStr.length, legacyOrder.length);
-            for (let i = 0; i < legacyLimit; i++) {
-                const talentId = legacyOrder[i];
-                const points = parseInt(ranksStr[i], 10);
-                if (!Number.isFinite(points) || points <= 0) continue;
-                if (!byId.has(talentId)) continue;
-                spec[`${treeKey}-${talentId}`] = points;
-                appliedPoints += points;
-            }
+        for (let i = 0; i < limit; i++) {
+            const talent = talentsInOrder[i];
+            const points = parseInt(ranksStr[i], 10);
+            if (!Number.isFinite(points) || points < 0) continue;
+            rankDigitSum += points;
+            if (points <= 0) continue;
+            spec[`${treeKey}-${talent.id}`] = points;
+            appliedPoints += points;
         }
 
-        if (ranksStr.length > idOrder.length) {
+        if (ranksStr.length > talentCount) {
+            for (let i = talentCount; i < ranksStr.length; i++) {
+                const points = parseInt(ranksStr[i], 10);
+                if (Number.isFinite(points) && points > 0) rankDigitSum += points;
+            }
             warnings.push(
-                `[Armory] ${classKey}/${treeKey}: ${ranksStr.length - idOrder.length} extra rank digit(s) ignored`
+                `[Armory] ${classKey}/${treeKey}: ${ranksStr.length - talentCount} extra rank digit(s) ignored`
             );
         }
 
         const expectedSpent = Number(treeEntry.points_spent);
-        if (Number.isFinite(expectedSpent) && appliedPoints !== expectedSpent) {
-            warnings.push(
-                `[Armory] ${classKey}/${treeKey}: decoded ${appliedPoints} pts vs Chronicle points_spent ${expectedSpent}`
-            );
+        if (Number.isFinite(expectedSpent)) {
+            if (appliedPoints !== expectedSpent) {
+                warnings.push(
+                    `[Armory] ${classKey}/${treeKey}: decoded ${appliedPoints} pts vs Chronicle points_spent ${expectedSpent}`
+                );
+            }
+            if (rankDigitSum !== expectedSpent) {
+                warnings.push(
+                    `[Armory] ${classKey}/${treeKey}: rank digit sum ${rankDigitSum} vs Chronicle points_spent ${expectedSpent}`
+                );
+            }
         }
     });
 
