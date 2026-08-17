@@ -27,7 +27,8 @@ Gear plan data model and localStorage persistence for the Gear Planner page.
   community?: boolean,    // true for cloud/authenticated publishes
   authorName?: string,
   authorId?: string,
-  sourceCommunityId?: string
+  sourceCommunityId?: string,
+  sourceShareId?: string   // ?gp= share snapshot id (not writable)
 }
 ```
 

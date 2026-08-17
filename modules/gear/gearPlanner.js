@@ -119,6 +119,7 @@ export function createEmptyGearPlan(classId = 'warrior', name = 'New Gear Plan')
  * @property {string} [authorName]
  * @property {string} [authorId]
  * @property {string} [sourceCommunityId] When favorited from community
+ * @property {string} [sourceShareId] Snapshot id from ?gp= share URL (not writable)
  */
 
 /** @returns {GearPlan} */
@@ -166,6 +167,7 @@ export function getGearPlanData(plan) {
     if (plan.authorName) out.authorName = String(plan.authorName);
     if (plan.authorId) out.authorId = String(plan.authorId);
     if (plan.sourceCommunityId) out.sourceCommunityId = String(plan.sourceCommunityId);
+    if (plan.sourceShareId) out.sourceShareId = String(plan.sourceShareId);
     if (plan.createdAt) out.createdAt = plan.createdAt;
     if (plan.updatedAt) out.updatedAt = plan.updatedAt;
     if (plan.upvotes != null) out.upvotes = Number(plan.upvotes) || 0;

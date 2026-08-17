@@ -224,6 +224,7 @@ export function initGearPlannerView(cbs) {
         if (session.plan.downvotes != null) currentPlan.downvotes = session.plan.downvotes;
         if (session.plan.myVote) currentPlan.myVote = session.plan.myVote;
         if (session.plan.sourceCommunityId) currentPlan.sourceCommunityId = String(session.plan.sourceCommunityId);
+        if (session.plan.sourceShareId) currentPlan.sourceShareId = String(session.plan.sourceShareId);
         if (session.plan.community) currentPlan.community = true;
         if (session.plan.authorId) currentPlan.authorId = String(session.plan.authorId);
         if (session.plan.authorName) currentPlan.authorName = String(session.plan.authorName);
@@ -1618,6 +1619,26 @@ function canOverwriteCurrentPlan() {
     return false;
 }
 
+/** Loaded plan the user cannot overwrite (community, share link, another author's copy). */
+function isViewingNonOwnedPlan() {
+    if (!currentPlan) return false;
+    if (currentPlan.sourceShareId) return true;
+    const user = window.profileManager?.user;
+    if (currentPlan.community && currentPlan.authorId) {
+        return !user || String(currentPlan.authorId) !== String(user.id);
+    }
+    if (currentPlan.authorId) {
+        return !user || String(currentPlan.authorId) !== String(user.id);
+    }
+    return false;
+}
+
+function shouldShowSaveFooterLeft() {
+    if (!currentPlan) return false;
+    if (canOverwriteCurrentPlan()) return true;
+    return isViewingNonOwnedPlan() || (!!currentPlan.id && !canOverwriteCurrentPlan());
+}
+
 function fillSaveSpecOptions(classId, selectedSpec) {
     const menu = document.getElementById('gp-save-spec-dropdown');
     if (!menu) return;
@@ -1718,7 +1739,7 @@ async function proceedSaveFromDialog(asNew) {
     flushGpOverlayStateToPlan();
     const meta = readSaveMetaFromDialog();
     if (!validateSaveMeta(meta)) return;
-    if (!asNew && !canOverwriteCurrentPlan()) {
+    if (!asNew && currentPlan?.id && !canOverwriteCurrentPlan()) {
         window.notify?.error?.('Only the original author can overwrite this plan. Use Save as New.', 4500, 'Gear Planner');
         return;
     }
@@ -1796,13 +1817,14 @@ function wireSaveOverwriteDialog() {
 
 function requestSaveCurrentPlan() {
     populateSaveDialogFields();
-    const existing = !!currentPlan.id;
     const canOw = canOverwriteCurrentPlan();
+    const forkOnly = !canOw && shouldShowSaveFooterLeft();
+    const existingOwn = canOw;
     const msg = document.getElementById('gp-save-overwrite-msg');
     if (msg) {
-        if (existing && !canOw) {
+        if (forkOnly) {
             msg.textContent = `"${currentPlan.name || 'This plan'}" belongs to another author. You can Save as New (your own copy) — overwrite is disabled.`;
-        } else if (existing) {
+        } else if (existingOwn) {
             msg.textContent = `"${currentPlan.name || 'This plan'}" is already saved. Choose role & spec, then overwrite or save as new.`;
         } else {
             msg.textContent = window.profileManager?.user
@@ -1811,14 +1833,17 @@ function requestSaveCurrentPlan() {
         }
     }
     const hint = document.getElementById('gp-save-author-hint');
-    if (hint) hint.hidden = !(existing && !canOw);
+    if (hint) hint.hidden = !forkOnly;
     const overwriteBtn = document.getElementById('gp-save-overwrite-confirm');
     if (overwriteBtn) {
-        overwriteBtn.disabled = existing && !canOw;
-        overwriteBtn.title = (existing && !canOw) ? 'Only the original author can overwrite' : '';
+        overwriteBtn.hidden = !canOw;
+        overwriteBtn.disabled = !canOw;
+        overwriteBtn.title = canOw ? '' : 'Only the original author can overwrite';
     }
     const footerLeft = document.getElementById('gp-save-footer-left');
-    if (footerLeft) footerLeft.hidden = !existing;
+    if (footerLeft) footerLeft.hidden = !shouldShowSaveFooterLeft();
+    const primarySaveBtn = document.getElementById('gp-save-confirm');
+    if (primarySaveBtn) primarySaveBtn.hidden = forkOnly;
     const dlg = document.getElementById('gp-save-overwrite-dialog');
     if (dlg) {
         dlg.style.display = 'flex';
@@ -1922,6 +1947,7 @@ function getCommunityVoteId(plan = currentPlan) {
 function mergePlanCommunityFields(target, source) {
     if (!target || !source) return;
     if (source.sourceCommunityId) target.sourceCommunityId = String(source.sourceCommunityId);
+    if (source.sourceShareId) target.sourceShareId = String(source.sourceShareId);
     if (source.community) target.community = true;
     if (source.authorId) target.authorId = String(source.authorId);
     if (source.authorName) target.authorName = String(source.authorName);
@@ -2952,7 +2978,7 @@ async function openPickerForSlot(slotId, isAlt) {
 
 async function saveCurrentPlan(asNew = false) {
     flushGpOverlayStateToPlan();
-    if (!asNew && !canOverwriteCurrentPlan()) {
+    if (!asNew && currentPlan?.id && !canOverwriteCurrentPlan()) {
         window.notify?.error?.('Only the original author can overwrite this plan. Use Save as New.', 4500, 'Gear Planner');
         return;
     }
@@ -2984,6 +3010,7 @@ async function saveCurrentPlan(asNew = false) {
         delete plan.downvotes;
         delete plan.myVote;
         delete plan.sourceCommunityId;
+        delete plan.sourceShareId;
     }
 
     if (window.profileManager?.user) {
