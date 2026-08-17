@@ -27,9 +27,12 @@ export async function ensureItemSourcesLoaded() {
             const raw = sourcesData.sources || {};
             sourcesByItemId = {};
             for (const [id, rows] of Object.entries(raw)) {
-                sourcesByItemId[id] = rows.map(r => Array.isArray(r)
-                    ? { instanceId: r[0], instanceName: r[1], kind: r[2], tableTitle: r[3] }
-                    : { instanceId: r.id || r.instanceId, instanceName: r.n || r.instanceName, kind: r.k || r.kind, tableTitle: r.t || r.tableTitle });
+                sourcesByItemId[id] = (Array.isArray(rows) ? rows : []).map(r => {
+                    if (!r) return { instanceId: '', instanceName: '', kind: 'other', tableTitle: '' };
+                    return Array.isArray(r)
+                        ? { instanceId: r[0] ?? '', instanceName: r[1] ?? '', kind: r[2] ?? 'other', tableTitle: r[3] ?? '' }
+                        : { instanceId: r.id || r.instanceId, instanceName: r.n || r.instanceName, kind: r.k || r.kind, tableTitle: r.t || r.tableTitle };
+                });
             }
         } else {
             sourcesByItemId = sourcesData.sources || sourcesData;

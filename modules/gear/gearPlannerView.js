@@ -1811,22 +1811,27 @@ function renderStatsSidebar() {
         list.innerHTML = '<p class="gp-locations-empty">No modified stats yet</p>';
         return;
     }
-    const full = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: true, includeTalents: true, includeBuffs: true }));
-    const ungeared = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: false, includeTalents: true, includeBuffs: true }));
-    const naked = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: false, includeTalents: false, includeBuffs: false }));
-    const cards = GP_STAT_GROUPS.map(group => {
-        const rows = group.rows.map(([key, label, kind]) =>
-            renderGpStatEntry(key, label, kind, false, full, ungeared, naked)
-        ).filter(Boolean).join('');
-        let extra = '';
-        if (group.title === 'Melee') {
-            extra = renderGpWeaponSkillSection(full, ungeared, naked) + renderGpMeleeExtraRows(full, ungeared, naked);
-        }
-        const allRows = rows + extra;
-        if (!allRows) return '';
-        return `<div class="gp-stat-card"><h4 class="gp-locations-group-heading">${escapeHtml(group.title)}</h4>${allRows}</div>`;
-    }).filter(Boolean).join('');
-    list.innerHTML = cards || '<p class="gp-locations-empty">No modified stats yet</p>';
+    try {
+        const full = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: true, includeTalents: true, includeBuffs: true }));
+        const ungeared = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: false, includeTalents: true, includeBuffs: true }));
+        const naked = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: false, includeTalents: false, includeBuffs: false }));
+        const cards = GP_STAT_GROUPS.map(group => {
+            const rows = group.rows.map(([key, label, kind]) =>
+                renderGpStatEntry(key, label, kind, false, full, ungeared, naked)
+            ).filter(Boolean).join('');
+            let extra = '';
+            if (group.title === 'Melee') {
+                extra = renderGpWeaponSkillSection(full, ungeared, naked) + renderGpMeleeExtraRows(full, ungeared, naked);
+            }
+            const allRows = rows + extra;
+            if (!allRows) return '';
+            return `<div class="gp-stat-card"><h4 class="gp-locations-group-heading">${escapeHtml(group.title)}</h4>${allRows}</div>`;
+        }).filter(Boolean).join('');
+        list.innerHTML = cards || '<p class="gp-locations-empty">No modified stats yet</p>';
+    } catch (err) {
+        console.warn('[Gear Planner] Stats sidebar failed', err);
+        list.innerHTML = '<p class="gp-locations-empty">Stats unavailable</p>';
+    }
 }
 
 function hideSaveDialog() {

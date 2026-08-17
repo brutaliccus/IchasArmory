@@ -685,7 +685,7 @@ export function getTalentBonuses(className) {
                 if (points === 0) return;
 
                 // Apply talent bonuses based on talent effects
-                applyTalentBonuses(talent, points, bonuses, className);
+                safeApplyTalentBonuses(talent, points, bonuses, className);
             });
         });
 
@@ -728,6 +728,49 @@ export function getTalentBonuses(className) {
     return bonuses;
 }
 
+/** Per-rank numeric values when talent data omits `values` (Turtle WoW shaman). */
+const TALENT_RANK_VALUE_DEFAULTS = {
+    'Elemental Warding': [4, 7, 10],
+    'Ancestral Knowledge': [1, 2, 3, 4, 5],
+    'Totemic Alignment': [45, 90],
+    'Calming Winds': [8, 16, 25],
+};
+
+const ELEMENTAL_WEAPONS_VALUE_DEFAULTS = {
+    rockbiter: [4, 7, 10],
+    flametongue: [10, 20, 30],
+    frostbrand: [8, 16, 25],
+    windfury: [2, 4, 6],
+};
+
+function getTalentRankValue(talent, points) {
+    const idx = points - 1;
+    if (idx < 0) return 0;
+    const fromTalent = talent?.values;
+    if (Array.isArray(fromTalent) && fromTalent[idx] != null) return fromTalent[idx];
+    const defaults = TALENT_RANK_VALUE_DEFAULTS[talent?.name];
+    if (defaults && defaults[idx] != null) return defaults[idx];
+    return 0;
+}
+
+function getElementalWeaponsRankValue(talent, key, points) {
+    const idx = points - 1;
+    if (idx < 0) return 0;
+    const fromTalent = talent?.values?.[key];
+    if (Array.isArray(fromTalent) && fromTalent[idx] != null) return fromTalent[idx];
+    const defaults = ELEMENTAL_WEAPONS_VALUE_DEFAULTS[key];
+    if (defaults && defaults[idx] != null) return defaults[idx];
+    return 0;
+}
+
+function safeApplyTalentBonuses(talent, points, bonuses, className) {
+    try {
+        applyTalentBonuses(talent, points, bonuses, className);
+    } catch (err) {
+        console.warn(`[Talents] applyTalentBonuses failed for ${talent?.name} (${points} pts):`, err);
+    }
+}
+
 /** Compute talent bonuses from a saved spec map (`tree-talentId` → points), without reading the live tree DOM. */
 export function getTalentBonusesFromSpec(className, spec) {
     const talents = classTalents[className];
@@ -739,7 +782,7 @@ export function getTalentBonusesFromSpec(className, spec) {
             tree.talents.forEach(talent => {
                 const points = parseInt(map[`${treeKey}-${talent.id}`], 10) || parseInt(map[talent.id], 10) || 0;
                 if (points === 0) return;
-                applyTalentBonuses(talent, points, bonuses, className);
+                safeApplyTalentBonuses(talent, points, bonuses, className);
             });
         });
     } else if (Array.isArray(talents)) {
@@ -778,13 +821,15 @@ function applyTalentBonuses(talent, points, bonuses, className) {
     // This is a starting point - we'll need to add stat mappings for each talent
 
     switch (talent.name) {
-        case 'Elemental Warding':
-            bonuses.fire_dr = (bonuses.fire_dr || 0) + parseFloat(talent.values[points - 1]) / 100;
-            bonuses.frost_dr = (bonuses.frost_dr || 0) + parseFloat(talent.values[points - 1]) / 100;
-            bonuses.nature_dr = (bonuses.nature_dr || 0) + parseFloat(talent.values[points - 1]) / 100;
+        case 'Elemental Warding': {
+            const dr = getTalentRankValue(talent, points) / 100;
+            bonuses.fire_dr = (bonuses.fire_dr || 0) + dr;
+            bonuses.frost_dr = (bonuses.frost_dr || 0) + dr;
+            bonuses.nature_dr = (bonuses.nature_dr || 0) + dr;
             break;
+        }
         case 'Ancestral Knowledge':
-            bonuses.stat_percent_all = (bonuses.stat_percent_all || 0) + parseFloat(talent.values[points - 1]) / 100;
+            bonuses.stat_percent_all = (bonuses.stat_percent_all || 0) + getTalentRankValue(talent, points) / 100;
             break;
         case 'Shield Specialization':
             // Shaman: +1/2/3% block chance and +6/12/18% block value
@@ -808,34 +853,33 @@ function applyTalentBonuses(talent, points, bonuses, className) {
             bonuses.shield_armor_multiplier = (bonuses.shield_armor_multiplier || 0) + (points * 0.15);
             bonuses.spirit_armor_threat_percent = (bonuses.spirit_armor_threat_percent || 0) + (points * 5); // 5% per rank, 10% at 2/2
             break;
-        case 'Elemental Weapons':
+        case 'Elemental Weapons': {
             // Store the raw damage reduction value for Rockbiter (calculator will apply it based on current buff state)
-            if (talent.values && talent.values.rockbiter) {
-                bonuses.elemental_weapons_rockbiter_dr = talent.values.rockbiter[points - 1] / 100;
+            const rockbiterDr = getElementalWeaponsRankValue(talent, 'rockbiter', points);
+            if (rockbiterDr) {
+                bonuses.elemental_weapons_rockbiter_dr = rockbiterDr / 100;
             }
 
             // Store the actual ranks for DPS simulation (needed regardless of active imbue)
             bonuses.elemental_weapons_ranks = points;
 
             // Apply bonuses based on active weapon imbue for display purposes
-            const activeImbue = getActiveWeaponImbue();
+            const activeImbue = typeof document !== 'undefined' ? getActiveWeaponImbue() : null;
             if (activeImbue) {
                 switch (activeImbue.id) {
                     case 'flametongue':
-                        // Flametongue: Increases fire damage/spell damage
-                        bonuses.fire_damage_percent = (bonuses.fire_damage_percent || 0) + (talent.values.flametongue[points - 1] / 100);
+                        bonuses.fire_damage_percent = (bonuses.fire_damage_percent || 0) + (getElementalWeaponsRankValue(talent, 'flametongue', points) / 100);
                         break;
                     case 'frostbrand':
-                        // Frostbrand: additive proc chance on melee hits (see imbueSystem getFrostbrandProcChance / damageCalc)
-                        bonuses.frostbrand_proc_bonus = (bonuses.frostbrand_proc_bonus || 0) + (talent.values.frostbrand[points - 1] / 100);
+                        bonuses.frostbrand_proc_bonus = (bonuses.frostbrand_proc_bonus || 0) + (getElementalWeaponsRankValue(talent, 'frostbrand', points) / 100);
                         break;
                     case 'windfury':
-                        // Windfury: Attack speed bonus on miss (visual only, not calculated)
-                        bonuses.windfury_haste_bonus = (bonuses.windfury_haste_bonus || 0) + (talent.values.windfury[points - 1] / 100);
+                        bonuses.windfury_haste_bonus = (bonuses.windfury_haste_bonus || 0) + (getElementalWeaponsRankValue(talent, 'windfury', points) / 100);
                         break;
                 }
             }
             break;
+        }
         case 'Improved Fire Totems':
             // Store the ranks for DPS simulation
             bonuses.improved_fire_totems = points;
@@ -846,7 +890,7 @@ function applyTalentBonuses(talent, points, bonuses, className) {
             break;
         case 'Totemic Alignment':
             // 45% or 90% of totem threat transfers to you (ranks 1 and 2). Without talent: 0%.
-            bonuses.totemic_alignment_threat_percent = parseFloat(talent.values[points - 1]) || 0;
+            bonuses.totemic_alignment_threat_percent = getTalentRankValue(talent, points);
             break;
         case "Element's Grace":
             console.log(`[Element's Grace] Activated with ${points} points`);
@@ -869,7 +913,7 @@ function applyTalentBonuses(talent, points, bonuses, className) {
             break;
         case 'Calming Winds':
             // Reduces threat by 8/16/25% for physical attacks, weapon imbues, Lightning Strike, Stormstrike. Does not apply with Rockbiter.
-            bonuses.calming_winds_threat_reduction = parseFloat(talent.values[points - 1]) || 0;
+            bonuses.calming_winds_threat_reduction = getTalentRankValue(talent, points);
             break;
         case 'Flurry':
             // Attack speed on crit - values: 8, 11, 14, 17, 20
