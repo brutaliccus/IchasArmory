@@ -1,8 +1,22 @@
 // modules/shaman/dpsBossPortraits.js — Portrait image URLs for DPS sim boss picker (by NPC id from raidDefinitions)
 
+import { buildOctowowIconUrl } from '../gear/gear.js';
+
 /** Shown when no URL is set for an NPC id */
-export const DPS_BOSS_PORTRAIT_PLACEHOLDER =
-    'https://wow.zamimg.com/images/wow/icons/large/inv_misc_questionmark.jpg';
+export const DPS_BOSS_PORTRAIT_PLACEHOLDER = buildOctowowIconUrl('inv_misc_questionmark');
+
+/** Build octowow journal boss portrait URL from slug or legacy CDN URL. */
+export function buildOctowowJournalBossUrl(slugOrUrl) {
+    const raw = String(slugOrUrl || '').trim();
+    if (!raw) return DPS_BOSS_PORTRAIT_PLACEHOLDER;
+    if (raw.startsWith('http://') || raw.startsWith('https://')) {
+        const m = raw.match(/ui-ej-boss-[^/?#]+\.png/i);
+        if (m) return `https://octowow.st/db/images/journal/${m[0]}`;
+        return raw;
+    }
+    const slug = raw.replace(/\.png$/i, '');
+    return `https://octowow.st/db/images/journal/${slug}.png`;
+}
 
 /**
  * npcId (from modules/tank/raidDefinitions.js) → full image URL (https).

@@ -229,7 +229,7 @@ export const shamanSpells = {
     lightningStrike: {
         id: 52422,
         name: "Lightning Strike",
-        icon: "https://talents.turtlecraft.gg/icons/spell_nature_thunderclap.png",
+        icon: "spell_nature_thunderclap",
         school: "nature",
         weaponDamagePercent: 0.60,  // 60% weapon damage (physical)
         natureDamagePercent: 0.20,  // +20% as nature

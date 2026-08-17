@@ -291,7 +291,7 @@
     flex-direction: column;
 }
 
-/* Non-shaman: wallpaper-style panel (backgrounds from Turtle talent calculator — talents.turtlecraft.gg) */
+/* Non-shaman: wallpaper-style hero panel (CSS gradient only) */
 .sim-global-hero-host .sim-hero-placeholder {
     pointer-events: auto;
     position: relative;
@@ -309,17 +309,16 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
+/* Decorative hero panel — gradient only (no external wallpaper CDN) */
 .sim-global-hero-host .sim-hero-placeholder__bg {
     position: absolute;
     inset: 0;
     background-color: #1a1815;
-    /* Same layered bgs as the talent calculator UI (anniversary + anomalus webp) */
     background-image:
         linear-gradient(145deg, rgba(21, 21, 24, 0.5) 0%, rgba(21, 21, 24, 0.82) 100%),
-        url('https://talents.turtlecraft.gg/bgs/anomalus.webp'),
-        url('https://talents.turtlecraft.gg/bgs/anniversary.webp');
-    background-size: cover, cover, cover;
-    background-position: center, center, center;
+        radial-gradient(ellipse 80% 60% at 50% 35%, rgba(58, 48, 38, 0.45) 0%, transparent 70%);
+    background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
 }
 

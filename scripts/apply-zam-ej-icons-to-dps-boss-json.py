@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Set modules/shaman/data/dpsRaidBossStats.json iconUrl to ZAM encounter-journal art when available:
-https://wow.zamimg.com/images/wow/journal/ui-ej-boss-{slug}.png
+Set modules/shaman/data/dpsRaidBossStats.json iconUrl to octowow encounter-journal art when available:
+https://octowow.st/db/images/journal/ui-ej-boss-{slug}.png
 
 Run from repo root: python scripts/apply-zam-ej-icons-to-dps-boss-json.py
 """
@@ -21,7 +21,7 @@ REPO_ROOT = os.path.dirname(SCRIPT_DIR)
 JSON_PATH = os.path.join(REPO_ROOT, "modules", "shaman", "data", "dpsRaidBossStats.json")
 
 ssl._create_default_https_context = ssl._create_unverified_context
-BASE = "https://wow.zamimg.com/images/wow/journal/ui-ej-boss-{}.png"
+BASE = "https://octowow.st/db/images/journal/ui-ej-boss-{}.png"
 
 # Slugs that differ from slugify(boss name) or shared journal art.
 # - AQ bug trio (Yauj / Vem / Kri): shared Buru the Gorger EJ art (same as npc 15370).

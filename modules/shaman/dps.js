@@ -32,7 +32,7 @@ import onboardingPresetShamanPriority from './data/onboardingPresetShamanPriorit
 import { SHAMAN_PRESET_SPEC_ICONS } from './shamanConsumePresets.js';
 import dpsRaidBossStats from './data/dpsRaidBossStats.json';
 import { raidDefinitions } from '../tank/raidDefinitions.js';
-import { getDpsBossPortraitUrl } from './dpsBossPortraits.js';
+import { getDpsBossPortraitUrl, buildOctowowJournalBossUrl } from './dpsBossPortraits.js';
 import { defaultTargetSchoolImmune, targetSchoolImmuneFromBossPayload } from './targetSchoolImmunity.js';
 
 /** Default DPS sim target (Naxxramas Patchwerk) when user has not chosen another boss */
@@ -383,7 +383,7 @@ export function getDpsSessionTargetFactionTag() {
 function getDpsBossConfigIconUrl(npcId) {
     const row = dpsRaidBossStats[String(npcId)];
     if (row && typeof row.iconUrl === 'string' && row.iconUrl.trim()) {
-        return row.iconUrl.trim();
+        return buildOctowowJournalBossUrl(row.iconUrl.trim());
     }
     return getDpsBossPortraitUrl(npcId);
 }
@@ -3320,16 +3320,11 @@ function generateAbilityRowHTML(key, result, spellResults, stats) {
     let iconUrl;
     if (key === 'autoAttack') {
         const mainhandWeapon = getCurrentlyEquippedItem('mainhand');
-        if (mainhandWeapon && mainhandWeapon.icon) {
-            const iconName = mainhandWeapon.icon.toLowerCase();
-            iconUrl = `https://octowow.st/db/images/icons/large/${iconName}.png`;
-        } else {
-            iconUrl = `https://talents.turtlecraft.gg/icons/${spell.icon}.png`;
-        }
+        iconUrl = mainhandWeapon?.icon
+            ? resolveIconUrl(mainhandWeapon.icon)
+            : resolveIconUrl(spell.icon);
     } else {
-        iconUrl = spell.icon.startsWith('http') 
-            ? spell.icon 
-            : `https://talents.turtlecraft.gg/icons/${spell.icon}.png`;
+        iconUrl = resolveIconUrl(spell.icon);
     }
 
     const tooltip = generateAbilityTooltip(spell, result, stats);
@@ -3424,7 +3419,7 @@ function generateAbilityRowHTML(key, result, spellResults, stats) {
         const empoweredSpell = empoweredLS.spell;
         const empoweredTooltip = generateAbilityTooltip(empoweredSpell, empoweredLS, stats);
         const empoweredTooltipId = `tooltip-empoweredLightningShield`;
-        const empoweredIconUrl = 'https://talents.turtlecraft.gg/icons/spell_nature_lightningshield.png';
+        const empoweredIconUrl = resolveIconUrl('spell_nature_lightningshield');
 
         html += '<div class="sub-ability">';
         html += '<div style="display: flex; align-items: center; gap: 8px;">';
@@ -5854,49 +5849,49 @@ function getAbilityIconUrl(abilityName) {
                 const iconName = mainhandWeapon.icon.toLowerCase();
                 return `https://octowow.st/db/images/icons/large/${iconName}.png`;
             }
-            return `https://talents.turtlecraft.gg/icons/inv_sword_04.png`;
+            return resolveIconUrl('inv_sword_04');
         },
         'Earth Shock': () => {
             const icon = shamanSpells.earthShock.icon;
-            return icon.startsWith('http') ? icon : `https://talents.turtlecraft.gg/icons/${icon}.png`;
+            return resolveIconUrl(icon);
         },
         'Frost Shock': () => {
             const icon = shamanSpells.frostShock.icon;
-            return icon.startsWith('http') ? icon : `https://talents.turtlecraft.gg/icons/${icon}.png`;
+            return resolveIconUrl(icon);
         },
         'Freezing Cold': () => 'https://octowow.st/db/images/icons/large/spell_frost_frostshock.png',
         'Holy Smite': () => 'https://octowow.st/db/images/icons/large/spell_holy_holysmite.png',
         'Flame Shock': () => {
             const icon = shamanSpells.flameShock.icon;
-            return icon.startsWith('http') ? icon : `https://talents.turtlecraft.gg/icons/${icon}.png`;
+            return resolveIconUrl(icon);
         },
         'Flame Shock DoT': () => {
             const icon = shamanSpells.flameShockDot.icon;
-            return icon.startsWith('http') ? icon : `https://talents.turtlecraft.gg/icons/${icon}.png`;
+            return resolveIconUrl(icon);
         },
         'Earthfury Aftershock': () => {
             const icon = shamanSpells.earthfuryBattlegearAftershockDot?.icon || 'spell_nature_earthshock';
-            return icon.startsWith('http') ? icon : `https://talents.turtlecraft.gg/icons/${icon}.png`;
+            return resolveIconUrl(icon);
         },
         'Stormstrike': () => {
             const icon = shamanSpells.stormstrike.icon;
-            return icon.startsWith('http') ? icon : `https://talents.turtlecraft.gg/icons/${icon}.png`;
+            return resolveIconUrl(icon);
         },
         'Lightning Strike': () => {
             const icon = shamanSpells.lightningStrike.icon;
-            return icon.startsWith('http') ? icon : `https://talents.turtlecraft.gg/icons/${icon}.png`;
+            return resolveIconUrl(icon);
         },
         'Lightning Strike (Physical)': () => {
             const icon = shamanSpells.lightningStrike.icon;
-            return icon.startsWith('http') ? icon : `https://talents.turtlecraft.gg/icons/${icon}.png`;
+            return resolveIconUrl(icon);
         },
         'Lightning Strike (Nature)': () => {
             const icon = shamanSpells.lightningStrike.icon;
-            return icon.startsWith('http') ? icon : `https://talents.turtlecraft.gg/icons/${icon}.png`;
+            return resolveIconUrl(icon);
         },
         'Flametongue Weapon': () => {
             const icon = shamanSpells.flametongueWeapon.icon;
-            return icon.startsWith('http') ? icon : `https://talents.turtlecraft.gg/icons/${icon}.png`;
+            return resolveIconUrl(icon);
         },
         'Frostbrand Weapon': () => {
             const icon = shamanSpells.frostbrandWeapon.icon;
@@ -5904,19 +5899,19 @@ function getAbilityIconUrl(abilityName) {
         },
         'Lightning Shield': () => {
             const icon = shamanSpells.lightningShield.icon;
-            return icon.startsWith('http') ? icon : `https://talents.turtlecraft.gg/icons/${icon}.png`;
+            return resolveIconUrl(icon);
         },
         'Empowered Lightning Shield': () => {
             const icon = shamanSpells.lightningShield.icon;
-            return icon.startsWith('http') ? icon : `https://talents.turtlecraft.gg/icons/${icon}.png`;
+            return resolveIconUrl(icon);
         },
         'Searing Totem': () => {
             const icon = shamanSpells.searingTotem.icon;
-            return icon.startsWith('http') ? icon : `https://talents.turtlecraft.gg/icons/${icon}.png`;
+            return resolveIconUrl(icon);
         },
         'Fire Nova Totem': () => {
             const icon = shamanSpells.fireNovaTotem.icon;
-            return icon.startsWith('http') ? icon : `https://talents.turtlecraft.gg/icons/${icon}.png`;
+            return resolveIconUrl(icon);
         },
         'Magma Totem': () => 'https://octowow.st/db/images/icons/large/spell_fire_selfdestruct.png',
         'Tidal Wave': () => 'https://octowow.st/db/images/icons/large/spell_frost_frostnova.png',
@@ -5926,7 +5921,7 @@ function getAbilityIconUrl(abilityName) {
         'Spell Strike (Holy)': () => 'https://octowow.st/db/images/icons/large/spell_holy_searinglight.png',
         'Stoneclaw Totem': () => {
             const icon = (shamanSpells.stoneclawTotem && shamanSpells.stoneclawTotem.icon) || 'spell_nature_stoneclawtotem';
-            return icon.startsWith('http') ? icon : `https://talents.turtlecraft.gg/icons/${icon}.png`;
+            return resolveIconUrl(icon);
         },
         'Shard of the Fallen Star': () => 'https://octowow.st/db/images/icons/large/inv_misc_ahnqirajtrinket_04.png',
         'Incendosaur 3pc (Fire)': () => 'https://octowow.st/db/images/icons/large/spell_fire_fireball02.png',
@@ -6003,7 +5998,7 @@ function getAbilityIconUrl(abilityName) {
     }
     
     // Default fallback
-    return 'https://talents.turtlecraft.gg/icons/spell_nature_lightningshield.png';
+    return resolveIconUrl('spell_nature_lightningshield');
 }
 
 function renderWorkerDiagnosticBanner(diagnostics) {
@@ -8874,7 +8869,7 @@ export function getPresetShamanDpsPriority(presetName) {
 }
 
 /** WoW Totemic hero talent atlas — static first slot in priority rows */
-const PRIORITY_PRESET_MENU_ICON_URL = 'https://wow.zamimg.com/images/wow/TextureAtlas/live/talents-heroclass-shaman-totemic.webp';
+const PRIORITY_PRESET_MENU_ICON_URL = 'https://octowow.st/db/images/icons/large/spell_nature_bloodlust.png';
 
 const TURTLE_ICON_LARGE = 'https://octowow.st/db/images/icons/large';
 
@@ -11251,8 +11246,8 @@ function renderGearCompareTrinketConfig(container) {
         const isEnabled = abilityConfig.enabled !== false;
         const itemIconName = (item.icon || '').toLowerCase();
         const iconUrl = itemIconName
-            ? `https://octowow.st/db/images/icons/large/${itemIconName}.png`
-            : `https://talents.turtlecraft.gg/icons/${ability.icon}.png`;
+            ? resolveIconUrl(itemIconName)
+            : resolveIconUrl(ability.icon);
 
         const card = document.createElement('div');
         card.style.cssText = 'cursor: pointer; position: relative; transition: filter 0.15s, opacity 0.15s;';

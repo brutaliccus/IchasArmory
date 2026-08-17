@@ -3,7 +3,7 @@
 import './notifications.js';
 import './profiles.js';
 
-import { getItemsForSlot, getItemById, generateGearSlots, getGearStats, getEnchantStats, equipItem, clearItem, clearAllItems, updateStatDisplay, getCurrentlyEquippedItem, ICON_BASE_URL, ICON_BASE_URL_BACKUP, PLACEHOLDER_ICON_URL, slotIconMap, refreshEmptySlotPlaceholders, getEnchantableSlots, applyEnchant, updateEnchantDisplay, getAppliedEnchant, createIconImage, getEquippedGear, getEquippedGearObjects, setEquippedGear, getSelectedEnchants, setSelectedEnchants, isRangedWeaponEnchantable, getRangedWeaponType, getMeleeWeaponType, getAllSpellStrikeSources } from './modules/gear/gear.js';
+import { getItemsForSlot, getItemById, generateGearSlots, getGearStats, getEnchantStats, equipItem, clearItem, clearAllItems, updateStatDisplay, getCurrentlyEquippedItem, ICON_BASE_URL, ICON_BASE_URL_BACKUP, PLACEHOLDER_ICON_URL, slotIconMap, refreshEmptySlotPlaceholders, getEnchantableSlots, applyEnchant, updateEnchantDisplay, getAppliedEnchant, createIconImage, getEquippedGear, getEquippedGearObjects, setEquippedGear, getSelectedEnchants, setSelectedEnchants, isRangedWeaponEnchantable, getRangedWeaponType, getMeleeWeaponType, getAllSpellStrikeSources, resolveIconUrl } from './modules/gear/gear.js';
 import { enchantDatabase } from './modules/gear/enchants.js';
 import { findEnchantIndexByEffectId } from './modules/gear/enchantEffectIds.js';
 import { generateBuffIcons, getActiveBuffs, handleBuffExclusivity, applyBuffListToDom, clearAllBuffsDebuffsInDom } from './modules/character/buffs.js';
@@ -40,12 +40,12 @@ import {
 const classIconData = {
     warrior: { name: 'Warrior', icon: 'assets/icons/classicon_warrior.jpg' },
     paladin: { name: 'Paladin', icon: 'assets/icons/classicon_paladin.jpg' },
-    hunter: { name: 'Hunter', icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_weapon_bow_07.jpg' },
-    rogue: { name: 'Rogue', icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_throwingknife_04.jpg' },
-    priest: { name: 'Priest', icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_staff_30.jpg' },
+    hunter: { name: 'Hunter', icon: 'inv_weapon_bow_07' },
+    rogue: { name: 'Rogue', icon: 'inv_throwingknife_04' },
+    priest: { name: 'Priest', icon: 'inv_staff_30' },
     shaman: { name: 'Shaman', icon: 'assets/icons/Spell_Nature_BloodLust.png' },
-    mage: { name: 'Mage', icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_staff_13.jpg' },
-    warlock: { name: 'Warlock', icon: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_drowsy.jpg' },
+    mage: { name: 'Mage', icon: 'inv_staff_13' },
+    warlock: { name: 'Warlock', icon: 'spell_nature_drowsy' },
     druid: { name: 'Druid', icon: 'assets/icons/classicon_druid.jpg' },
 };
 
@@ -1026,13 +1026,13 @@ function syncClassRaceDrawerToggles() {
     const cid = getCurrentClass();
     const cdata = classIconData[cid];
     if (cdata?.icon) {
-        classImg.src = cdata.icon;
+        classImg.src = resolveIconUrl(cdata.icon);
         classImg.alt = cdata.name || '';
     }
     const rid = getCurrentRace();
     const rdata = raceIconData[rid];
     if (rdata?.icon) {
-        raceImg.src = rdata.icon;
+        raceImg.src = resolveIconUrl(rdata.icon);
         raceImg.alt = rdata.name || '';
     } else {
         raceImg.removeAttribute('src');
@@ -1163,7 +1163,7 @@ function generateClassIcons() {
     container.innerHTML = sortedIds.map(classId => {
         const data = classIconData[classId];
         return `<div class="class-icon" data-class-id="${classId}" data-class-name="${data.name}">
-            <img src="${data.icon}" alt="${data.name}">
+            <img src="${resolveIconUrl(data.icon)}" alt="${data.name}">
         </div>`;
     }).join('');
     syncClassRaceDrawerToggles();
@@ -1201,7 +1201,7 @@ function generateRaceIcons(className) {
     container.innerHTML = listIds.map(raceId => {
         const data = raceIconData[raceId];
         return `<div class="race-icon" data-race-id="${raceId}" data-race-name="${data.name}">
-            <img src="${data.icon}" alt="${data.name}">
+            <img src="${resolveIconUrl(data.icon)}" alt="${data.name}">
         </div>`;
     }).join('');
     syncClassRaceDrawerToggles();
@@ -1212,7 +1212,7 @@ function getClassPickerEntries() {
         .sort((a, b) =>
             classIconData[a].name.localeCompare(classIconData[b].name, undefined, { sensitivity: 'base' })
         )
-        .map(id => ({ id, name: classIconData[id].name, icon: classIconData[id].icon }));
+        .map(id => ({ id, name: classIconData[id].name, icon: resolveIconUrl(classIconData[id].icon) }));
 }
 
 function getRacePickerEntries(className) {
@@ -1221,7 +1221,7 @@ function getRacePickerEntries(className) {
     raceIds.sort((a, b) =>
         raceIconData[a].name.localeCompare(raceIconData[b].name, undefined, { sensitivity: 'base' })
     );
-    return raceIds.map(id => ({ id, name: raceIconData[id].name, icon: raceIconData[id].icon }));
+    return raceIds.map(id => ({ id, name: raceIconData[id].name, icon: resolveIconUrl(raceIconData[id].icon) }));
 }
 
 function generatePlaceholderIcons() {

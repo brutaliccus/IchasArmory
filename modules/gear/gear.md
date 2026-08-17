@@ -27,7 +27,7 @@ Gear management module — handles equipping/unequipping items, computing aggreg
 | `buildOctowowIconUrl(iconRef, size?)` | Builds `https://octowow.st/db/images/icons/{large\|medium}/{basename}.png` from a basename or legacy URL. |
 | `resolveIconUrl(iconRef, size?)` | Preferred icon URL for items/UI: octowow.st for game icons; passes through `assets/` paths. |
 | `createIconImage(iconName, altText)` | Creates `<img>` using `resolveIconUrl` (fallback chain via `installIconLoadFallbacks`). |
-| `installIconLoadFallbacks()` | Global capture-phase `error` listener: failed icons retry octowow → zamimg (no turtle-wow CDN). |
+| `installIconLoadFallbacks()` | Global capture-phase `error` listener: failed icons retry octowow (zamimg only as last-resort fallback; no turtle-wow CDN). |
 | `applyEnchant(slotId, enchantIndex)` | Apply an enchant to a slot. |
 | `getAppliedEnchant(slotId)` | Get the enchant currently applied to a slot. |
 

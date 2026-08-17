@@ -7,9 +7,10 @@ import { itemLoader } from './itemLoader.js';
 import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, parseSpellStrikeSourcesFromItem, parseSpellStrikeFromText } from '../character/stats.js';
 
 // Icon constants
-export const PLACEHOLDER_ICON_URL = 'https://wow.zamimg.com/images/wow/icons/large/inventoryslot_';
+export const OCTOWOW_ICON_BASE = 'https://octowow.st/db/images/icons';
+export const PLACEHOLDER_ICON_URL = `${OCTOWOW_ICON_BASE}/large/inventoryslot_`;
 const RELIC_CLASSES = new Set(['druid', 'shaman', 'paladin']);
-const RELIC_PLACEHOLDER_URL = 'https://wow.zamimg.com/images/wow/icons/large/inventoryslot_relic.jpg';
+const RELIC_PLACEHOLDER_URL = `${OCTOWOW_ICON_BASE}/large/inventoryslot_relic.png`;
 
 /** Empty paperdoll icon URL. Druid/shaman/paladin ranged uses relic, not bow. */
 export function getEmptySlotPlaceholderUrl(slotId, classId) {
@@ -17,7 +18,7 @@ export function getEmptySlotPlaceholderUrl(slotId, classId) {
         return RELIC_PLACEHOLDER_URL;
     }
     const iconFileName = slotIconMap[slotId];
-    return iconFileName ? `${PLACEHOLDER_ICON_URL}${iconFileName}.jpg` : '';
+    return iconFileName ? `${PLACEHOLDER_ICON_URL}${iconFileName}.png` : '';
 }
 
 function resolvePlaceholderClassId(classId) {
@@ -59,7 +60,6 @@ export const slotIconMap = {
     ranged: 'ranged'
 };
 export const ICON_BASE_URL = 'https://octowow.st/db/images/icons/large/';
-export const OCTOWOW_ICON_BASE = 'https://octowow.st/db/images/icons';
 /** Local barrens.chat icon pack for Gear Planner save picker */
 export const LOCAL_WOW_ICON_PACK_BASE = '/assets/wow-icons/large/';
 /** Second fallback when primary DB is down (same icon names, .jpg on Wowhead CDN) */
@@ -113,6 +113,8 @@ export function resolveIconUrl(iconRef, size = 'large') {
     if (!raw) return buildOctowowIconUrl('inv_misc_questionmark', size);
     if (raw.startsWith('assets/') || raw.startsWith('/assets/')) return raw;
     if (raw.startsWith('http://') || raw.startsWith('https://')) {
+        const journal = raw.match(/ui-ej-boss-[^/?#]+\.png/i);
+        if (journal) return `https://octowow.st/db/images/journal/${journal[0]}`;
         const fromKnownHost = raw.match(/\/icons\/(?:large|medium)\/([^/?#]+)\.(?:png|jpg|jpeg|webp)/i)
             || raw.match(/\/icons\/([^/?#]+)\.(?:png|jpg|jpeg|webp)/i);
         if (fromKnownHost) return buildOctowowIconUrl(fromKnownHost[1], size);
