@@ -461,9 +461,9 @@
                                         <div class="results-top-row">
                                             <div class="detailed-stats-compact">
                                                 <h2>Stat Breakdown</h2>
-                                                <div class="stats-grid-compact">
+                                                <div class="stats-grid-compact stats-grid-compact--with-ranged">
                                                 <!-- Row 1: attributes, damage reduction, melee, ranged, spell -->
-                                                <div class="stat-column">
+                                                <div class="stat-column" data-stat-row="1">
                                                     <h4>Attributes</h4>
                                                     <div class="stat-item"><span>Strength</span><strong id="totalStrength">0</strong></div>
                                                     <div class="stat-item"><span>Agility</span><strong id="totalAgility">0</strong></div>
@@ -472,7 +472,7 @@
                                                     <div class="stat-item"><span>Spirit</span><strong id="totalSpirit">0</strong></div>
                                                     <div class="stat-item"><span>Crit Dmg Reduction</span><strong id="totalCritDmgReduction">0.00%</strong></div>
                                                 </div>
-                                                <div class="stat-column">
+                                                <div class="stat-column" data-stat-row="1">
                                                     <h4>Damage Reduction</h4>
                                                     <div class="stat-item"><span>All Spell</span><strong id="totalMagicDR">0.00%</strong></div>
                                                     <div class="stat-item"><span>Fire</span><strong id="totalFireDR">0.00%</strong></div>
@@ -482,7 +482,7 @@
                                                     <div class="stat-item"><span>Arcane</span><strong id="totalArcaneDR">0.00%</strong></div>
                                                     <div class="stat-item"><span>Holy</span><strong id="totalHolyDR">0.00%</strong></div>
                                                 </div>
-                                                <div class="stat-column">
+                                                <div class="stat-column" data-stat-row="1">
                                                     <h4>Melee</h4>
                                                     <div class="stat-item"><span>Weapon Damage</span><strong id="weaponDamageRange">-</strong></div>
                                                     <div class="stat-item"><span>Weapon Speed</span><strong id="weaponSpeed">-</strong></div>
@@ -493,7 +493,7 @@
                                                     <div class="stat-item"><span>Melee Hit</span><strong id="totalHit">0.00%</strong></div>
                                                     <div class="stat-item"><span>Haste</span><strong id="totalHaste">0.00%</strong></div>
                                                 </div>
-                                                <div class="stat-column" id="ranged-stats-column">
+                                                <div class="stat-column" id="ranged-stats-column" data-stat-row="1">
                                                     <h4>Ranged</h4>
                                                     <div class="stat-item"><span>Weapon Damage</span><strong id="rangedWeaponDamageRange">-</strong></div>
                                                     <div class="stat-item"><span>Weapon Speed</span><strong id="rangedWeaponSpeed">-</strong></div>
@@ -503,7 +503,7 @@
                                                     <div class="stat-item"><span>Ranged Hit</span><strong id="rangedHit">0.00%</strong></div>
                                                     <div class="stat-item"><span>Haste</span><strong id="rangedHaste">0.00%</strong></div>
                                                 </div>
-                                                <div class="stat-column">
+                                                <div class="stat-column" data-stat-row="1">
                                                     <h4>Spell</h4>
                                                     <div style="margin-bottom: 10px;">
                                                         <select id="spellSchoolFilter" class="spell-school-filter" style="width: 100%; padding: 4px; background: #1f1f30; color: #d0d0e8; border: 1px solid #2a2a40; border-radius: 4px; margin-bottom: 5px;">
@@ -528,7 +528,7 @@
                                                     <div class="stat-item"><span>Haste</span><strong id="totalHasteSpell">0.00%</strong></div>
                                                 </div>
                                                 <!-- Row 2: defense, resistances, advanced melee, spell strike, school specific damage -->
-                                                <div class="stat-column">
+                                                <div class="stat-column" data-stat-row="2">
                                                     <h4>Defense</h4>
                                                     <div class="stat-item"><span>Health</span><strong id="totalHealthBreakdown">0</strong></div>
                                                     <div class="stat-item"><span>Effective HP</span><strong id="defenseEffectiveHP">0</strong></div>
@@ -542,7 +542,7 @@
                                                     <div class="stat-item"><span>Mit Score</span><strong id="defenseMitigationScore">Run Sim</strong></div>
                                                     <div class="stat-item"><span>Tank Score</span><strong id="defenseTankScore">Run Sim</strong></div>
                                                 </div>
-                                                <div class="stat-column">
+                                                <div class="stat-column" data-stat-row="2">
                                                     <h4>Resistances</h4>
                                                     <div class="stat-item"><span>Fire</span><strong id="totalFireResist">0</strong></div>
                                                     <div class="stat-item"><span>Nature</span><strong id="totalNatureResist">0</strong></div>
@@ -550,7 +550,7 @@
                                                     <div class="stat-item"><span>Shadow</span><strong id="totalShadowResist">0</strong></div>
                                                     <div class="stat-item"><span>Arcane</span><strong id="totalArcaneResist">0</strong></div>
                                                 </div>
-                                                <div class="stat-column">
+                                                <div class="stat-column" data-stat-row="2">
                                                     <h4>Advanced Melee</h4>
                                                     <div class="stat-item"><span>Weapon Skill</span><strong id="totalWeaponSkill">300</strong></div>
                                                     <div class="stat-item"><span>Dodge Chance</span><strong id="enemyDodgeChance">0.00%</strong></div>
@@ -558,14 +558,14 @@
                                                     <div class="stat-item"><span>Armor Penetration</span><strong id="totalArmorPen">0</strong></div>
                                                     <div id="advancedMeleeApVsBonusRows" class="advanced-melee-ap-vs-bonus-rows" aria-live="polite"></div>
                                                 </div>
-                                                <div class="stat-column">
+                                                <div class="stat-column" data-stat-row="2">
                                                     <h4>Misc Effects</h4>
                                                     <div class="stat-item" id="vampirism-row"><span>Vampirism</span><strong id="totalVampirism">0%</strong></div>
                                                     <div class="stat-item" id="fortune-row"><span>Fortune</span><strong id="totalFortune">+0%</strong></div>
                                                     <div class="stat-item"><span>Spell Strike Sources</span><strong id="spellStrikeSourcesCount">0</strong></div>
                                                     <div id="spellStrikeSourcesList" class="spell-strike-sources-list"></div>
                                                 </div>
-                                                <div class="stat-column">
+                                                <div class="stat-column" data-stat-row="2">
                                                     <h4>School Specific Damage</h4>
                                                     <div class="stat-item"><span>Fire Damage</span><strong id="totalFireDamage">0</strong></div>
                                                     <div class="stat-item"><span>Frost Damage</span><strong id="totalFrostDamage">0</strong></div>

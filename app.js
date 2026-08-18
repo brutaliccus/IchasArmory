@@ -1292,7 +1292,10 @@ function addEnchantButtons() {
 
 function updateRangedStatsColumnVisibility(classId = getCurrentClass()) {
     const col = document.getElementById('ranged-stats-column');
-    if (col) col.style.display = classShowsRangedStats(classId) ? '' : 'none';
+    const grid = col?.closest('.stats-grid-compact');
+    const show = classShowsRangedStats(classId);
+    if (col) col.style.display = show ? '' : 'none';
+    if (grid) grid.classList.toggle('stats-grid-compact--with-ranged', show);
 }
 
 function updateRangedEnchantVisibility() {
