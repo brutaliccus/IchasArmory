@@ -1965,7 +1965,7 @@ function displayMainResults(totals) {
     // Update mitigation score
     updateMitigationScore();
 
-    elements.totalArmorBreakdown.textContent = (totals.armor || 0).toLocaleString();
+    if (elements.totalArmorBreakdown) elements.totalArmorBreakdown.textContent = (totals.armor || 0).toLocaleString();
     elements.totalStamina.textContent = (totals.stamina || 0).toLocaleString();
     elements.totalAgility.textContent = (totals.agility || 0).toLocaleString();
     elements.totalStrength.textContent = (totals.strength || 0).toLocaleString();
@@ -2446,12 +2446,12 @@ function displayMainResults(totals) {
     }
 
     if (elements.totalDefense) elements.totalDefense.textContent = (totals.defense || 0).toLocaleString();
-    elements.totalDodge.textContent = formatSmartPercent(totals.dodge || 0);
-    elements.totalParry.textContent = formatSmartPercent(totals.parry || 0);
-    elements.totalBlock.textContent = formatSmartPercent(totals.block || 0);
+    if (elements.totalDodge) elements.totalDodge.textContent = formatSmartPercent(totals.dodge || 0);
+    if (elements.totalParry) elements.totalParry.textContent = formatSmartPercent(totals.parry || 0);
+    if (elements.totalBlock) elements.totalBlock.textContent = formatSmartPercent(totals.block || 0);
     if (elements.totalMissChance) elements.totalMissChance.textContent = formatSmartPercent(totals.missChance || 0);
     if (elements.totalBlockValue) elements.totalBlockValue.textContent = (totals.blockValue || 0).toLocaleString();
-    elements.totalMitigation.textContent = formatSmartPercent(totals.totalMitigation || 0);
+    if (elements.totalMitigation) elements.totalMitigation.textContent = formatSmartPercent(totals.totalMitigation || 0);
 
     // Add Holy Shield bonus display for Paladins with the talent
     if (currentClass === 'paladin') {
@@ -2463,10 +2463,10 @@ function displayMainResults(totals) {
 
             // Add Holy Shield bonus to block display with icon
             const holyShieldIcon = `<img src="${resolveIconUrl('spell_holy_blessingofprotection')}" style="width: 14px; height: 14px; vertical-align: middle; margin-left: 4px;" alt="Holy Shield" title="With Holy Shield active">`;
-            elements.totalBlock.innerHTML = `${formatSmartPercent(totals.block || 0)} (${holyShieldIcon} ${formatSmartPercent(blockWithHolyShield)})`;
+            if (elements.totalBlock) elements.totalBlock.innerHTML = `${formatSmartPercent(totals.block || 0)} (${holyShieldIcon} ${formatSmartPercent(blockWithHolyShield)})`;
 
             // Add Holy Shield bonus to avoidance display with icon
-            elements.totalMitigation.innerHTML = `${formatSmartPercent(totals.totalMitigation || 0)} (${holyShieldIcon} ${formatSmartPercent(avoidanceWithHolyShield)})`;
+            if (elements.totalMitigation) elements.totalMitigation.innerHTML = `${formatSmartPercent(totals.totalMitigation || 0)} (${holyShieldIcon} ${formatSmartPercent(avoidanceWithHolyShield)})`;
         }
     }
 

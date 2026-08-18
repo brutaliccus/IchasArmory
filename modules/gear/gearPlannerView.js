@@ -1930,13 +1930,13 @@ function gpSchoolDrDiffersFromBaseline(full, key) {
     return Math.abs((school - baseline) * 100) >= 0.01;
 }
 
-function renderGpStatEntry(key, label, kind, nested, full, ungeared, naked, rowTag) {
+function renderGpStatEntry(key, label, kind, nested, full, ungeared, naked, rowTag, alwaysShow = false) {
     if (rowTag === 'school' && !gpSchoolDiffersFromBaseline(full, key)) return '';
     if (rowTag === 'schoolDr' && !gpSchoolDrDiffersFromBaseline(full, key)) return '';
     const total = Number(full[key]) || 0;
     const gearBonus = total - (Number(ungeared[key]) || 0);
     const vsNaked = total - (Number(naked[key]) || 0);
-    if (Math.abs(gearBonus) < 0.005 && Math.abs(vsNaked) < 0.005) return '';
+    if (!alwaysShow && Math.abs(gearBonus) < 0.005 && Math.abs(vsNaked) < 0.005) return '';
     return gpStatRowHtml(label, total, gearBonus, kind, nested);
 }
 
@@ -1983,13 +1983,14 @@ function gpStaticStatRowHtml(label, text) {
 
 function renderGpDefenseSection(full, ungeared, naked, tankWeights) {
     const parts = [];
-    for (const [key, label, kind] of [
-        ['health', 'Health', null],
-        ['ehp', 'Effective HP', null],
-        ['armor', 'Armor', null],
-        ['physicalDR', 'DR', 'frac'],
+    for (const [key, label, kind, alwaysShow] of [
+        ['health', 'Health', null, false],
+        ['ehp', 'Effective HP', null, false],
+        ['armor', 'Armor', null, false],
+        ['defense', 'Defense', null, true],
+        ['physicalDR', 'DR', 'frac', false],
     ]) {
-        const row = renderGpStatEntry(key, label, kind, false, full, ungeared, naked);
+        const row = renderGpStatEntry(key, label, kind, false, full, ungeared, naked, undefined, alwaysShow);
         if (row) parts.push(row);
     }
     const avoidance = renderGpAvoidanceSection(full, ungeared, naked);
