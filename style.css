@@ -1702,8 +1702,32 @@ input, select {
 }
 .enchant-item-name {
     display: block;
+    line-height: 1.35;
+    white-space: normal;
+    overflow: hidden;
+}
+.enchant-item-name--wrap {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    word-break: break-word;
+}
+.enchant-item-name--split {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.15em 0.35em;
+}
+.enchant-item-name-prefix {
+    min-width: 0;
+    flex: 1 1 auto;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+.enchant-item-name-effect {
+    flex: 0 0 auto;
     white-space: nowrap;
 }
 .enchant-item:hover {

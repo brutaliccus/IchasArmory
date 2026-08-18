@@ -217,7 +217,6 @@ export function getEnchantCompactStatSegments(stats) {
 export function mechanicShortNameFromFullName(fullName) {
     if (!fullName || fullName === 'None') return '';
     const trimmed = fullName.trim();
-    const lower = trimmed.toLowerCase();
     const prefixes = [
         /^enchant\s+2h\s+weapon\s*-\s*/i,
         /^enchant\s+shield\s*-\s*/i,
@@ -229,6 +228,24 @@ export function mechanicShortNameFromFullName(fullName) {
         if (m !== trimmed) return m.trim() || trimmed;
     }
     return trimmed;
+}
+
+/**
+ * Split picker label into prefix + parenthetical effect suffix.
+ * Suffix (e.g. `(+7 Agi)`) stays visible when the prefix is truncated.
+ * @param {string} fullName
+ * @returns {{ prefix: string; suffix: string; full: string }}
+ */
+export function splitEnchantPickerLabel(fullName) {
+    if (!fullName || fullName === 'None') {
+        return { prefix: 'None', suffix: '', full: 'None' };
+    }
+    const full = mechanicShortNameFromFullName(fullName) || fullName;
+    const match = full.match(/^(.+?)\s*(\([^)]+\))\s*$/);
+    if (match) {
+        return { prefix: match[1].trim(), suffix: match[2], full };
+    }
+    return { prefix: full, suffix: '', full };
 }
 
 /**

@@ -12,7 +12,7 @@ import {
     groupEnchantsByCategory,
     getEnchantQualityClass,
 } from '../gear/enchantCategories.js';
-import { mechanicShortNameFromFullName } from '../gear/enchantStatLabels.js';
+import { splitEnchantPickerLabel } from '../gear/enchantStatLabels.js';
 import { getStatSearchTerms, getItemType, filterEnchantsByItemType, filterEnchantsByClass, parseStatsFromTooltip, KEY_MAP } from '../character/stats.js';
 import {
     ensureItemSourcesLoaded,
@@ -1051,12 +1051,6 @@ function enchantMatchesSearch(enchant, searchLower) {
     return false;
 }
 
-function getEnchantPickerDisplayName(enchant) {
-    if (!enchant) return '';
-    if (enchant.name === 'None') return 'None';
-    return mechanicShortNameFromFullName(enchant.name) || enchant.name;
-}
-
 function escapeEnchantPickerHtml(text) {
     return String(text)
         .replace(/&/g, '&amp;')
@@ -1065,13 +1059,26 @@ function escapeEnchantPickerHtml(text) {
         .replace(/"/g, '&quot;');
 }
 
+function renderEnchantItemNameHtml(enchant, qualityClass) {
+    if (!enchant || enchant.name === 'None') {
+        return `<span class="enchant-item-name ${qualityClass}">None</span>`;
+    }
+
+    const { prefix, suffix } = splitEnchantPickerLabel(enchant.name);
+    if (!suffix) {
+        return `<span class="enchant-item-name enchant-item-name--wrap ${qualityClass}">${escapeEnchantPickerHtml(prefix)}</span>`;
+    }
+
+    return `<span class="enchant-item-name enchant-item-name--split ${qualityClass}"><span class="enchant-item-name-prefix">${escapeEnchantPickerHtml(prefix)}</span><span class="enchant-item-name-effect">${escapeEnchantPickerHtml(suffix)}</span></span>`;
+}
+
 function renderEnchantItemHtml(enchant, allEnchants, selectedEnchantIndex) {
     const index = allEnchants.findIndex((e) => e.name === enchant.name);
     const isSelected = index === selectedEnchantIndex;
     const qualityClass = getEnchantQualityClass(enchant);
-    const displayName = getEnchantPickerDisplayName(enchant);
+    const nameHtml = renderEnchantItemNameHtml(enchant, qualityClass);
     const selectedClass = isSelected ? ' is-selected is-enchanted' : '';
-    return `<button type="button" class="enchant-item${selectedClass}" data-enchant-index="${index}" title="${escapeEnchantPickerHtml(enchant.name)}"><span class="enchant-item-name ${qualityClass}">${escapeEnchantPickerHtml(displayName)}</span></button>`;
+    return `<button type="button" class="enchant-item${selectedClass}" data-enchant-index="${index}" title="${escapeEnchantPickerHtml(enchant.name)}">${nameHtml}</button>`;
 }
 
 function renderEnchantCategoryColumn(mainId, groups, allEnchants, selectedEnchantIndex) {

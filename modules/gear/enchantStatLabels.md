@@ -13,6 +13,7 @@ Shared **enchant stat display names** and **formatting** for:
 | `getEnchantCompactLabel(enchant)` | Gear page: comma-separated compact segments, or mechanic short name |
 | `getEnchantCompactStatSegments(stats)` | Array of compact segments (dedupes e.g. triple `+14 AP`) |
 | `mechanicShortNameFromFullName(fullName)` | Strips `Enchant … - ` prefix for proc-only enchants |
+| `splitEnchantPickerLabel(fullName)` | `{ prefix, suffix, full }` — keeps parenthetical effect visible in picker |
 
 ## Compact label rules
 

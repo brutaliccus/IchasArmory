@@ -134,7 +134,7 @@ Renders enchants in a **categorized column layout** (buff/consumable inspired): 
 
 **Features:**
 - Colored category headers; Phys/Spell subheaders under Offensive and Defensive
-- Truncated display names (`mechanicShortNameFromFullName`); full name in `title` + tooltip
+- Truncated display names (`mechanicShortNameFromFullName`); parenthetical effect suffix always visible (`splitEnchantPickerLabel`); proc names wrap to 2 lines
 - Quality-colored row names via `getEnchantQualityClass` (`q0`–`q4`)
 - Within each bucket: sorted by quality (best first), then dominant stat magnitude
 - Selected enchant: `.is-selected.is-enchanted` gold text + glow (matches gear strip)
