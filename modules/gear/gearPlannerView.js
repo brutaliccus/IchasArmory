@@ -443,11 +443,7 @@ function wireHeaderControls() {
         persistSession();
         renderGearPlanner();
     });
-    document.getElementById('gp-load-btn')?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        openLoadDropdown();
-    });
-    document.getElementById('gp-community-search-btn')?.addEventListener('click', () => openCommunitySearchDialog());
+    document.getElementById('gp-community-search-btn')?.addEventListener('click', () => openBuildsBrowseDialog());
     document.getElementById('gp-share-btn')?.addEventListener('click', () => shareCurrentPlan());
     document.getElementById('gp-clear-btn')?.addEventListener('click', () => requestClearCurrentPlan());
     document.getElementById('gp-quick-sim-btn')?.addEventListener('click', () => runQuickSim());
@@ -2444,10 +2440,84 @@ function formatTalentSpread(spread) {
 
 let communitySearchDebounceTimer = null;
 const COMMUNITY_SEARCH_DEBOUNCE_MS = 250;
+let buildsBrowseActiveTab = 'personal';
 
-function scheduleCommunitySearch() {
+const CLASS_TALENT_TREE_KEYS = {
+    warrior: ['arms', 'fury', 'protection'],
+    paladin: ['holy', 'protection', 'retribution'],
+    hunter: ['beastmastery', 'marksmanship', 'survival'],
+    rogue: ['assassination', 'combat', 'subtlety'],
+    priest: ['discipline', 'holy', 'shadow'],
+    shaman: ['elemental', 'enhancement', 'restoration'],
+    mage: ['arcane', 'fire', 'frost'],
+    warlock: ['affliction', 'demonology', 'destruction'],
+    druid: ['balance', 'feralCombat', 'restoration'],
+};
+
+function computePlanTalentSpread(plan) {
+    if (Array.isArray(plan?.talentSpread) && plan.talentSpread.length) return plan.talentSpread;
+    const talents = plan?.talents && typeof plan.talents === 'object' ? plan.talents : {};
+    const cls = String(plan?.class || '').toLowerCase();
+    let trees = CLASS_TALENT_TREE_KEYS[cls];
+    if (!trees) {
+        const ct = classTalents[cls];
+        if (ct) trees = Object.keys(ct);
+        else {
+            const prefixes = new Set();
+            for (const key of Object.keys(talents)) {
+                const i = key.indexOf('-');
+                if (i > 0) prefixes.add(key.slice(0, i));
+            }
+            trees = [...prefixes].sort();
+        }
+    }
+    if (!trees?.length) return [0, 0, 0];
+    return trees.map((tk) => {
+        let n = 0;
+        for (const [key, val] of Object.entries(talents)) {
+            if (key === tk || key.startsWith(`${tk}-`)) n += Number(val) || 0;
+        }
+        return n;
+    });
+}
+
+function formatPlanRaceLabel(race) {
+    const key = String(race || '').toLowerCase();
+    if (!key) return '';
+    const data = raceIconData?.[key];
+    return data?.name || (key.charAt(0).toUpperCase() + key.slice(1));
+}
+
+function getBuildsBrowseFilters() {
+    return {
+        q: document.getElementById('gp-community-q')?.value || '',
+        class: document.getElementById('gp-community-class')?.value || '',
+        role: document.getElementById('gp-community-role')?.value || '',
+        spec: document.getElementById('gp-community-spec')?.value || '',
+        sort: document.getElementById('gp-community-sort')?.value || 'popular',
+        voterId: getCommunityVoterId(),
+    };
+}
+
+function setBuildsBrowseTab(tab) {
+    buildsBrowseActiveTab = tab === 'community' ? 'community' : 'personal';
+    document.querySelectorAll('.gp-builds-tab').forEach((btn) => {
+        const active = btn.dataset.gpBuildsTab === buildsBrowseActiveTab;
+        btn.classList.toggle('is-active', active);
+        btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    const qInput = document.getElementById('gp-community-q');
+    if (qInput) {
+        qInput.placeholder = buildsBrowseActiveTab === 'community'
+            ? 'Search name or author…'
+            : 'Search saved build name…';
+    }
+    runBuildsBrowseSearch();
+}
+
+function scheduleBuildsBrowseSearch() {
     clearTimeout(communitySearchDebounceTimer);
-    communitySearchDebounceTimer = setTimeout(() => runCommunitySearch(), COMMUNITY_SEARCH_DEBOUNCE_MS);
+    communitySearchDebounceTimer = setTimeout(() => runBuildsBrowseSearch(), COMMUNITY_SEARCH_DEBOUNCE_MS);
 }
 
 function wireCommunitySearchDialog() {
@@ -2459,41 +2529,150 @@ function wireCommunitySearchDialog() {
     document.getElementById('gp-community-search-dialog')?.addEventListener('click', (e) => {
         if (e.target.id === 'gp-community-search-dialog') hide();
     });
-    document.getElementById('gp-community-search-go')?.addEventListener('click', () => runCommunitySearch());
-    document.getElementById('gp-community-q')?.addEventListener('input', () => scheduleCommunitySearch());
+    document.getElementById('gp-community-search-go')?.addEventListener('click', () => runBuildsBrowseSearch());
+    document.getElementById('gp-community-q')?.addEventListener('input', () => scheduleBuildsBrowseSearch());
     document.getElementById('gp-community-q')?.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             clearTimeout(communitySearchDebounceTimer);
-            runCommunitySearch();
+            runBuildsBrowseSearch();
         }
     });
     document.getElementById('gp-community-class')?.addEventListener('change', () => {
         fillCommunitySpecFilter(document.getElementById('gp-community-class')?.value || '');
-        runCommunitySearch();
+        runBuildsBrowseSearch();
     });
-    document.getElementById('gp-community-role')?.addEventListener('change', () => runCommunitySearch());
-    document.getElementById('gp-community-spec')?.addEventListener('change', () => runCommunitySearch());
-    document.getElementById('gp-community-sort')?.addEventListener('change', () => runCommunitySearch());
+    document.getElementById('gp-community-role')?.addEventListener('change', () => runBuildsBrowseSearch());
+    document.getElementById('gp-community-spec')?.addEventListener('change', () => runBuildsBrowseSearch());
+    document.getElementById('gp-community-sort')?.addEventListener('change', () => runBuildsBrowseSearch());
+    document.getElementById('gp-builds-tab-personal')?.addEventListener('click', () => setBuildsBrowseTab('personal'));
+    document.getElementById('gp-builds-tab-community')?.addEventListener('click', () => setBuildsBrowseTab('community'));
 }
 
-function openCommunitySearchDialog() {
+function openBuildsBrowseDialog(tab = 'personal') {
     fillCommunitySpecFilter(document.getElementById('gp-community-class')?.value || '');
     const dlg = document.getElementById('gp-community-search-dialog');
     if (dlg) dlg.style.display = 'flex';
-    runCommunitySearch();
+    setBuildsBrowseTab(tab);
+}
+
+function closeBuildsBrowseDialog() {
+    const el = document.getElementById('gp-community-search-dialog');
+    if (el) el.style.display = 'none';
+}
+
+async function runBuildsBrowseSearch() {
+    if (buildsBrowseActiveTab === 'personal') {
+        await runPersonalBuildsSearch();
+        return;
+    }
+    await runCommunitySearch();
+}
+
+function filterPersonalPlans(plans, filters) {
+    const q = String(filters.q || '').trim().toLowerCase();
+    return plans.filter((p) => {
+        if (filters.class && String(p.class || '').toLowerCase() !== filters.class) return false;
+        if (filters.role) {
+            const roles = normalizeGearPlanRoles(p.role);
+            if (!roles.includes(filters.role)) return false;
+        }
+        if (filters.spec && String(p.spec || '') !== filters.spec) return false;
+        if (q) {
+            const hay = `${p.name || ''} ${p.authorName || ''}`.toLowerCase();
+            if (!hay.includes(q)) return false;
+        }
+        return true;
+    });
+}
+
+function sortPersonalPlans(plans, sortKey) {
+    const sorted = [...plans];
+    if (sortKey === 'recent') {
+        sorted.sort((a, b) => {
+            const ta = Date.parse(b.updatedAt || b.createdAt || '') || 0;
+            const tb = Date.parse(a.updatedAt || a.createdAt || '') || 0;
+            return ta - tb;
+        });
+        return sorted;
+    }
+    return sortPlansFavFirst(sorted);
+}
+
+async function runPersonalBuildsSearch() {
+    const results = document.getElementById('gp-community-results');
+    if (results) results.innerHTML = '<div class="gp-community-empty">Loading…</div>';
+    const filters = getBuildsBrowseFilters();
+    const cloudIds = new Set();
+    let cloud = [];
+    if (window.profileManager?.user) {
+        cloud = await window.profileManager.fetchGearPlans?.() || [];
+        cloud.forEach((p) => cloudIds.add(String(p.id)));
+    }
+    const local = loadLocalGearPlans();
+    const localOnly = local.filter((lp) => !cloudIds.has(String(lp.id)));
+    const allPlans = [...cloud, ...localOnly];
+    const filtered = filterPersonalPlans(allPlans, filters);
+    const sorted = sortPersonalPlans(filtered, filters.sort);
+    renderPersonalBuildResults(sorted, { cloudIds });
+}
+
+function buildGearPlanCardHtml(p, { variant = 'community', isLocal = false } = {}) {
+    const roles = normalizeGearPlanRoles(p.role).map((r) => formatGearPlanRoleLabel(r)).join(', ');
+    const cls = p.class ? String(p.class).charAt(0).toUpperCase() + String(p.class).slice(1) : '';
+    const race = formatPlanRaceLabel(p.race);
+    const date = formatCommunityDate(p.updatedAt || p.createdAt);
+    const spread = formatTalentSpread(computePlanTalentSpread(p));
+    const desc = sanitizeGearPlanDescription(p.description || '');
+    const metaParts = variant === 'personal'
+        ? [cls, race, roles, p.spec].filter(Boolean)
+        : [cls, roles, p.spec].filter(Boolean);
+    const authorParts = [];
+    if (variant === 'personal') {
+        if (isLocal) authorParts.push('Saved on this device');
+        else if (p.authorName) authorParts.push(String(p.authorName));
+        else authorParts.push('Your cloud save');
+    } else {
+        authorParts.push(p.authorName || 'Anonymous');
+    }
+    if (date) authorParts.push(date);
+    const authorLine = authorParts.join(' · ');
+    let actionsHtml = '';
+    if (variant === 'community') {
+        const up = Number(p.upvotes) || 0;
+        const down = Number(p.downvotes) || 0;
+        const my = p.myVote === 'up' || p.myVote === 'down' ? p.myVote : '';
+        actionsHtml = `<button type="button" class="gp-fav-community-btn" data-fav-id="${escapeHtml(p.id || '')}" title="Copy to My Gear Plans" aria-label="Favorite to My Gear Plans">★ Favorite</button>
+                <div class="gp-community-card-votes">
+                    <button type="button" class="gp-vote-btn gp-vote-up ${my === 'up' ? 'is-active' : ''}" data-vote="up" data-id="${escapeHtml(p.id || '')}" title="Upvote" aria-label="Upvote" aria-pressed="${my === 'up' ? 'true' : 'false'}">
+                        ${GP_ICON_VOTE_UP}<span class="gp-vote-count" data-up-count>${up}</span>
+                    </button>
+                    <button type="button" class="gp-vote-btn gp-vote-down ${my === 'down' ? 'is-active' : ''}" data-vote="down" data-id="${escapeHtml(p.id || '')}" title="Downvote" aria-label="Downvote" aria-pressed="${my === 'down' ? 'true' : 'false'}">
+                        ${GP_ICON_VOTE_DOWN}<span class="gp-vote-count" data-down-count>${down}</span>
+                    </button>
+                </div>`;
+    } else {
+        const favOn = !!p.favorite;
+        actionsHtml = `<button type="button" class="gp-personal-card-btn gp-personal-fav-btn ${favOn ? 'is-active' : ''}" data-personal-id="${escapeHtml(p.id || '')}" data-local="${isLocal ? '1' : ''}" title="${favOn ? 'Unfavorite' : 'Favorite'}" aria-label="${favOn ? 'Unfavorite' : 'Favorite'}">★</button>
+                <button type="button" class="gp-personal-card-btn gp-personal-share-btn" data-personal-id="${escapeHtml(p.id || '')}" title="Share" aria-label="Share">Share</button>
+                <button type="button" class="gp-personal-card-btn gp-personal-delete-btn" data-personal-id="${escapeHtml(p.id || '')}" data-local="${isLocal ? '1' : ''}" title="Delete" aria-label="Delete">Delete</button>`;
+    }
+    return `<article class="gp-community-card" data-id="${escapeHtml(p.id || '')}" data-local="${isLocal ? '1' : ''}" data-variant="${variant}" role="listitem" tabindex="0">
+            <img class="gp-community-card-icon" src="${resolveGearPlanIconUrl(p.icon)}" alt="" width="48" height="48" loading="lazy" />
+            <div class="gp-community-card-body">
+                <div class="gp-community-card-title">${escapeHtml(p.name || 'Untitled')}</div>
+                ${desc ? `<div class="gp-community-card-desc">${escapeHtml(desc)}</div>` : ''}
+                <div class="gp-community-card-spread" title="Talent tree points">${escapeHtml(spread)}</div>
+                <div class="gp-community-card-meta">${escapeHtml(metaParts.join(' · '))}</div>
+                <div class="gp-community-card-author">${escapeHtml(authorLine)}</div>
+            </div>
+            <div class="gp-community-card-actions" data-stop="1">${actionsHtml}</div>
+        </article>`;
 }
 
 async function runCommunitySearch() {
     const results = document.getElementById('gp-community-results');
     if (results) results.innerHTML = '<div class="gp-community-empty">Searching…</div>';
-    const filters = {
-        q: document.getElementById('gp-community-q')?.value || '',
-        class: document.getElementById('gp-community-class')?.value || '',
-        role: document.getElementById('gp-community-role')?.value || '',
-        spec: document.getElementById('gp-community-spec')?.value || '',
-        sort: document.getElementById('gp-community-sort')?.value || 'popular',
-        voterId: getCommunityVoterId(),
-    };
+    const filters = getBuildsBrowseFilters();
     let plans = [];
     if (window.profileManager?.fetchCommunityGearPlans) {
         plans = await window.profileManager.fetchCommunityGearPlans(filters);
@@ -2530,38 +2709,25 @@ function renderCommunityResults(plans) {
         list.innerHTML = '<div class="gp-community-empty">No community builds found.</div>';
         return;
     }
-    list.innerHTML = plans.map((p) => {
-        const roles = normalizeGearPlanRoles(p.role).map((r) => formatGearPlanRoleLabel(r)).join(', ');
-        const cls = p.class ? String(p.class).charAt(0).toUpperCase() + String(p.class).slice(1) : '';
-        const date = formatCommunityDate(p.updatedAt || p.createdAt);
-        const spread = formatTalentSpread(p.talentSpread);
-        const desc = sanitizeGearPlanDescription(p.description || '');
-        const up = Number(p.upvotes) || 0;
-        const down = Number(p.downvotes) || 0;
-        const my = p.myVote === 'up' || p.myVote === 'down' ? p.myVote : '';
-        return `<article class="gp-community-card" data-id="${escapeHtml(p.id || '')}" role="listitem" tabindex="0">
-            <img class="gp-community-card-icon" src="${resolveGearPlanIconUrl(p.icon)}" alt="" width="48" height="48" loading="lazy" />
-            <div class="gp-community-card-body">
-                <div class="gp-community-card-title">${escapeHtml(p.name || 'Untitled')}</div>
-                ${desc ? `<div class="gp-community-card-desc">${escapeHtml(desc)}</div>` : ''}
-                <div class="gp-community-card-spread" title="Talent tree points">${escapeHtml(spread)}</div>
-                <div class="gp-community-card-meta">${escapeHtml([cls, roles, p.spec].filter(Boolean).join(' · '))}</div>
-                <div class="gp-community-card-author">${escapeHtml(p.authorName || 'Anonymous')}${date ? ` · ${escapeHtml(date)}` : ''}</div>
-            </div>
-            <div class="gp-community-card-actions" data-stop="1">
-                <button type="button" class="gp-fav-community-btn" data-fav-id="${escapeHtml(p.id || '')}" title="Copy to My Gear Plans" aria-label="Favorite to My Gear Plans">★ Favorite</button>
-                <div class="gp-community-card-votes">
-                    <button type="button" class="gp-vote-btn gp-vote-up ${my === 'up' ? 'is-active' : ''}" data-vote="up" data-id="${escapeHtml(p.id || '')}" title="Upvote" aria-label="Upvote" aria-pressed="${my === 'up' ? 'true' : 'false'}">
-                        ${GP_ICON_VOTE_UP}<span class="gp-vote-count" data-up-count>${up}</span>
-                    </button>
-                    <button type="button" class="gp-vote-btn gp-vote-down ${my === 'down' ? 'is-active' : ''}" data-vote="down" data-id="${escapeHtml(p.id || '')}" title="Downvote" aria-label="Downvote" aria-pressed="${my === 'down' ? 'true' : 'false'}">
-                        ${GP_ICON_VOTE_DOWN}<span class="gp-vote-count" data-down-count>${down}</span>
-                    </button>
-                </div>
-            </div>
-        </article>`;
-    }).join('');
+    list.innerHTML = plans.map((p) => buildGearPlanCardHtml(p, { variant: 'community' })).join('');
+    wireCommunityResultCards(list);
+}
 
+function renderPersonalBuildResults(plans, { cloudIds } = {}) {
+    const list = document.getElementById('gp-community-results');
+    if (!list) return;
+    if (!plans.length) {
+        list.innerHTML = '<div class="gp-community-empty">No saved gear plans yet.<br>Click Save to keep this plan.</div>';
+        return;
+    }
+    list.innerHTML = plans.map((p) => buildGearPlanCardHtml(p, {
+        variant: 'personal',
+        isLocal: !cloudIds?.has?.(String(p.id)),
+    })).join('');
+    wirePersonalResultCards(list, plans);
+}
+
+function wireCommunityResultCards(list) {
     list.querySelectorAll('.gp-community-card').forEach((card) => {
         card.addEventListener('click', (e) => {
             if (e.target.closest('[data-stop]')) return;
@@ -2588,6 +2754,77 @@ function renderCommunityResults(plans) {
             favoriteCommunityPlanById(btn.dataset.favId);
         });
     });
+}
+
+function wirePersonalResultCards(list, plans) {
+    list.querySelectorAll('.gp-community-card').forEach((card) => {
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('[data-stop]')) return;
+            const plan = plans.find((p) => String(p.id) === String(card.dataset.id));
+            if (plan) loadPersonalPlanFromBrowse(plan);
+        });
+        card.addEventListener('keydown', (e) => {
+            if (e.key !== 'Enter' && e.key !== ' ') return;
+            if (e.target.closest('[data-stop]')) return;
+            e.preventDefault();
+            const plan = plans.find((p) => String(p.id) === String(card.dataset.id));
+            if (plan) loadPersonalPlanFromBrowse(plan);
+        });
+    });
+    list.querySelectorAll('.gp-personal-fav-btn').forEach((btn) => {
+        btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            const id = btn.dataset.personalId;
+            const isLocal = btn.dataset.local === '1';
+            if (isLocal) {
+                const localPlans = loadLocalGearPlans();
+                const p = localPlans.find((x) => String(x.id) === String(id));
+                if (p) {
+                    p.favorite = !p.favorite;
+                    saveLocalGearPlans(localPlans);
+                }
+            } else if (window.profileManager?.setGearPlanFavorite) {
+                await window.profileManager.setGearPlanFavorite(id);
+            }
+            runPersonalBuildsSearch();
+        });
+    });
+    list.querySelectorAll('.gp-personal-share-btn').forEach((btn) => {
+        btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            const plan = plans.find((p) => String(p.id) === String(btn.dataset.personalId));
+            if (!plan) return;
+            if (window.profileManager?.user && window.profileManager.openShareModal) {
+                window.profileManager.openShareModal({ id: plan.id, name: plan.name, kind: 'gearPlan', buildData: plan });
+            } else if (callbacks.exportGearPlanToURL) {
+                await callbacks.exportGearPlanToURL(getGearPlanData(plan));
+            }
+        });
+    });
+    list.querySelectorAll('.gp-personal-delete-btn').forEach((btn) => {
+        btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            const id = btn.dataset.personalId;
+            const plan = plans.find((p) => String(p.id) === String(id));
+            if (!plan || !confirm(`Delete gear plan "${plan.name || 'Untitled'}"?`)) return;
+            if (btn.dataset.local === '1') {
+                saveLocalGearPlans(loadLocalGearPlans().filter((p) => String(p.id) !== String(id)));
+            } else if (window.profileManager?.deleteGearPlan) {
+                await window.profileManager.deleteGearPlan(id);
+            }
+            runPersonalBuildsSearch();
+        });
+    });
+}
+
+async function loadPersonalPlanFromBrowse(plan) {
+    if (!plan) return;
+    closeBuildsBrowseDialog();
+    await loadPlanIntoView(plan);
+    window.notify?.success?.(`Loaded "${plan.name || 'gear plan'}"`, 3000, 'Gear Planner');
 }
 
 async function voteCommunityPlan(id, direction) {
@@ -2772,8 +3009,7 @@ async function loadCommunityPlanById(id) {
     }
     plan.community = true;
     if (!plan.id) plan.id = id;
-    const dlg = document.getElementById('gp-community-search-dialog');
-    if (dlg) dlg.style.display = 'none';
+    closeBuildsBrowseDialog();
     await loadPlanIntoView(plan);
     window.notify?.success?.(`Loaded "${plan.name || 'community plan'}"`, 3000, 'Gear Planner');
 }
@@ -3440,53 +3676,6 @@ async function saveCurrentPlan(asNew = false) {
     window.notify?.success('Gear plan saved locally', 3000, 'Gear Planner');
 }
 
-function closeGearPlansDropdown() {
-    document.getElementById('gear-plans-dropdown')?.classList.remove('open');
-}
-
-function starBtnHtml(plan, isLocal) {
-    const on = !!plan.favorite;
-    return `<button class="builds-dropdown-action-btn default-btn ${on ? 'is-default' : ''}" data-id="${plan.id || ''}" data-local="${isLocal ? '1' : ''}" title="${on ? 'Unfavorite' : 'Favorite'}">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="${on ? '#ffd700' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-        </svg>
-    </button>`;
-}
-
-function shareBtnHtml(plan) {
-    return `<button class="builds-dropdown-action-btn share-btn" data-id="${plan.id || ''}" title="Share">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="18" cy="5" r="3"></circle>
-            <circle cx="6" cy="12" r="3"></circle>
-            <circle cx="18" cy="19" r="3"></circle>
-            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-        </svg>
-    </button>`;
-}
-
-function gearPlanRowHtml(plan, isLocal) {
-    const cls = plan.class ? String(plan.class).charAt(0).toUpperCase() + String(plan.class).slice(1) : '';
-    const favBadge = plan.favorite ? '<span class="default-badge">favorite</span>' : '';
-    const localBadge = isLocal ? '<span class="default-badge local-device-badge">local</span>' : '';
-    return `<div class="builds-dropdown-item" data-id="${plan.id || ''}" data-local="${isLocal ? '1' : ''}">
-        <div class="builds-dropdown-item-info">
-            <div class="builds-dropdown-item-name">${escapeHtml(plan.name || 'Untitled')}${favBadge}${localBadge}</div>
-            ${cls ? `<div class="builds-dropdown-item-details">${escapeHtml(cls)}</div>` : ''}
-        </div>
-        <div class="builds-dropdown-item-actions">
-            ${starBtnHtml(plan, isLocal)}
-            ${shareBtnHtml(plan)}
-            <button class="builds-dropdown-action-btn delete-btn" data-id="${plan.id || ''}" data-local="${isLocal ? '1' : ''}" title="Delete">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="3 6 5 6 21 6"></polyline>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                </svg>
-            </button>
-        </div>
-    </div>`;
-}
-
 function sortPlansFavFirst(plans) {
     return [...plans].sort((a, b) => Number(!!b.favorite) - Number(!!a.favorite) || String(a.name || '').localeCompare(String(b.name || '')));
 }
@@ -3511,7 +3700,7 @@ function loadPlanIntoView(plan) {
     } catch { /* ignore */ }
     editMode = false;
     persistSession();
-    closeGearPlansDropdown();
+    closeBuildsBrowseDialog();
     updateHeaderVotesUi();
     updateStatWeightsBtnVisibility();
     const ready = refreshGearPlannerWhenItemsReady(currentPlan);
@@ -3519,96 +3708,6 @@ function loadPlanIntoView(plan) {
     hydrateCommunityVoteMeta();
     return ready;
 }
-
-async function openLoadDropdown() {
-    const dropdown = document.getElementById('gear-plans-dropdown');
-    const list = document.getElementById('gear-plans-dropdown-list');
-    if (!dropdown || !list) return;
-
-    if (dropdown.classList.contains('open')) {
-        closeGearPlansDropdown();
-        return;
-    }
-
-    let cloud = [];
-    if (window.profileManager?.user) {
-        cloud = await window.profileManager.fetchGearPlans?.() || [];
-    }
-    const local = loadLocalGearPlans();
-    const localOnly = local.filter(lp => !cloud.some(c => String(c.id) === String(lp.id)));
-
-    if (!cloud.length && !localOnly.length) {
-        list.innerHTML = '<div class="builds-dropdown-empty">No saved gear plans yet.<br>Click Save to keep this plan.</div>';
-    } else {
-        const parts = [];
-        if (cloud.length) parts.push(...sortPlansFavFirst(cloud).map(p => gearPlanRowHtml(p, false)));
-        if (localOnly.length) {
-            if (cloud.length) parts.push('<div class="builds-dropdown-divider" role="separator"></div>');
-            parts.push('<div class="builds-dropdown-section-label">Local plans</div>');
-            parts.push(...sortPlansFavFirst(localOnly).map(p => gearPlanRowHtml(p, true)));
-        }
-        list.innerHTML = parts.join('');
-    }
-
-    const allPlans = [...cloud, ...localOnly];
-    list.querySelectorAll('.builds-dropdown-item').forEach(item => {
-        item.addEventListener('click', (e) => {
-            if (e.target.closest('.builds-dropdown-action-btn')) return;
-            const plan = allPlans.find(p => String(p.id) === item.dataset.id);
-            loadPlanIntoView(plan);
-        });
-        item.querySelector('.default-btn')?.addEventListener('click', async (e) => {
-            e.stopPropagation();
-            const id = e.currentTarget.dataset.id;
-            const isLocal = item.dataset.local === '1';
-            if (isLocal) {
-                const plans = loadLocalGearPlans();
-                const p = plans.find(x => String(x.id) === String(id));
-                if (p) {
-                    p.favorite = !p.favorite;
-                    saveLocalGearPlans(plans);
-                }
-            } else if (window.profileManager?.setGearPlanFavorite) {
-                await window.profileManager.setGearPlanFavorite(id);
-            }
-            closeGearPlansDropdown();
-            openLoadDropdown();
-        });
-        item.querySelector('.share-btn')?.addEventListener('click', async (e) => {
-            e.stopPropagation();
-            const plan = allPlans.find(p => String(p.id) === item.dataset.id);
-            closeGearPlansDropdown();
-            if (window.profileManager?.user && window.profileManager.openShareModal && plan) {
-                window.profileManager.openShareModal({ id: plan.id, name: plan.name, kind: 'gearPlan', buildData: plan });
-            } else if (plan && callbacks.exportGearPlanToURL) {
-                await callbacks.exportGearPlanToURL(getGearPlanData(plan));
-            }
-        });
-        item.querySelector('.delete-btn')?.addEventListener('click', async (e) => {
-            e.stopPropagation();
-            const id = e.currentTarget.dataset.id;
-            const plan = allPlans.find(p => String(p.id) === String(id));
-            if (!plan || !confirm(`Delete gear plan "${plan.name || 'Untitled'}"?`)) return;
-            if (item.dataset.local === '1') {
-                saveLocalGearPlans(loadLocalGearPlans().filter(p => String(p.id) !== String(id)));
-            } else if (window.profileManager?.deleteGearPlan) {
-                await window.profileManager.deleteGearPlan(id);
-            }
-            closeGearPlansDropdown();
-            openLoadDropdown();
-        });
-    });
-
-    dropdown.classList.add('open');
-}
-
-document.addEventListener('click', (e) => {
-    const dd = document.getElementById('gear-plans-dropdown');
-    const btn = document.getElementById('gp-load-btn');
-    if (!dd?.classList.contains('open')) return;
-    if (dd.contains(e.target) || btn?.contains(e.target)) return;
-    closeGearPlansDropdown();
-});
 
 async function shareCurrentPlan() {
     if (callbacks.exportGearPlanToURL) {
