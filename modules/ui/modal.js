@@ -68,11 +68,22 @@ export function getPlayerClassForItemFilters() {
 }
 
 // Persistent filter state (ilvlMin/Max = required character level from tooltip)
+/** Default quality include keys: green (2) through legendary (5); excludes poor/common. */
+const DEFAULT_QUALITY_INCLUDE_KEYS = ['2', '3', '4', '5'];
+
+function defaultQualityFilterStates() {
+    const states = {};
+    for (const key of DEFAULT_QUALITY_INCLUDE_KEYS) {
+        states[key] = 'include';
+    }
+    return states;
+}
+
 const savedFilters = {
     search: '',
     stats: [], // armor / weapon type checkbox values only
     statFilterStates: {},
-    qualityFilterStates: {},
+    qualityFilterStates: defaultQualityFilterStates(),
     ilvlMin: 1,
     ilvlMax: 60,
     sourceFilterStates: {},
@@ -1508,7 +1519,7 @@ function resetFilters() {
     savedFilters.search = '';
     savedFilters.stats = [];
     savedFilters.statFilterStates = {};
-    savedFilters.qualityFilterStates = {};
+    savedFilters.qualityFilterStates = defaultQualityFilterStates();
     savedFilters.ilvlMin = REQ_LEVEL_MIN;
     savedFilters.ilvlMax = REQ_LEVEL_MAX;
     savedFilters.sourceFilterStates = {};
@@ -1518,6 +1529,7 @@ function resetFilters() {
     document.querySelectorAll('.item-picker-filter-row').forEach((row) => {
         setItemPickerFilterRowState(row, 'off', false);
     });
+    syncItemPickerFilterRowsFromSaved();
     updateInstanceFilterLabel();
     updateStatFilterDropdownLabels();
 
@@ -1645,17 +1657,19 @@ function applyItemPickerPanelBounds(panel, top, vh) {
 function centerItemPickerPanel(panel, w, h, vw, vh) {
     if (isGpMobileLayout()) {
         const nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--gp-nav-offset')) || 60;
-        const pad = 8;
         const vvH = window.visualViewport?.height || vh;
-        panel.style.left = `${pad}px`;
-        panel.style.right = `${pad}px`;
-        panel.style.width = 'auto';
+        const sheetH = Math.max(240, vvH - nav);
+        panel.style.left = '0';
+        panel.style.right = '0';
+        panel.style.width = '100%';
         panel.style.maxWidth = 'none';
-        panel.style.top = `${nav + pad}px`;
-        panel.style.transformOrigin = '50% 50%';
+        panel.style.top = `${nav}px`;
+        panel.style.bottom = '0';
+        panel.style.transform = 'none';
+        panel.style.transformOrigin = '50% 0';
         panel.dataset.itemPickerSide = 'center';
-        panel.style.maxHeight = `${Math.max(240, vvH - nav - pad * 2)}px`;
-        panel.style.height = 'auto';
+        panel.style.height = `${sheetH}px`;
+        panel.style.maxHeight = `${sheetH}px`;
         return;
     }
     let left = Math.round((vw - w) / 2);

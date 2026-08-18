@@ -1,6 +1,6 @@
 /**
  * Gear Planner mobile chrome: viewport detection, body class, nav offset, pane tabs.
- * Layout scale is forced to 1 in uiScale.js when this layout is active.
+ * Auto-fit UI scale is skipped here (responsive CSS); manual scale still applies via uiScale.js.
  */
 
 export const GP_MOBILE_MQ = '(max-width: 900px)';

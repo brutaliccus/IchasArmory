@@ -120,7 +120,16 @@ export function setUserScale(value) {
 }
 
 export function getEffectiveScale() {
-    return computeAutoScale() * getUserScale();
+    const auto = isGpMobileLayout() ? 1 : computeAutoScale();
+    return auto * getUserScale();
+}
+
+function computeTotalScale() {
+    const auto = computeAutoScale();
+    const user = getUserScale();
+    // GP mobile uses responsive CSS, not 1920 auto-fit; manual scale still applies.
+    const layoutAuto = isGpMobileLayout() ? 1 : auto;
+    return layoutAuto * user;
 }
 
 function getScaledRoot() {
@@ -140,8 +149,7 @@ function syncScaleCssVars(auto, user, total) {
 export function applyUiScale() {
     const auto = computeAutoScale();
     const user = getUserScale();
-    const mobileGp = isGpMobileLayout();
-    const total = mobileGp ? 1 : auto * user;
+    const total = computeTotalScale();
     syncScaleCssVars(auto, user, total);
 
     const scaled = getScaledRoot();
@@ -187,12 +195,12 @@ function syncPanelValues() {
     const user = getUserScale();
     const auto = computeAutoScale();
     const mobileGp = isGpMobileLayout();
-    const total = mobileGp ? 1 : auto * user;
+    const total = computeTotalScale();
     const text = getTextScale();
     slider.value = String(user);
     if (valueEl) valueEl.textContent = formatPercent(user);
     if (effectiveEl) effectiveEl.textContent = formatPercent(total);
-    if (autoEl) autoEl.textContent = mobileGp ? 'off' : formatPercent(auto);
+    if (autoEl) autoEl.textContent = mobileGp ? '—' : formatPercent(auto);
     if (manualEl) manualEl.textContent = formatPercent(user);
     if (textSlider) textSlider.value = String(text);
     if (textValueEl) textValueEl.textContent = formatPercent(text);

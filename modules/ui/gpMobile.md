@@ -21,10 +21,10 @@ Shared Gear Planner mobile chrome: viewport detection, `body.gp-mobile`, nav off
 | `getGpMobilePane()` / `setGpMobilePane(pane)` | `gear` \| `locations` \| `stats` |
 | `initGpMobile({ initialPane, onLayoutChange })` | Tab bar, ResizeObserver, matchMedia |
 
-Layout scale is forced to **1** in `uiScale.js` while `isGpMobileLayout()` is true. Text scale still applies.
+Layout auto-fit is **skipped** on GP mobile (responsive CSS); **manual UI scale** still applies via `uiScale.js`. Text scale still applies.
 
 ## Top nav (`.gp-mobile`)
 
-Single **40px** row in `topnav.css` — circular `ichabaddie_portrait` + site title left-aligned, Discord login and other actions right-aligned. Icons are 28px, Discord login is icon-only, and `#mode-character-btn` (Character / build planner) is hidden so the bar does not wrap. `syncGpNavOffset()` measures that height into `--gp-nav-offset`.
+Single **40px** row in `topnav.css` — circular `ichabaddie_portrait` + site title left-aligned; planner actions center-right; Discord login / profile avatar + logout on the **far right** (`top-nav-left` order 4). Icons are 28px, Discord login is icon-only, and `#mode-character-btn` (Character / build planner) is hidden so the bar does not wrap. `syncGpNavOffset()` measures that height into `--gp-nav-offset`.
 
 See [`docs/GEAR_PLANNER_MOBILE_PLAN.md`](../../docs/GEAR_PLANNER_MOBILE_PLAN.md).

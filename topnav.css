@@ -222,10 +222,11 @@ body.gp-mobile .site-logo {
 }
 
 body.gp-mobile .top-nav-left {
-    order: 2;
+    order: 4;
     flex: 0 0 auto;
     min-height: 0;
     gap: 4px;
+    margin-left: 0;
 }
 
 body.gp-mobile .site-title {

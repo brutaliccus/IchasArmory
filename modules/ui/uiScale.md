@@ -19,7 +19,7 @@ Constants: `DESIGN_WIDTH = 1920`, `DESIGN_HEIGHT = 1200`, `NAV_CHROME_HEIGHT = 6
 
 Unlike the older 2560×1440 cap-at-1 formula, auto can **scale up** on 4K/ultrawide so content is not tiny; 1080p/1440p land closer to “fits the viewport” without manual adjustment.
 
-**Gear Planner mobile:** when `isGpMobileLayout()` is true (`modules/ui/gpMobile.js`), `applyUiScale()` forces **`--ui-scale: 1`** and `zoom: 1` so the tabbed layout reflows instead of shrinking a 1920-wide desktop. Text scale (`--ts`) still applies. The settings panel shows Auto as **off**.
+**Gear Planner mobile:** when `isGpMobileLayout()` is true (`modules/ui/gpMobile.js`), **1920 auto-fit is skipped** (responsive `body.gp-mobile` CSS handles layout); **manual user scale still applies** (`effective = user`, range 0.5–2.0). Text scale (`--ts`) still applies. The settings panel shows Auto as **—** on GP mobile.
 
 ## Text scale composition
 

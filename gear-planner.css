@@ -1996,10 +1996,6 @@ body.gp-mobile .site-support-footer {
     display: none !important;
 }
 
-body.gp-mobile #ichacalc-scaled-root {
-    zoom: 1 !important;
-}
-
 body.gp-mobile #gear-planner-shell {
     padding: calc(var(--gp-nav-offset, 60px) + 8px) 12px calc(var(--gp-tabbar-height, 56px) + 12px + env(safe-area-inset-bottom, 0px)) 12px;
     min-height: 100dvh;
@@ -2096,6 +2092,11 @@ body.gp-mobile .gp-slot-card--right .gp-name-enchant {
 
 body.gp-mobile .gp-slot-card--right .gp-item-scores {
     justify-content: flex-start;
+}
+
+/* Single-column mobile: add-item buttons always on the left */
+body.gp-mobile .gp-slot-row--right {
+    flex-direction: row-reverse;
 }
 
 body.gp-mobile .gp-item-name {

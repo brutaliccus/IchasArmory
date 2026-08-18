@@ -6267,16 +6267,51 @@ html {
 
 /* Gear Planner mobile — shared modals / tooltips (scoped; CP paperdoll unchanged) */
 body.gp-mobile .item-picker-root {
-    top: var(--gp-nav-offset, 60px);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 body.gp-mobile #item-modal-panel.item-picker-panel {
-    left: 8px !important;
-    right: 8px;
-    width: auto;
+    left: 0 !important;
+    right: 0 !important;
+    top: var(--gp-nav-offset, 60px) !important;
+    width: 100% !important;
     max-width: none;
-    max-height: calc(100dvh - var(--gp-nav-offset, 60px) - 16px);
-    border-radius: 12px;
+    height: calc(100dvh - var(--gp-nav-offset, 60px));
+    max-height: calc(100dvh - var(--gp-nav-offset, 60px));
+    min-height: 0;
+    border-radius: 0;
+    transform: none !important;
+    opacity: 1;
+}
+
+body.gp-mobile #item-modal-panel.item-picker-panel[data-item-picker-side="center"] {
+    transform: none !important;
+}
+
+body.gp-mobile #item-modal-panel.item-picker-panel.item-picker-panel--visible {
+    transform: none !important;
+}
+
+body.gp-mobile .item-picker-body.modal-body {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+body.gp-mobile .item-picker-list.modal-item-list {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+body.gp-mobile .modal-item img {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+    flex-shrink: 0;
+    object-fit: contain;
 }
 
 body.gp-mobile .item-picker-filters-toggle {

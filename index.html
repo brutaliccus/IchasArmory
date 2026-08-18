@@ -69,7 +69,7 @@
                 var path = (location.pathname || '').replace(/\/+$/, '') || '/';
                 var gpPath = path === '/gear-planner' || path === '/gp';
                 var mobileGp = gpPath && ((w <= 900) || (w <= 1199 && window.matchMedia && window.matchMedia('(pointer: coarse)').matches));
-                var total = mobileGp ? 1 : auto * user;
+                var total = mobileGp ? user : auto * user;
                 var root = document.documentElement;
                 root.style.setProperty('--ui-auto-scale', String(auto));
                 root.style.setProperty('--ui-user-scale', String(user));

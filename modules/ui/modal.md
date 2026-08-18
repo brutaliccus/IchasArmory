@@ -163,7 +163,7 @@ Main filtering function that applies multiple filter types simultaneously.
     search: '',           // Text search term
     stats: [],           // Armor / weapon type checkbox values
     statFilterStates: {}, // { [statName]: 'include'|'exclude' }
-    qualityFilterStates: {}, // { [quality]: 'include'|'exclude' }
+    qualityFilterStates: { '2': 'include', '3': 'include', '4': 'include', '5': 'include' }, // { [quality]: 'include'|'exclude' }
     ilvlMin: 1,
     ilvlMax: 60,
     sourceFilterStates: {},
@@ -472,7 +472,7 @@ const savedFilters = {
     search: '',
     stats: [],
     statFilterStates: {},
-    qualityFilterStates: {},
+    qualityFilterStates: { '2': 'include', '3': 'include', '4': 'include', '5': 'include' },
     ilvlMin: 1,
     ilvlMax: 60,
     sourceFilterStates: {}
@@ -513,7 +513,7 @@ Resets all filters to default values and updates UI.
 **Default Values:**
 - Search: empty string
 - Stats: empty array
-- Qualities: [3, 4, 5] (Rare, Epic, Legendary)
+- Qualities: green through legendary — qualities **2–5** included by default (Poor/Common excluded)
 - Required level: 1–60
 
 **UI Updates:**
