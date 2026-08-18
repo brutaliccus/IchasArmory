@@ -21,7 +21,8 @@ Tooltips **do not follow the cursor**. They originate at the item icon’s **out
 - **`getItemTooltipAnchorEl(fromEl)`** — Resolves `.icon-image-container`, Gear Planner `.gp-item-tip` img, modal row icon, enchant button, or radial icon frame.
 - **`normalizeTooltipGrowSide(side)`** — Maps `east`/`right` → `'right'`, `west`/`list-left`/`left` → `'left'`.
 - **`inferTooltipGrowSide(anchorEl)`** — `'left'` | `'right'` | `'auto'` from paperdoll slot, `#gear-icons-left|right`, `#gp-slots-left|right`, or modal rows (left).
-- **`positionItemTooltipOnIcon(tooltip, anchorEl, options?)`** — Sets `left` / `top` / `transform-origin`. `options.side` may be `'left'|'right'|'auto'|'east'|'west'|'list-left'`.
+- **`positionItemTooltipOnIcon(tooltip, anchorEl, options?)`** — Sets `left` / `top` / `transform-origin`. `options.side` may be `'left'|'right'|'auto'|'east'|'west'|'list-left'`. On `body.gp-mobile`, clamps into a readable card (`max-width` ~360px, recenters if taller than 70vh).
+- **`hideItemTooltip()`** — Hides `#item-tooltip` and clears pin state.
 - **`positionItemTooltipAtCursor(tooltip, event)`** — Compat wrapper: uses `event.target` as the icon (ignores cursor coords).
 
 ## Consumers

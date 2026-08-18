@@ -66,12 +66,16 @@
                 var text = parseFloat(localStorage.getItem('ichacalc_textUserScale'));
                 if (!isFinite(text)) text = 1;
                 text = Math.max(USER_MIN, Math.min(USER_MAX, text));
-                var total = auto * user;
+                var path = (location.pathname || '').replace(/\/+$/, '') || '/';
+                var gpPath = path === '/gear-planner' || path === '/gp';
+                var mobileGp = gpPath && ((w <= 900) || (w <= 1199 && window.matchMedia && window.matchMedia('(pointer: coarse)').matches));
+                var total = mobileGp ? 1 : auto * user;
                 var root = document.documentElement;
                 root.style.setProperty('--ui-auto-scale', String(auto));
                 root.style.setProperty('--ui-user-scale', String(user));
                 root.style.setProperty('--ui-scale', String(total));
                 root.style.setProperty('--text-scale', String(text));
+                if (mobileGp) root.classList.add('gp-mobile');
             } catch (e) { /* ignore */ }
         })();
     </script>
@@ -1052,6 +1056,7 @@
             <div id="gp-talents-view" class="gp-talents-view" hidden>
                 <div id="gp-talents-header" class="gp-talents-header" hidden>
                     <h2 id="gp-talents-title" class="gp-talents-title"></h2>
+                    <div id="gp-talent-tree-tabs" class="gp-talent-tree-tabs" hidden></div>
                     <div id="gp-talent-preset-tools" class="gp-talent-preset-tools" hidden>
                         <div class="gp-talent-preset-slot">
                             <div class="gp-talent-preset-anchor">
@@ -1153,12 +1158,13 @@
             <div class="item-picker-header modal-header">
                 <h2 id="modal-title">Select Item</h2>
                 <div class="item-picker-header-actions">
+                    <button type="button" id="item-picker-filters-toggle" class="item-picker-filters-toggle" hidden aria-expanded="false" aria-controls="item-picker-filters">Filters</button>
                     <button type="button" id="reset-filters-btn" class="item-picker-reset-btn" title="Clear all filters">Reset</button>
                     <button type="button" id="modal-close-btn" class="modal-close" aria-label="Close">&times;</button>
                 </div>
             </div>
             <div class="item-picker-body modal-body">
-                <div class="item-picker-filters modal-filters">
+                <div id="item-picker-filters" class="item-picker-filters modal-filters">
                     <div class="item-picker-filters-primary-row">
                         <input type="text" id="modal-search-input" class="item-picker-search item-picker-search--inline" placeholder="Search name or stats…" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Search items">
                         <div class="item-picker-type-cell" id="item-picker-type-cell">
@@ -1502,14 +1508,35 @@
     </div><!-- /#ichacalc-scaled-root -->
 
     <aside id="gp-locations-sidebar" class="gp-locations-sidebar" aria-label="Locations needed" hidden>
-        <h3 class="gp-locations-title">Locations needed</h3>
+        <div class="gp-pane-toolbar">
+            <h3 class="gp-locations-title">Locations needed</h3>
+            <div class="gp-pane-actions">
+                <button type="button" id="gp-locations-show-gear" class="gp-pane-text-btn" hidden>Show on gear</button>
+                <button type="button" id="gp-locations-clear" class="gp-pane-text-btn" hidden>Clear</button>
+            </div>
+        </div>
+        <p class="gp-pane-hint gp-locations-empty-hint">Equip items in Gear to see where to farm.</p>
         <div id="gp-locations-list" class="gp-locations-list"></div>
     </aside>
 
     <aside id="gp-stats-sidebar" class="gp-stats-sidebar" aria-label="Plan stats" hidden>
-        <h3 class="gp-locations-title">Modified stats</h3>
+        <div class="gp-pane-toolbar">
+            <h3 class="gp-locations-title">Modified stats</h3>
+        </div>
         <div id="gp-stats-list" class="gp-stats-list"></div>
     </aside>
+
+    <nav id="gp-mobile-tabbar" class="gp-mobile-tabbar" hidden aria-label="Gear planner views">
+        <button type="button" class="gp-mobile-tab is-active" data-gp-pane="gear" aria-selected="true">
+            <span class="gp-mobile-tab-label">Gear</span>
+        </button>
+        <button type="button" class="gp-mobile-tab" data-gp-pane="locations" aria-selected="false">
+            <span class="gp-mobile-tab-label">Locations</span>
+        </button>
+        <button type="button" class="gp-mobile-tab" data-gp-pane="stats" aria-selected="false">
+            <span class="gp-mobile-tab-label">Stats</span>
+        </button>
+    </nav>
 
     <div id="gp-save-overwrite-dialog" class="gp-save-dialog-root" style="display: none;" aria-hidden="true">
         <div id="gp-save-dialog-backdrop" class="item-picker-backdrop" aria-hidden="true"></div>

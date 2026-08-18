@@ -1165,3 +1165,24 @@
     border-color: rgba(224, 64, 251, 0.52);
     background: linear-gradient(180deg, rgba(186, 104, 200, 0.34) 0%, rgba(123, 31, 162, 0.44) 100%);
 }
+
+body.gp-mobile #dps-sim-config-modal {
+    padding: 0 !important;
+    align-items: stretch !important;
+}
+
+body.gp-mobile #dps-sim-config-modal-dialog {
+    max-width: 100% !important;
+    max-height: 100dvh !important;
+    height: 100dvh;
+    border-radius: 0 !important;
+}
+
+body.gp-mobile .dps-sim-config-top-grid {
+    grid-template-columns: 1fr !important;
+}
+
+body.gp-mobile #dps-sim-config-modal input,
+body.gp-mobile #dps-sim-config-modal select {
+    font-size: 16px !important;
+}

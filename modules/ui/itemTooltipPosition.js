@@ -144,12 +144,26 @@ export function positionItemTooltipOnIcon(tooltip, anchorEl, options = {}) {
     }
     if (visTop < MARGIN) visTop = MARGIN;
 
+    if (document.body?.classList.contains('gp-mobile')) {
+        const maxW = Math.min(window.innerWidth - 16, 360);
+        if (tw > maxW) visLeft = 8;
+        if (th > window.innerHeight * 0.7) visTop = Math.max(MARGIN, (window.innerHeight - th) / 2);
+    }
+
     const ox = side === 'left' ? 'right' : 'left';
     const oy = growDown ? 'top' : 'bottom';
     tooltip.style.transform = '';
     tooltip.style.transformOrigin = `${oy} ${ox}`;
     tooltip.style.left = `${Math.round(visLeft / scale)}px`;
     tooltip.style.top = `${Math.round(visTop / scale)}px`;
+}
+
+export function hideItemTooltip() {
+    const tooltip = document.getElementById('item-tooltip');
+    if (!tooltip) return;
+    tooltip.style.display = 'none';
+    tooltip.classList.remove('item-tooltip--pinned');
+    delete tooltip.dataset.gpTip;
 }
 
 /**

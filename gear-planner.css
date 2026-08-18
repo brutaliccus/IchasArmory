@@ -1854,3 +1854,535 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     gap: 8px;
     margin-top: 4px;
 }
+
+.gp-mobile-tabbar,
+.gp-pane-toolbar,
+.gp-pane-actions,
+.gp-pane-text-btn,
+.gp-pane-hint,
+.gp-talent-tree-tabs,
+.gp-run-sim-link,
+.gp-location-toggle {
+    /* defined in mobile block; desktop fallbacks */
+}
+
+.gp-mobile-tabbar {
+    display: none;
+}
+
+.gp-pane-toolbar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.gp-pane-toolbar .gp-locations-title {
+    margin-bottom: 0;
+}
+
+.gp-pane-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-end;
+}
+
+.gp-pane-text-btn {
+    appearance: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #5a4a20;
+    background: #1e1a10;
+    color: #ffd700;
+    font-size: calc(0.78rem * var(--ts, 1));
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.gp-pane-text-btn[hidden] {
+    display: none !important;
+}
+
+.gp-pane-hint {
+    display: none;
+    margin: 8px 0 0;
+    color: #888;
+    font-size: calc(0.9rem * var(--ts, 1));
+    line-height: 1.4;
+}
+
+.gp-locations-empty-hint.is-visible {
+    display: block;
+}
+
+.gp-run-sim-link {
+    appearance: none;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--accent-color, #ffd700);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.gp-location-entry.is-pinned {
+    background: rgba(255, 215, 0, 0.12);
+    border-color: #c9a227;
+    box-shadow: inset 3px 0 0 #ffd700;
+}
+
+.gp-location-toggle {
+    appearance: none;
+    margin-left: 6px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid #5a4a20;
+    background: transparent;
+    color: #c9a227;
+    font-size: calc(0.75rem * var(--ts, 1));
+    cursor: pointer;
+}
+
+.gp-location-items.is-collapsed {
+    display: none;
+}
+
+.gp-talent-tree-tabs {
+    display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 0 8px 8px;
+    box-sizing: border-box;
+}
+
+.gp-talent-tree-tab {
+    appearance: none;
+    padding: 8px 12px;
+    min-height: 44px;
+    border-radius: 6px;
+    border: 1px solid #5a4a20;
+    background: #1e1a10;
+    color: #c8b890;
+    font-size: calc(0.85rem * var(--ts, 1));
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.gp-talent-tree-tab.is-active {
+    border-color: #ffd700;
+    color: #ffd700;
+    background: linear-gradient(180deg, #4a3d10 0%, #2a2208 100%);
+}
+
+.item-picker-filters-toggle {
+    display: none;
+}
+
+/* ===== Gear Planner mobile chrome ===== */
+body.gp-mobile {
+    --gp-dock-width: 0px;
+    --gp-center-width: 100%;
+    --gp-nav-offset: 60px;
+    --gp-tabbar-height: 56px;
+}
+
+body.gp-mobile .site-support-footer {
+    display: none !important;
+}
+
+body.gp-mobile #ichacalc-scaled-root {
+    zoom: 1 !important;
+}
+
+body.gp-mobile #gear-planner-shell {
+    padding: calc(var(--gp-nav-offset, 60px) + 8px) 12px calc(var(--gp-tabbar-height, 56px) + 12px + env(safe-area-inset-bottom, 0px)) 12px;
+    min-height: 100dvh;
+}
+
+body.gp-mobile .gp-main {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+}
+
+body.gp-mobile .gp-class-sidebar {
+    position: static;
+    transform: none;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 12px;
+    margin: 0 0 10px;
+    z-index: 5;
+    pointer-events: auto;
+}
+
+body.gp-mobile .gp-class-sidebar .cr-drawer {
+    max-width: none;
+}
+
+body.gp-mobile .gp-class-sidebar .cr-drawer-icons {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    max-width: min(100vw - 24px, 360px);
+}
+
+body.gp-mobile .gp-class-sidebar .class-icon,
+body.gp-mobile .gp-class-sidebar .race-icon {
+    width: 44px;
+    height: 44px;
+}
+
+body.gp-mobile .gp-header {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 12px;
+}
+
+body.gp-mobile .gp-plan-name-wrap > .gp-plan-name-sizer,
+body.gp-mobile .gp-plan-name-wrap > .gp-plan-name-input,
+body.gp-mobile .gp-plan-name-input {
+    font-size: calc(1.1rem * var(--ts, 1));
+}
+
+body.gp-mobile .gp-header-col,
+body.gp-mobile .gp-header-sim {
+    justify-self: stretch;
+    align-items: flex-start;
+}
+
+body.gp-mobile .gp-header-sim {
+    align-items: flex-start;
+}
+
+body.gp-mobile .gp-header-sim #gp-quick-sim-result {
+    text-align: left;
+    max-width: none;
+}
+
+body.gp-mobile .gp-btn-icon {
+    width: 44px;
+    height: 44px;
+}
+
+body.gp-mobile .gp-layout {
+    grid-template-columns: 1fr;
+}
+
+body.gp-mobile .gp-slot-card--right .gp-primary-row,
+body.gp-mobile .gp-slot-card--right .gp-empty-primary,
+body.gp-mobile .gp-slot-card--right .gp-alt-row,
+body.gp-mobile .gp-slot-card--right .gp-item-name-row,
+body.gp-mobile .gp-slot-card--right .gp-name-enchant,
+body.gp-mobile .gp-slot-card--right .gp-enchant-chrome {
+    flex-direction: row;
+}
+
+body.gp-mobile .gp-slot-card--right .gp-item-meta,
+body.gp-mobile .gp-slot-card--right .gp-empty-label {
+    text-align: left;
+}
+
+body.gp-mobile .gp-slot-card--right .gp-name-enchant {
+    margin-left: 0;
+}
+
+body.gp-mobile .gp-slot-card--right .gp-item-scores {
+    justify-content: flex-start;
+}
+
+body.gp-mobile .gp-item-name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    white-space: normal;
+}
+
+body.gp-mobile .gp-item-source {
+    white-space: normal;
+    word-break: break-word;
+}
+
+body.gp-mobile.gp-pane-locations .gp-layout,
+body.gp-mobile.gp-pane-stats .gp-layout,
+body.gp-mobile.gp-pane-locations .gp-quick-sim-wrap,
+body.gp-mobile.gp-pane-stats .gp-quick-sim-wrap,
+body.gp-mobile.gp-pane-locations .gp-st-rotation-row,
+body.gp-mobile.gp-pane-stats .gp-st-rotation-row,
+body.gp-mobile.gp-pane-locations .gp-talents-view,
+body.gp-mobile.gp-pane-stats .gp-talents-view,
+body.gp-mobile.gp-pane-locations .gp-buffs-view,
+body.gp-mobile.gp-pane-stats .gp-buffs-view,
+body.gp-mobile.gp-pane-locations .gp-stat-weights-view,
+body.gp-mobile.gp-pane-stats .gp-stat-weights-view {
+    display: none !important;
+}
+
+body.gp-mobile .gp-locations-sidebar:not([hidden]),
+body.gp-mobile .gp-stats-sidebar:not([hidden]) {
+    left: 0;
+    right: 0;
+    width: auto;
+    top: var(--gp-nav-offset, 60px);
+    bottom: calc(var(--gp-tabbar-height, 56px) + env(safe-area-inset-bottom, 0px));
+    z-index: 8;
+    border: none;
+    box-shadow: none;
+    padding: 12px 14px 16px;
+}
+
+body.gp-mobile .gp-locations-sidebar[hidden],
+body.gp-mobile .gp-stats-sidebar[hidden] {
+    display: none !important;
+}
+
+body.gp-mobile .gp-locations-title {
+    font-size: calc(1rem * var(--ts, 1));
+}
+
+body.gp-mobile .gp-location-entry,
+body.gp-mobile .gp-locations-group > ul > li {
+    min-height: 44px;
+    padding: 8px 8px;
+    font-size: calc(1rem * var(--ts, 1));
+}
+
+body.gp-mobile .gp-location-item {
+    min-height: 40px;
+    padding: 8px 4px;
+    font-size: calc(0.95rem * var(--ts, 1));
+}
+
+body.gp-mobile .gp-stat-item {
+    font-size: calc(1rem * var(--ts, 1));
+    padding: 8px 4px;
+    align-items: flex-start;
+}
+
+body.gp-mobile .gp-stat-item span:first-child {
+    min-width: 0;
+    overflow-wrap: break-word;
+}
+
+body.gp-mobile .gp-stat-item strong {
+    max-width: 45%;
+}
+
+body.gp-mobile .gp-mobile-tabbar {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1150;
+    gap: 4px;
+    padding: 6px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+    background: linear-gradient(180deg, #1a1a1f 0%, #121218 100%);
+    border-top: 1px solid #3d3520;
+}
+
+body.gp-mobile .gp-mobile-tab {
+    flex: 1;
+    min-height: 44px;
+    border: 1px solid #3d3520;
+    border-radius: 8px;
+    background: #1a1810;
+    color: #c8b890;
+    font-size: calc(0.82rem * var(--ts, 1));
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+body.gp-mobile .gp-mobile-tab.is-active {
+    border-color: #c9a227;
+    color: #ffd700;
+    background: linear-gradient(180deg, #4a3d10 0%, #2a2208 100%);
+}
+
+body.gp-mobile #gear-planner-shell.gp-dual-weights .gp-stat-weights-view {
+    flex-direction: column;
+}
+
+body.gp-mobile #gear-planner-shell.gp-dual-weights .gp-stat-weights-view .gp-weights-panel:not([hidden]) {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+}
+
+body.gp-mobile .gp-weights-controls {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+body.gp-mobile .gp-weights-controls input[type="number"] {
+    width: 100%;
+}
+
+body.gp-mobile .gp-manual-weights-grid {
+    grid-template-columns: 1fr;
+}
+
+body.gp-mobile .gp-stat-weights-view table,
+body.gp-mobile #gp-dps-weights-host {
+    overflow-x: auto;
+    display: block;
+    max-width: 100%;
+}
+
+body.gp-mobile .gp-talent-tree-tabs:not([hidden]) {
+    display: flex;
+}
+
+body.gp-mobile #gp-talents-host {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+body.gp-mobile .gp-talent-preset-dropdown {
+    position: fixed;
+    left: 8px;
+    right: 8px;
+    top: auto;
+    bottom: calc(var(--gp-tabbar-height, 56px) + 12px);
+    max-width: none;
+    min-width: 0;
+    z-index: 1300;
+}
+
+body.gp-mobile .gp-talent-preset-item {
+    min-height: 44px;
+}
+
+body.gp-mobile #gp-buffs-list-slot #buffs-list,
+body.gp-mobile #gp-buffs-view #buffs-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+body.gp-mobile #gp-buffs-view .buff-icon {
+    width: 44px;
+    height: 44px;
+}
+
+body.gp-mobile .gp-overlay-tools-slot {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+body.gp-mobile .gp-community-modal {
+    width: 100%;
+    max-width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+}
+
+body.gp-mobile .gp-community-filters {
+    grid-template-columns: 1fr;
+}
+
+body.gp-mobile .gp-community-card {
+    flex-wrap: wrap;
+    padding: 12px 10px 10px;
+}
+
+body.gp-mobile .gp-community-card-title {
+    white-space: normal;
+}
+
+body.gp-mobile .gp-card-corner {
+    position: static;
+}
+
+body.gp-mobile .gp-community-card-main {
+    width: 100%;
+    order: -1;
+}
+
+body.gp-mobile .gp-card-icon-btn {
+    width: 44px;
+    height: 44px;
+}
+
+body.gp-mobile .gp-save-dialog-root {
+    padding: 0;
+    align-items: stretch;
+}
+
+body.gp-mobile .gp-save-meta-dialog.item-picker-panel {
+    width: 100%;
+    max-width: 100%;
+    max-height: 100dvh;
+    height: 100dvh;
+    border-radius: 0;
+}
+
+body.gp-mobile .gp-save-dialog-footer {
+    position: sticky;
+    bottom: 0;
+    background: #1a1a1f;
+    flex-wrap: wrap;
+}
+
+body.gp-mobile .gp-save-footer-left,
+body.gp-mobile .gp-save-footer-right {
+    width: 100%;
+}
+
+body.gp-mobile .gp-save-footer-right {
+    margin-left: 0;
+}
+
+body.gp-mobile .gp-save-footer-text-btn {
+    flex: 1;
+    min-height: 44px;
+}
+
+body.gp-mobile .gp-save-name-input,
+body.gp-mobile .gp-save-description,
+body.gp-mobile .slick-input {
+    font-size: 16px;
+}
+
+body.gp-mobile .gp-save-icon-grid {
+    grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+    max-height: min(32vh, 240px);
+}
+
+body.gp-mobile .gp-armory-import-dialog {
+    width: calc(100vw - 24px);
+    max-width: 420px;
+}
+
+body.gp-mobile .gp-armory-import-field input,
+body.gp-mobile .gp-armory-import-field select {
+    font-size: 16px;
+}
+
+body.gp-mobile .gp-armory-import-actions {
+    flex-direction: column-reverse;
+}
+
+body.gp-mobile .gp-armory-import-actions .gp-btn {
+    width: 100%;
+    min-height: 44px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.gp-mobile .item-picker-panel,
+    body.gp-mobile .gp-mobile-tab {
+        transition: none;
+    }
+}

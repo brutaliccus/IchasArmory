@@ -2,7 +2,7 @@
 
 Renders the Gear Planner page: locations-needed sidebar, class drawer, two-column expandable slot cards, save/load/share, and Shaman quick sim.
 
-**Mobile:** The desktop three-pane layout (fixed 260px Locations / Modified stats docks + `--gp-center-width`) is not usable on a phone. The implementation spec is [`docs/GEAR_PLANNER_MOBILE_PLAN.md`](../../docs/GEAR_PLANNER_MOBILE_PLAN.md) — tabbed panes, sheet modals, disable UI zoom on GP mobile. Not implemented yet.
+**Mobile:** `body.gp-mobile` (`modules/ui/gpMobile.js`) when GP is open and the viewport is ≤900px (or ≤1199px with a coarse pointer). UI zoom is forced to 1. Locations and Modified stats become full-screen panes behind a bottom **Gear / Locations / Stats** tab bar (`#gp-mobile-tabbar`). Session stores `mobileTab`. Location highlight is tap-to-pin with **Show on gear** / **Clear**; hover remains on fine pointers. Slot cards become a single left-aligned column. Talent overlay uses one-tree tabs. Item/enchant tooltips are tap-to-toggle. Spec: [`docs/GEAR_PLANNER_MOBILE_PLAN.md`](../../docs/GEAR_PLANNER_MOBILE_PLAN.md).
 
 ## Locations sidebar
 

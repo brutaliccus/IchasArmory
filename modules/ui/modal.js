@@ -2,7 +2,8 @@
 // Consolidates duplicate modal logic
 
 import { createItemTooltipHTML, createEnchantTooltipHTML, calculateItemDpsScore, calculateItemTankScore, getActiveItemScoreWeights } from './tooltips.js';
-import { positionItemTooltipOnIcon } from './itemTooltipPosition.js';
+import { positionItemTooltipOnIcon, hideItemTooltip } from './itemTooltipPosition.js';
+import { isGpMobileLayout } from './gpMobile.js';
 import { createIconImage, getCurrentlyEquippedItem } from '../gear/gear.js';
 import {
     ENCHANT_MAIN_CATEGORIES,
@@ -963,22 +964,31 @@ function renderItems(items, listElement) {
             }
         }
 
-        // Add tooltip on hover
-        modalItem.addEventListener('mouseenter', () => {
+        const showTip = () => {
             const tooltip = document.getElementById('item-tooltip');
-            if (tooltip && item) {
-                tooltip.innerHTML = createItemTooltipHTML(item);
-                tooltip.style.display = 'block';
-                requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, img, { side: 'west' }));
+            if (!tooltip || !item) return;
+            tooltip.innerHTML = createItemTooltipHTML(item);
+            if (isGpMobileLayout() && !tooltip.querySelector('.item-tooltip-close')) {
+                tooltip.insertAdjacentHTML('afterbegin', '<button type="button" class="item-tooltip-close" aria-label="Close">×</button>');
             }
-        });
-
-        modalItem.addEventListener('mouseleave', () => {
-            const tooltip = document.getElementById('item-tooltip');
-            if (tooltip) {
-                tooltip.style.display = 'none';
-            }
-        });
+            tooltip.style.display = 'block';
+            requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, img, { side: 'west' }));
+        };
+        if (isGpMobileLayout()) {
+            img.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const tooltip = document.getElementById('item-tooltip');
+                if (tooltip?.style.display === 'block' && tooltip.dataset.gpTip === String(item.id)) {
+                    hideItemTooltip();
+                    return;
+                }
+                if (tooltip) tooltip.dataset.gpTip = String(item.id);
+                showTip();
+            });
+        } else {
+            modalItem.addEventListener('mouseenter', showTip);
+            modalItem.addEventListener('mouseleave', () => hideItemTooltip());
+        }
 
         listElement.appendChild(modalItem);
     });
@@ -1633,6 +1643,21 @@ function applyItemPickerPanelBounds(panel, top, vh) {
 }
 
 function centerItemPickerPanel(panel, w, h, vw, vh) {
+    if (isGpMobileLayout()) {
+        const nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--gp-nav-offset')) || 60;
+        const pad = 8;
+        const vvH = window.visualViewport?.height || vh;
+        panel.style.left = `${pad}px`;
+        panel.style.right = `${pad}px`;
+        panel.style.width = 'auto';
+        panel.style.maxWidth = 'none';
+        panel.style.top = `${nav + pad}px`;
+        panel.style.transformOrigin = '50% 50%';
+        panel.dataset.itemPickerSide = 'center';
+        panel.style.maxHeight = `${Math.max(240, vvH - nav - pad * 2)}px`;
+        panel.style.height = 'auto';
+        return;
+    }
     let left = Math.round((vw - w) / 2);
     const maxL = getItemPickerMaxLeft(w, vw);
     left = Math.max(ITEM_PICKER_MARGIN_LEFT, Math.min(left, maxL));
@@ -2063,6 +2088,31 @@ export function openItemModal(slotId, items, elements, anchorEl = null) {
     });
 
     elements.modalSearchInput.focus();
+    syncItemPickerFiltersToggle();
+    hideItemTooltip();
+}
+
+function syncItemPickerFiltersToggle() {
+    const toggle = document.getElementById('item-picker-filters-toggle');
+    const filters = document.getElementById('item-picker-filters');
+    if (!toggle || !filters) return;
+    const mobile = isGpMobileLayout();
+    toggle.hidden = !mobile;
+    if (!mobile) {
+        filters.classList.remove('item-picker-filters--collapsed');
+        return;
+    }
+    if (toggle.dataset.wired !== '1') {
+        toggle.dataset.wired = '1';
+        toggle.addEventListener('click', () => {
+            const collapsed = filters.classList.toggle('item-picker-filters--collapsed');
+            toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+            toggle.textContent = collapsed ? 'Filters' : 'Hide filters';
+        });
+    }
+    filters.classList.add('item-picker-filters--collapsed');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.textContent = 'Filters';
 }
 
 /**
@@ -2180,6 +2230,7 @@ export function closeModal(elements) {
         delete elements.enchantModal.dataset.gearPlanEnchant;
         delete elements.enchantModal.dataset.gearPlanItemId;
     }
+    hideItemTooltip();
 }
 
 /**

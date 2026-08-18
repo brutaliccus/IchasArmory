@@ -33,7 +33,16 @@ import { getSetBonuses } from './setBonuses.js';
 import { runGearPlanQuickSim, runGearPlanStatWeightSimulations, mergeStatWeightsToTemplate, updateStatWeightsTable, sortStatWeightsTable, openDpsSimConfigModal, prepareDpsSimConfigForGearPlanner } from '../shaman/dps.js';
 import { runTankSimulation, getBossDatabase } from '../tank/tankSimulator.js';
 import { createItemTooltipHTML, createEnchantTooltipHTML, calculateItemDpsScore, calculateItemTankScore, formatItemTankScoreBadge } from '../ui/tooltips.js';
-import { positionItemTooltipOnIcon } from '../ui/itemTooltipPosition.js';
+import { positionItemTooltipOnIcon, hideItemTooltip } from '../ui/itemTooltipPosition.js';
+import {
+    initGpMobile,
+    syncGpMobileChrome,
+    setGpMobilePane,
+    getGpMobilePane,
+    isGpMobileLayout,
+    isFinePointerHover,
+} from '../ui/gpMobile.js';
+import { applyUiScale } from '../ui/uiScale.js';
 import {
     ensureItemSourcesLoaded,
     getPreferredSourcesForItem,
@@ -116,6 +125,8 @@ let pickCallback = null;
 let editMode = true;
 let gpDidDrag = false;
 let gpOverlay = null;
+let gpPinnedLocation = null;
+let gpActiveTalentTree = 0;
 let characterTalentSnapshot = null;
 let characterBuffSnapshot = null;
 let buffsListHome = null;
@@ -320,6 +331,28 @@ export function initGearPlannerView(cbs) {
     wireGpConsumeToolsSync();
     wireGpTankBossSearch();
     wireGpSimConfigButton();
+    if (!document.body.dataset.gpTipDocWired) {
+        document.body.dataset.gpTipDocWired = '1';
+        document.addEventListener('click', (e) => {
+            if (!isGpMobileLayout() && isFinePointerHover()) return;
+            const tooltip = document.getElementById('item-tooltip');
+            if (!tooltip || tooltip.style.display === 'none') return;
+            if (e.target.closest('.item-tooltip') && !e.target.closest('.item-tooltip-close')) return;
+            if (e.target.closest('.gp-item-tip') || e.target.closest('.gp-enchant-btn') || e.target.closest('.modal-item img')) return;
+            hideItemTooltip();
+        });
+    }
+    initGpMobile({
+        initialPane: session?.mobileTab,
+        onLayoutChange: ({ reason, pane }) => {
+            if (reason === 'pane' && pane !== 'gear' && gpOverlay) {
+                closeGpTalentsModal();
+            }
+            persistSession();
+            applyUiScale();
+            if (gpOverlay === 'talents') requestAnimationFrame(() => fitGpTalentTree());
+        },
+    });
     refreshGearPlannerWhenItemsReady();
     hydrateCommunityVoteMeta();
 }
@@ -402,6 +435,7 @@ function persistSession() {
     saveGearPlannerSession({
         plan: getGearPlanData(currentPlan),
         editMode,
+        mobileTab: getGpMobilePane(),
         timestamp: Date.now(),
     });
 }
@@ -463,6 +497,27 @@ function wireHeaderControls() {
         e.stopPropagation();
         try { localStorage.setItem(SIM_HINT_DISMISS_KEY, '1'); } catch { /* ignore */ }
         updateQuickSimVisibility();
+    });
+    document.getElementById('gp-locations-show-gear')?.addEventListener('click', () => {
+        if (!gpPinnedLocation) return;
+        setGpMobilePane('gear');
+        persistSession();
+        requestAnimationFrame(() => {
+            restorePinnedLocation();
+            document.querySelector('#gear-planner-shell .gp-row--location-hl')?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+            });
+        });
+    });
+    document.getElementById('gp-locations-clear')?.addEventListener('click', () => {
+        gpPinnedLocation = null;
+        clearLocationHighlights();
+        document.querySelectorAll('#gp-locations-list .gp-location-entry').forEach((li) => {
+            li.classList.remove('is-pinned');
+            li.setAttribute('aria-pressed', 'false');
+        });
+        syncLocationPaneActions();
     });
 }
 
@@ -834,6 +889,8 @@ function syncGpOverlayUi() {
     setHeaderBtnIcon(buffsBtn, buffsOpen ? GP_ICON_HOME : GP_ICON_BUFFS, buffsOpen ? 'Gear Planner' : 'Buffs & consumables');
     setHeaderBtnIcon(weightsBtn, weightsOpen ? GP_ICON_HOME : GP_ICON_WEIGHTS, weightsOpen ? 'Gear Planner' : 'Stat weights');
     syncGpTalentsTitle();
+    if (talentsOpen || buffsOpen || weightsOpen) setGpMobilePane('gear');
+    syncGpMobileChrome();
 }
 
 /** Extra visual shrink for GP talent trees (on top of fit-to-host scale). */
@@ -869,7 +926,8 @@ function fitGpTalentTree() {
     const boxW = Math.max(host.clientWidth, 1);
     const boxH = Math.max(host.clientHeight, 1);
     const fitScale = Math.min(boxW / treeW, boxH / treeH);
-    const scale = fitScale * GP_TALENT_TREE_VISUAL_SCALE;
+    const minScale = isGpMobileLayout() ? 0.55 : 0;
+    const scale = Math.max(minScale, fitScale) * GP_TALENT_TREE_VISUAL_SCALE;
     if (!Number.isFinite(scale) || scale <= 0) return;
 
     const scaleChanged = Math.abs(scale - gpTalentLastScale) >= 0.002;
@@ -1354,7 +1412,36 @@ async function refreshGpTalentsHost() {
     generateTalentInputs(host, currentPlan.class || 'warrior');
     await applyTalentSpec(host, currentPlan.talents || {});
     updateAllTalentStates(false);
+    setupGpTalentTreeTabs();
     requestAnimationFrame(() => fitGpTalentTree());
+}
+
+function setupGpTalentTreeTabs() {
+    const host = document.getElementById('gp-talents-host');
+    const tabs = document.getElementById('gp-talent-tree-tabs');
+    if (!host || !tabs) return;
+    const trees = [...host.querySelectorAll('.talent-tree')];
+    const mobile = isGpMobileLayout();
+    if (!mobile || trees.length <= 1) {
+        tabs.hidden = true;
+        tabs.innerHTML = '';
+        trees.forEach((t) => { t.hidden = false; });
+        return;
+    }
+    if (gpActiveTalentTree >= trees.length) gpActiveTalentTree = 0;
+    tabs.hidden = false;
+    tabs.innerHTML = trees.map((tree, i) => {
+        const name = tree.querySelector('.tree-name')?.textContent?.trim() || `Tree ${i + 1}`;
+        return `<button type="button" class="gp-talent-tree-tab${i === gpActiveTalentTree ? ' is-active' : ''}" data-tree-index="${i}">${escapeHtml(name)}</button>`;
+    }).join('');
+    trees.forEach((tree, i) => { tree.hidden = i !== gpActiveTalentTree; });
+    tabs.querySelectorAll('.gp-talent-tree-tab').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            gpActiveTalentTree = Number(btn.dataset.treeIndex) || 0;
+            setupGpTalentTreeTabs();
+            requestAnimationFrame(() => fitGpTalentTree());
+        });
+    });
 }
 
 /** Re-bind all plan-driven UI when loading a plan without closing the active overlay. */
@@ -1917,8 +2004,8 @@ function renderGpDefenseSection(full, ungeared, naked, tankWeights) {
         const tankRow = gpStatRowHtml('Tank Score', tankTotal.tankScore, tankGear, null);
         if (tankRow) parts.push(tankRow);
     } else {
-        parts.push(gpStaticStatRowHtml('Mit Score', 'Run Sim'));
-        parts.push(gpStaticStatRowHtml('Tank Score', 'Run Sim'));
+        parts.push(`<div class="gp-stat-item"><span>Mit Score</span><button type="button" class="gp-run-sim-link" data-gp-open-weights="1">Run Sim</button></div>`);
+        parts.push(`<div class="gp-stat-item"><span>Tank Score</span><button type="button" class="gp-run-sim-link" data-gp-open-weights="1">Run Sim</button></div>`);
     }
     return parts.join('');
 }
@@ -1967,7 +2054,7 @@ function renderStatsSidebar() {
     const hasBuffs = Array.isArray(plan.buffs) && plan.buffs.length > 0;
     const hasTalents = plan.talents && Object.values(plan.talents).some(v => Number(v) > 0);
     if (!hasPrimary && !hasBuffs && !hasTalents) {
-        list.innerHTML = '<p class="gp-locations-empty">No modified stats yet</p>';
+        list.innerHTML = '<p class="gp-locations-empty">No modified stats yet. Buffs, talents, and equipped primaries appear here.</p>';
         return;
     }
     try {
@@ -1991,7 +2078,14 @@ function renderStatsSidebar() {
             if (!allRows) return '';
             return `<div class="gp-stat-card"><h4 class="gp-locations-group-heading">${escapeHtml(group.title)}</h4>${allRows}</div>`;
         }).filter(Boolean).join('');
-        list.innerHTML = cards || '<p class="gp-locations-empty">No modified stats yet</p>';
+        list.innerHTML = cards || '<p class="gp-locations-empty">No modified stats yet. Buffs, talents, and equipped primaries appear here.</p>';
+        list.querySelectorAll('[data-gp-open-weights]').forEach((btn) => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                setGpMobilePane('gear');
+                toggleGpStatWeightsView();
+            });
+        });
     } catch (err) {
         console.warn('[Gear Planner] Stats sidebar failed', err);
         list.innerHTML = '<p class="gp-locations-empty">Stats unavailable</p>';
@@ -3297,24 +3391,34 @@ function renderLocationsSidebar() {
     const list = document.getElementById('gp-locations-list');
     if (!list) return;
     const groups = collectLocationGroups(currentPlan);
+    const hint = document.querySelector('.gp-locations-empty-hint');
     if (!groups.length) {
         list.innerHTML = '<p class="gp-locations-empty">No locations yet</p>';
+        hint?.classList.add('is-visible');
         clearLocationHighlights();
+        syncLocationPaneActions();
         return;
     }
+    hint?.classList.remove('is-visible');
     list.innerHTML = groups.map(g => `
         <div class="gp-locations-group" data-kind="${escapeHtml(g.kind)}">
             <h4 class="gp-locations-group-heading">${escapeHtml(g.label)}</h4>
-            <ul>${g.entries.map(e => `<li class="gp-location-entry" data-instance-id="${escapeHtml(e.id)}" data-instance-name="${escapeHtml(e.name)}">
+            <ul>${g.entries.map(e => {
+                const many = (e.items || []).length > 3;
+                return `<li class="gp-location-entry" data-instance-id="${escapeHtml(e.id)}" data-instance-name="${escapeHtml(e.name)}" role="button" tabindex="0">
                 <span class="gp-location-name">${escapeHtml(e.name)}</span>
-                <ul class="gp-location-items">${(e.items || []).map(it => {
+                ${many ? `<button type="button" class="gp-location-toggle" aria-expanded="false">${e.items.length} items</button>` : ''}
+                <ul class="gp-location-items${many ? ' is-collapsed' : ''}">${(e.items || []).map(it => {
                     const q = it.quality ?? callbacks.getItemById?.(it.id)?.quality ?? 0;
                     return `<li class="gp-location-item" data-item-id="${it.id}"><span class="q${q}">${escapeHtml(it.name)}</span></li>`;
                 }).join('')}</ul>
-            </li>`).join('')}</ul>
+            </li>`;
+            }).join('')}</ul>
         </div>`).join('');
     bindLocationHoverHighlights();
     bindLocationItemClicks();
+    restorePinnedLocation();
+    syncLocationPaneActions();
 }
 
 function clearLocationHighlights() {
@@ -3345,14 +3449,71 @@ function applyLocationHighlights(instanceId, instanceName) {
     });
 }
 
+function syncLocationPaneActions() {
+    const showBtn = document.getElementById('gp-locations-show-gear');
+    const clearBtn = document.getElementById('gp-locations-clear');
+    const hasPin = !!gpPinnedLocation;
+    if (showBtn) showBtn.hidden = !hasPin;
+    if (clearBtn) clearBtn.hidden = !hasPin;
+}
+
+function restorePinnedLocation() {
+    if (!gpPinnedLocation) return;
+    applyLocationHighlights(gpPinnedLocation.instanceId, gpPinnedLocation.instanceName);
+    document.querySelectorAll('#gp-locations-list .gp-location-entry').forEach((li) => {
+        const match = li.dataset.instanceId === gpPinnedLocation.instanceId
+            || li.dataset.instanceName === gpPinnedLocation.instanceName;
+        li.classList.toggle('is-pinned', match);
+        li.setAttribute('aria-pressed', match ? 'true' : 'false');
+    });
+}
+
+function pinLocation(instanceId, instanceName) {
+    const same = gpPinnedLocation
+        && gpPinnedLocation.instanceId === instanceId
+        && gpPinnedLocation.instanceName === instanceName;
+    if (same) {
+        gpPinnedLocation = null;
+        clearLocationHighlights();
+        document.querySelectorAll('#gp-locations-list .gp-location-entry').forEach((li) => {
+            li.classList.remove('is-pinned');
+            li.setAttribute('aria-pressed', 'false');
+        });
+    } else {
+        gpPinnedLocation = { instanceId, instanceName };
+        restorePinnedLocation();
+    }
+    syncLocationPaneActions();
+}
+
 function bindLocationHoverHighlights() {
     const list = document.getElementById('gp-locations-list');
     if (!list) return;
+    const hoverOk = isFinePointerHover() && !isGpMobileLayout();
     list.querySelectorAll('.gp-location-entry').forEach(li => {
-        li.addEventListener('mouseenter', () => {
-            applyLocationHighlights(li.dataset.instanceId || '', li.dataset.instanceName || '');
+        if (hoverOk) {
+            li.addEventListener('mouseenter', () => {
+                applyLocationHighlights(li.dataset.instanceId || '', li.dataset.instanceName || '');
+            });
+            li.addEventListener('mouseleave', () => {
+                if (gpPinnedLocation) restorePinnedLocation();
+                else clearLocationHighlights();
+            });
+        }
+        li.addEventListener('click', (e) => {
+            if (e.target.closest('.gp-location-item') || e.target.closest('.gp-location-toggle')) return;
+            if (!isGpMobileLayout() && hoverOk) return;
+            pinLocation(li.dataset.instanceId || '', li.dataset.instanceName || '');
         });
-        li.addEventListener('mouseleave', () => clearLocationHighlights());
+    });
+    list.querySelectorAll('.gp-location-toggle').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const items = btn.parentElement?.querySelector('.gp-location-items');
+            if (!items) return;
+            const collapsed = items.classList.toggle('is-collapsed');
+            btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+        });
     });
 }
 
@@ -3428,6 +3589,7 @@ export function renderGearPlanner() {
 
     bindSlotEvents();
     persistSession();
+    syncGpMobileChrome();
 }
 
 function getGpClassId() {
@@ -3592,34 +3754,66 @@ function bindSlotEvents() {
     bindPlannerMiddleClick();
 }
 
+function gpTooltipSideForEl(el) {
+    return el.closest('#gp-slots-right') || el.closest('.gp-slot-card--right') ? 'east' : 'left';
+}
+
 function bindPlannerTooltips() {
     const tooltip = document.getElementById('item-tooltip');
     if (!tooltip) return;
+    const tapMode = isGpMobileLayout() || !isFinePointerHover();
     document.querySelectorAll('#gear-planner-shell .gp-item-tip').forEach(el => {
         const itemId = Number(el.dataset.itemId);
         const item = itemId && callbacks.getItemById ? callbacks.getItemById(itemId) : null;
         if (!item) return;
-        el.addEventListener('mouseenter', () => {
+        const show = () => {
             tooltip.innerHTML = createItemTooltipHTML(item, getGpPrimaryEquipped());
+            if (tapMode && !tooltip.querySelector('.item-tooltip-close')) {
+                tooltip.insertAdjacentHTML('afterbegin', '<button type="button" class="item-tooltip-close" aria-label="Close">×</button>');
+            }
             tooltip.style.display = 'block';
-            const side = el.closest('#gp-slots-right') || el.closest('.gp-slot-card--right') ? 'east' : 'left';
-            requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, el, { side }));
-        });
-        el.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+            requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, el, { side: gpTooltipSideForEl(el) }));
+        };
+        if (tapMode) {
+            el.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (tooltip.style.display === 'block' && tooltip.dataset.gpTip === String(itemId)) {
+                    hideItemTooltip();
+                    return;
+                }
+                tooltip.dataset.gpTip = String(itemId);
+                show();
+            });
+        } else {
+            el.addEventListener('mouseenter', show);
+            el.addEventListener('mouseleave', () => hideItemTooltip());
+        }
     });
     document.querySelectorAll('#gear-planner-shell .gp-enchant-btn').forEach(el => {
-        el.addEventListener('mouseenter', async (e) => {
+        const showEnchant = async (e) => {
             e.stopPropagation();
             const slotId = el.dataset.slot;
             const idx = currentPlan.slots[slotId]?.enchant;
             const enchant = idx != null ? enchantDatabase[slotId]?.[idx] : null;
             if (!enchant || enchant.name === 'None') return;
             tooltip.innerHTML = await createEnchantTooltipHTML(enchant);
+            if (tapMode && !tooltip.querySelector('.item-tooltip-close')) {
+                tooltip.insertAdjacentHTML('afterbegin', '<button type="button" class="item-tooltip-close" aria-label="Close">×</button>');
+            }
             tooltip.style.display = 'block';
             const side = el.dataset.side === 'right' ? 'east' : 'left';
             requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, el, { side }));
-        });
-        el.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+        };
+        if (tapMode) {
+            el.addEventListener('click', (e) => {
+                e.preventDefault();
+                showEnchant(e);
+            });
+        } else {
+            el.addEventListener('mouseenter', showEnchant);
+            el.addEventListener('mouseleave', () => hideItemTooltip());
+        }
     });
 }
 
@@ -3648,7 +3842,7 @@ function parseDropTarget(el) {
 }
 
 function bindPlannerDragDrop() {
-    if (!editMode) return;
+    if (!editMode || isGpMobileLayout()) return;
     const handles = document.querySelectorAll('#gear-planner-shell .gp-drag-handle');
     const dropRows = document.querySelectorAll('#gear-planner-shell .gp-primary-row, #gear-planner-shell .gp-alt-row');
 

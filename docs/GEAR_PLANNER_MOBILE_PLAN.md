@@ -1,6 +1,6 @@
 # Gear Planner Mobile View — Implementation Plan
 
-**Status:** Plan only (no layout code in this change).  
+**Status:** Implemented (Phases 1–5). Detection and chrome live in `modules/ui/gpMobile.js`; styles in `gear-planner.css` (`body.gp-mobile`) plus scoped sheet rules in `style.css`, `shaman-dps.css`, `profiles.css`, and `topnav.css`.  
 **Scope:** `/gear-planner` (and `/gp`) must be fully usable on phones and small tablets: gear slots, **Locations**, **Modified stats**, overlay views, and every modal that can open from this page.  
 **Out of scope for v1:** a full Character Planner mobile redesign. Shared pickers (item, enchant, tooltips, profiles) still need mobile rules because Gear Planner opens them.
 

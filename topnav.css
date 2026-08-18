@@ -162,6 +162,20 @@
     display: none !important;
 }
 
+body.gp-mobile .ui-scale-settings-panel {
+    left: 8px;
+    right: 8px;
+    width: auto;
+    max-height: 80dvh;
+    overflow: auto;
+}
+
+body.gp-mobile .top-nav-icon-btn,
+body.gp-mobile .dropdown-btn.icon-only {
+    min-width: 44px;
+    min-height: 44px;
+}
+
 .ui-scale-settings-header {
     font-weight: 700;
     color: var(--accent-color);

@@ -15,7 +15,8 @@ import { getSetBonuses } from './modules/gear/setBonuses.js';
 import { getStatSearchTerms, parseStatsFromTooltip, KEY_MAP, getItemType, filterEnchantsByItemType, filterEnchantsByClass, getAttackPowerBonusVsCreatureType, getSpellDamageHealingBonusVsCreatureType, AP_VS_DISPLAY_ORDER, DMG_HEALING_VS_DISPLAY_ORDER, getApVsRowLabel, getDmgHealingVsRowLabel, formatSmartPercent } from './modules/character/stats.js';
 import { initializeGearCompare, setComparisonItem, getCurrentCompareSlot, setEHPCalculator, setGetCurrentClass, setCharacterDataCallbacks } from './modules/gear/gearCompare.js';
 import { filterAndRenderItems, filterAndRenderEnchants, getSelectedQualities, getCurrentFilters, openItemModal as openItemModalFromModule, openEnchantModal as openEnchantModalFromModule, repositionItemPickerIfOpen, setItemModalPlayerClassOverride, getPlayerClassForItemFilters } from './modules/ui/modal.js';
-import { initUiScale } from './modules/ui/uiScale.js';
+import { initUiScale, applyUiScale } from './modules/ui/uiScale.js';
+import { syncGpMobileChrome } from './modules/ui/gpMobile.js';
 import { positionItemTooltipOnIcon } from './modules/ui/itemTooltipPosition.js';
 import { itemLoader } from './modules/gear/itemLoader.js';
 import { importFromArmoryAPI as importFromArmoryModule, updateCharacterStatusBar, initializeStatusBar, updateStatusBarValues, setImportedState as setImportedStateArmory, RACE_TO_FACTION, FACTION_ICONS } from './modules/armory/armory.js';
@@ -192,13 +193,11 @@ export function setAppMode(mode) {
             const mode = btn.dataset.mode || (btn.id === 'mode-gear-planner-btn' ? 'gearPlanner' : 'character');
             btn.classList.toggle('active', mode === next);
         });
-        const locSidebar = document.getElementById('gp-locations-sidebar');
-        const statsSidebar = document.getElementById('gp-stats-sidebar');
-        if (locSidebar) locSidebar.hidden = next !== 'gearPlanner';
-        if (statsSidebar) statsSidebar.hidden = next !== 'gearPlanner';
         if (next !== 'gearPlanner') {
             closeGpTalentsModal();
         }
+        syncGpMobileChrome();
+        applyUiScale();
         if (next === 'gearPlanner') {
             renderGearPlanner();
         }

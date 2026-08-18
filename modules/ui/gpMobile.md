@@ -1,0 +1,26 @@
+# gpMobile.js
+
+Shared Gear Planner mobile chrome: viewport detection, `body.gp-mobile`, nav offset, and Gear / Locations / Stats panes.
+
+## Detection
+
+- **Phone / narrow tablet:** `max-width: 900px`
+- **Coarse tablet:** `max-width: 1199px` and `pointer: coarse`
+- Active only when `body[data-app-mode="gearPlanner"]`
+
+## Exports
+
+| Function | Purpose |
+|---|---|
+| `isGpMobileViewport()` | Media-query only |
+| `isGpMobileLayout()` | GP mode + viewport |
+| `isFinePointerHover()` | `(hover: hover) and (pointer: fine)` |
+| `applyGpMobileClass()` | Toggles `body.gp-mobile` / `html.gp-mobile` |
+| `syncGpNavOffset()` | Sets `--gp-nav-offset` and `--gp-tabbar-height` |
+| `syncGpMobileChrome()` | Class + pane visibility + offsets |
+| `getGpMobilePane()` / `setGpMobilePane(pane)` | `gear` \| `locations` \| `stats` |
+| `initGpMobile({ initialPane, onLayoutChange })` | Tab bar, ResizeObserver, matchMedia |
+
+Layout scale is forced to **1** in `uiScale.js` while `isGpMobileLayout()` is true. Text scale still applies.
+
+See [`docs/GEAR_PLANNER_MOBILE_PLAN.md`](../../docs/GEAR_PLANNER_MOBILE_PLAN.md).

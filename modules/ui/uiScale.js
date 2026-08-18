@@ -1,5 +1,7 @@
 // modules/ui/uiScale.js - Auto + manual UI scaling (independent of browser zoom)
 
+import { isGpMobileLayout } from './gpMobile.js';
+
 const STORAGE_KEY = 'ichacalc_uiUserScale';
 const TEXT_STORAGE_KEY = 'ichacalc_textUserScale';
 
@@ -138,7 +140,8 @@ function syncScaleCssVars(auto, user, total) {
 export function applyUiScale() {
     const auto = computeAutoScale();
     const user = getUserScale();
-    const total = auto * user;
+    const mobileGp = isGpMobileLayout();
+    const total = mobileGp ? 1 : auto * user;
     syncScaleCssVars(auto, user, total);
 
     const scaled = getScaledRoot();
@@ -183,12 +186,13 @@ function syncPanelValues() {
 
     const user = getUserScale();
     const auto = computeAutoScale();
-    const total = auto * user;
+    const mobileGp = isGpMobileLayout();
+    const total = mobileGp ? 1 : auto * user;
     const text = getTextScale();
     slider.value = String(user);
     if (valueEl) valueEl.textContent = formatPercent(user);
     if (effectiveEl) effectiveEl.textContent = formatPercent(total);
-    if (autoEl) autoEl.textContent = formatPercent(auto);
+    if (autoEl) autoEl.textContent = mobileGp ? 'off' : formatPercent(auto);
     if (manualEl) manualEl.textContent = formatPercent(user);
     if (textSlider) textSlider.value = String(text);
     if (textValueEl) textValueEl.textContent = formatPercent(text);
