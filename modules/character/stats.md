@@ -18,7 +18,7 @@ Multi-type clauses (e.g. “Undead and Demons”) split on “and” and apply t
 - `getAttackPowerBonusVsCreatureType`, `getSpellDamageHealingBonusVsCreatureType`
 - `parseStatsFromTooltip`, `createEmptyStats`, enchant helpers
 - `parseStatsFromEnchantDescription`, `getEffectiveEnchantStats` — fill enchant `stats` from description when keys are missing (e.g. Sigil of Leeching)
-- `formatSmartPercent` — UI percent formatting (`3%`, not `3.00%`)
+- `formatSmartPercent` — UI percent formatting (`3%`, not `3.00%`); used for Character Planner defense rows (dodge/parry/block/miss/total avoidance) and Gear Planner modified-stats percents (`formatGpSmartPercent` mirrors the same rules in `gearPlannerView.js`)
 - `parseSetBonusSheetStats` — includes **vampirism/leeching** (`+N% Vampirism`, `N% of damage dealt as healing`, etc.) before skip patterns that would reject "healing" lines
 - `filterEnchantsByItemType`, `filterEnchantsByClass`, `getEnchantRestrictedClasses`, `getEnchantBaseName`
 

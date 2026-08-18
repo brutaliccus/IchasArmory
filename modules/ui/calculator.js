@@ -770,6 +770,7 @@ export function calculateEffectiveHealth(data) {
         dmgAndHealing: (gearStats.dmgAndHealing || 0) + (enchantStats.dmgAndHealing || 0) + (setBonuses.dmgAndHealing || 0) + (setSheet.dmgAndHealing || 0) + buffSpellDamage,
         mp5: (gearStats.mp5 || 0) + (enchantStats.mp5 || 0) + (setSheet.mp5 || 0) + (activeBuffs.reduce((sum, buff) => sum + (buff.mp5 || 0), 0)),
         defense: Math.floor(totalDefense), dodge: totalDodge, parry: totalParry, block: totalBlock,
+        missChance,
         blockValue: (selectedClass === 'druid' || selectedClass === 'hunter' || (offhandArmor || 0) <= 0) ? 0 : (() => {
             // Base block value calculation
             const baseBlockValue = Math.floor((gearStats.blockValue || 0) + (enchantStats.blockValue || 0) + (setBonuses.blockValue || 0) + (setSheet.blockValue || 0) + Math.floor(totalStrength / 20));

@@ -637,10 +637,12 @@ if ((offhandArmor || 0) <= 0) {
 }
 ```
 
-#### Total Mitigation
+#### Total Mitigation (Total Avoidance)
 ```javascript
 const totalMitigation = missChance + totalDodge + totalParry + totalBlock;
 ```
+
+`missChance` is exported on the return object as **Chance to be Missed** in UI. `totalMitigation` is shown as **Total Avoidance** (dodge + parry + block + miss).
 
 ---
 
@@ -937,8 +939,9 @@ return {
     dodge: totalDodge,
     parry: totalParry,
     block: totalBlock,
+    missChance: missChance,
     blockValue: blockValue,
-    totalMitigation: totalMitigation,
+    totalMitigation: totalMitigation,  // dodge + parry + block + miss
 
     // Resistances
     fireResist: totalFireResist,

@@ -2410,11 +2410,12 @@ function displayMainResults(totals) {
     }
 
     elements.totalDefense.textContent = (totals.defense || 0).toLocaleString();
-    elements.totalDodge.textContent = (totals.dodge || 0).toFixed(2) + '%';
-    elements.totalParry.textContent = (totals.parry || 0).toFixed(2) + '%';
-    elements.totalBlock.textContent = (totals.block || 0).toFixed(2) + '%';
+    elements.totalDodge.textContent = formatSmartPercent(totals.dodge || 0);
+    elements.totalParry.textContent = formatSmartPercent(totals.parry || 0);
+    elements.totalBlock.textContent = formatSmartPercent(totals.block || 0);
+    if (elements.totalMissChance) elements.totalMissChance.textContent = formatSmartPercent(totals.missChance || 0);
     if (elements.totalBlockValue) elements.totalBlockValue.textContent = (totals.blockValue || 0).toLocaleString();
-    elements.totalMitigation.textContent = (totals.totalMitigation || 0).toFixed(2) + '%';
+    elements.totalMitigation.textContent = formatSmartPercent(totals.totalMitigation || 0);
 
     // Add Holy Shield bonus display for Paladins with the talent
     if (currentClass === 'paladin') {
@@ -2426,10 +2427,10 @@ function displayMainResults(totals) {
 
             // Add Holy Shield bonus to block display with icon
             const holyShieldIcon = `<img src="${resolveIconUrl('spell_holy_blessingofprotection')}" style="width: 14px; height: 14px; vertical-align: middle; margin-left: 4px;" alt="Holy Shield" title="With Holy Shield active">`;
-            elements.totalBlock.innerHTML = `${(totals.block || 0).toFixed(2)}% (${holyShieldIcon} ${blockWithHolyShield.toFixed(2)}%)`;
+            elements.totalBlock.innerHTML = `${formatSmartPercent(totals.block || 0)} (${holyShieldIcon} ${formatSmartPercent(blockWithHolyShield)})`;
 
             // Add Holy Shield bonus to avoidance display with icon
-            elements.totalMitigation.innerHTML = `${(totals.totalMitigation || 0).toFixed(2)}% (${holyShieldIcon} ${avoidanceWithHolyShield.toFixed(2)}%)`;
+            elements.totalMitigation.innerHTML = `${formatSmartPercent(totals.totalMitigation || 0)} (${holyShieldIcon} ${formatSmartPercent(avoidanceWithHolyShield)})`;
         }
     }
 
@@ -2463,12 +2464,23 @@ function displayMainResults(totals) {
     if (elements.totalArcaneDR) elements.totalArcaneDR.textContent = ((totals.arcaneDR || 0) * 100).toFixed(2) + '%';
     if (elements.totalHolyDR) elements.totalHolyDR.textContent = ((totals.holyDR || 0) * 100).toFixed(2) + '%';
 
-    if (elements.totalFireDamage) elements.totalFireDamage.textContent = (totals.fireDamage || 0).toLocaleString();
-    if (elements.totalFrostDamage) elements.totalFrostDamage.textContent = (totals.frostDamage || 0).toLocaleString();
-    if (elements.totalNatureDamage) elements.totalNatureDamage.textContent = (totals.natureDamage || 0).toLocaleString();
-    if (elements.totalShadowDamage) elements.totalShadowDamage.textContent = (totals.shadowDamage || 0).toLocaleString();
-    if (elements.totalArcaneDamage) elements.totalArcaneDamage.textContent = (totals.arcaneDamage || 0).toLocaleString();
-    if (elements.totalHolyDamage) elements.totalHolyDamage.textContent = (totals.holyDamage || 0).toLocaleString();
+    const spellDamageBaseline = totals.dmgAndHealing || 0;
+    const schoolDamageRows = [
+        ['totalFireDamage', 'fireDamage'],
+        ['totalFrostDamage', 'frostDamage'],
+        ['totalNatureDamage', 'natureDamage'],
+        ['totalShadowDamage', 'shadowDamage'],
+        ['totalArcaneDamage', 'arcaneDamage'],
+        ['totalHolyDamage', 'holyDamage'],
+    ];
+    for (const [elKey, totalsKey] of schoolDamageRows) {
+        const el = elements[elKey];
+        const val = totals[totalsKey] || 0;
+        const show = Math.abs(val - spellDamageBaseline) >= 0.5;
+        if (el) el.textContent = val.toLocaleString();
+        const row = el?.closest('.stat-item');
+        if (row) row.style.display = show ? '' : 'none';
+    }
     if (elements.totalSpellPen) elements.totalSpellPen.textContent = (totals.spellPen || 0).toLocaleString();
 
     // Fortune: item proc chance modifier (%), from gear + enchants + talents (see calculator totals.fortune)
@@ -4376,7 +4388,7 @@ async function init() {
     const allElementIds = [
         'attackerLevel', 'talents-list', 'buffs-list', 'talents-buffs-card', 'totalHealth', 'totalHealthBreakdown', 'totalMana', 'totalArmor', 'damageReduction', 'effectiveHP',
         'drCapWarning', 'class-selector', 'race-selector', 'totalArmorBreakdown', 'totalStamina', 'totalAgility', 'totalStrength', 'totalIntellect', 'totalSpirit',
-        'totalVampirism', 'totalCritDmgReduction', 'totalDefense', 'totalDodge', 'totalParry', 'totalBlock', 'totalMitigation', 'totalAP', 'weaponDamageRange', 'weaponSpeed', 'weaponDPS', 'mhDamageRange', 'mhSpeed', 'mhDPS', 'ohDamageRange', 'ohSpeed', 'ohDPS', 'totalCrit', 'totalHit', 'totalHaste',
+        'totalVampirism', 'totalCritDmgReduction', 'totalDefense', 'totalDodge', 'totalParry', 'totalBlock', 'totalMissChance', 'totalMitigation', 'totalAP', 'weaponDamageRange', 'weaponSpeed', 'weaponDPS', 'mhDamageRange', 'mhSpeed', 'mhDPS', 'ohDamageRange', 'ohSpeed', 'ohDPS', 'totalCrit', 'totalHit', 'totalHaste',
         'rangedWeaponDamageRange', 'rangedWeaponSpeed', 'rangedWeaponDPS', 'rangedAP', 'rangedCrit', 'rangedHit', 'rangedHaste',
         'totalWeaponSkill', 'enemyDodgeChance', 'glancingDamage', 'totalArmorPen',
         'totalSpellCrit', 'totalSpellHit', 'totalSpellCritDamageBonus', 'totalHasteSpell', 'totalHealing', 'totalDmgHeal', 'totalBlockValue', 'totalFireResist', 'totalNatureResist', 'spellSchoolFilter', 'spellSubCategoryFilter', 'healingStatItem',

@@ -1773,13 +1773,16 @@ const GP_STAT_GROUPS = [
     { title: 'Spell', rows: [
         ['dmgAndHealing', 'Spell Damage'], ['healing', 'Healing'], ['spellCrit', 'Spell Crit', 'pct'],
         ['spellHit', 'Spell Hit', 'pct'], ['spellPen', 'Spell Pen'], ['mp5', 'Mp5'],
-        ['fireDamage', 'Fire Damage'], ['frostDamage', 'Frost Damage'], ['natureDamage', 'Nature Damage'],
-        ['shadowDamage', 'Shadow Damage'], ['arcaneDamage', 'Arcane Damage'], ['holyDamage', 'Holy Damage'],
+        ['fireDamage', 'Fire Damage', null, 'school'], ['frostDamage', 'Frost Damage', null, 'school'],
+        ['natureDamage', 'Nature Damage', null, 'school'], ['shadowDamage', 'Shadow Damage', null, 'school'],
+        ['arcaneDamage', 'Arcane Damage', null, 'school'], ['holyDamage', 'Holy Damage', null, 'school'],
     ]},
     { title: 'Defense', rows: [
         ['health', 'Health'], ['mana', 'Mana'], ['armor', 'Armor'], ['defense', 'Defense'],
         ['dodge', 'Dodge', 'pct'], ['parry', 'Parry', 'pct'], ['block', 'Block', 'pct'],
+        ['missChance', 'Chance to be Missed', 'pct'],
         ['blockValue', 'Block Value'],
+        ['totalMitigation', 'Total Avoidance', 'pct'],
     ]},
     { title: 'Damage Reduction', rows: [
         ['fireDR', 'Fire', 'frac'], ['natureDR', 'Nature', 'frac'], ['frostDR', 'Frost', 'frac'],
@@ -1822,7 +1825,14 @@ const GP_WEAPON_SKILL_CHILDREN = [
     ['glancingDamage', 'Glancing', 'pct'],
 ];
 
-function renderGpStatEntry(key, label, kind, nested, full, ungeared, naked) {
+function gpSchoolDiffersFromBaseline(full, key) {
+    const baseline = Number(full.dmgAndHealing) || 0;
+    const school = Number(full[key]) || 0;
+    return Math.abs(school - baseline) >= 0.5;
+}
+
+function renderGpStatEntry(key, label, kind, nested, full, ungeared, naked, rowTag) {
+    if (rowTag === 'school' && !gpSchoolDiffersFromBaseline(full, key)) return '';
     const total = Number(full[key]) || 0;
     const gearBonus = total - (Number(ungeared[key]) || 0);
     const vsNaked = total - (Number(naked[key]) || 0);
@@ -1882,8 +1892,8 @@ function renderStatsSidebar() {
         const ungeared = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: false, includeTalents: true, includeBuffs: true }));
         const naked = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: false, includeTalents: false, includeBuffs: false }));
         const cards = GP_STAT_GROUPS.map(group => {
-            const rows = group.rows.map(([key, label, kind]) =>
-                renderGpStatEntry(key, label, kind, false, full, ungeared, naked)
+            const rows = group.rows.map(([key, label, kind, rowTag]) =>
+                renderGpStatEntry(key, label, kind, false, full, ungeared, naked, rowTag)
             ).filter(Boolean).join('');
             let extra = '';
             if (group.title === 'Melee') {
