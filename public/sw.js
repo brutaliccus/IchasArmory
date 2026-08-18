@@ -1,5 +1,5 @@
 // Service Worker for IchaCalc
-const CACHE_VERSION = 'v207';
+const CACHE_VERSION = 'v209';
 const CACHE_NAME = `ichacalc-${CACHE_VERSION}`;
 
 // Vite handles JS/CSS caching via content-hashed filenames + immutable Cache-Control headers.

@@ -34,10 +34,14 @@ Opens the **anchored item picker** (not a centered fullscreen modal): `#item-mod
 - `anchorEl` (HTMLElement | null, optional): Gear slot frame; defaults to `document.getElementById('icon_frame_' + slotId)` on Character Planner. Ignored on Gear Planner (centered).
 
 **Filter UI:**
-1. **Primary row** (`.item-picker-filters-primary-row`): six equal columns — search, **type**, Primary, Secondary, Defensive, Quality. Second row (`.item-picker-instance-row`): four compact checkbox dropdowns — Dungeons, Raids, World Bosses, Other (same UX as Quality).
-2. **Toolbar**: **min / max** required level — `.item-picker-req-axis` + dual-thumb range (`#ilvl-min-slider` / `#ilvl-max-slider`, 1–60), **Can equip** (`#can-equip-toggle`), **DPS** / **Tank** sort buttons (larger tap targets), **Reset**.
+1. **Primary row** (`.item-picker-filters-primary-row`): search, **type** (armor/weapon checkboxes), Primary, Secondary, Defense, Quality dropdowns, and **required level** dual slider (`#ilvl-min-slider` / `#ilvl-max-slider`, 1–60) on the same row.
+2. **Source group row** (`.item-picker-source-group-row`): three-state chips for Dungeons, Raids, Quests, etc. (`.source-filter-toggle` chips — unchanged).
+3. **Instance row** (`.item-picker-instance-row`): Dungeons, Raids, World Bosses, Other dropdowns; **Can equip**, **DPS**, and **Tank** at the end of this row.
+4. **Header**: **Reset** (`#reset-filters-btn`) beside the close **X**.
 
-**Panel layout (CSS):** `#item-modal-panel` is wider (`min(96vw, 1320px)`), height capped at `min(94vh, 100dvh - 16px)` with `overflow: hidden` so the flex column bounds correctly. Filters scroll inside `max-height: min(42vh, 400px)` when tall; `#modal-item-list` keeps at least **140px** height and scrolls. UI-wide scale is handled by `modules/ui/uiScale.js` (2560×1440 auto-fit + manual cog in top nav).
+**Three-state dropdown rows** (Primary, Secondary, Defense, Quality, and instance list rows): `.item-picker-filter-row` buttons cycle **include** (green ✓) → **exclude** (red ✕) → **off**. Armor/weapon type dropdowns remain plain checkboxes. Reset clears all three-state rows to **off** (no quality/stat filter = show all).
+
+**Panel layout (CSS):** `#item-modal-panel` width `min(96vw, 1320px)`; `max-height` clamped to viewport in JS (`applyItemPickerPanelBounds`). Filter block scrolls inside `max-height: min(38vh, 360px)` when tall; `#modal-item-list` keeps at least **140px** height and scrolls.
 
 **Behavior:**
 1. Sets `dataset.currentSlot` and `dataset.anchorSlotId` on the root
@@ -148,11 +152,13 @@ Main filtering function that applies multiple filter types simultaneously.
 ```javascript
 {
     search: '',           // Text search term
-    stats: [],           // Array of stat filter strings
-    qualities: [3,4,5],  // Array of quality integers (0-5)
-    ilvlMin: 1,        // Minimum required level (tooltip)
-    ilvlMax: 60,        // Maximum item level
-    slot: 'mainhand'    // Current slot ID
+    stats: [],           // Armor / weapon type checkbox values
+    statFilterStates: {}, // { [statName]: 'include'|'exclude' }
+    qualityFilterStates: {}, // { [quality]: 'include'|'exclude' }
+    ilvlMin: 1,
+    ilvlMax: 60,
+    sourceFilterStates: {},
+    slot: 'mainhand'
 }
 ```
 
@@ -214,16 +220,9 @@ Filters enchants based on search term.
 - 4: Epic (Purple)
 - 5: Legendary (Orange)
 
-**Default:** Rare, Epic, and Legendary (3, 4, 5)
+**Default:** All qualities shown (no row selected = off)
 
-**Implementation:**
-```javascript
-if (filters.qualities && filters.qualities.length > 0) {
-    filteredItems = filteredItems.filter(item =>
-        filters.qualities.includes(item.quality)
-    );
-}
-```
+**Implementation:** `itemPassesQualityFilterStates` — include whitelist, exclude blacklist; empty states = no filter.
 
 ### Required Level Filter (dual range, 1–60)
 
@@ -463,9 +462,11 @@ Stores filter settings that persist across modal open/close cycles:
 const savedFilters = {
     search: '',
     stats: [],
-    qualities: [3, 4, 5],
+    statFilterStates: {},
+    qualityFilterStates: {},
     ilvlMin: 1,
-    ilvlMax: 60
+    ilvlMax: 60,
+    sourceFilterStates: {}
 };
 ```
 
@@ -485,9 +486,11 @@ Reads current UI state and updates `savedFilters`.
 {
     search: string,
     stats: Array<string>,
-    qualities: Array<number>,
+    statFilterStates: Object,
+    qualityFilterStates: Object,
     ilvlMin: number,
     ilvlMax: number,
+    sourceFilterStates: Object,
     slot: string
 }
 ```

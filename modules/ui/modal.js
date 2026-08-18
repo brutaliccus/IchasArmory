@@ -54,8 +54,9 @@ export function getPlayerClassForItemFilters() {
 // Persistent filter state (ilvlMin/Max = required character level from tooltip)
 const savedFilters = {
     search: '',
-    stats: [],
-    qualities: [3, 4, 5], // Default: rare, epic, legendary
+    stats: [], // armor / weapon type checkbox values only
+    statFilterStates: {},
+    qualityFilterStates: {},
     ilvlMin: 1,
     ilvlMax: 60,
     sourceFilterStates: {},
@@ -117,6 +118,73 @@ const WEAPON_FILTER_SUBTYPE_SET = new Set([
     'Wand',
 ].map(v => v.toLowerCase()));
 const ARMOR_TYPE_SET = new Set(['plate', 'mail', 'leather', 'cloth']);
+
+const STAT_DROPDOWN_HEADERS = [
+    { attr: 'primary-stats', menuId: 'primary-stats-dropdown', title: 'Primary' },
+    { attr: 'secondary-stats', menuId: 'secondary-stats-dropdown', title: 'Secondary' },
+    { attr: 'defensive-stats', menuId: 'defensive-stats-dropdown', title: 'Defense' },
+    { attr: 'quality', menuId: 'quality-dropdown', title: 'Quality' },
+];
+
+function itemTooltipHasStat(item, statFilter) {
+    if (!item.tooltip_lines_raw) return false;
+    const statLower = String(statFilter).toLowerCase().trim();
+    const searchTerms = getStatSearchTerms(statLower);
+    const allTerms = [statLower, ...searchTerms];
+    return item.tooltip_lines_raw.some(line => {
+        const lineLower = line.toLowerCase();
+        return allTerms.some(term => lineLower.includes(term));
+    });
+}
+
+function itemPassesStatFilterStates(item, statFilterStates) {
+    if (!statFilterStates || Object.keys(statFilterStates).length === 0) return true;
+    for (const [stat, state] of Object.entries(statFilterStates)) {
+        const has = itemTooltipHasStat(item, stat);
+        if (state === 'include' && !has) return false;
+        if (state === 'exclude' && has) return false;
+    }
+    return true;
+}
+
+function itemPassesQualityFilterStates(item, qualityFilterStates) {
+    if (!qualityFilterStates || Object.keys(qualityFilterStates).length === 0) return true;
+    const includes = Object.entries(qualityFilterStates)
+        .filter(([, s]) => s === 'include')
+        .map(([q]) => parseInt(q, 10));
+    const excludes = Object.entries(qualityFilterStates)
+        .filter(([, s]) => s === 'exclude')
+        .map(([q]) => parseInt(q, 10));
+    const q = item.quality;
+    if (includes.length > 0 && !includes.includes(q)) return false;
+    if (excludes.includes(q)) return false;
+    return true;
+}
+
+function migrateLegacyStatFiltersToStates() {
+    const armorWeaponLow = new Set([
+        ...ARMOR_TYPE_SET,
+        ...WEAPON_FILTER_HAND_SET,
+        ...WEAPON_FILTER_SUBTYPE_SET,
+    ]);
+    for (const stat of savedFilters.stats) {
+        const low = String(stat).toLowerCase().trim();
+        if (armorWeaponLow.has(low)) continue;
+        if (!savedFilters.statFilterStates[stat]) {
+            savedFilters.statFilterStates[stat] = 'include';
+        }
+    }
+    savedFilters.stats = savedFilters.stats.filter(s => armorWeaponLow.has(String(s).toLowerCase().trim()));
+    if (savedFilters.qualities && savedFilters.qualities.length > 0) {
+        for (const q of savedFilters.qualities) {
+            const key = String(q);
+            if (!savedFilters.qualityFilterStates[key]) {
+                savedFilters.qualityFilterStates[key] = 'include';
+            }
+        }
+    }
+    delete savedFilters.qualities;
+}
 
 function isLikelyEquipTypeLine(line) {
     const l = String(line || '').trim().toLowerCase();
@@ -420,8 +488,21 @@ function canClassEquipItem(item, playerClass, slot) {
     return true;
 }
 
+function getStatFiltersForSort(filters) {
+    const armorTypes = ['plate', 'mail', 'leather', 'cloth'];
+    const weaponTypes = ['one-handed', 'two-handed', 'axe', 'sword', 'mace', 'dagger', 'fist weapon', 'polearm', 'staff', 'fishing pole', 'bow', 'crossbow', 'gun', 'wand', 'thrown', 'shield', 'libram', 'totem', 'idol'];
+    const nonStatFilters = [...armorTypes, ...weaponTypes];
+    const fromStates = Object.entries(filters.statFilterStates || {})
+        .filter(([, s]) => s === 'include')
+        .map(([k]) => k);
+    const fromCheckboxes = (filters.stats || []).filter(stat => {
+        const statLower = stat.toLowerCase().trim();
+        return !nonStatFilters.includes(statLower);
+    });
+    return [...fromStates, ...fromCheckboxes];
+}
+
 /**
- * Filter items based on slot-specific rules
  * @param {Array} items - Items to filter
  * @param {string} slot - The slot ID (mainhand, offhand, etc.)
  * @returns {Array} Filtered items
@@ -590,16 +671,14 @@ export function filterAndRenderItems(allItems, filters, listElement) {
             if (!itemMatchesWeaponTypeFilters(item, handFilters, subtypeFilters)) return false;
 
             if (actualStatFilters.length === 0) return true;
-            return actualStatFilters.every(statFilter => {
-                const statLower = statFilter.toLowerCase();
-                const searchTerms = getStatSearchTerms(statLower);
-                const allTerms = [statLower, ...searchTerms];
-                return item.tooltip_lines_raw.some(line => {
-                    const lineLower = line.toLowerCase();
-                    return allTerms.some(term => lineLower.includes(term));
-                });
-            });
+            return actualStatFilters.every(statFilter => itemTooltipHasStat(item, statFilter));
         });
+    }
+
+    if (filters.statFilterStates && Object.keys(filters.statFilterStates).length > 0) {
+        filteredItems = filteredItems.filter(item =>
+            itemPassesStatFilterStates(item, filters.statFilterStates)
+        );
     }
 
     // Apply instance / loot source filters (three-state: include OR, exclude hide)
@@ -609,29 +688,17 @@ export function filterAndRenderItems(allItems, filters, listElement) {
         );
     }
 
-    // Apply quality filter
-    if (filters.qualities && filters.qualities.length > 0) {
+    // Apply quality filter (three-state include / exclude)
+    if (filters.qualityFilterStates && Object.keys(filters.qualityFilterStates).length > 0) {
         filteredItems = filteredItems.filter(item =>
-            filters.qualities.includes(item.quality)
+            itemPassesQualityFilterStates(item, filters.qualityFilterStates)
         );
     }
 
     // Sort by stat value if stat filters are applied
-    if (filters.stats && filters.stats.length > 0 && typeof parseStatsFromTooltip === 'function') {
-        // Filter out armor types and weapon types from stat filters
-        const armorTypes = ['plate', 'mail', 'leather', 'cloth'];
-        const weaponTypes = ['one-handed', 'two-handed', 'axe', 'sword', 'mace', 'dagger', 'fist weapon', 'polearm', 'staff', 'fishing pole', 'bow', 'crossbow', 'gun', 'wand', 'thrown', 'shield', 'libram', 'totem', 'idol'];
-        const nonStatFilters = [...armorTypes, ...weaponTypes];
-
-        // Get the first actual stat filter (excluding armor/weapon types)
-        const actualStatFilters = filters.stats.filter(stat => {
-            const statLower = stat.toLowerCase().trim();
-            return !nonStatFilters.includes(statLower);
-        });
-
-        // Only apply stat-value sorting when we have a real stat filter (not just armor/weapon type)
-        if (actualStatFilters.length > 0) {
-            const firstStatFilter = actualStatFilters[0].toLowerCase().trim();
+    const sortStatFilters = getStatFiltersForSort(filters);
+    if (sortStatFilters.length > 0 && typeof parseStatsFromTooltip === 'function') {
+        const firstStatFilter = sortStatFilters[0].toLowerCase().trim();
             
             const statFilterToKey = {
                 'stamina': 'sta', 'sta': 'sta',
@@ -677,15 +744,14 @@ export function filterAndRenderItems(allItems, filters, listElement) {
             } else {
                 console.warn('[Modal] No stat key mapping found for filter:', firstStatFilter);
             }
-        }
     }
 
     // Render filtered items
     console.log('Filtered items count:', filteredItems.length);
     
     // Verify sort order before rendering (first 5 items)
-    if (filters.stats && filters.stats.length > 0 && filteredItems.length > 0) {
-        const firstStatFilter = filters.stats[0].toLowerCase().trim();
+    if (sortStatFilters.length > 0 && filteredItems.length > 0) {
+        const firstStatFilter = sortStatFilters[0].toLowerCase().trim();
         const statFilterToKey = {
             'stamina': 'sta', 'sta': 'sta',
             'agility': 'agi', 'agi': 'agi',
@@ -1019,13 +1085,7 @@ function renderEnchants(enchants, allEnchants, listElement) {
  */
 function getSelectedStatsFromDropdowns() {
     const stats = [];
-    const checkboxNames = [
-        'armor-type-filter',
-        'weapon-type-filter',
-        'primary-stats-filter',
-        'secondary-stats-filter',
-        'defensive-stats-filter'
-    ];
+    const checkboxNames = ['armor-type-filter', 'weapon-type-filter'];
 
     checkboxNames.forEach(name => {
         const checkboxes = document.querySelectorAll(`input[name="${name}"]:checked`);
@@ -1039,27 +1099,112 @@ function getSelectedStatsFromDropdowns() {
     return stats;
 }
 
+function cycleThreeStateFilter(current) {
+    if (current === 'include') return 'exclude';
+    if (current === 'exclude') return 'off';
+    return 'include';
+}
+
+function setItemPickerFilterRowState(row, state, persist = true) {
+    const kind = row.dataset.filterKind;
+    const key = row.dataset.filterKey;
+    row.dataset.state = state;
+    const ariaLabels = {
+        off: 'Filter inactive',
+        include: 'Include this option',
+        exclude: 'Exclude this option',
+    };
+    row.setAttribute('aria-label', ariaLabels[state] || ariaLabels.off);
+    row.setAttribute('aria-pressed', state === 'off' ? 'false' : 'true');
+    if (!persist || !key) return;
+    if (kind === 'stat') {
+        if (state === 'off') delete savedFilters.statFilterStates[key];
+        else savedFilters.statFilterStates[key] = state;
+    } else if (kind === 'quality') {
+        if (state === 'off') delete savedFilters.qualityFilterStates[key];
+        else savedFilters.qualityFilterStates[key] = state;
+    } else if (kind === 'source') {
+        if (state === 'off') delete savedFilters.sourceFilterStates[key];
+        else savedFilters.sourceFilterStates[key] = state;
+    }
+}
+
+function syncItemPickerFilterRowsFromSaved() {
+    document.querySelectorAll('.item-picker-filter-row').forEach((row) => {
+        const kind = row.dataset.filterKind;
+        const key = row.dataset.filterKey;
+        let state = 'off';
+        if (kind === 'stat' && key) state = savedFilters.statFilterStates[key] || 'off';
+        else if (kind === 'quality' && key) state = savedFilters.qualityFilterStates[key] || 'off';
+        else if (kind === 'source' && key) state = savedFilters.sourceFilterStates[key] || 'off';
+        setItemPickerFilterRowState(row, state, false);
+    });
+}
+
+function countFilterRowStates(scope) {
+    let includeCount = 0;
+    let excludeCount = 0;
+    const root = scope || document;
+    root.querySelectorAll('.item-picker-filter-row').forEach((row) => {
+        if (row.dataset.state === 'include') includeCount += 1;
+        else if (row.dataset.state === 'exclude') excludeCount += 1;
+    });
+    return { includeCount, excludeCount };
+}
+
+function formatFilterDropdownLabel(title, includeCount, excludeCount) {
+    if (!includeCount && !excludeCount) return title;
+    const parts = [];
+    if (includeCount) parts.push(`+${includeCount}`);
+    if (excludeCount) parts.push(`−${excludeCount}`);
+    return `${title} (${parts.join(' ')})`;
+}
+
+function updateStatFilterDropdownLabels() {
+    for (const { attr, menuId, title } of STAT_DROPDOWN_HEADERS) {
+        const header = document.querySelector(`[data-dropdown="${attr}"] > span:first-child`);
+        const menu = document.getElementById(menuId);
+        if (!header) continue;
+        const { includeCount, excludeCount } = countFilterRowStates(menu);
+        header.textContent = formatFilterDropdownLabel(title, includeCount, excludeCount);
+    }
+}
+
+function setupThreeStateFilterRowListeners() {
+    document.querySelectorAll('.item-picker-filter-row').forEach((row) => {
+        if (row.dataset.threeStateBound === '1') return;
+        row.dataset.threeStateBound = '1';
+        row.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const next = cycleThreeStateFilter(row.dataset.state || 'off');
+            setItemPickerFilterRowState(row, next);
+            if (row.dataset.filterKind === 'source') {
+                updateInstanceFilterLabel();
+            } else {
+                updateStatFilterDropdownLabels();
+            }
+            document.dispatchEvent(new CustomEvent('filterChanged'));
+        });
+    });
+}
+
 /**
  * Setup event listeners for stat filter dropdowns
  */
 function setupStatFilterListeners() {
-    const checkboxNames = [
-        'armor-type-filter',
-        'weapon-type-filter',
-        'primary-stats-filter',
-        'secondary-stats-filter',
-        'defensive-stats-filter'
-    ];
+    const checkboxNames = ['armor-type-filter', 'weapon-type-filter'];
 
     checkboxNames.forEach(name => {
         const checkboxes = document.querySelectorAll(`input[name="${name}"]`);
         checkboxes.forEach(cb => {
             cb.addEventListener('change', () => {
-                const event = new CustomEvent('filterChanged');
-                document.dispatchEvent(event);
+                document.dispatchEvent(new CustomEvent('filterChanged'));
             });
         });
     });
+
+    setupThreeStateFilterRowListeners();
 }
 
 /**
@@ -1190,14 +1335,19 @@ function resetFilters() {
     // Reset saved filters to defaults
     savedFilters.search = '';
     savedFilters.stats = [];
-    savedFilters.qualities = [3, 4, 5];
+    savedFilters.statFilterStates = {};
+    savedFilters.qualityFilterStates = {};
     savedFilters.ilvlMin = REQ_LEVEL_MIN;
     savedFilters.ilvlMax = REQ_LEVEL_MAX;
     savedFilters.sourceFilterStates = {};
     document.querySelectorAll('.source-filter-toggle').forEach((btn) => {
         setSourceFilterToggleState(btn, 'off', false);
     });
+    document.querySelectorAll('.item-picker-filter-row').forEach((row) => {
+        setItemPickerFilterRowState(row, 'off', false);
+    });
     updateInstanceFilterLabel();
+    updateStatFilterDropdownLabels();
 
     // Reset sort buttons
     sortByDpsActive = false;
@@ -1224,14 +1374,8 @@ function resetFilters() {
     if (ilvlMaxSlider) ilvlMaxSlider.value = String(REQ_LEVEL_MAX);
     updateReqLevelDualUI();
 
-    // Clear all stat checkboxes
-    const checkboxNames = [
-        'armor-type-filter',
-        'weapon-type-filter',
-        'primary-stats-filter',
-        'secondary-stats-filter',
-        'defensive-stats-filter'
-    ];
+    // Clear armor / weapon type checkboxes
+    const checkboxNames = ['armor-type-filter', 'weapon-type-filter'];
 
     checkboxNames.forEach(name => {
         const checkboxes = document.querySelectorAll(`input[name="${name}"]`);
@@ -1240,16 +1384,8 @@ function resetFilters() {
         });
     });
 
-    // Reset quality checkboxes to default (rare, epic, legendary)
-    const qualityCheckboxes = document.querySelectorAll('input.quality-filter[type="checkbox"]');
-    qualityCheckboxes.forEach(cb => {
-        const quality = parseInt(cb.value);
-        cb.checked = quality >= 3;
-    });
-
     // Trigger filter change to re-render items
-    const event = new CustomEvent('filterChanged');
-    document.dispatchEvent(event);
+    document.dispatchEvent(new CustomEvent('filterChanged'));
 }
 
 /** Minimum gap from viewport left / top */
@@ -1327,6 +1463,13 @@ function itemPickerPreferOpenToRight(anchorEl) {
  * (right of left-column slots, left of right-column slots), clamped into the viewport.
  * @param {HTMLElement|null} anchorEl - e.g. #icon_frame_head
  */
+function applyItemPickerPanelBounds(panel, top, vh) {
+    const marginBottom = ITEM_PICKER_MARGIN_BOTTOM;
+    const maxH = Math.max(240, vh - top - marginBottom);
+    panel.style.maxHeight = `${maxH}px`;
+    panel.style.height = 'auto';
+}
+
 function centerItemPickerPanel(panel, w, h, vw, vh) {
     let left = Math.round((vw - w) / 2);
     const maxL = getItemPickerMaxLeft(w, vw);
@@ -1342,6 +1485,7 @@ function centerItemPickerPanel(panel, w, h, vw, vh) {
     panel.style.top = `${top}px`;
     panel.style.transformOrigin = '50% 50%';
     panel.dataset.itemPickerSide = 'center';
+    applyItemPickerPanelBounds(panel, top, vh);
 }
 
 export function positionItemPickerPanel(anchorEl) {
@@ -1441,6 +1585,7 @@ export function positionItemPickerPanel(anchorEl) {
         panel.style.top = `${Math.round(top)}px`;
         panel.dataset.itemPickerSide = side;
         panel.style.transformOrigin = side === 'east' ? '0 0' : '100% 0';
+        applyItemPickerPanelBounds(panel, top, vh);
 }
 
 /** Reposition when window resizes while picker is open */
@@ -1526,13 +1671,14 @@ function syncSourceFilterTogglesFromSaved() {
         const state = (id && savedFilters.sourceFilterStates[id]) || 'off';
         setSourceFilterToggleState(btn, state, false);
     });
+    syncItemPickerFilterRowsFromSaved();
 }
 
 function countSourceFilterStates(scope) {
     let includeCount = 0;
     let excludeCount = 0;
     const root = scope || document;
-    root.querySelectorAll('.source-filter-toggle').forEach((btn) => {
+    root.querySelectorAll('.source-filter-toggle, .item-picker-filter-row[data-filter-kind="source"]').forEach((btn) => {
         if (btn.dataset.state === 'include') includeCount += 1;
         else if (btn.dataset.state === 'exclude') excludeCount += 1;
     });
@@ -1565,15 +1711,20 @@ function updateInstanceFilterLabel() {
 function fillInstanceFilterMenu(menu, list) {
     menu.innerHTML = '';
     for (const inst of list) {
-        const row = document.createElement('div');
-        row.className = 'instance-filter-row';
-        row.appendChild(createSourceFilterToggle(inst.id));
+        const row = document.createElement('button');
+        row.type = 'button';
+        row.className = 'item-picker-filter-row';
+        row.dataset.filterKind = 'source';
+        row.dataset.filterKey = inst.id;
+        const initial = savedFilters.sourceFilterStates[inst.id] || 'off';
+        setItemPickerFilterRowState(row, initial, false);
+        if (initial !== 'off') savedFilters.sourceFilterStates[inst.id] = initial;
         const name = document.createElement('span');
-        name.className = 'instance-filter-name';
         name.textContent = inst.name;
         row.appendChild(name);
         menu.appendChild(row);
     }
+    setupThreeStateFilterRowListeners();
 }
 
 function setupSourceGroupFilterUI() {
@@ -1621,6 +1772,8 @@ async function setupInstanceFilterUI() {
  * @param {HTMLElement|null} [anchorEl] - Gear slot element for panel placement
  */
 export function openItemModal(slotId, items, elements, anchorEl = null) {
+    migrateLegacyStatFiltersToStates();
+
     elements.modal.dataset.currentSlot = slotId;
     elements.modal.dataset.anchorSlotId = slotId;
     elements.modalTitle.textContent = `Select ${slotId.charAt(0).toUpperCase() + slotId.slice(1)} Item`;
@@ -1699,14 +1852,8 @@ export function openItemModal(slotId, items, elements, anchorEl = null) {
         document.querySelectorAll('input[name="weapon-type-filter"]').forEach(cb => { cb.checked = false; });
     }
 
-    // Restore stat checkbox selections from saved filters
-    const checkboxNames = [
-        'armor-type-filter',
-        'weapon-type-filter',
-        'primary-stats-filter',
-        'secondary-stats-filter',
-        'defensive-stats-filter'
-    ];
+    // Restore armor / weapon checkbox selections from saved filters
+    const checkboxNames = ['armor-type-filter', 'weapon-type-filter'];
 
     checkboxNames.forEach(name => {
         const checkboxes = document.querySelectorAll(`input[name="${name}"]`);
@@ -1716,23 +1863,15 @@ export function openItemModal(slotId, items, elements, anchorEl = null) {
         });
     });
 
-    // Restore quality checkboxes
-    const qualityCheckboxes = document.querySelectorAll('input.quality-filter[type="checkbox"]');
-    qualityCheckboxes.forEach(cb => {
-        const quality = parseInt(cb.value);
-        cb.checked = savedFilters.qualities.includes(quality);
-    });
-
-    // Get selected qualities
-    const selectedQualities = Array.from(qualityCheckboxes)
-        .filter(cb => cb.checked)
-        .map(cb => parseInt(cb.value));
+    syncItemPickerFilterRowsFromSaved();
+    updateStatFilterDropdownLabels();
 
     // Filter and render with saved filters
     filterAndRenderItems(items, {
         search: savedFilters.search,
         stats: savedFilters.stats,
-        qualities: selectedQualities.length > 0 ? selectedQualities : savedFilters.qualities,
+        statFilterStates: { ...savedFilters.statFilterStates },
+        qualityFilterStates: { ...savedFilters.qualityFilterStates },
         ilvlMin: savedFilters.ilvlMin,
         ilvlMax: savedFilters.ilvlMax,
         sourceFilterStates: { ...savedFilters.sourceFilterStates },
@@ -1755,6 +1894,9 @@ export function openItemModal(slotId, items, elements, anchorEl = null) {
         positionItemPickerPanel(anchor);
         requestAnimationFrame(() => {
             if (panel) panel.classList.add('item-picker-panel--visible');
+            requestAnimationFrame(() => {
+                positionItemPickerPanel(anchor);
+            });
         });
     });
 
@@ -1766,9 +1908,6 @@ export function openItemModal(slotId, items, elements, anchorEl = null) {
  * @returns {Object} Current filter state
  */
 export function getCurrentFilters() {
-    const qualityCheckboxes = document.querySelectorAll('input.quality-filter[type="checkbox"]:checked');
-    const selectedQualities = Array.from(qualityCheckboxes).map(cb => parseInt(cb.value));
-
     const ilvlMin = document.getElementById('ilvl-min');
     const ilvlMax = document.getElementById('ilvl-max');
     const searchInput = document.getElementById('modal-search-input');
@@ -1777,21 +1916,30 @@ export function getCurrentFilters() {
     const rawMax = ilvlMax ? parseReqLevelInput(ilvlMax.value, REQ_LEVEL_MAX) : REQ_LEVEL_MAX;
     const { lo, hi } = normalizeReqLevelPair(rawMin, rawMax);
 
-    // Get selected stats from all 4 dropdowns
     const selectedStats = getSelectedStatsFromDropdowns();
 
-    // Get current slot from modal dataset
     const modal = document.getElementById('item-modal');
     const currentSlot = modal ? modal.dataset.currentSlot : null;
 
-    // Update saved filters
     savedFilters.search = searchInput ? searchInput.value : '';
     savedFilters.stats = selectedStats;
-    savedFilters.qualities = selectedQualities.length > 0 ? selectedQualities : [3, 4, 5];
     savedFilters.ilvlMin = lo;
     savedFilters.ilvlMax = hi;
 
+    savedFilters.statFilterStates = {};
+    savedFilters.qualityFilterStates = {};
     savedFilters.sourceFilterStates = {};
+
+    document.querySelectorAll('.item-picker-filter-row').forEach((row) => {
+        const kind = row.dataset.filterKind;
+        const key = row.dataset.filterKey;
+        const state = row.dataset.state;
+        if (!key || state !== 'include' && state !== 'exclude') return;
+        if (kind === 'stat') savedFilters.statFilterStates[key] = state;
+        else if (kind === 'quality') savedFilters.qualityFilterStates[key] = state;
+        else if (kind === 'source') savedFilters.sourceFilterStates[key] = state;
+    });
+
     document.querySelectorAll('.source-filter-toggle').forEach((btn) => {
         const id = btn.dataset.filterId;
         const state = btn.dataset.state;
@@ -1803,7 +1951,8 @@ export function getCurrentFilters() {
     return {
         search: savedFilters.search,
         stats: savedFilters.stats,
-        qualities: savedFilters.qualities,
+        statFilterStates: { ...savedFilters.statFilterStates },
+        qualityFilterStates: { ...savedFilters.qualityFilterStates },
         ilvlMin: lo,
         ilvlMax: hi,
         sourceFilterStates: { ...savedFilters.sourceFilterStates },
@@ -1873,6 +2022,9 @@ export function closeModal(elements) {
  * @returns {Array<number>} Array of selected quality values
  */
 export function getSelectedQualities() {
-    const checkboxes = document.querySelectorAll('input.quality-filter[type="checkbox"]:checked');
-    return Array.from(checkboxes).map(cb => parseInt(cb.value));
+    const includes = [];
+    document.querySelectorAll('.item-picker-filter-row[data-filter-kind="quality"][data-state="include"]').forEach((row) => {
+        includes.push(parseInt(row.dataset.filterKey, 10));
+    });
+    return includes;
 }

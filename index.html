@@ -63,11 +63,15 @@
                 var user = parseFloat(localStorage.getItem('ichacalc_uiUserScale'));
                 if (!isFinite(user)) user = 1;
                 user = Math.max(USER_MIN, Math.min(USER_MAX, user));
+                var text = parseFloat(localStorage.getItem('ichacalc_textUserScale'));
+                if (!isFinite(text)) text = 1;
+                text = Math.max(USER_MIN, Math.min(USER_MAX, text));
                 var total = auto * user;
                 var root = document.documentElement;
                 root.style.setProperty('--ui-auto-scale', String(auto));
                 root.style.setProperty('--ui-user-scale', String(user));
                 root.style.setProperty('--ui-scale', String(total));
+                root.style.setProperty('--text-scale', String(text));
             } catch (e) { /* ignore */ }
         })();
     </script>
@@ -287,6 +291,12 @@
         <div class="ui-scale-slider-row">
             <input type="range" id="ui-scale-slider" min="0.5" max="2" step="0.05" value="1" aria-valuemin="50" aria-valuemax="200">
             <span id="ui-scale-value" class="ui-scale-value">100%</span>
+        </div>
+        <label class="ui-scale-settings-label" for="text-scale-slider">Text scaling</label>
+        <p class="ui-scale-settings-hint ui-scale-settings-hint--compact">Enlarge readable text without changing icon and layout size.</p>
+        <div class="ui-scale-slider-row">
+            <input type="range" id="text-scale-slider" min="0.5" max="2" step="0.05" value="1" aria-valuemin="50" aria-valuemax="200">
+            <span id="text-scale-value" class="ui-scale-value">100%</span>
         </div>
         <div class="ui-scale-effective-grid" aria-live="polite">
             <span class="ui-scale-effective-label">Effective</span>
@@ -1147,7 +1157,10 @@
         <div id="item-modal-panel" class="item-picker-panel">
             <div class="item-picker-header modal-header">
                 <h2 id="modal-title">Select Item</h2>
-                <button type="button" id="modal-close-btn" class="modal-close" aria-label="Close">&times;</button>
+                <div class="item-picker-header-actions">
+                    <button type="button" id="reset-filters-btn" class="item-picker-reset-btn" title="Clear all filters">Reset</button>
+                    <button type="button" id="modal-close-btn" class="modal-close" aria-label="Close">&times;</button>
+                </div>
             </div>
             <div class="item-picker-body modal-body">
                 <div class="item-picker-filters modal-filters">
@@ -1202,13 +1215,13 @@
                                 <span class="dropdown-arrow">▼</span>
                             </div>
                             <div class="stat-dropdown-menu" id="primary-stats-dropdown" style="display: none;">
-                                <label><input type="checkbox" name="primary-stats-filter" value="Stamina"><span>Stamina</span></label>
-                                <label><input type="checkbox" name="primary-stats-filter" value="Strength"><span>Strength</span></label>
-                                <label><input type="checkbox" name="primary-stats-filter" value="Agility"><span>Agility</span></label>
-                                <label><input type="checkbox" name="primary-stats-filter" value="Intellect"><span>Intellect</span></label>
-                                <label><input type="checkbox" name="primary-stats-filter" value="Spirit"><span>Spirit</span></label>
-                                <label><input type="checkbox" name="primary-stats-filter" value="Health"><span>Health</span></label>
-                                <label><input type="checkbox" name="primary-stats-filter" value="Mana"><span>Mana</span></label>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Stamina" data-state="off"><span>Stamina</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Strength" data-state="off"><span>Strength</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Agility" data-state="off"><span>Agility</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Intellect" data-state="off"><span>Intellect</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Spirit" data-state="off"><span>Spirit</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Health" data-state="off"><span>Health</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Mana" data-state="off"><span>Mana</span></button>
                             </div>
                         </div>
                         <div class="stat-dropdown-container">
@@ -1217,13 +1230,13 @@
                                 <span class="dropdown-arrow">▼</span>
                             </div>
                             <div class="stat-dropdown-menu" id="secondary-stats-dropdown" style="display: none;">
-                                <label><input type="checkbox" name="secondary-stats-filter" value="Attack Power"><span>Attack Power</span></label>
-                                <label><input type="checkbox" name="secondary-stats-filter" value="Spell Power"><span>Spell Power</span></label>
-                                <label><input type="checkbox" name="secondary-stats-filter" value="Healing Power"><span>Healing Power</span></label>
-                                <label><input type="checkbox" name="secondary-stats-filter" value="Critical Strike"><span>Critical Strike</span></label>
-                                <label><input type="checkbox" name="secondary-stats-filter" value="Hit"><span>Hit</span></label>
-                                <label><input type="checkbox" name="secondary-stats-filter" value="Haste"><span>Haste</span></label>
-                                <label><input type="checkbox" name="secondary-stats-filter" value="MP5"><span>MP5</span></label>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Attack Power" data-state="off"><span>Attack Power</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Spell Power" data-state="off"><span>Spell Power</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Healing Power" data-state="off"><span>Healing Power</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Critical Strike" data-state="off"><span>Critical Strike</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Hit" data-state="off"><span>Hit</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Haste" data-state="off"><span>Haste</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="MP5" data-state="off"><span>MP5</span></button>
                             </div>
                         </div>
                         <div class="stat-dropdown-container">
@@ -1232,17 +1245,17 @@
                                 <span class="dropdown-arrow">▼</span>
                             </div>
                             <div class="stat-dropdown-menu" id="defensive-stats-dropdown" style="display: none;">
-                                <label><input type="checkbox" name="defensive-stats-filter" value="Defense"><span>Defense</span></label>
-                                <label><input type="checkbox" name="defensive-stats-filter" value="Dodge"><span>Dodge</span></label>
-                                <label><input type="checkbox" name="defensive-stats-filter" value="Parry"><span>Parry</span></label>
-                                <label><input type="checkbox" name="defensive-stats-filter" value="Block"><span>Block</span></label>
-                                <label><input type="checkbox" name="defensive-stats-filter" value="Block Value"><span>Block Value</span></label>
-                                <label><input type="checkbox" name="defensive-stats-filter" value="Armor"><span>Armor</span></label>
-                                <label><input type="checkbox" name="defensive-stats-filter" value="Fire Resistance"><span>Fire Resistance</span></label>
-                                <label><input type="checkbox" name="defensive-stats-filter" value="Nature Resistance"><span>Nature Resistance</span></label>
-                                <label><input type="checkbox" name="defensive-stats-filter" value="Frost Resistance"><span>Frost Resistance</span></label>
-                                <label><input type="checkbox" name="defensive-stats-filter" value="Shadow Resistance"><span>Shadow Resistance</span></label>
-                                <label><input type="checkbox" name="defensive-stats-filter" value="Arcane Resistance"><span>Arcane Resistance</span></label>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Defense" data-state="off"><span>Defense</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Dodge" data-state="off"><span>Dodge</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Parry" data-state="off"><span>Parry</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Block" data-state="off"><span>Block</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Block Value" data-state="off"><span>Block Value</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Armor" data-state="off"><span>Armor</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Fire Resistance" data-state="off"><span>Fire Resistance</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Nature Resistance" data-state="off"><span>Nature Resistance</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Frost Resistance" data-state="off"><span>Frost Resistance</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Shadow Resistance" data-state="off"><span>Shadow Resistance</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="stat" data-filter-key="Arcane Resistance" data-state="off"><span>Arcane Resistance</span></button>
                             </div>
                         </div>
                         <div class="stat-dropdown-container">
@@ -1251,13 +1264,33 @@
                                 <span class="dropdown-arrow">▼</span>
                             </div>
                             <div class="stat-dropdown-menu" id="quality-dropdown" style="display: none;">
-                                <label><input type="checkbox" class="quality-filter" value="5" checked><span class="q5">Legendary</span></label>
-                                <label><input type="checkbox" class="quality-filter" value="4" checked><span class="q4">Epic</span></label>
-                                <label><input type="checkbox" class="quality-filter" value="3" checked><span class="q3">Rare</span></label>
-                                <label><input type="checkbox" class="quality-filter" value="2"><span class="q2">Uncommon</span></label>
-                                <label><input type="checkbox" class="quality-filter" value="1"><span class="q1">Common</span></label>
-                                <label><input type="checkbox" class="quality-filter" value="0"><span class="q0">Poor</span></label>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="quality" data-filter-key="5" data-state="off"><span class="q5">Legendary</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="quality" data-filter-key="4" data-state="off"><span class="q4">Epic</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="quality" data-filter-key="3" data-state="off"><span class="q3">Rare</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="quality" data-filter-key="2" data-state="off"><span class="q2">Uncommon</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="quality" data-filter-key="1" data-state="off"><span class="q1">Common</span></button>
+                                <button type="button" class="item-picker-filter-row" data-filter-kind="quality" data-filter-key="0" data-state="off"><span class="q0">Poor</span></button>
                             </div>
+                        </div>
+                        <div class="item-picker-req-level item-picker-req-level--inline">
+                            <div class="item-picker-req-axis" aria-hidden="true">
+                                <div class="item-picker-req-axis-item">
+                                    <span class="item-picker-axis-label">min</span>
+                                    <span class="item-picker-axis-value" id="req-level-min-display">1</span>
+                                </div>
+                                <div class="item-picker-req-axis-item item-picker-req-axis-item-right">
+                                    <span class="item-picker-axis-label">max</span>
+                                    <span class="item-picker-axis-value" id="req-level-max-display">60</span>
+                                </div>
+                            </div>
+                            <div class="dual-range-wrap">
+                                <div class="dual-range-track-bg" aria-hidden="true"></div>
+                                <div class="dual-range-fill" id="req-level-fill" aria-hidden="true"></div>
+                                <input type="range" id="ilvl-min-slider" class="dual-range-input dual-range-min" min="1" max="60" value="1" aria-label="Minimum level">
+                                <input type="range" id="ilvl-max-slider" class="dual-range-input dual-range-max" min="1" max="60" value="60" aria-label="Maximum level">
+                            </div>
+                            <input type="hidden" id="ilvl-min" value="1">
+                            <input type="hidden" id="ilvl-max" value="60">
                         </div>
                     </div>
                     <div class="item-picker-source-group-row" id="source-group-filter-row" aria-label="Source category filters"></div>
@@ -1290,38 +1323,17 @@
                             </div>
                             <div class="stat-dropdown-menu instance-filter-dropdown-menu" id="instances-other-dropdown" style="display: none;" aria-label="Other source filter"></div>
                         </div>
-                    </div>
-                    <div class="item-picker-toolbar">
-                        <div class="item-picker-req-level">
-                            <div class="item-picker-req-axis" aria-hidden="true">
-                                <div class="item-picker-req-axis-item">
-                                    <span class="item-picker-axis-label">min</span>
-                                    <span class="item-picker-axis-value" id="req-level-min-display">1</span>
-                                </div>
-                                <div class="item-picker-req-axis-item item-picker-req-axis-item-right">
-                                    <span class="item-picker-axis-label">max</span>
-                                    <span class="item-picker-axis-value" id="req-level-max-display">60</span>
-                                </div>
-                            </div>
-                            <div class="dual-range-wrap">
-                                <div class="dual-range-track-bg" aria-hidden="true"></div>
-                                <div class="dual-range-fill" id="req-level-fill" aria-hidden="true"></div>
-                                <input type="range" id="ilvl-min-slider" class="dual-range-input dual-range-min" min="1" max="60" value="1" aria-label="Minimum level">
-                                <input type="range" id="ilvl-max-slider" class="dual-range-input dual-range-max" min="1" max="60" value="60" aria-label="Maximum level">
+                        <div class="item-picker-instance-actions">
+                            <label class="can-equip-toggle" title="Hide items your class cannot equip">
+                                <span class="can-equip-toggle-text">Can equip</span>
+                                <input type="checkbox" id="can-equip-toggle" checked>
+                                <span class="can-equip-toggle-pill" aria-hidden="true"></span>
+                            </label>
+                            <div class="item-picker-sort-btns">
+                                <button type="button" id="sort-by-dps-btn" class="item-picker-sort-btn" style="display: none;" title="Sort by estimated DPS (needs stat weights)">DPS</button>
+                                <button type="button" id="sort-by-tank-btn" class="item-picker-sort-btn" style="display: none;" title="Sort by tank score (needs tank weights)">Tank</button>
                             </div>
                         </div>
-                        <input type="hidden" id="ilvl-min" value="1">
-                        <input type="hidden" id="ilvl-max" value="60">
-                        <label class="can-equip-toggle" title="Hide items your class cannot equip">
-                            <span class="can-equip-toggle-text">Can equip</span>
-                            <input type="checkbox" id="can-equip-toggle" checked>
-                            <span class="can-equip-toggle-pill" aria-hidden="true"></span>
-                        </label>
-                        <div class="item-picker-sort-btns">
-                            <button type="button" id="sort-by-dps-btn" class="item-picker-sort-btn" style="display: none;" title="Sort by estimated DPS (needs stat weights)">DPS</button>
-                            <button type="button" id="sort-by-tank-btn" class="item-picker-sort-btn" style="display: none;" title="Sort by tank score (needs tank weights)">Tank</button>
-                        </div>
-                        <button type="button" id="reset-filters-btn" class="item-picker-reset-btn">Reset</button>
                     </div>
                 </div>
                 <div id="modal-item-list" class="modal-item-list item-picker-list"></div>
