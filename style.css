@@ -1571,28 +1571,46 @@ input, select {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: none;
+    background: rgba(22, 20, 16, 0.94);
     color: #ffd700;
-    border: none;
+    border: 1px solid rgba(255, 215, 0, 0.55);
+    border-radius: 50%;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
     cursor: pointer;
     transform: scale(0);
-    transition: transform 0.2s ease-out, color 0.15s ease-out;
+    transition: transform 0.2s ease-out, background 0.15s ease-out, border-color 0.15s ease-out, color 0.15s ease-out, box-shadow 0.15s ease-out;
     z-index: 5;
 }
 .buff-upgrade-toggle svg {
     display: block;
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     flex-shrink: 0;
 }
 .buff-icon.active .buff-upgrade-toggle {
     transform: scale(1);
 }
-.buff-icon.is-improved .buff-upgrade-toggle {
-    color: #4CAF50;
-}
+/* Base / not improved: red fill, cream arrow for contrast */
 .buff-icon.active:not(.is-improved) .buff-upgrade-toggle {
-    color: #f44336;
+    background: #b71c1c;
+    border-color: rgba(255, 205, 210, 0.75);
+    color: #fff8e1;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35), 0 1px 4px rgba(0, 0, 0, 0.45);
+}
+.buff-icon.active:not(.is-improved) .buff-upgrade-toggle:hover {
+    background: #c62828;
+    color: #ffffff;
+}
+/* Improved ON: green fill, gold arrow for contrast */
+.buff-icon.is-improved .buff-upgrade-toggle {
+    background: #1b5e20;
+    border-color: rgba(255, 215, 0, 0.85);
+    color: #ffd700;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35), 0 0 6px rgba(255, 215, 0, 0.35);
+}
+.buff-icon.is-improved .buff-upgrade-toggle:hover {
+    background: #2e7d32;
+    color: #ffe566;
 }
 .stats-grid-4-col {
     display: grid;
