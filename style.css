@@ -1727,8 +1727,10 @@ input, select {
     max-width: 100%;
 }
 .enchant-item-name-effect {
-    flex: 0 0 auto;
-    white-space: nowrap;
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: normal;
+    word-break: break-word;
 }
 .enchant-item:hover {
     background-color: rgba(255, 255, 255, 0.06);

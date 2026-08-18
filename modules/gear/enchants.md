@@ -214,7 +214,7 @@ The enchant modal (`modal.js` → `renderEnchants`) groups slot-filtered enchant
 ### Mapping rules (priority)
 
 1. **`None`** — dedicated first row in the picker (not an Other-column item).
-2. **Healing** — `stats.healing` or healing-focused name (`Healing Power`, `Serenity`, etc.). Skipped when spell-damage keys dominate (e.g. `dmgAndHealing` + `spellHit` → Offensive Spell).
+2. **Healing** — `stats.healing` or healing-focused name. Skipped when spell-damage keys dominate. **Hybrid healing + defense** (e.g. Syncretist's Sigil: `healing` + `sta`/`def`) → **Healing** when `healing` is present and no spell-damage keys.
 3. **Offensive Phys** — `ap`, `attackPower`, `rap`, `rangedAttackPower`, `rangedDmg`, `str`, `agi`, `crit`, `hit`, `hitPercent`, `weaponDamage`, `armorPen`, `haste`, `vampirism`; proc names (Crusader, Fiery, Lifestealing, Demonslaying, etc.).
 4. **Offensive Spell** — `dmgAndHealing`, school spell damage keys, `spellCrit`, `spellHit`, `spellPen`, `int`; names with spell power / fire-frost-shadow power.
 5. **Defensive Phys** — `sta`, `armor`, `def`, `dodge`, `parry`, `blockValue`, `blockChance`, `health`; defense/stamina/block names.

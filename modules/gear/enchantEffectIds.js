@@ -144,7 +144,7 @@ export const enchantEffectIdMap = {
   "2567": "Enchant Weapon - Mighty Spirit (+20 Spi)",
   "2568": "Enchant Weapon - Mighty Intellect (+22 Int)",
   "2583": "Presence of Might (+15% Blockvalue, +7 Defense, +10 Stam)",
-  "2584": "Syncretist's Sigil (+7 Defense, +10 Stam)",
+  "2584": "Syncretist's Sigil (+7 Defense, +10 Stam, +24 Healing)",
   "2585": "Death's Embrace (+28 AP, +1% Dodge)",
   "2586": "Falcon's Call (+1% Hit, +24 RAP, +10 Stam)",
   "2587": "Vodouisant's Vigilant Embrace (+15 Int, +13 Spelldamage)",

@@ -618,10 +618,11 @@ export const enchantDatabase = {
       "effect_id": 2683
     },
     {
-      "name": "Syncretist's Sigil (+7 Defense, +10 Stam)",
+      "name": "Syncretist's Sigil (+7 Defense, +10 Stam, +24 Healing)",
       "stats": {
         "sta": 10,
-        "def": 7
+        "def": 7,
+        "healing": 24
       },
       "description": "Permanently adds 10 Stamina, 7 Defense, and increases healing by up to 24 to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.",
       "effect_id": 2584
@@ -2002,10 +2003,11 @@ export const enchantDatabase = {
       "effect_id": 2683
     },
     {
-      "name": "Syncretist's Sigil (+7 Defense, +10 Stam)",
+      "name": "Syncretist's Sigil (+7 Defense, +10 Stam, +24 Healing)",
       "stats": {
         "sta": 10,
-        "def": 7
+        "def": 7,
+        "healing": 24
       },
       "description": "Permanently adds 10 Stamina, 7 Defense, and increases healing by up to 24 to a leg or head slot item. Does not stack with other enchantments for the selected equipment slot.",
       "effect_id": 2584
