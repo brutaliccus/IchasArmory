@@ -1775,10 +1775,6 @@ const GP_STAT_GROUPS = [
     ]},
     { title: 'Defense', rows: [
         ['health', 'Health'], ['mana', 'Mana'], ['armor', 'Armor'], ['defense', 'Defense'],
-        ['dodge', 'Dodge', 'pct'], ['parry', 'Parry', 'pct'], ['block', 'Block', 'pct'],
-        ['missChance', 'Chance to be Missed', 'pct'],
-        ['blockValue', 'Block Value'],
-        ['totalMitigation', 'Total Avoidance', 'pct'],
     ]},
     { title: 'Damage Reduction', rows: [
         ['magicDR', 'Magic', 'frac'],
@@ -1823,6 +1819,13 @@ const GP_WEAPON_SKILL_CHILDREN = [
     ['glancingDamage', 'Glancing', 'pct'],
 ];
 
+const GP_AVOIDANCE_CHILDREN = [
+    ['missChance', 'Chance to be Missed', 'pct'],
+    ['dodge', 'Dodge', 'pct'],
+    ['parry', 'Parry', 'pct'],
+    ['block', 'Block', 'pct'],
+];
+
 function gpSchoolDiffersFromBaseline(full, key) {
     const baseline = Number(full.dmgAndHealing) || 0;
     const school = Number(full[key]) || 0;
@@ -1843,6 +1846,19 @@ function renderGpStatEntry(key, label, kind, nested, full, ungeared, naked, rowT
     const vsNaked = total - (Number(naked[key]) || 0);
     if (Math.abs(gearBonus) < 0.005 && Math.abs(vsNaked) < 0.005) return '';
     return gpStatRowHtml(label, total, gearBonus, kind, nested);
+}
+
+function renderGpAvoidanceSection(full, ungeared, naked) {
+    const parts = [];
+    const parent = renderGpStatEntry('totalMitigation', 'Avoidance', 'pct', false, full, ungeared, naked);
+    if (parent) parts.push(parent);
+    for (const [key, label, kind] of GP_AVOIDANCE_CHILDREN) {
+        const row = renderGpStatEntry(key, label, kind, true, full, ungeared, naked);
+        if (row) parts.push(row);
+    }
+    const blockValueRow = renderGpStatEntry('blockValue', 'Block Value', null, false, full, ungeared, naked);
+    if (blockValueRow) parts.push(blockValueRow);
+    return parts.join('');
 }
 
 function renderGpWeaponSkillSection(full, ungeared, naked) {
@@ -1906,6 +1922,8 @@ function renderStatsSidebar() {
             let extra = '';
             if (group.title === 'Melee') {
                 extra = renderGpWeaponSkillSection(full, ungeared, naked) + renderGpMeleeExtraRows(full, ungeared, naked);
+            } else if (group.title === 'Defense') {
+                extra = renderGpAvoidanceSection(full, ungeared, naked);
             }
             const allRows = rows + extra;
             if (!allRows) return '';
