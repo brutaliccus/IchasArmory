@@ -922,12 +922,9 @@ function syncGpOverlayUi() {
     const talentsOpen = gpOverlay === 'talents';
     const buffsOpen = gpOverlay === 'buffs';
     const weightsOpen = gpOverlay === 'weights';
-    const overlayOpen = talentsOpen || buffsOpen || weightsOpen;
-    shell?.classList.toggle('gp-overlay-open', overlayOpen);
     shell?.classList.toggle('gp-talents-open', talentsOpen);
     shell?.classList.toggle('gp-buffs-open', buffsOpen);
     shell?.classList.toggle('gp-stat-weights-open', weightsOpen);
-    document.body.classList.toggle('gp-overlay-open', overlayOpen);
     document.body.classList.toggle('gp-talents-open', talentsOpen);
     document.body.classList.toggle('gp-buffs-open', buffsOpen);
     document.body.classList.toggle('gp-stat-weights-open', weightsOpen);
