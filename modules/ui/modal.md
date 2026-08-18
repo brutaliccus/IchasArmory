@@ -143,7 +143,7 @@ Renders enchants in a **categorized column layout** (buff/consumable inspired): 
 - Shows "No enchants found" when filter results are empty
 - **`None`** — dedicated top row (`.enchant-picker-none-row`), not in the Other column
 - **Other** column hidden when no unclassified enchants (only `None` would have been there)
-- **Modal width** — `fitEnchantModalWidth()` sizes `#enchant-modal .enchant-modal-content` from visible column count × `--enchant-picker-col-w` (330px) + gaps/padding, capped at `98vw` (no fixed 1680px shell)
+- **Modal width** — `fitEnchantModalWidth()` sets width from visible column count × `--enchant-picker-col-w` (330px) + gaps/padding only (does not read search filter `scrollWidth`, which previously inflated the modal to ~90vw)
 - **Columns** — `flex-wrap: nowrap`; names stay on one line (`white-space: nowrap`)
 - Shared Character Planner + Gear Planner via `openEnchantModal(..., selectedEnchantIndex)`
 

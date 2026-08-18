@@ -1164,13 +1164,10 @@ function fitEnchantModalWidth(listElement) {
     const borderX = parseFloat(contentStyle.borderLeftWidth) + parseFloat(contentStyle.borderRightWidth);
 
     const noneRow = listElement.querySelector('.enchant-picker-none-row');
-    const noneWidth = noneRow ? noneRow.scrollWidth : 0;
-    const innerContent = Math.max(columnsWidth + listPadX, noneWidth + listPadX);
+    const noneWidth = noneRow ? noneRow.offsetWidth : 0;
+    const innerContent = Math.max(columnsWidth, noneWidth) + listPadX;
 
-    const filtersEl = bodyEl?.querySelector('.modal-filters');
-    const filtersWidth = filtersEl ? filtersEl.scrollWidth + bodyPadX : 0;
-
-    const totalWidth = Math.max(innerContent, filtersWidth) + contentPadX + borderX;
+    const totalWidth = innerContent + bodyPadX + contentPadX + borderX;
     const maxWidth = Math.floor(window.innerWidth * 0.98);
     modalContent.style.width = `${Math.min(Math.ceil(totalWidth), maxWidth)}px`;
 }

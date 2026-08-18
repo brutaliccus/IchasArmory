@@ -1747,7 +1747,7 @@ input, select {
 
 /* Categorized enchant picker (buff-column inspired) */
 #enchant-modal .enchant-modal-content {
-    width: fit-content;
+    width: max-content;
     max-width: 98vw;
     height: auto;
     max-height: 85vh;
@@ -1759,13 +1759,21 @@ input, select {
     height: auto;
     max-height: 85vh;
 }
+#enchant-modal .enchant-modal-body {
+    flex-grow: 0;
+    width: max-content;
+    max-width: 100%;
+    overflow: hidden;
+}
 .enchant-modal-body {
     display: flex;
     flex-direction: column;
     min-height: 0;
 }
 .enchant-picker-list.modal-item-list {
-    flex: 1;
+    flex: 0 0 auto;
+    width: max-content;
+    max-width: 100%;
     overflow: auto;
     margin-right: 0;
     padding-right: 8px;
@@ -1781,6 +1789,8 @@ input, select {
     align-items: flex-start;
     flex-wrap: nowrap;
     justify-content: center;
+    width: max-content;
+    max-width: 100%;
     padding: 4px 2px 8px;
 }
 .enchant-picker-column {
@@ -2462,6 +2472,12 @@ input, select {
 }
 
 .modal-content { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; width: 90%; max-width: 1200px; height: 80vh; display: flex; flex-direction: column; box-shadow: 0 5px 25px rgba(0,0,0,0.5); font-size: 1.1em; }
+#enchant-modal .modal-content.enchant-modal-content {
+    width: max-content;
+    max-width: 98vw;
+    height: auto;
+    max-height: 85vh;
+}
 .bug-report-modal-content { height: auto; max-height: 90vh; min-height: 400px; }
 .save-profile-dialog-content { width: auto; min-width: 320px; max-width: 420px; height: auto; }
 .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; border-bottom: 1px solid var(--border-color); }
