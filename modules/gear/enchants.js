@@ -2118,7 +2118,7 @@ export const enchantDatabase = {
       "effect_id": 2487
     },
     {
-      "name": "Sigil of Leeching",
+      "name": "Sigil of Leeching (+2% Vampirism)",
       "stats": {
         "vampirism": 2
       },

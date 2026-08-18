@@ -180,7 +180,7 @@ export const enchantEffectIdMap = {
   "3005": "Zandalar Signet of Tenacity (+14 Stam)",
   "3008": "Graceful Agate (+6 Spell Pen)",
   "3011": "Enchant Bracer - Vampirism (+1% Vampirism)",
-  "3012": "Sigil of Leeching",
+  "3012": "Sigil of Leeching (+2% Vampirism)",
   "3016": "Arcanum of Rapidity (+1% Haste)",
   "3017": "Sigil of Quickness (+2% Haste)",
   "3021": "Ancient Dwarven (+3 Spelldamage)",
