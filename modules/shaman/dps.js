@@ -32,7 +32,7 @@ import onboardingPresetShamanPriority from './data/onboardingPresetShamanPriorit
 import { SHAMAN_PRESET_SPEC_ICONS } from './shamanConsumePresets.js';
 import dpsRaidBossStats from './data/dpsRaidBossStats.json';
 import { raidDefinitions } from '../tank/raidDefinitions.js';
-import { getDpsBossPortraitUrl, buildOctowowJournalBossUrl } from './dpsBossPortraits.js';
+import { getDpsBossPortraitUrl } from './dpsBossPortraits.js';
 import { defaultTargetSchoolImmune, targetSchoolImmuneFromBossPayload } from './targetSchoolImmunity.js';
 
 /** Default DPS sim target (Naxxramas Patchwerk) when user has not chosen another boss */
@@ -379,11 +379,11 @@ export function getDpsSessionTargetFactionTag() {
     }
 }
 
-/** Boss tile / modal icon: JSON iconUrl if set, else static portrait map. */
+/** Boss tile / modal icon: JSON iconUrl if set (zamimg journal URLs pass through unchanged), else static portrait map. */
 function getDpsBossConfigIconUrl(npcId) {
     const row = dpsRaidBossStats[String(npcId)];
     if (row && typeof row.iconUrl === 'string' && row.iconUrl.trim()) {
-        return buildOctowowJournalBossUrl(row.iconUrl.trim());
+        return row.iconUrl.trim();
     }
     return getDpsBossPortraitUrl(npcId);
 }

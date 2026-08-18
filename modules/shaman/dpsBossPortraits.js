@@ -1,9 +1,8 @@
 // modules/shaman/dpsBossPortraits.js — Portrait image URLs for DPS sim boss picker (by NPC id from raidDefinitions)
 
-import { buildChronicleIconUrl } from '../gear/gear.js';
-
-/** Shown when no URL is set for an NPC id */
-export const DPS_BOSS_PORTRAIT_PLACEHOLDER = buildChronicleIconUrl('inv_misc_questionmark');
+/** Shown when no URL is set for an NPC id (sim boss picker only). */
+export const DPS_BOSS_PORTRAIT_PLACEHOLDER =
+    'https://wow.zamimg.com/images/wow/icons/large/inv_misc_questionmark.jpg';
 
 /** Build octowow journal boss portrait URL from slug or legacy CDN URL. */
 export function buildOctowowJournalBossUrl(slugOrUrl) {
