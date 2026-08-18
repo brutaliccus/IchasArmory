@@ -398,13 +398,14 @@ Each class can only wear certain armor types:
 
 ## Loot Source / Instance Filter
 
-**Group exclude row** (`.item-picker-source-group-row`): quick toggles to hide whole categories — dungeons, raids, world bosses, quests, PvP, crafting, world drops, events, collections, factions, unknown. Checked = exclude that category (include-by-default).
+**Three-state toggles** (click cycles: inactive → **✓ include** → **✕ exclude** → off): group chips on `.item-picker-source-group-row` (Dungeons, Raids, Quests, PvP, …) and each instance inside the four dropdown menus on `.item-picker-instance-row`. Visual: empty box = inactive, green check = filter **to** that source/group (OR include), red ✕ = exclude. **Reset Filters** clears all toggles to inactive.
 
-Four compact **dropdowns** on `.item-picker-instance-row` (`#instances-dungeons-dropdown`, `#instances-raids-dropdown`, `#instances-worldbosses-dropdown`, `#instances-other-dropdown`). Each menu shows **“Check to hide”**; checking an instance excludes items from that source without selecting every other source. Labels show a hide count when active (`Raids (−2)`). Data from `/data/loot/` via `modules/gear/itemSources.js`.
+Four compact **dropdowns** (`#instances-dungeons-dropdown`, `#instances-raids-dropdown`, `#instances-worldbosses-dropdown`, `#instances-other-dropdown`). Labels show active counts (`Raids (+1 −2)`). Data from `/data/loot/` via `modules/gear/itemSources.js`.
 
-- **Exclude semantics**: item hidden if any source matches an excluded instance id or excluded group (kind `dungeon`/`raid`/`worldboss` or otherGroup id like `quests`)
-- **Empty exclusions**: no source filter (all items)
-- **`savedFilters.excludedInstances` / `excludedSourceGroups`**: persisted with other modal filters
+- **Include (OR)**: when any include is active, item must match at least one included instance/kind/group
+- **Exclude**: item hidden if any source matches an excluded instance/kind/group
+- **Inactive**: no effect; default shows everything
+- **`savedFilters.sourceFilterStates`**: `{ [id]: 'include'|'exclude' }` persisted with other modal filters
 - **Source subline**: `getPrimarySourceLabel(itemId)` on each modal row (`.modal-item-source`)
 - **Gear planner**: `setItemModalPlayerClassOverride(classId)` for can-equip when picking plan items
 

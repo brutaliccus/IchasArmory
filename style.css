@@ -1835,34 +1835,76 @@ input, select {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 6px 10px;
+    gap: 6px 12px;
     margin-bottom: 8px;
     padding: 6px 8px;
     border: 1px solid var(--border-color);
     border-radius: 6px;
     background: rgba(0, 0, 0, 0.15);
 }
-.item-picker-source-group-hint {
-    font-size: 0.72rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: #a09070;
-    margin-right: 4px;
-    flex: 0 0 auto;
-}
 .item-picker-source-group-chip {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
     font-size: 0.78rem;
-    cursor: pointer;
     white-space: nowrap;
     user-select: none;
 }
-.item-picker-source-group-chip input {
+.source-filter-toggle {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    padding: 0;
     margin: 0;
-    accent-color: #c9a227;
+    border: 1px solid #5a5038;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.35);
+    color: transparent;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1;
+    box-sizing: border-box;
+}
+.source-filter-toggle:hover {
+    border-color: #c9a227;
+}
+.source-filter-toggle[data-state="include"] {
+    color: #6ecf6e;
+    border-color: #4a8a4a;
+    background: rgba(40, 80, 40, 0.45);
+}
+.source-filter-toggle[data-state="include"]::before {
+    content: '✓';
+}
+.source-filter-toggle[data-state="exclude"] {
+    color: #e07070;
+    border-color: #a04040;
+    background: rgba(80, 30, 30, 0.45);
+}
+.source-filter-toggle[data-state="exclude"]::before {
+    content: '✕';
+}
+.instance-filter-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 10px;
+    cursor: default;
+}
+.instance-filter-row:hover {
+    background: rgba(201, 162, 39, 0.08);
+}
+.instance-filter-name {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.82rem;
+}
+.instance-filter-dropdown-menu .instance-filter-row:first-child {
+    padding-top: 6px;
 }
 .item-picker-instance-row .stat-dropdown-container {
     min-width: 0;

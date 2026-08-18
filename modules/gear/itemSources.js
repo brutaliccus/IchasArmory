@@ -102,39 +102,51 @@ export function formatItemSourceLine(itemId) {
 }
 
 /**
- * OR semantics: item matches if any source instanceId is in selectedIds.
- * Empty selectedIds → no filter (all items pass).
- * @deprecated Prefer exclude-based filtering via itemIsExcludedBySourceFilter.
+ * Whether an item's sources match a filter key (instance id, kind, or otherGroup id).
  */
-export function itemMatchesInstanceFilter(itemId, selectedInstanceIds) {
-    if (!selectedInstanceIds?.length) return true;
-    const sources = getSourcesForItem(itemId);
-    if (!sources.length) return selectedInstanceIds.includes('__other__');
-    return sources.some(s => selectedInstanceIds.includes(s.instanceId));
+export function sourceFilterKeyMatchesItem(sources, key) {
+    if (key === '__other__') {
+        if (!sources.length) return true;
+        return sources.every((s) => s.kind === 'other');
+    }
+    if (key === 'dungeon' || key === 'raid' || key === 'worldboss') {
+        return sources.some((s) => s.kind === key);
+    }
+    return sources.some((s) => s.instanceId === key);
 }
 
 /**
- * Exclude semantics (include-by-default): returns true when the item should be hidden.
- * excludedInstanceIds — specific dungeon/raid/other instance ids to hide.
- * excludedSourceGroups — kind keys (dungeon, raid, worldboss) or otherGroup ids (quests, pvp, …).
+ * Three-state source filter: include (OR), exclude (hide), off (ignore).
+ * @param {Record<string, 'include'|'exclude'>} sourceFilterStates
  */
-export function itemIsExcludedBySourceFilter(itemId, excludedInstanceIds, excludedSourceGroups) {
-    const exIds = excludedInstanceIds?.length ? excludedInstanceIds : null;
-    const exGroups = excludedSourceGroups?.length ? excludedSourceGroups : null;
-    if (!exIds && !exGroups) return false;
+export function itemPassesSourceFilter(itemId, sourceFilterStates) {
+    if (!sourceFilterStates || !Object.keys(sourceFilterStates).length) return true;
+
+    const includes = [];
+    const excludes = [];
+    for (const [key, state] of Object.entries(sourceFilterStates)) {
+        if (state === 'include') includes.push(key);
+        else if (state === 'exclude') excludes.push(key);
+    }
+    if (!includes.length && !excludes.length) return true;
 
     const sources = getSourcesForItem(itemId);
-    if (!sources.length) {
-        return (exIds && exIds.includes('__other__'))
-            || (exGroups && exGroups.includes('__other__'));
-    }
+    const matches = (key) => sourceFilterKeyMatchesItem(sources, key);
 
-    return sources.some((s) => {
-        if (exIds && exIds.includes(s.instanceId)) return true;
-        if (exGroups && exGroups.includes(s.kind)) return true;
-        if (exGroups && exGroups.includes(s.instanceId)) return true;
-        return false;
-    });
+    if (includes.length && !includes.some(matches)) return false;
+    if (excludes.length && excludes.some(matches)) return false;
+    return true;
+}
+
+/**
+ * OR semantics: item matches if any source instanceId is in selectedIds.
+ * Empty selectedIds → no filter (all items pass).
+ */
+export function itemMatchesInstanceFilter(itemId, selectedInstanceIds) {
+    if (!selectedInstanceIds?.length) return true;
+    const states = {};
+    for (const id of selectedInstanceIds) states[id] = 'include';
+    return itemPassesSourceFilter(itemId, states);
 }
 
 /** Item has no dungeon/raid/worldboss source (only other or none). */

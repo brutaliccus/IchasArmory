@@ -8,7 +8,7 @@ import { getStatSearchTerms, getItemType, filterEnchantsByItemType, filterEnchan
 import {
     ensureItemSourcesLoaded,
     getPrimarySourceLabel,
-    itemIsExcludedBySourceFilter,
+    itemPassesSourceFilter,
     getInstanceFilterGroups,
 } from '../gear/itemSources.js';
 
@@ -58,8 +58,7 @@ const savedFilters = {
     qualities: [3, 4, 5], // Default: rare, epic, legendary
     ilvlMin: 1,
     ilvlMax: 60,
-    excludedInstances: [],
-    excludedSourceGroups: [],
+    sourceFilterStates: {},
 };
 
 // Sort toggle states (DPS / Tank mutually exclusive)
@@ -603,10 +602,10 @@ export function filterAndRenderItems(allItems, filters, listElement) {
         });
     }
 
-    // Apply instance / loot source exclude filters (include-by-default)
-    if ((filters.excludedInstances?.length) || (filters.excludedSourceGroups?.length)) {
+    // Apply instance / loot source filters (three-state: include OR, exclude hide)
+    if (filters.sourceFilterStates && Object.keys(filters.sourceFilterStates).length > 0) {
         filteredItems = filteredItems.filter(item =>
-            !itemIsExcludedBySourceFilter(item.id, filters.excludedInstances, filters.excludedSourceGroups)
+            itemPassesSourceFilter(item.id, filters.sourceFilterStates)
         );
     }
 
@@ -1194,12 +1193,11 @@ function resetFilters() {
     savedFilters.qualities = [3, 4, 5];
     savedFilters.ilvlMin = REQ_LEVEL_MIN;
     savedFilters.ilvlMax = REQ_LEVEL_MAX;
-    savedFilters.excludedInstances = [];
-    savedFilters.excludedSourceGroups = [];
-    document.querySelectorAll('input.instance-exclude-cb').forEach(cb => { cb.checked = false; });
-    document.querySelectorAll('input.source-group-exclude-cb').forEach(cb => { cb.checked = false; });
+    savedFilters.sourceFilterStates = {};
+    document.querySelectorAll('.source-filter-toggle').forEach((btn) => {
+        setSourceFilterToggleState(btn, 'off', false);
+    });
     updateInstanceFilterLabel();
-    updateSourceGroupExcludeLabel();
 
     // Reset sort buttons
     sortByDpsActive = false;
@@ -1460,100 +1458,148 @@ export function repositionItemPickerIfOpen() {
 
 let instanceFilterUiReady = false;
 
-const SOURCE_GROUP_EXCLUDE_OPTIONS = [
-    { id: 'dungeon', label: 'Hide dungeons' },
-    { id: 'raid', label: 'Hide raids' },
-    { id: 'worldboss', label: 'Hide world bosses' },
-    { id: 'quests', label: 'Hide quests' },
-    { id: 'pvp', label: 'Hide PvP' },
-    { id: 'crafting', label: 'Hide crafting' },
-    { id: 'world-drops', label: 'Hide world drops' },
-    { id: 'world-events', label: 'Hide events' },
-    { id: 'collections', label: 'Hide collections' },
-    { id: 'factions', label: 'Hide factions' },
-    { id: '__other__', label: 'Hide unknown' },
+const SOURCE_GROUP_FILTER_OPTIONS = [
+    { id: 'dungeon', label: 'Dungeons' },
+    { id: 'raid', label: 'Raids' },
+    { id: 'worldboss', label: 'World Bosses' },
+    { id: 'quests', label: 'Quests' },
+    { id: 'pvp', label: 'PvP' },
+    { id: 'crafting', label: 'Crafting' },
+    { id: 'world-drops', label: 'World Drops' },
+    { id: 'world-events', label: 'Events' },
+    { id: 'collections', label: 'Collections' },
+    { id: 'factions', label: 'Factions' },
+    { id: '__other__', label: 'Unknown' },
 ];
 
 const INSTANCE_FILTER_MENUS = [
-    { key: 'dungeons', menuId: 'instances-dungeons-dropdown', labelId: 'instance-filter-label-dungeons', title: 'Dungeons' },
-    { key: 'raids', menuId: 'instances-raids-dropdown', labelId: 'instance-filter-label-raids', title: 'Raids' },
-    { key: 'worldBosses', menuId: 'instances-worldbosses-dropdown', labelId: 'instance-filter-label-worldbosses', title: 'World Bosses' },
-    { key: 'other', menuId: 'instances-other-dropdown', labelId: 'instance-filter-label-other', title: 'Other' },
+    { key: 'dungeons', kind: 'dungeon', menuId: 'instances-dungeons-dropdown', labelId: 'instance-filter-label-dungeons', title: 'Dungeons' },
+    { key: 'raids', kind: 'raid', menuId: 'instances-raids-dropdown', labelId: 'instance-filter-label-raids', title: 'Raids' },
+    { key: 'worldBosses', kind: 'worldboss', menuId: 'instances-worldbosses-dropdown', labelId: 'instance-filter-label-worldbosses', title: 'World Bosses' },
+    { key: 'other', kind: null, menuId: 'instances-other-dropdown', labelId: 'instance-filter-label-other', title: 'Other' },
 ];
 
-function updateInstanceFilterLabel() {
-    for (const { menuId, labelId, title } of INSTANCE_FILTER_MENUS) {
-        const label = document.getElementById(labelId);
-        const menu = document.getElementById(menuId);
-        if (!label || !menu) continue;
-        const count = menu.querySelectorAll('input.instance-exclude-cb:checked').length;
-        label.textContent = count > 0 ? `${title} (−${count})` : title;
+function cycleSourceFilterState(current) {
+    if (current === 'include') return 'exclude';
+    if (current === 'exclude') return 'off';
+    return 'include';
+}
+
+function setSourceFilterToggleState(btn, state, persist = true) {
+    const filterId = btn.dataset.filterId;
+    btn.dataset.state = state;
+    const aria = {
+        off: 'Source filter inactive',
+        include: 'Include this source',
+        exclude: 'Exclude this source',
+    };
+    btn.setAttribute('aria-label', aria[state] || aria.off);
+    btn.setAttribute('aria-pressed', state === 'off' ? 'false' : 'true');
+    if (persist && filterId) {
+        if (state === 'off') delete savedFilters.sourceFilterStates[filterId];
+        else savedFilters.sourceFilterStates[filterId] = state;
     }
 }
 
-function updateSourceGroupExcludeLabel() {
-    const row = document.getElementById('source-group-exclude-row');
-    if (!row) return;
-    const count = row.querySelectorAll('input.source-group-exclude-cb:checked').length;
-    const hint = row.querySelector('.item-picker-source-group-hint');
-    if (hint) {
-        hint.textContent = count > 0 ? `Hiding ${count} categor${count === 1 ? 'y' : 'ies'}` : 'Hide whole categories';
+function createSourceFilterToggle(filterId) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'source-filter-toggle';
+    btn.dataset.filterId = filterId;
+    const initial = savedFilters.sourceFilterStates[filterId] || 'off';
+    setSourceFilterToggleState(btn, initial, false);
+    if (initial !== 'off') savedFilters.sourceFilterStates[filterId] = initial;
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const next = cycleSourceFilterState(btn.dataset.state || 'off');
+        setSourceFilterToggleState(btn, next);
+        updateInstanceFilterLabel();
+        document.dispatchEvent(new CustomEvent('filterChanged'));
+    });
+    return btn;
+}
+
+function syncSourceFilterTogglesFromSaved() {
+    document.querySelectorAll('.source-filter-toggle').forEach((btn) => {
+        const id = btn.dataset.filterId;
+        const state = (id && savedFilters.sourceFilterStates[id]) || 'off';
+        setSourceFilterToggleState(btn, state, false);
+    });
+}
+
+function countSourceFilterStates(scope) {
+    let includeCount = 0;
+    let excludeCount = 0;
+    const root = scope || document;
+    root.querySelectorAll('.source-filter-toggle').forEach((btn) => {
+        if (btn.dataset.state === 'include') includeCount += 1;
+        else if (btn.dataset.state === 'exclude') excludeCount += 1;
+    });
+    return { includeCount, excludeCount };
+}
+
+function formatSourceFilterLabel(title, includeCount, excludeCount) {
+    if (!includeCount && !excludeCount) return title;
+    const parts = [];
+    if (includeCount) parts.push(`+${includeCount}`);
+    if (excludeCount) parts.push(`−${excludeCount}`);
+    return `${title} (${parts.join(' ')})`;
+}
+
+function updateInstanceFilterLabel() {
+    for (const { kind, menuId, labelId, title } of INSTANCE_FILTER_MENUS) {
+        const label = document.getElementById(labelId);
+        const menu = document.getElementById(menuId);
+        if (!label) continue;
+        let { includeCount, excludeCount } = countSourceFilterStates(menu);
+        if (kind) {
+            const groupState = savedFilters.sourceFilterStates[kind];
+            if (groupState === 'include') includeCount += 1;
+            else if (groupState === 'exclude') excludeCount += 1;
+        }
+        label.textContent = formatSourceFilterLabel(title, includeCount, excludeCount);
     }
 }
 
 function fillInstanceFilterMenu(menu, list) {
     menu.innerHTML = '';
-    const title = document.createElement('div');
-    title.className = 'instance-filter-section-title';
-    title.textContent = 'Check to hide';
-    menu.appendChild(title);
     for (const inst of list) {
-        const id = `inst-filter-${inst.id}`;
-        const row = document.createElement('label');
-        row.innerHTML = `<input type="checkbox" class="instance-exclude-cb" id="${id}" value="${inst.id}"><span>${inst.name}</span>`;
-        const cb = row.querySelector('input');
-        cb.checked = savedFilters.excludedInstances.includes(inst.id);
-        cb.addEventListener('change', () => {
-            updateInstanceFilterLabel();
-            document.dispatchEvent(new CustomEvent('filterChanged'));
-        });
+        const row = document.createElement('div');
+        row.className = 'instance-filter-row';
+        row.appendChild(createSourceFilterToggle(inst.id));
+        const name = document.createElement('span');
+        name.className = 'instance-filter-name';
+        name.textContent = inst.name;
+        row.appendChild(name);
         menu.appendChild(row);
     }
 }
 
-function setupSourceGroupExcludeUI() {
-    const row = document.getElementById('source-group-exclude-row');
-    if (!row || row.dataset.ready === '1') {
-        row?.querySelectorAll('input.source-group-exclude-cb').forEach((cb) => {
-            cb.checked = savedFilters.excludedSourceGroups.includes(cb.value);
-        });
-        updateSourceGroupExcludeLabel();
-        return;
+function setupSourceGroupFilterUI() {
+    const row = document.getElementById('source-group-filter-row');
+    if (!row) return;
+    if (row.dataset.ready !== '1') {
+        row.innerHTML = '';
+        for (const opt of SOURCE_GROUP_FILTER_OPTIONS) {
+            const chip = document.createElement('div');
+            chip.className = 'item-picker-source-group-chip';
+            chip.appendChild(createSourceFilterToggle(opt.id));
+            const label = document.createElement('span');
+            label.textContent = opt.label;
+            chip.appendChild(label);
+            row.appendChild(chip);
+        }
+        row.dataset.ready = '1';
     }
-    row.innerHTML = '<span class="item-picker-source-group-hint">Hide whole categories</span>';
-    for (const opt of SOURCE_GROUP_EXCLUDE_OPTIONS) {
-        const label = document.createElement('label');
-        label.className = 'item-picker-source-group-chip';
-        label.innerHTML = `<input type="checkbox" class="source-group-exclude-cb" value="${opt.id}"><span>${opt.label}</span>`;
-        const cb = label.querySelector('input');
-        cb.checked = savedFilters.excludedSourceGroups.includes(opt.id);
-        cb.addEventListener('change', () => {
-            updateSourceGroupExcludeLabel();
-            document.dispatchEvent(new CustomEvent('filterChanged'));
-        });
-        row.appendChild(label);
-    }
-    row.dataset.ready = '1';
-    updateSourceGroupExcludeLabel();
+    syncSourceFilterTogglesFromSaved();
 }
 
 async function setupInstanceFilterUI() {
     await ensureItemSourcesLoaded();
-    setupSourceGroupExcludeUI();
+    setupSourceGroupFilterUI();
     if (instanceFilterUiReady) {
-        document.querySelectorAll('input.instance-exclude-cb').forEach(cb => {
-            cb.checked = savedFilters.excludedInstances.includes(cb.value);
-        });
+        syncSourceFilterTogglesFromSaved();
         updateInstanceFilterLabel();
         return;
     }
@@ -1689,8 +1735,7 @@ export function openItemModal(slotId, items, elements, anchorEl = null) {
         qualities: selectedQualities.length > 0 ? selectedQualities : savedFilters.qualities,
         ilvlMin: savedFilters.ilvlMin,
         ilvlMax: savedFilters.ilvlMax,
-        excludedInstances: savedFilters.excludedInstances,
-        excludedSourceGroups: savedFilters.excludedSourceGroups,
+        sourceFilterStates: { ...savedFilters.sourceFilterStates },
         slot: slotId
     }, elements.modalItemList);
 
@@ -1746,11 +1791,14 @@ export function getCurrentFilters() {
     savedFilters.ilvlMin = lo;
     savedFilters.ilvlMax = hi;
 
-    const instanceCbs = document.querySelectorAll('input.instance-exclude-cb:checked');
-    savedFilters.excludedInstances = Array.from(instanceCbs).map(cb => cb.value);
-
-    const groupCbs = document.querySelectorAll('input.source-group-exclude-cb:checked');
-    savedFilters.excludedSourceGroups = Array.from(groupCbs).map(cb => cb.value);
+    savedFilters.sourceFilterStates = {};
+    document.querySelectorAll('.source-filter-toggle').forEach((btn) => {
+        const id = btn.dataset.filterId;
+        const state = btn.dataset.state;
+        if (id && (state === 'include' || state === 'exclude')) {
+            savedFilters.sourceFilterStates[id] = state;
+        }
+    });
 
     return {
         search: savedFilters.search,
@@ -1758,8 +1806,7 @@ export function getCurrentFilters() {
         qualities: savedFilters.qualities,
         ilvlMin: lo,
         ilvlMax: hi,
-        excludedInstances: savedFilters.excludedInstances,
-        excludedSourceGroups: savedFilters.excludedSourceGroups,
+        sourceFilterStates: { ...savedFilters.sourceFilterStates },
         slot: currentSlot
     };
 }

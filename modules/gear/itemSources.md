@@ -17,8 +17,9 @@ Lazy-loads TurtleAtlasLoot-derived loot data from **local** `/data/loot/` (same 
 | `getSourcesForItem(itemId)` | All sources for an item |
 | `getPreferredSourcesForItem(itemId)` | Unique dungeon/raid/worldboss sources; else other |
 | `formatItemSourceLine(itemId)` | `Zone: Dungeon – Boss` (en-dash; omit boss if missing) |
-| `itemMatchesInstanceFilter(itemId, selectedIds)` | Legacy OR include filter; empty = no filter |
-| `itemIsExcludedBySourceFilter(itemId, excludedIds, excludedGroups)` | Exclude filter; true when item should be hidden |
+| `itemMatchesInstanceFilter(itemId, selectedIds)` | Legacy include-only OR filter |
+| `itemPassesSourceFilter(itemId, sourceFilterStates)` | Three-state include/exclude filter |
+| `sourceFilterKeyMatchesItem(sources, key)` | Match helper for instance/kind/group keys |
 | `isOtherItem(itemId)` | No dungeon/raid/worldboss source |
 | `getInstanceFilterGroups()` | UI groups: dungeons (highest level first), raids, worldBosses, other |
 
