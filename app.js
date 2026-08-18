@@ -199,6 +199,8 @@ export function setAppMode(mode) {
         syncGpMobileChrome();
         applyUiScale();
         if (next === 'gearPlanner') {
+            window.profileManager?.closeBuildsDropdown?.();
+            window.profileManager?.closeInboxDropdown?.();
             renderGearPlanner();
         }
     }

@@ -25,6 +25,12 @@
     backdrop-filter: blur(10px);
 }
 
+/* Gear Planner: hide My Builds + Inbox (Character Planner keeps them) */
+body[data-app-mode="gearPlanner"] .builds-dropdown-container,
+body[data-app-mode="gearPlanner"] .inbox-dropdown-container {
+    display: none !important;
+}
+
 /* Login / profile / logout — sits with the other actions on the right */
 .top-nav-left {
     display: flex;

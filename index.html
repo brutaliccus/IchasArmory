@@ -68,6 +68,7 @@
                 text = Math.max(USER_MIN, Math.min(USER_MAX, text));
                 var path = (location.pathname || '').replace(/\/+$/, '') || '/';
                 var gpPath = path === '/gear-planner' || path === '/gp';
+                if (gpPath && document.body) document.body.dataset.appMode = 'gearPlanner';
                 var mobileGp = gpPath && ((w <= 900) || (w <= 1199 && window.matchMedia && window.matchMedia('(pointer: coarse)').matches));
                 var total = mobileGp ? user : auto * user;
                 var root = document.documentElement;
