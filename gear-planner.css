@@ -186,14 +186,31 @@ body[data-app-mode="character"] #gear-planner-shell {
 }
 
 #gear-planner-shell.gp-talents-open .gp-talents-view:not([hidden]),
-#gear-planner-shell.gp-buffs-open .gp-buffs-view:not([hidden]),
-#gear-planner-shell.gp-stat-weights-open .gp-stat-weights-view:not([hidden]) {
+#gear-planner-shell.gp-buffs-open .gp-buffs-view:not([hidden]) {
     flex-direction: column;
     align-items: stretch;
     width: 100%;
     max-width: 100%;
     min-width: 0;
     overflow: hidden;
+}
+
+#gear-planner-shell.gp-stat-weights-open .gp-stat-weights-view:not([hidden]) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: auto;
+}
+
+#gear-planner-shell.gp-stat-weights-open.gp-dual-weights .gp-stat-weights-view:not([hidden]) {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 12px;
 }
 
 .gp-stat-weights-view {
@@ -203,7 +220,7 @@ body[data-app-mode="character"] #gear-planner-shell {
     padding: 8px 4px 24px;
     flex-direction: column;
     flex-wrap: nowrap;
-    gap: 20px;
+    gap: 16px;
     align-items: center;
     justify-content: flex-start;
     width: 100%;
@@ -219,18 +236,118 @@ body[data-app-mode="character"] #gear-planner-shell {
 }
 
 #gear-planner-shell.gp-dual-weights .gp-stat-weights-view .gp-weights-panel:not([hidden]) {
-    flex: 0 1 min(480px, calc(50% - 10px));
-    min-width: min(100%, 280px);
-    max-width: min(480px, calc(50% - 10px));
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: min(340px, calc(50% - 8px));
+    width: auto;
+}
+
+#gear-planner-shell.gp-stat-weights-open:not(.gp-dual-weights) .gp-stat-weights-view .gp-weights-panel:not([hidden]) {
+    flex: 0 1 auto;
     width: min(100%, 480px);
+    max-width: min(100%, 480px);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .gp-stat-weights-view .gp-weights-panel:not([hidden]) {
-    flex: 0 1 auto;
-    min-width: min(100%, 280px);
-    max-width: 640px;
-    width: min(100%, 640px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     box-sizing: border-box;
+}
+
+#gp-tank-weights-panel {
+    order: 1;
+}
+
+#gp-dps-weights-panel {
+    order: 2;
+}
+
+.gp-stat-weights-view .gp-weights-panel h3 {
+    text-align: center;
+    width: 100%;
+}
+
+.gp-stat-weights-view .gp-weights-hint,
+.gp-stat-weights-view .gp-weights-status {
+    text-align: center;
+    width: 100%;
+}
+
+.gp-stat-weights-view .gp-weights-controls {
+    justify-content: center;
+    width: 100%;
+}
+
+.gp-stat-weights-view .gp-tank-boss-search-wrap {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.gp-stat-weights-view .gp-tank-weights-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.gp-stat-weights-view .stat-weight-item {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.gp-stat-weights-view .weight-value {
+    text-align: center;
+    min-width: 0;
+}
+
+.gp-stat-weights-view #gp-dps-weights-host {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gp-stat-weights-view #gp-dps-weights-host .stat-weights-panel,
+.gp-stat-weights-view #gp-dps-weights-host .gp-dps-st-panel {
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+}
+
+.gp-stat-weights-view #gp-dps-weights-host .stat-weights-table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.gp-stat-weights-view .gp-manual-weights-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    justify-items: stretch;
+}
+
+.gp-stat-weights-view .gp-manual-weights-grid label {
+    text-align: center;
+}
+
+.gp-stat-weights-view #gp-weights-unsupported {
+    text-align: center;
+    max-width: 480px;
+    margin: 0 auto;
 }
 
 .gp-weights-panel h3 {
@@ -271,7 +388,7 @@ body[data-app-mode="character"] #gear-planner-shell {
 }
 
 .gp-tank-weights-grid {
-    max-width: 640px;
+    max-width: 300px;
 }
 
 #gear-planner-shell.gp-talents-open .gp-talents-view {
