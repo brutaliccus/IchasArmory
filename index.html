@@ -470,7 +470,6 @@
                                                     <div class="stat-item"><span>Stamina</span><strong id="totalStamina">0</strong></div>
                                                     <div class="stat-item"><span>Intellect</span><strong id="totalIntellect">0</strong></div>
                                                     <div class="stat-item"><span>Spirit</span><strong id="totalSpirit">0</strong></div>
-                                                    <div class="stat-item"><span>Vampirism</span><strong id="totalVampirism">0.00%</strong></div>
                                                     <div class="stat-item"><span>Crit Dmg Reduction</span><strong id="totalCritDmgReduction">0.00%</strong></div>
                                                 </div>
                                                 <div class="stat-column">
@@ -556,6 +555,7 @@
                                                 </div>
                                                 <div class="stat-column">
                                                     <h4>Misc Effects</h4>
+                                                    <div class="stat-item" id="vampirism-row"><span>Vampirism</span><strong id="totalVampirism">0%</strong></div>
                                                     <div class="stat-item" id="fortune-row"><span>Fortune</span><strong id="totalFortune">+0%</strong></div>
                                                     <div class="stat-item"><span>Spell Strike Sources</span><strong id="spellStrikeSourcesCount">0</strong></div>
                                                     <div id="spellStrikeSourcesList" class="spell-strike-sources-list"></div>
@@ -1275,26 +1275,6 @@
                                 <button type="button" class="item-picker-filter-row" data-filter-kind="quality" data-filter-key="0" data-state="off"><span class="q0">Poor</span></button>
                             </div>
                         </div>
-                        <div class="item-picker-req-level item-picker-req-level--inline">
-                            <div class="item-picker-req-axis" aria-hidden="true">
-                                <div class="item-picker-req-axis-item">
-                                    <span class="item-picker-axis-label">min</span>
-                                    <span class="item-picker-axis-value" id="req-level-min-display">1</span>
-                                </div>
-                                <div class="item-picker-req-axis-item item-picker-req-axis-item-right">
-                                    <span class="item-picker-axis-label">max</span>
-                                    <span class="item-picker-axis-value" id="req-level-max-display">60</span>
-                                </div>
-                            </div>
-                            <div class="dual-range-wrap">
-                                <div class="dual-range-track-bg" aria-hidden="true"></div>
-                                <div class="dual-range-fill" id="req-level-fill" aria-hidden="true"></div>
-                                <input type="range" id="ilvl-min-slider" class="dual-range-input dual-range-min" min="1" max="60" value="1" aria-label="Minimum level">
-                                <input type="range" id="ilvl-max-slider" class="dual-range-input dual-range-max" min="1" max="60" value="60" aria-label="Maximum level">
-                            </div>
-                            <input type="hidden" id="ilvl-min" value="1">
-                            <input type="hidden" id="ilvl-max" value="60">
-                        </div>
                     </div>
                     <div class="item-picker-source-group-row" id="source-group-filter-row" aria-label="Source category filters"></div>
                     <div class="item-picker-instance-row" id="instance-filter-container">
@@ -1325,6 +1305,24 @@
                                 <span class="dropdown-arrow">▼</span>
                             </div>
                             <div class="stat-dropdown-menu instance-filter-dropdown-menu" id="instances-other-dropdown" style="display: none;" aria-label="Other source filter"></div>
+                        </div>
+                        <div class="item-picker-req-level item-picker-req-level--source-row" aria-label="Required level range">
+                            <div class="item-picker-req-end item-picker-req-end--min">
+                                <span class="item-picker-axis-label">Min</span>
+                                <span class="item-picker-axis-value" id="req-level-min-display">1</span>
+                            </div>
+                            <div class="dual-range-wrap">
+                                <div class="dual-range-track-bg" aria-hidden="true"></div>
+                                <div class="dual-range-fill" id="req-level-fill" aria-hidden="true"></div>
+                                <input type="range" id="ilvl-min-slider" class="dual-range-input dual-range-min" min="1" max="60" value="1" aria-label="Minimum level">
+                                <input type="range" id="ilvl-max-slider" class="dual-range-input dual-range-max" min="1" max="60" value="60" aria-label="Maximum level">
+                            </div>
+                            <div class="item-picker-req-end item-picker-req-end--max">
+                                <span class="item-picker-axis-label">Max</span>
+                                <span class="item-picker-axis-value" id="req-level-max-display">60</span>
+                            </div>
+                            <input type="hidden" id="ilvl-min" value="1">
+                            <input type="hidden" id="ilvl-max" value="60">
                         </div>
                         <div class="item-picker-instance-actions">
                             <label class="can-equip-toggle" title="Hide items your class cannot equip">

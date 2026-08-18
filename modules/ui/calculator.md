@@ -1009,7 +1009,7 @@ return {
     spellPen: spellPen,
 
     // Misc Stats
-    vampirism: (gearStats.vampirism || 0) + (enchantStats.vampirism || 0),
+    vampirism: (gearStats.vampirism || 0) + (enchantStats.vampirism || 0) + (setSheet.vampirism || 0),
     critDmgReduction: (gearStats.critDmgReduction || 0) + (enchantStats.critDmgReduction || 0),
     armorPen: (gearStats.armorPen || 0) + (enchantStats.armorPen || 0),
     // All `apVs*` keys from `AP_VS_GEAR_STAT_KEYS` (gear + enchant per key)

@@ -346,7 +346,7 @@ export const STAT_PATTERNS = {
     shadowResist: /([+-]?\d+)\s+Shadow Resistance\.?/i,
     arcaneResist: /([+-]?\d+)\s+Arcane Resistance\.?/i,
     allResist: /([+-]?\d+)\s+(?:to )?All Resistances\.?/i,
-    vampirism: /(?:Equip:.*?vampirism.*?(\d+)%|^\+(\d+)%\s+Vampirism)/i,
+    vampirism: /(?:Equip:.*?(?:vampirism|leeching).*?(\d+)%|Equip:.*?(\d+)%\s+of\s+(?:the\s+)?damage\s+dealt(?:\s+is\s+returned)?\s+as\s+healing|(\d+)%\s+of\s+(?:the\s+)?damage\s+dealt(?:\s+is\s+returned)?\s+as\s+healing|^\+(\d+)%\s+(?:Vampirism|Leeching))/i,
     critDmgReduction: /(?:Equip:.*?reduces.*?critical strike damage.*?(\d+)%|Reduces.*?critical.*?damage.*?(\d+)%)/i,
     armorPen: /(?:Equip:.*?(?:armor penetration.*?(\d+)|attacks ignore (\d+) of.*?armor)|^\+(\d+)\s+Armor Penetration)/i,
     // Generic weapon skill (not weapon-type-specific) - very rare
@@ -583,10 +583,62 @@ function tryParseBonusDmgHealingVsLine(line, stats) {
  * @param {string} text - Set bonus description (line after "(N) Set:")
  * @returns {Object|null} Partial STAT_TEMPLATE values
  */
+/** Smart percent for UI: 3%, 3.5%, not 3.00%. */
+export function formatSmartPercent(value) {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return '0%';
+    const rounded = Math.round(n * 100) / 100;
+    if (Math.abs(rounded - Math.round(rounded)) < 1e-9) return `${Math.round(rounded)}%`;
+    return `${parseFloat(rounded.toFixed(2))}%`;
+}
+
+/**
+ * Parse sheet stats from enchant description when `enchant.stats` is empty or incomplete.
+ * @param {string} text - Enchant description or name
+ * @returns {Object} Partial stat keys (e.g. vampirism)
+ */
+export function parseStatsFromEnchantDescription(text) {
+    if (!text || typeof text !== 'string') return {};
+    const out = {};
+    const add = (key, val) => { out[key] = (out[key] || 0) + val; };
+    let m;
+    if ((m = text.match(/(?:adds?|increase(?:s)?)\s+(\d+)%\s+vampirism/i))) add('vampirism', parseInt(m[1], 10));
+    if ((m = text.match(/(?:adds?|increase(?:s)?)\s+(\d+)%\s+leeching/i))) add('vampirism', parseInt(m[1], 10));
+    if ((m = text.match(/vampirism by (\d+)%/i))) add('vampirism', parseInt(m[1], 10));
+    if ((m = text.match(/leeching by (\d+)%/i))) add('vampirism', parseInt(m[1], 10));
+    return out;
+}
+
+/** Merge explicit enchant.stats with description-parsed stats (description fills gaps only). */
+export function getEffectiveEnchantStats(enchant) {
+    const base = enchant?.stats ? { ...enchant.stats } : {};
+    const parsed = parseStatsFromEnchantDescription(enchant?.description || '');
+    for (const [key, val] of Object.entries(parsed)) {
+        if (!(key in base)) base[key] = val;
+    }
+    return base;
+}
+
 export function parseSetBonusSheetStats(text) {
     if (!text || typeof text !== 'string') return null;
     const line = text.trim();
     const lower = line.toLowerCase();
+
+    const outEarly = {};
+    const addEarly = (key, val) => { outEarly[key] = (outEarly[key] || 0) + val; };
+    let mEarly;
+    if ((mEarly = line.match(/^(\d+)%\s+of\s+(?:the\s+)?damage\s+dealt(?:\s+is\s+returned)?\s+as\s+healing\.?$/i))) {
+        addEarly('vampirism', parseInt(mEarly[1], 10));
+        return outEarly;
+    }
+    if ((mEarly = line.match(/^(?:Increases?|Adds?)\s+(?:vampirism|leeching)\s+by\s+(\d+)%\.?$/i))) {
+        addEarly('vampirism', parseInt(mEarly[1], 10));
+        return outEarly;
+    }
+    if ((mEarly = line.match(/^\+(\d+)%\s+(?:Vampirism|Leeching)\.?$/i))) {
+        addEarly('vampirism', parseInt(mEarly[1], 10));
+        return outEarly;
+    }
 
     const skipPatterns = [
         /\bchance\b/, /\bwhen you\b/, /\bwhen fighting\b/, /\bfor \d+ sec/, /\bwhile\b/,

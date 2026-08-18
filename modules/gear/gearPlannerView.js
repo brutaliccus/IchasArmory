@@ -24,7 +24,7 @@ import { getEmptySlotPlaceholderUrl, getMeleeWeaponType, getEnchantableSlots, re
 import { fetchArmoryData, applyArmoryEquipment, decodeChronicleTalents } from '../armory/armoryImport.js';
 import { enchantDatabase } from './enchants.js';
 import { getEnchantCompactLabel } from './enchantStatLabels.js';
-import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, getItemType, filterEnchantsByItemType, filterEnchantsByClass, AP_VS_DISPLAY_ORDER, getApVsRowLabel } from '../character/stats.js';
+import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, getItemType, filterEnchantsByItemType, filterEnchantsByClass, AP_VS_DISPLAY_ORDER, getApVsRowLabel, getEffectiveEnchantStats } from '../character/stats.js';
 import { baseStats, raceIconData, getSelectedRaceBonuses } from '../character/races.js';
 import { calculateEffectiveHealth } from '../ui/calculator.js';
 import { generateTalentInputs, updateTalentPoints, updateAllTalentStates, getTalentBonusesFromSpec, classTalents } from '../talents_new.js';
@@ -1621,15 +1621,16 @@ function aggregatePlanEnchantStats(plan) {
         const idx = plan.slots?.[slot]?.enchant;
         if (idx == null) continue;
         const enchant = enchantDatabase[slot]?.[idx];
-        if (!enchant?.stats) continue;
-        for (const stat in enchant.stats) {
+        if (!enchant) continue;
+        const effectiveStats = getEffectiveEnchantStats(enchant);
+        for (const stat in effectiveStats) {
             const finalKey = KEY_MAP[stat] || stat;
-            if (stat === 'weaponSkillByType' && typeof enchant.stats[stat] === 'object') {
-                for (const weaponType in enchant.stats[stat]) {
-                    total.weaponSkillByType[weaponType] = (total.weaponSkillByType[weaponType] || 0) + enchant.stats[stat][weaponType];
+            if (stat === 'weaponSkillByType' && typeof effectiveStats[stat] === 'object') {
+                for (const weaponType in effectiveStats[stat]) {
+                    total.weaponSkillByType[weaponType] = (total.weaponSkillByType[weaponType] || 0) + effectiveStats[stat][weaponType];
                 }
             } else if (Object.prototype.hasOwnProperty.call(total, finalKey)) {
-                total[finalKey] += enchant.stats[stat];
+                total[finalKey] += effectiveStats[stat];
             }
         }
     }
@@ -1758,7 +1759,7 @@ function buildGpCalcPayload(plan, { includeGear, includeTalents, includeBuffs })
 const GP_STAT_GROUPS = [
     { title: 'Attributes', rows: [
         ['strength', 'Strength'], ['agility', 'Agility'], ['stamina', 'Stamina'],
-        ['intellect', 'Intellect'], ['spirit', 'Spirit'], ['vampirism', 'Vampirism', 'pct'],
+        ['intellect', 'Intellect'], ['spirit', 'Spirit'],
         ['critDmgReduction', 'Crit Dmg Reduction', 'pct'],
     ]},
     { title: 'Melee', rows: [
@@ -1783,6 +1784,10 @@ const GP_STAT_GROUPS = [
     { title: 'Damage Reduction', rows: [
         ['fireDR', 'Fire', 'frac'], ['natureDR', 'Nature', 'frac'], ['frostDR', 'Frost', 'frac'],
         ['shadowDR', 'Shadow', 'frac'], ['arcaneDR', 'Arcane', 'frac'], ['holyDR', 'Holy', 'frac'],
+    ]},
+    { title: 'Misc Effects', rows: [
+        ['vampirism', 'Vampirism', 'pct'],
+        ['fortune', 'Fortune', 'pct'],
     ]},
 ];
 

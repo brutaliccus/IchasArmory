@@ -12,7 +12,7 @@ import { generateTalentInputs, getTalentBonuses, classTalents } from './modules/
 import { calculateEffectiveHealth } from './modules/ui/calculator.js';
 import { createItemTooltipHTML, createEnchantTooltipHTML, setGetEquippedGear } from './modules/ui/tooltips.js';
 import { getSetBonuses } from './modules/gear/setBonuses.js';
-import { getStatSearchTerms, parseStatsFromTooltip, KEY_MAP, getItemType, filterEnchantsByItemType, filterEnchantsByClass, getAttackPowerBonusVsCreatureType, getSpellDamageHealingBonusVsCreatureType, AP_VS_DISPLAY_ORDER, DMG_HEALING_VS_DISPLAY_ORDER, getApVsRowLabel, getDmgHealingVsRowLabel } from './modules/character/stats.js';
+import { getStatSearchTerms, parseStatsFromTooltip, KEY_MAP, getItemType, filterEnchantsByItemType, filterEnchantsByClass, getAttackPowerBonusVsCreatureType, getSpellDamageHealingBonusVsCreatureType, AP_VS_DISPLAY_ORDER, DMG_HEALING_VS_DISPLAY_ORDER, getApVsRowLabel, getDmgHealingVsRowLabel, formatSmartPercent } from './modules/character/stats.js';
 import { initializeGearCompare, setComparisonItem, getCurrentCompareSlot, setEHPCalculator, setGetCurrentClass, setCharacterDataCallbacks } from './modules/gear/gearCompare.js';
 import { filterAndRenderItems, filterAndRenderEnchants, getSelectedQualities, getCurrentFilters, openItemModal as openItemModalFromModule, openEnchantModal as openEnchantModalFromModule, repositionItemPickerIfOpen, setItemModalPlayerClassOverride, getPlayerClassForItemFilters } from './modules/ui/modal.js';
 import { initUiScale } from './modules/ui/uiScale.js';
@@ -1935,7 +1935,6 @@ function displayMainResults(totals) {
     elements.totalStrength.textContent = (totals.strength || 0).toLocaleString();
     elements.totalIntellect.textContent = (totals.intellect || 0).toLocaleString();
     elements.totalSpirit.textContent = (totals.spirit || 0).toLocaleString();
-    if (elements.totalVampirism) elements.totalVampirism.textContent = (totals.vampirism || 0).toFixed(2) + '%';
     if (elements.totalCritDmgReduction) elements.totalCritDmgReduction.textContent = (totals.critDmgReduction || 0).toFixed(2) + '%';
     elements.totalAP.textContent = displayMeleeAp.toLocaleString();
     renderAdvancedMeleeApVsBonusRows(totals);
@@ -2476,6 +2475,10 @@ function displayMainResults(totals) {
     const fortuneVal = totals.fortune || 0;
     const totalFortuneEl = elements.totalFortune || document.getElementById('totalFortune');
     if (totalFortuneEl) totalFortuneEl.textContent = `+${fortuneVal.toFixed(0)}%`;
+
+    // Vampirism / leeching: gear + enchants + set bonuses (see calculator totals.vampirism)
+    const vampirismVal = totals.vampirism || 0;
+    if (elements.totalVampirism) elements.totalVampirism.textContent = formatSmartPercent(vampirismVal);
 
     // Spell Strike: each "Equip: Adds X {school} damage to your weapon attack(s)" is a separate source. No total.
     const spellStrikeSources = getAllSpellStrikeSources();

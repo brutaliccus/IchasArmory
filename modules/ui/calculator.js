@@ -796,7 +796,7 @@ export function calculateEffectiveHealth(data) {
         physicalDR: totalPhysicalDR,
         fireEHP: Math.floor(fireEHP), frostEHP: Math.floor(frostEHP), natureEHP: Math.floor(natureEHP),
         shadowEHP: Math.floor(shadowEHP), arcaneEHP: Math.floor(arcaneEHP), holyEHP: Math.floor(holyEHP),
-        vampirism: (gearStats.vampirism || 0) + (enchantStats.vampirism || 0),
+        vampirism: (gearStats.vampirism || 0) + (enchantStats.vampirism || 0) + (setSheet.vampirism || 0),
         critDmgReduction: (gearStats.critDmgReduction || 0) + (enchantStats.critDmgReduction || 0),
         armorPen: (gearStats.armorPen || 0) + (enchantStats.armorPen || 0),
         ...apVsFromGear,

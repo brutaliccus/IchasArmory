@@ -2119,7 +2119,9 @@ export const enchantDatabase = {
     },
     {
       "name": "Sigil of Leeching",
-      "stats": {},
+      "stats": {
+        "vampirism": 2
+      },
       "description": "Permanently adds 2% vampirism to a shoulder slot item.",
       "effect_id": 3012
     },

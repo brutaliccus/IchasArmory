@@ -330,7 +330,7 @@ Returns a complete build object:
 3. **Defense Stats:** Armor, Defense, Dodge, Parry, Block, Miss, Crit (melee/spell)
 4. **Offensive Stats:** Attack Power, Hit, Crit, Expertise, Haste, Armor Penetration
 5. **Spell Stats:** Spell Damage, Healing, Spell Hit, Spell Crit, MP5 — adds `getSpellDamageHealingBonusVsCreatureType(totals, getDpsSessionTargetFactionTag())` to displayed spell damage (all schools) and healing when the DPS target matches equipped `dmgHealingVs*` gear; `renderAdvancedSpellDmgHealVsBonusRows()` fills `#advancedSpellDmgHealVsBonusRows` (non-zero bonuses only).
-6. **Misc Effects (Stats tab):** Fortune (`totals.fortune` from `calculateEffectiveHealth`) as `+N%` in `#totalFortune`; row is always visible. Spell strike source list/count.
+6. **Misc Effects (Stats tab):** **Vampirism** (`totals.vampirism` from gear + enchants + set bonuses) in `#totalVampirism` via `formatSmartPercent` (`3%`, not `3.00%`). Fortune (`totals.fortune` from `calculateEffectiveHealth`) as `+N%` in `#totalFortune`; rows are always visible. Spell strike source list/count.
 7. **Effective Health:** Shows breakdown formula
 8. **Stat Weight Tooltips:** If `lastSimulationStatWeights` exists, adds tooltips showing value of each stat
 

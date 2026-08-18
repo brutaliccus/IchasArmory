@@ -4,7 +4,7 @@
 import { enchantDatabase } from './enchants.js';
 import { getEnchantCompactLabel } from './enchantStatLabels.js';
 import { itemLoader } from './itemLoader.js';
-import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, parseSpellStrikeSourcesFromItem, parseSpellStrikeFromText } from '../character/stats.js';
+import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, parseSpellStrikeSourcesFromItem, parseSpellStrikeFromText, getEffectiveEnchantStats } from '../character/stats.js';
 
 // Icon constants
 export const CHRONICLE_ICON_BASE = 'https://icons.chronicleclassic.com/turtle';
@@ -463,21 +463,21 @@ export function getEnchantStats() {
 
     for (const slotId in selectedEnchants) {
         const enchant = selectedEnchants[slotId];
-        if (enchant && enchant.stats) {
-            for (const stat in enchant.stats) {
-                const finalKey = KEY_MAP[stat] || stat;
+        if (!enchant) continue;
+        const effectiveStats = getEffectiveEnchantStats(enchant);
+        for (const stat in effectiveStats) {
+            const finalKey = KEY_MAP[stat] || stat;
 
-                // Special handling for weaponSkillByType object
-                if (stat === 'weaponSkillByType' && typeof enchant.stats[stat] === 'object') {
-                    if (!totalStats.weaponSkillByType) {
-                        totalStats.weaponSkillByType = {};
-                    }
-                    for (const weaponType in enchant.stats[stat]) {
-                        totalStats.weaponSkillByType[weaponType] = (totalStats.weaponSkillByType[weaponType] || 0) + enchant.stats[stat][weaponType];
-                    }
-                } else if (totalStats.hasOwnProperty(finalKey)) {
-                    totalStats[finalKey] += enchant.stats[stat];
+            // Special handling for weaponSkillByType object
+            if (stat === 'weaponSkillByType' && typeof effectiveStats[stat] === 'object') {
+                if (!totalStats.weaponSkillByType) {
+                    totalStats.weaponSkillByType = {};
                 }
+                for (const weaponType in effectiveStats[stat]) {
+                    totalStats.weaponSkillByType[weaponType] = (totalStats.weaponSkillByType[weaponType] || 0) + effectiveStats[stat][weaponType];
+                }
+            } else if (totalStats.hasOwnProperty(finalKey)) {
+                totalStats[finalKey] += effectiveStats[stat];
             }
         }
     }
