@@ -1691,12 +1691,108 @@ input, select {
     line-height: 1.5;
 }
 .enchant-item {
-    padding: 12px;
-    border-bottom: 1px solid var(--border-color);
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 8px 10px;
+    border-radius: 4px;
+    border: 1px solid transparent;
     cursor: pointer;
+    font-size: calc(0.82em * var(--ts, 1));
+    line-height: 1.35;
+    background: transparent;
+    color: inherit;
+}
+.enchant-item-name {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .enchant-item:hover {
-    background-color: var(--accent-color);
+    background-color: rgba(255, 255, 255, 0.06);
+    border-color: var(--border-color);
+}
+.enchant-item.is-selected.is-enchanted {
+    border-color: #ffd700;
+    box-shadow: 0 0 8px #ffd700;
+    background-color: rgba(255, 215, 0, 0.08);
+}
+.enchant-item.is-selected.is-enchanted .enchant-item-name {
+    color: #ffd100;
+    text-shadow: 0 0 6px rgba(255, 215, 0, 0.45);
+}
+
+/* Categorized enchant picker (buff-column inspired) */
+.enchant-modal-content {
+    max-width: min(96vw, 1180px);
+}
+.enchant-modal-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+.enchant-picker-list.modal-item-list {
+    flex: 1;
+    overflow: auto;
+    margin-right: 0;
+    padding-right: 8px;
+}
+.enchant-picker-categories {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: 4px 2px 8px;
+}
+.enchant-picker-column {
+    flex: 1 1 150px;
+    min-width: 140px;
+    max-width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.enchant-picker-main-header {
+    font-size: calc(0.95em * var(--ts, 1));
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: center;
+    padding-bottom: 6px;
+    border-bottom: 2px solid currentColor;
+}
+.enchant-picker-main-header--offensive { color: #ff6b6b; text-shadow: 0 0 14px rgba(255, 107, 107, 0.25); }
+.enchant-picker-main-header--defensive { color: #4dabf7; text-shadow: 0 0 14px rgba(77, 171, 247, 0.25); }
+.enchant-picker-main-header--healing { color: #51cf66; text-shadow: 0 0 14px rgba(81, 207, 102, 0.25); }
+.enchant-picker-main-header--utility { color: #ffd700; text-shadow: 0 0 14px rgba(255, 215, 0, 0.25); }
+.enchant-picker-main-header--other { color: #adb5bd; text-shadow: 0 0 10px rgba(173, 181, 189, 0.2); }
+.enchant-picker-subcategories {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.enchant-picker-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.enchant-picker-subheader {
+    font-size: calc(0.78em * var(--ts, 1));
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    padding-bottom: 3px;
+    border-bottom: 1px solid var(--border-color);
+}
+.enchant-picker-subheader:empty {
+    display: none;
+}
+.enchant-picker-items {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 /* fixed; JS sets transform-origin to the outer icon corner used for placement */
 .item-tooltip { position: fixed; z-index: 3000; background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 10px; border-radius: 4px; max-width: 350px; font-family: Arial, sans-serif; font-size: calc(14px * var(--ts, 1)); line-height: 1.5; pointer-events: none; transform-origin: top left; }

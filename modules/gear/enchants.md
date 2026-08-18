@@ -197,6 +197,42 @@ Common stat keys used in enchant objects:
 
 ---
 
+## Enchant picker categories (implemented)
+
+The enchant modal (`modal.js` → `renderEnchants`) groups slot-filtered enchants into columns using **`modules/gear/enchantCategories.js`**. Class and item-type filtering (`filterEnchantsByClass`, `filterEnchantsByItemType`) run **before** categorization.
+
+### Top-level columns
+
+| Column | Sub-groups | Header color |
+|--------|------------|--------------|
+| **Offensive** | Phys, Spell | Red |
+| **Defensive** | Phys, Spell | Blue |
+| **Healing** | — | Green |
+| **Utility** | — | Gold |
+| **Other** | — | Gray (`None` + unclassified) |
+
+### Mapping rules (priority)
+
+1. **`None`** → Other (always first in that bucket).
+2. **Healing** — `stats.healing` or healing-focused name (`Healing Power`, `Serenity`, etc.). Skipped when spell-damage keys dominate (e.g. `dmgAndHealing` + `spellHit` → Offensive Spell).
+3. **Offensive Phys** — `ap`, `attackPower`, `rap`, `rangedAttackPower`, `rangedDmg`, `str`, `agi`, `crit`, `hit`, `hitPercent`, `weaponDamage`, `armorPen`, `haste`, `vampirism`; proc names (Crusader, Fiery, Lifestealing, Demonslaying, etc.).
+4. **Offensive Spell** — `dmgAndHealing`, school spell damage keys, `spellCrit`, `spellHit`, `spellPen`, `int`; names with spell power / fire-frost-shadow power.
+5. **Defensive Phys** — `sta`, `armor`, `def`, `dodge`, `parry`, `blockValue`, `blockChance`, `health`; defense/stamina/block names.
+6. **Defensive Spell** — `allResist`, school resist keys, `mana`, `mp5`, `manaRegen`; resistance/mana names.
+7. **Utility** — `spi`; run/mount speed, riding, threat, subtlety, stealth, profession skills (mining, herbalism, fishing, skinning), belt buckles/spikes; lone `allStats`.
+8. **Other** — no matching stats or name patterns.
+
+Ties: highest score among buckets wins. Description text is **not** used for healing/offensive/defensive name patterns (avoids ZG leg/head flavor text false positives); utility patterns may use name + description.
+
+### Related files
+
+- **`enchantCategories.js`** — `getEnchantCategoryId`, `groupEnchantsByCategory`, column metadata
+- **`enchantCategories.md`** — module API
+- **`modal.js`** — picker UI
+- **`style.css`** — `.enchant-picker-*` styles
+
+---
+
 ## How the Data is Used
 
 ### 1. Modal System (modal.js)

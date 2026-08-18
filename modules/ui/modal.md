@@ -128,15 +128,20 @@ The system automatically filters enchants based on the currently equipped item:
 
 ### Enchant Rendering
 
-**Function:** `renderEnchants(enchants, allEnchants, listElement)`
+**Function:** `renderEnchants(enchants, allEnchants, listElement, selectedEnchantIndex?)`
 
-Renders enchants as clickable items with hover tooltips.
+Renders enchants in a **categorized column layout** (buff/consumable inspired): Offensive (Phys / Spell), Defensive (Phys / Spell), Healing, Utility, Other. Classification uses `modules/gear/enchantCategories.js` (`groupEnchantsByCategory`); see `enchants.md` for mapping rules.
 
 **Features:**
-- Displays enchant name
-- Maps enchants to original database indices for selection
+- Colored category headers; Phys/Spell subheaders under Offensive and Defensive
+- Truncated display names (`mechanicShortNameFromFullName`); full name in `title` + tooltip
+- Quality-colored row names via `getEnchantQualityClass` (`q0`–`q4`)
+- Selected enchant: `.is-selected.is-enchanted` gold text + glow (matches gear strip)
+- Maps enchants to original database indices for selection (`data-enchant-index`)
 - Attaches tooltip handlers showing enchant effects
 - Shows "No enchants found" when filter results are empty
+- `None` always appears under **Other**
+- Shared Character Planner + Gear Planner via `openEnchantModal(..., selectedEnchantIndex)`
 
 ---
 

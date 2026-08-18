@@ -123,6 +123,7 @@ This document provides an index of all documentation files created for the IchaC
 
 ### 5. modules/gear/enchants.js - Enchant Database
 **File:** `modules/gear/enchants.md` (title-audit notes + pointer to `enchantStatLabels.md`)
+**Categories:** `modules/gear/enchantCategories.js` → `enchantCategories.md` (picker taxonomy)
 **Source:** `modules/gear/enchants.js` (2,886 LOC)
 **Script:** `scripts/audit-enchant-titles.mjs` — lists enchants with modeled stats but no numeric summary in parentheses in `name`
 

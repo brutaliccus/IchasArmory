@@ -4,6 +4,15 @@
 import { createItemTooltipHTML, createEnchantTooltipHTML, calculateItemDpsScore, calculateItemTankScore, getActiveItemScoreWeights } from './tooltips.js';
 import { positionItemTooltipOnIcon } from './itemTooltipPosition.js';
 import { createIconImage, getCurrentlyEquippedItem } from '../gear/gear.js';
+import {
+    ENCHANT_MAIN_CATEGORIES,
+    ENCHANT_CATEGORY_ORDER,
+    ENCHANT_SUBCATEGORY_ORDER,
+    ENCHANT_SUBCATEGORIES,
+    groupEnchantsByCategory,
+    getEnchantQualityClass,
+} from '../gear/enchantCategories.js';
+import { mechanicShortNameFromFullName } from '../gear/enchantStatLabels.js';
 import { getStatSearchTerms, getItemType, filterEnchantsByItemType, filterEnchantsByClass, parseStatsFromTooltip, KEY_MAP } from '../character/stats.js';
 import {
     ensureItemSourcesLoaded,
@@ -982,7 +991,7 @@ function renderItems(items, listElement) {
  * @param {HTMLElement} listElement - The DOM element to render enchants into
  * @param {Array} originalDatabase - The original full enchant database for index mapping (optional)
  */
-export function filterAndRenderEnchants(allEnchants, searchTerm, listElement, originalDatabase = null) {
+export function filterAndRenderEnchants(allEnchants, searchTerm, listElement, originalDatabase = null, selectedEnchantIndex = -1) {
     if (!listElement) return;
 
     // If no original database provided, try to get it from the list element's dataset
@@ -1011,7 +1020,7 @@ export function filterAndRenderEnchants(allEnchants, searchTerm, listElement, or
     }
 
     // Render filtered enchants, using original database for index mapping
-    renderEnchants(filteredEnchants, originalDatabase, listElement);
+    renderEnchants(filteredEnchants, originalDatabase, listElement, selectedEnchantIndex);
 }
 
 /**
@@ -1042,47 +1051,115 @@ function enchantMatchesSearch(enchant, searchLower) {
     return false;
 }
 
+function getEnchantPickerDisplayName(enchant) {
+    if (!enchant) return '';
+    if (enchant.name === 'None') return 'None';
+    return mechanicShortNameFromFullName(enchant.name) || enchant.name;
+}
+
+function escapeEnchantPickerHtml(text) {
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+function renderEnchantItemHtml(enchant, allEnchants, selectedEnchantIndex) {
+    const index = allEnchants.findIndex((e) => e.name === enchant.name);
+    const isSelected = index === selectedEnchantIndex;
+    const qualityClass = getEnchantQualityClass(enchant);
+    const displayName = getEnchantPickerDisplayName(enchant);
+    const selectedClass = isSelected ? ' is-selected is-enchanted' : '';
+    return `<button type="button" class="enchant-item${selectedClass}" data-enchant-index="${index}" title="${escapeEnchantPickerHtml(enchant.name)}"><span class="enchant-item-name ${qualityClass}">${escapeEnchantPickerHtml(displayName)}</span></button>`;
+}
+
+function renderEnchantCategoryColumn(mainId, groups, allEnchants, selectedEnchantIndex) {
+    const meta = ENCHANT_MAIN_CATEGORIES[mainId];
+    if (!meta) return '';
+
+    const subIds = ENCHANT_SUBCATEGORY_ORDER
+        .map((sub) => `${mainId}.${sub}`)
+        .concat(mainId === 'healing' || mainId === 'utility' || mainId === 'other' ? [mainId] : [])
+        .filter((id, idx, arr) => arr.indexOf(id) === idx)
+        .filter((id) => groups.has(id) && groups.get(id).length > 0);
+
+    if (subIds.length === 0) return '';
+
+    const subHtml = subIds.map((bucketId) => {
+        const bucketMeta = ENCHANT_SUBCATEGORIES[bucketId];
+        const items = groups.get(bucketId) || [];
+        if (items.length === 0) return '';
+
+        const subLabel = bucketMeta?.sub
+            ? `<div class="enchant-picker-subheader">${bucketMeta.sub === 'phys' ? 'Phys' : 'Spell'}</div>`
+            : '';
+
+        const itemsHtml = items.map((enchant) => renderEnchantItemHtml(enchant, allEnchants, selectedEnchantIndex)).join('');
+        return `
+            <div class="enchant-picker-group" data-bucket="${bucketId}">
+                ${subLabel}
+                <div class="enchant-picker-items">${itemsHtml}</div>
+            </div>
+        `;
+    }).join('');
+
+    return `
+        <div class="enchant-picker-column" data-category="${mainId}">
+            <div class="enchant-picker-main-header ${meta.cssClass}">${meta.label}</div>
+            <div class="enchant-picker-subcategories">${subHtml}</div>
+        </div>
+    `;
+}
+
+function attachEnchantItemTooltips(listElement, allEnchants) {
+    const tooltip = document.getElementById('item-tooltip');
+    if (!tooltip) return;
+
+    listElement.querySelectorAll('.enchant-item').forEach((enchantItem) => {
+        const index = parseInt(enchantItem.dataset.enchantIndex, 10);
+        const enchant = allEnchants[index];
+        if (!enchant) return;
+
+        enchantItem.addEventListener('mouseenter', async () => {
+            const tooltipHTML = await createEnchantTooltipHTML(enchant);
+            tooltip.innerHTML = tooltipHTML;
+            tooltip.style.display = 'block';
+            requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, enchantItem, { side: 'list-left' }));
+        });
+
+        enchantItem.addEventListener('mouseleave', () => {
+            tooltip.style.display = 'none';
+        });
+    });
+}
+
 /**
  * Render enchants in a modal list
  * @param {Array} enchants - Enchants to render
  * @param {Array} allEnchants - All enchants (for index lookup)
  * @param {HTMLElement} listElement - The DOM element to render into
+ * @param {number} selectedEnchantIndex - Index of currently applied enchant (-1 if none)
  */
-function renderEnchants(enchants, allEnchants, listElement) {
+function renderEnchants(enchants, allEnchants, listElement, selectedEnchantIndex = -1) {
     if (!enchants || enchants.length === 0) {
         listElement.innerHTML = '<div class="no-results">No enchants found.</div>';
         return;
     }
 
-    listElement.innerHTML = enchants.map(enchant => {
-        // Find the index by matching enchant name (since objects might not be same reference)
-        const index = allEnchants.findIndex(e => e.name === enchant.name);
-        return `<div class="enchant-item" data-enchant-index="${index}">${enchant.name}</div>`;
-    }).join('');
+    const groups = groupEnchantsByCategory(enchants);
+    const columnsHtml = ENCHANT_CATEGORY_ORDER
+        .map((mainId) => renderEnchantCategoryColumn(mainId, groups, allEnchants, selectedEnchantIndex))
+        .filter(Boolean)
+        .join('');
 
-    // Attach tooltip handlers to enchant items
-    const tooltip = document.getElementById('item-tooltip');
-    if (tooltip) {
-        listElement.querySelectorAll('.enchant-item').forEach(enchantItem => {
-            const index = parseInt(enchantItem.dataset.enchantIndex);
-            const enchant = allEnchants[index];
-            
-            if (enchant) {
-                enchantItem.addEventListener('mouseenter', async () => {
-                    const tooltipHTML = await createEnchantTooltipHTML(enchant);
-                    tooltip.innerHTML = tooltipHTML;
-                    tooltip.style.display = 'block';
-                    requestAnimationFrame(() => positionItemTooltipOnIcon(tooltip, enchantItem, { side: 'list-left' }));
-                });
-                
-                enchantItem.addEventListener('mouseleave', () => {
-                    if (tooltip) {
-                        tooltip.style.display = 'none';
-                    }
-                });
-            }
-        });
-    }
+    listElement.innerHTML = `
+        <div class="enchant-picker-categories">
+            ${columnsHtml}
+        </div>
+    `;
+
+    attachEnchantItemTooltips(listElement, allEnchants);
 }
 
 /**
@@ -1972,7 +2049,7 @@ export function getCurrentFilters() {
  * @param {Array} enchants - Enchants for this slot
  * @param {Object} elements - DOM elements
  */
-export function openEnchantModal(slotId, enchants, elements, itemOverride = null) {
+export function openEnchantModal(slotId, enchants, elements, itemOverride = null, selectedEnchantIndex = -1) {
     elements.enchantModal.dataset.currentSlot = slotId;
     elements.enchantModalTitle.textContent = `Select Enchant for ${slotId}`;
 
@@ -1998,7 +2075,7 @@ export function openEnchantModal(slotId, enchants, elements, itemOverride = null
     console.log('After filtering:', classFilteredEnchants.length, 'enchants remaining');
 
     // Render filtered enchants, passing the original database for index mapping
-    filterAndRenderEnchants(classFilteredEnchants, '', elements.enchantModalList, enchants);
+    filterAndRenderEnchants(classFilteredEnchants, '', elements.enchantModalList, enchants, selectedEnchantIndex);
 
     elements.enchantModal.style.display = 'flex';
     if (enchantSearchInput) enchantSearchInput.focus();

@@ -860,9 +860,11 @@ async function openItemModal(slotId, isCompareMode = false) {
 
 function openEnchantModal(slotId) {
     const enchants = enchantDatabase[slotId] || [];
+    const applied = getAppliedEnchant(slotId);
+    const selectedIndex = applied ? enchants.findIndex((e) => e.name === applied.name) : -1;
     delete elements.enchantModal.dataset.gearPlanEnchant;
     delete elements.enchantModal.dataset.gearPlanItemId;
-    openEnchantModalFromModule(slotId, enchants, elements, null);
+    openEnchantModalFromModule(slotId, enchants, elements, null, selectedIndex);
 }
 
 function openEnchantModalForGearPlan(slotId, item) {
@@ -871,9 +873,10 @@ function openEnchantModalForGearPlan(slotId, item) {
         || 'warrior';
     setItemModalPlayerClassOverride(planClass);
     const enchants = enchantDatabase[slotId] || [];
+    const selectedIndex = getCurrentGearPlan()?.slots?.[slotId]?.enchant ?? -1;
     elements.enchantModal.dataset.gearPlanEnchant = 'true';
     elements.enchantModal.dataset.gearPlanItemId = item?.id != null ? String(item.id) : '';
-    openEnchantModalFromModule(slotId, enchants, elements, item || null);
+    openEnchantModalFromModule(slotId, enchants, elements, item || null, selectedIndex);
 }
 
 function closeModal() {
@@ -938,7 +941,15 @@ function filterEnchantItems() {
     const filteredEnchants = filterEnchantsByItemType(allEnchantsForSlot, itemType, currentSlot, equippedItem);
     const classFilteredEnchants = filterEnchantsByClass(filteredEnchants, getPlayerClassForItemFilters());
 
-    filterAndRenderEnchants(classFilteredEnchants, searchTerm, elements.enchantModalList, allEnchantsForSlot);
+    let selectedIndex = -1;
+    if (elements.enchantModal?.dataset.gearPlanEnchant === 'true') {
+        selectedIndex = getCurrentGearPlan()?.slots?.[currentSlot]?.enchant ?? -1;
+    } else {
+        const applied = getAppliedEnchant(currentSlot);
+        selectedIndex = applied ? allEnchantsForSlot.findIndex((e) => e.name === applied.name) : -1;
+    }
+
+    filterAndRenderEnchants(classFilteredEnchants, searchTerm, elements.enchantModalList, allEnchantsForSlot, selectedIndex);
 }
 
 // --- Rendering Functions ---
