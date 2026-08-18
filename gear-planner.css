@@ -1246,20 +1246,9 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-doc
     transition: gap var(--gp-part-duration, 750ms) var(--gp-part-ease, ease-in-out);
 }
 
-.gp-slot-row--left {
-    position: relative;
-}
-
-.gp-slot-row--left .gp-slot-add-wrap {
-    position: absolute;
-    right: 0;
-    top: 8px;
-    z-index: 2;
-}
-
-.gp-slot-row--left .gp-slot-card {
-    width: 100%;
-    box-sizing: border-box;
+/* Desktop left column: card on outer (left) edge, add button toward center (right of card) */
+body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-slot-row--left {
+    flex-direction: row-reverse;
 }
 
 #gear-planner-shell.gp-overlay-open .gp-slot-row {
@@ -1267,7 +1256,9 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-doc
 }
 
 #gear-planner-shell.gp-overlay-open .gp-slot-row .gp-slot-card {
-    flex: 0 0 auto;
+    flex: 0 0 56px;
+    width: 56px;
+    min-width: 56px;
     max-width: 56px;
 }
 
@@ -1343,7 +1334,6 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-doc
     overflow: hidden;
     box-sizing: border-box;
     transition:
-        padding var(--gp-part-duration, 750ms) var(--gp-part-ease, ease-in-out),
         max-width var(--gp-part-duration, 750ms) var(--gp-part-ease, ease-in-out),
         border-color 0.15s ease;
 }
@@ -1391,7 +1381,24 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-doc
 #gear-planner-shell.gp-overlay-open .gp-enchant-chrome {
     opacity: 0;
     visibility: hidden;
+    max-width: 0;
+    max-height: 0;
+    overflow: hidden;
     pointer-events: none;
+    margin: 0;
+    padding: 0;
+    flex: 0 0 0;
+    width: 0;
+    min-width: 0;
+    border: 0;
+}
+
+#gear-planner-shell.gp-overlay-open .gp-primary-row,
+#gear-planner-shell.gp-overlay-open .gp-empty-primary {
+    gap: 0;
+    width: 48px;
+    min-width: 48px;
+    max-width: 48px;
 }
 
 #gear-planner-shell.gp-overlay-open .gp-slot-icon-frame,
@@ -1451,7 +1458,7 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-doc
 /* Stacked alt icons peeking along the bottom of the primary icon when compact */
 .gp-alt-stack {
     position: absolute;
-    bottom: -1px;
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
     display: none;
@@ -2633,6 +2640,10 @@ body.gp-mobile .gp-slot-card--right .gp-item-scores {
 }
 
 /* Single-column mobile: add-item buttons always on the left */
+body.gp-mobile .gp-slot-row--left {
+    flex-direction: row;
+}
+
 body.gp-mobile .gp-slot-row--right {
     flex-direction: row-reverse;
 }
