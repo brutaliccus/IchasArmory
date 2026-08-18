@@ -168,32 +168,90 @@ function readLocalWeightDraft() {
     }
 }
 
-function writeLocalWeightDraft( partial ) {
+function writeLocalWeightDraft(partial) {
     try {
         const prev = readLocalWeightDraft() || {};
-        localStorage.setItem(gpLocalWeightsStorageKey(), JSON.stringify({ ...prev, ...partial, updatedAt: Date.now() }));
+        const merged = { ...prev, updatedAt: Date.now() };
+        const cls = getGpClassId();
+        if (partial.statWeights || partial.statWeightsAoe || partial.tankStatWeights) {
+            merged.statWeightsByClass = { ...(prev.statWeightsByClass || {}) };
+            const bucket = { ...(merged.statWeightsByClass[cls] || {}) };
+            if (partial.statWeights) bucket.statWeights = partial.statWeights;
+            if (partial.statWeightsAoe) bucket.statWeightsAoe = partial.statWeightsAoe;
+            if (partial.tankStatWeights) bucket.tankStatWeights = partial.tankStatWeights;
+            merged.statWeightsByClass[cls] = bucket;
+        } else if (partial.statWeightsByClass) {
+            merged.statWeightsByClass = partial.statWeightsByClass;
+        } else {
+            Object.assign(merged, partial);
+        }
+        localStorage.setItem(gpLocalWeightsStorageKey(), JSON.stringify(merged));
     } catch (e) {
         console.warn('[Gear Planner] local weight draft save failed', e);
     }
 }
 
-/** Resolve DPS weights: local draft → plan.statWeights → GP localStorage. */
-function resolveGpDpsWeights(isAoe = false) {
-    const draft = readLocalWeightDraft();
-    const draftKey = isAoe ? 'statWeightsAoe' : 'statWeights';
-    if (Array.isArray(draft?.[draftKey]) && draft[draftKey].length) return draft[draftKey];
-    const planKey = isAoe ? 'statWeightsAoe' : 'statWeights';
-    const fromPlan = currentPlan?.[planKey] || currentPlan?.ui?.[planKey];
-    if (Array.isArray(fromPlan) && fromPlan.length) return fromPlan;
-    return getGearPlannerDpsStatWeights(isAoe);
+function ensurePlanStatWeightsByClass(plan = currentPlan) {
+    if (!plan.statWeightsByClass || typeof plan.statWeightsByClass !== 'object') {
+        plan.statWeightsByClass = {};
+    }
+    return plan.statWeightsByClass;
 }
 
-function resolveGpTankWeights() {
+function getClassWeightBucket(plan = currentPlan, classId = getGpClassId()) {
+    migrateGearPlanStatWeightsToByClass(plan, classId);
+    const cls = String(classId || 'warrior').toLowerCase();
+    const byClass = ensurePlanStatWeightsByClass(plan);
+    if (!byClass[cls]) byClass[cls] = {};
+    return byClass[cls];
+}
+
+function setClassWeightBucket(classId, partial) {
+    const cls = String(classId || getGpClassId()).toLowerCase();
+    const bucket = getClassWeightBucket(currentPlan, cls);
+    Object.assign(bucket, partial);
+    ensurePlanStatWeightsByClass(currentPlan)[cls] = bucket;
+}
+
+function syncCurrentClassWeightsToPlan(plan = currentPlan, classId = getGpClassId()) {
+    const cls = String(classId || 'warrior').toLowerCase();
+    const bucket = getClassWeightBucket(plan, cls);
+    const dpsW = resolveGpDpsWeights(false, cls);
+    const dpsAoe = resolveGpDpsWeights(true, cls);
+    const tankW = resolveGpTankWeights(cls);
+    if (dpsW) bucket.statWeights = dpsW;
+    if (dpsAoe) bucket.statWeightsAoe = dpsAoe;
+    if (tankW) bucket.tankStatWeights = tankW;
+    ensurePlanStatWeightsByClass(plan)[cls] = bucket;
+}
+
+/** Resolve DPS weights for a class: local draft → plan.statWeightsByClass[class]. */
+function resolveGpDpsWeights(isAoe = false, classId = getGpClassId()) {
+    const cls = String(classId || 'warrior').toLowerCase();
+    const draftKey = isAoe ? 'statWeightsAoe' : 'statWeights';
     const draft = readLocalWeightDraft();
-    if (draft?.tankStatWeights && typeof draft.tankStatWeights === 'object') return draft.tankStatWeights;
-    const fromPlan = currentPlan?.tankStatWeights || currentPlan?.ui?.tankStatWeights;
-    if (fromPlan && typeof fromPlan === 'object') return fromPlan;
-    return getGearPlannerTankStatWeights();
+    const draftBucket = draft?.statWeightsByClass?.[cls];
+    if (Array.isArray(draftBucket?.[draftKey]) && draftBucket[draftKey].length) {
+        return draftBucket[draftKey];
+    }
+    const planBucket = getClassWeightBucket(currentPlan, cls);
+    const fromPlan = planBucket[draftKey];
+    if (Array.isArray(fromPlan) && fromPlan.length) return fromPlan;
+    return null;
+}
+
+function resolveGpTankWeights(classId = getGpClassId()) {
+    const cls = String(classId || 'warrior').toLowerCase();
+    const draft = readLocalWeightDraft();
+    const draftBucket = draft?.statWeightsByClass?.[cls];
+    if (draftBucket?.tankStatWeights && typeof draftBucket.tankStatWeights === 'object') {
+        return draftBucket.tankStatWeights;
+    }
+    const planBucket = getClassWeightBucket(currentPlan, cls);
+    if (planBucket.tankStatWeights && typeof planBucket.tankStatWeights === 'object') {
+        return planBucket.tankStatWeights;
+    }
+    return null;
 }
 
 function hasMeaningfulDpsWeights(weights) {
@@ -228,9 +286,11 @@ export function initGearPlannerView(cbs) {
         if (session.plan.community) currentPlan.community = true;
         if (session.plan.authorId) currentPlan.authorId = String(session.plan.authorId);
         if (session.plan.authorName) currentPlan.authorName = String(session.plan.authorName);
+        if (session.plan.statWeightsByClass) currentPlan.statWeightsByClass = session.plan.statWeightsByClass;
         if (session.plan.statWeights) currentPlan.statWeights = session.plan.statWeights;
         if (session.plan.statWeightsAoe) currentPlan.statWeightsAoe = session.plan.statWeightsAoe;
         if (session.plan.tankStatWeights) currentPlan.tankStatWeights = session.plan.tankStatWeights;
+        migrateGearPlanStatWeightsToByClass(currentPlan);
         if (typeof session.editMode === 'boolean') {
             editMode = session.editMode;
         } else {
@@ -1083,8 +1143,8 @@ async function generateGpTankStatWeights() {
     try {
         const results = await runTankSimulation(characterData, boss, timeInSeconds, 1000, { yieldEvery: 50 });
         const sw = results?.statWeights || null;
-        saveGearPlannerTankStatWeights(sw);
-        currentPlan.tankStatWeights = sw;
+        const cls = getGpClassId();
+        setClassWeightBucket(cls, { tankStatWeights: sw });
         writeLocalWeightDraft({ tankStatWeights: sw });
         fillGpTankWeightDisplay(sw);
         persistSession();
@@ -1138,9 +1198,8 @@ function bindGpDpsWeightGenerate(host, isAoe) {
                         if (liveBtn) liveBtn.textContent = 'Generating... ' + Math.round(100 * completed / total) + '%';
                     }
                 );
-                saveGearPlannerDpsStatWeights(weights, isAoe);
-                if (isAoe) currentPlan.statWeightsAoe = weights;
-                else currentPlan.statWeights = weights;
+                const cls = getGpClassId();
+                setClassWeightBucket(cls, isAoe ? { statWeightsAoe: weights } : { statWeights: weights });
                 writeLocalWeightDraft(isAoe ? { statWeightsAoe: weights } : { statWeights: weights });
                 persistSession();
                 renderGearPlanner();
@@ -1194,8 +1253,8 @@ function renderGpManualDpsWeightsHost() {
                 sp: '-',
             };
         });
-        currentPlan.statWeights = rows;
-        saveGearPlannerDpsStatWeights(rows, false);
+        const cls = getGpClassId();
+        setClassWeightBucket(cls, { statWeights: rows });
         writeLocalWeightDraft({ statWeights: rows });
         persistSession();
         renderGearPlanner();
@@ -3293,12 +3352,9 @@ async function saveCurrentPlan(asNew = false) {
     // Preserve user-picked icon; never force-overwrite with a different default
     plan.icon = currentPlan.icon || defaultIconForClassSpec(plan.class, plan.spec);
     plan.description = sanitizeGearPlanDescription(currentPlan.description || '');
-    const dpsW = resolveGpDpsWeights(false);
-    const dpsAoe = resolveGpDpsWeights(true);
-    const tankW = resolveGpTankWeights();
-    if (dpsW) plan.statWeights = dpsW;
-    if (dpsAoe) plan.statWeightsAoe = dpsAoe;
-    if (tankW) plan.tankStatWeights = tankW;
+    syncCurrentClassWeightsToPlan(currentPlan, plan.class);
+    const byClass = sanitizeGearPlanStatWeightsByClass(currentPlan.statWeightsByClass);
+    if (byClass) plan.statWeightsByClass = byClass;
     if (!plan.role.length || !plan.spec) {
         window.notify?.error?.('Role and talent tree focus are required to save', 4000, 'Gear Planner');
         requestSaveCurrentPlan();
@@ -3410,16 +3466,17 @@ function loadPlanIntoView(plan) {
     currentPlan = getGearPlanData(plan);
     mergePlanCommunityFields(currentPlan, plan);
     if (plan.id) currentPlan.id = plan.id;
+    if (plan.statWeightsByClass) currentPlan.statWeightsByClass = plan.statWeightsByClass;
     if (plan.statWeights) currentPlan.statWeights = plan.statWeights;
     if (plan.statWeightsAoe) currentPlan.statWeightsAoe = plan.statWeightsAoe;
     if (plan.tankStatWeights) currentPlan.tankStatWeights = plan.tankStatWeights;
+    migrateGearPlanStatWeightsToByClass(currentPlan);
     currentPlan.name = sanitizeGearPlanName(currentPlan.name, 'Gear Plan');
     // Reload from My Gear Plans / community overwrites local weight drafts for this plan id
     try {
         localStorage.removeItem(gpLocalWeightsStorageKey(plan.id || prevId));
-        if (plan.statWeights) saveGearPlannerDpsStatWeights(plan.statWeights, false);
-        if (plan.statWeightsAoe) saveGearPlannerDpsStatWeights(plan.statWeightsAoe, true);
-        if (plan.tankStatWeights) saveGearPlannerTankStatWeights(plan.tankStatWeights);
+        const byClass = sanitizeGearPlanStatWeightsByClass(currentPlan.statWeightsByClass);
+        if (byClass) writeLocalWeightDraft({ statWeightsByClass: byClass });
     } catch { /* ignore */ }
     editMode = false;
     persistSession();

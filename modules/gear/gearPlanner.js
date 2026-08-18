@@ -120,7 +120,72 @@ export function createEmptyGearPlan(classId = 'warrior', name = 'New Gear Plan')
  * @property {string} [authorId]
  * @property {string} [sourceCommunityId] When favorited from community
  * @property {string} [sourceShareId] Snapshot id from ?gp= share URL (not writable)
+ * @property {Record<string, GearPlanClassStatWeights>} [statWeightsByClass] Per-class stat weights
  */
+
+/**
+ * @typedef {Object} GearPlanClassStatWeights
+ * @property {Array} [statWeights] ST DPS weight rows
+ * @property {Array} [statWeightsAoe] AOE DPS weight rows (shaman)
+ * @property {Object} [tankStatWeights] Tank EHP/mit weights object
+ */
+
+function cloneClassWeightBucket(bucket) {
+    if (!bucket || typeof bucket !== 'object') return {};
+    const out = {};
+    if (Array.isArray(bucket.statWeights) && bucket.statWeights.length) {
+        out.statWeights = bucket.statWeights.map((r) => ({ ...r }));
+    }
+    if (Array.isArray(bucket.statWeightsAoe) && bucket.statWeightsAoe.length) {
+        out.statWeightsAoe = bucket.statWeightsAoe.map((r) => ({ ...r }));
+    }
+    if (bucket.tankStatWeights && typeof bucket.tankStatWeights === 'object') {
+        out.tankStatWeights = { ...bucket.tankStatWeights };
+    }
+    return out;
+}
+
+/** Normalize per-class stat weight buckets on a gear plan. */
+export function sanitizeGearPlanStatWeightsByClass(raw) {
+    if (!raw || typeof raw !== 'object') return undefined;
+    const out = {};
+    for (const [classId, bucket] of Object.entries(raw)) {
+        const cls = String(classId || '').toLowerCase().trim();
+        if (!cls) continue;
+        const cloned = cloneClassWeightBucket(bucket);
+        if (cloned.statWeights || cloned.statWeightsAoe || cloned.tankStatWeights) {
+            out[cls] = cloned;
+        }
+    }
+    return Object.keys(out).length ? out : undefined;
+}
+
+/** Merge legacy flat weight fields into `statWeightsByClass` for one class. */
+export function migrateGearPlanStatWeightsToByClass(plan, classId = plan?.class) {
+    if (!plan) return plan;
+    const cls = String(classId || plan.class || 'warrior').toLowerCase();
+    const byClass = plan.statWeightsByClass && typeof plan.statWeightsByClass === 'object'
+        ? { ...plan.statWeightsByClass }
+        : {};
+    const bucket = cloneClassWeightBucket(byClass[cls]);
+    if (Array.isArray(plan.statWeights) && plan.statWeights.length && !bucket.statWeights) {
+        bucket.statWeights = plan.statWeights.map((r) => ({ ...r }));
+    }
+    if (Array.isArray(plan.statWeightsAoe) && plan.statWeightsAoe.length && !bucket.statWeightsAoe) {
+        bucket.statWeightsAoe = plan.statWeightsAoe.map((r) => ({ ...r }));
+    }
+    if (plan.tankStatWeights && typeof plan.tankStatWeights === 'object' && !bucket.tankStatWeights) {
+        bucket.tankStatWeights = { ...plan.tankStatWeights };
+    }
+    if (bucket.statWeights || bucket.statWeightsAoe || bucket.tankStatWeights) {
+        byClass[cls] = bucket;
+        plan.statWeightsByClass = byClass;
+        delete plan.statWeights;
+        delete plan.statWeightsAoe;
+        delete plan.tankStatWeights;
+    }
+    return plan;
+}
 
 /** @returns {GearPlan} */
 export function getGearPlanData(plan) {
@@ -174,6 +239,21 @@ export function getGearPlanData(plan) {
     if (plan.downvotes != null) out.downvotes = Number(plan.downvotes) || 0;
     if (plan.myVote === 'up' || plan.myVote === 'down') out.myVote = plan.myVote;
     else if (plan.myVote === null) out.myVote = null;
+
+    let byClass = sanitizeGearPlanStatWeightsByClass(plan.statWeightsByClass);
+    if (!byClass) {
+        const legacy = {};
+        if (Array.isArray(plan.statWeights) && plan.statWeights.length) legacy.statWeights = plan.statWeights;
+        if (Array.isArray(plan.statWeightsAoe) && plan.statWeightsAoe.length) legacy.statWeightsAoe = plan.statWeightsAoe;
+        if (plan.tankStatWeights && typeof plan.tankStatWeights === 'object') legacy.tankStatWeights = plan.tankStatWeights;
+        const cls = String(plan.class || 'warrior').toLowerCase();
+        const legacyBucket = cloneClassWeightBucket(legacy);
+        if (legacyBucket.statWeights || legacyBucket.statWeightsAoe || legacyBucket.tankStatWeights) {
+            byClass = { [cls]: legacyBucket };
+        }
+    }
+    if (byClass) out.statWeightsByClass = byClass;
+
     return out;
 }
 
@@ -181,27 +261,37 @@ const GP_TANK_WEIGHTS_KEY = 'ichacalc_gp_tankStatWeights';
 const GP_DPS_WEIGHTS_KEY = 'ichacalc_gp_statWeights';
 const GP_DPS_WEIGHTS_AOE_KEY = 'ichacalc_gp_statWeights_aoe';
 
-export function saveGearPlannerTankStatWeights(sw) {
+function gpTankWeightsKey(classId) {
+    return `${GP_TANK_WEIGHTS_KEY}_${String(classId || 'warrior').toLowerCase()}`;
+}
+
+function gpDpsWeightsKey(classId, isAoe = false) {
+    const base = isAoe ? GP_DPS_WEIGHTS_AOE_KEY : GP_DPS_WEIGHTS_KEY;
+    return `${base}_${String(classId || 'warrior').toLowerCase()}`;
+}
+
+export function saveGearPlannerTankStatWeights(sw, classId = 'warrior') {
+    const key = gpTankWeightsKey(classId);
     try {
-        if (!sw) localStorage.removeItem(GP_TANK_WEIGHTS_KEY);
-        else localStorage.setItem(GP_TANK_WEIGHTS_KEY, JSON.stringify(sw));
+        if (!sw) localStorage.removeItem(key);
+        else localStorage.setItem(key, JSON.stringify(sw));
     } catch (e) {
         console.warn('[gearPlanner] Failed to save tank stat weights:', e);
     }
 }
 
-export function getGearPlannerTankStatWeights() {
+export function getGearPlannerTankStatWeights(classId = 'warrior') {
     try {
-        const raw = localStorage.getItem(GP_TANK_WEIGHTS_KEY);
+        const raw = localStorage.getItem(gpTankWeightsKey(classId));
         return raw ? JSON.parse(raw) : null;
     } catch {
         return null;
     }
 }
 
-export function saveGearPlannerDpsStatWeights(weights, isAoe = false) {
+export function saveGearPlannerDpsStatWeights(weights, isAoe = false, classId = 'warrior') {
     if (!weights || !Array.isArray(weights)) return;
-    const key = isAoe ? GP_DPS_WEIGHTS_AOE_KEY : GP_DPS_WEIGHTS_KEY;
+    const key = gpDpsWeightsKey(classId, isAoe);
     try {
         localStorage.setItem(key, JSON.stringify(weights));
     } catch (e) {
@@ -209,10 +299,9 @@ export function saveGearPlannerDpsStatWeights(weights, isAoe = false) {
     }
 }
 
-export function getGearPlannerDpsStatWeights(isAoe = false) {
-    const key = isAoe ? GP_DPS_WEIGHTS_AOE_KEY : GP_DPS_WEIGHTS_KEY;
+export function getGearPlannerDpsStatWeights(isAoe = false, classId = 'warrior') {
     try {
-        const raw = localStorage.getItem(key);
+        const raw = localStorage.getItem(gpDpsWeightsKey(classId, isAoe));
         const parsed = raw ? JSON.parse(raw) : null;
         return Array.isArray(parsed) && parsed.length ? parsed : null;
     } catch {

@@ -22,8 +22,16 @@ Gear plan data model and localStorage persistence for the Gear Planner page.
   spec: string,           // talent-tree display name (e.g. Enhancement)
   icon: string,           // vanilla icon basename (e.g. spell_nature_lightning)
   description?: string,   // short blurb max 180
-  statWeights?: array,    // DPS weight rows (plan + local draft)
+  statWeights?: array,    // legacy: migrated into statWeightsByClass[plan.class]
+  statWeightsAoe?: array,
   tankStatWeights?: object,
+  statWeightsByClass?: {  // per-class weight buckets (preferred)
+    [classId: string]: {
+      statWeights?: array,      // ST DPS rows
+      statWeightsAoe?: array,   // AOE rows (shaman)
+      tankStatWeights?: object  // tank EHP/mit object
+    }
+  },
   community?: boolean,    // true for cloud/authenticated publishes
   authorName?: string,
   authorId?: string,
@@ -41,8 +49,9 @@ Items and per-slot **primary enchants** (`enchant` = index into `enchantDatabase
 | Key | Purpose |
 |-----|---------|
 | `ichacalc_gear_planner_session_v1` | Active plan + `editMode` + collapse while switching Character ↔ Gear Planner |
-| `ichacalc_gp_tankStatWeights` | Tank EHP/mit weights generated on the Gear Planner tab |
-| `ichacalc_gp_statWeights` / `_aoe` | Shaman DPS/TPS weights generated on the Gear Planner tab |
+| `ichacalc_gp_tankStatWeights_<class>` | Tank EHP/mit weights per class (optional cache; plan `statWeightsByClass` is canonical) |
+| `ichacalc_gp_statWeights_<class>` / `_aoe_<class>` | Shaman DPS weights per class |
+| `ichacalc_gp_local_weights_<planId>` | Local draft: `{ statWeightsByClass: { [class]: { statWeights, statWeightsAoe, tankStatWeights } } }` |
 
 Cloud saves: `user.gearPlans[]` via profiles API (see `profiles.md`). Guests are not gated: Save uses `loadLocalGearPlans` / `saveLocalGearPlans` when `profileManager.user` is absent (local saves are **not** published to community). Logged-in cloud saves publish to `GET /community-gear-plans`.
 
@@ -52,5 +61,6 @@ Cloud saves: `user.gearPlans[]` via profiles API (see `profiles.md`). Guests are
 - `getGearPlanPrimaryEquipped(plan, getItemById)` — primary-slot item snapshot for set bonuses (full item when loaded, `{ id }` stub otherwise; alts excluded)
 - `normalizeGearPlanRoles`, `defaultIconForClassSpec`
 - `saveGearPlannerSession`, `loadGearPlannerSession`
-- `saveGearPlannerTankStatWeights` / `getGearPlannerTankStatWeights`
-- `saveGearPlannerDpsStatWeights` / `getGearPlannerDpsStatWeights`
+- `sanitizeGearPlanStatWeightsByClass`, `migrateGearPlanStatWeightsToByClass`
+- `saveGearPlannerTankStatWeights` / `getGearPlannerTankStatWeights` (optional per-class localStorage cache)
+- `saveGearPlannerDpsStatWeights` / `getGearPlannerDpsStatWeights` (optional per-class localStorage cache)
