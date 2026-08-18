@@ -1399,9 +1399,10 @@ function updateReqLevelDualUI() {
     if (span > 0 && fill) {
         const tLow = (low - REQ_LEVEL_MIN) / span;
         const tHigh = (high - REQ_LEVEL_MIN) / span;
-        // Match .dual-range-wrap horizontal padding + inset track (8px each side)
-        fill.style.left = `calc(8px + (100% - 16px) * ${tLow})`;
-        fill.style.width = `calc((100% - 16px) * ${Math.max(tHigh - tLow, 0.01)})`;
+        const wrap = fill.closest('.dual-range-wrap');
+        const inset = wrap?.closest('.item-picker-req-level--source-row') ? 4 : 8;
+        fill.style.left = `calc(${inset}px + (100% - ${inset * 2}px) * ${tLow})`;
+        fill.style.width = `calc((100% - ${inset * 2}px) * ${Math.max(tHigh - tLow, 0.01)})`;
     }
 
     minS.style.zIndex = low >= high - 1 ? '4' : '3';
