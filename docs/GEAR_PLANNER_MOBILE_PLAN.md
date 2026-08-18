@@ -324,7 +324,7 @@ Mobile rules (`body.gp-mobile` or `max-width: 720px` under GP):
 
 - Panel: `left/right/top/bottom` inset **8px** under the nav; `width: auto; max-width: none; max-height: calc(100dvh - nav - 16px)`; `border-radius: 12px`. Treat as a **sheet**, not `min(96vw, 1320px)` sitting wherever JS last clamped.
 - `applyItemPickerPanelBounds` / `positionItemPickerPanel`: if `gp-mobile`, skip slot-adjacent math (already skipped on GP) **and** set inset sheet bounds so keyboard open (`visualViewport`) shrinks the list, not the filter into oblivion.
-- **Filters:** collapse into a `<details>` / toggle **Filters** by default **collapsed** after first search focus, so the item list gets ≥ 50% of the sheet. Primary row already becomes 2-col at 640px; on phone use **1-col**: search full width, then type, then stacked dropdowns, then source chips (wrap), then instance dropdowns, then Can equip / DPS / Tank as a wrapping chip row.
+- **Filters:** collapse behind the header **filter icon** (`#item-picker-filters-toggle`) by default so the item list gets ≥ 50% of the sheet. Primary row already becomes 2-col at 640px; on phone use **1-col**: search full width, then type, then stacked dropdowns, then source chips (wrap), then instance dropdowns, then Can equip / DPS / Tank as a wrapping chip row.
 - Required-level dual slider: already wraps at 640px; give thumbs 44px hit sliders (CSS `height` + padding) — native range thumbs are too small.
 - List rows: min-height 48px; icon 40px; name wraps 2 lines; score badges wrap under the name.
 - Reset + Close stay in the header (44px close).

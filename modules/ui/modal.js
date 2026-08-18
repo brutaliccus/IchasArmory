@@ -2107,12 +2107,14 @@ function syncItemPickerFiltersToggle() {
         toggle.addEventListener('click', () => {
             const collapsed = filters.classList.toggle('item-picker-filters--collapsed');
             toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
-            toggle.textContent = collapsed ? 'Filters' : 'Hide filters';
+            toggle.title = collapsed ? 'Filters' : 'Hide filters';
+            toggle.setAttribute('aria-label', collapsed ? 'Filters' : 'Hide filters');
         });
     }
     filters.classList.add('item-picker-filters--collapsed');
     toggle.setAttribute('aria-expanded', 'false');
-    toggle.textContent = 'Filters';
+    toggle.title = 'Filters';
+    toggle.setAttribute('aria-label', 'Filters');
 }
 
 /**
