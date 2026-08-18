@@ -414,7 +414,7 @@ Many buffs have "improved" versions that provide better stats when the player ha
 
 ### UI Indication
 
-Buffs with `improved_stats` display a "+" toggle button in the UI. Clicking it:
+Buffs with `improved_stats` display an upgrade-icon toggle button in the UI. Clicking it:
 1. Toggles the `is-improved` CSS class on the buff icon
 2. Updates the tooltip to show improved values
 3. Recalculates stats using `improved_stats` instead of `base_stats`
@@ -575,7 +575,7 @@ Each buff icon is rendered with the following structure:
 ```html
 <div class="buff-icon" id="buffId" data-buff-name="Buff Name">
     <img src="icon-url.jpg" alt="Buff Name">
-    <div class="buff-upgrade-toggle">+</div> <!-- Only if improved_stats exists -->
+    <div class="buff-upgrade-toggle" title="Toggle improved version"><!-- upgrade SVG --></div> <!-- Only if improved_stats exists -->
 </div>
 ```
 
@@ -583,12 +583,12 @@ Each buff icon is rendered with the following structure:
 
 - `.buff-icon` - Base buff icon container
 - `.buff-icon.active` - Active buff (selected by user)
-- `.buff-icon.is-improved` - Improved version of buff (toggled by "+" button)
+- `.buff-icon.is-improved` - Improved version of buff (toggled by upgrade icon)
 - `.buff-category` - Buff subcategory container
 - `.buff-category-header` - Subcategory title
 - `.buff-main-category` - Main category container
 - `.buff-main-header` - Main category title
-- `.buff-upgrade-toggle` - "+" button for improved buffs
+- `.buff-upgrade-toggle` - Upgrade-icon button for improved buffs (inline SVG, `currentColor` / gold theme)
 
 ### Icon Loading
 

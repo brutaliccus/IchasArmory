@@ -3,6 +3,9 @@ import { createGenericTooltip } from '../ui/tooltips.js';
 import { KEY_MAP } from './stats.js';
 import { resolveIconUrl } from '../gear/gear.js';
 
+/** Upgrade arrow icon (SVG Repo #341247) — `currentColor` for gold/CSS theming. */
+const BUFF_UPGRADE_TOGGLE_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M21,24H11a2,2,0,0,0-2,2v2a2,2,0,0,0,2,2H21a2,2,0,0,0,2-2V26A2,2,0,0,0,21,24Zm0,4H11V26H21Z"/><path d="M28.707,14.293l-12-12a.9994.9994,0,0,0-1.414,0l-12,12A1,1,0,0,0,4,16H9v4a2.0023,2.0023,0,0,0,2,2H21a2.0027,2.0027,0,0,0,2-2V16h5a1,1,0,0,0,.707-1.707ZM21,14v6H11V14H6.4141L16,4.4141,25.5859,14Z"/></svg>`;
+
 // no_slot.json has been removed — consumable tooltips use inline data only
 const noSlotData = [];
 async function loadNoSlotItems() { return noSlotData; }
@@ -76,7 +79,7 @@ const customTooltips = {
     'Expose Armor': 'Finishing move that exposes the target for 30 sec, reducing armor per combo point. At 5 combo points, reduces armor by {armor}.',
     'Fire Vulnerability': 'Your Scorch and Fire Blast spells have a 100% chance to cause your target to be vulnerable to Fire damage. This vulnerability increases the Fire damage dealt to your target by 3% per stack and lasts 30 sec. Stacks up to 5 times (15% total).',
     'Nightfall': 'Raid debuff on the boss. When one person in the raid uses the Nightfall weapon, it procs Spell Vulnerability, increasing spell damage taken by 10% for 7 seconds. Has 35-50% uptime per iteration. This is modeled as a toggle - when enabled, the simulation will randomly generate Nightfall procs to achieve 35-50% uptime.',
-    'Hemorrhage': 'Raid debuff on the boss. When rogues use Hemorrhage, it increases physical damage taken by 2% (base) or 4% (improved with Serrated Blades talent). Has 40-50% uptime (sporadic due to charge consumption). Click the + button to toggle improved version.',
+    'Hemorrhage': 'Raid debuff on the boss. When rogues use Hemorrhage, it increases physical damage taken by 2% (base) or 4% (improved with Serrated Blades talent). Has 40-50% uptime (sporadic due to charge consumption). Click the upgrade icon to toggle improved version.',
     'Strength of Earth Totem': 'Summons a Strength of Earth Totem with 5 health at the feet of the caster. The totem increases the strength of party members within 30 yards by {str}. Lasts 120 sec.',
     'Fire Resistance Totem': 'Summons a Fire Resistance Totem with 5 health at the feet of the caster for 120 sec that increases the fire resistance of party members within 30 yards by 60.',
     'Frost Resistance Totem': 'Summons a Frost Resistance Totem with 5 health at the feet of the caster for 120 sec. The totem increases party members\' frost resistance by 60, if within 30 yards.',
@@ -1230,7 +1233,7 @@ export async function generateBuffIcons(container, currentClass = null, talentSp
 
         const buffIcons = buffs.map(buff => {
             const upgradeToggle = buff.improved_stats
-                ? '<div class="buff-upgrade-toggle">+</div>'
+                ? `<div class="buff-upgrade-toggle" title="Toggle improved version">${BUFF_UPGRADE_TOGGLE_SVG}</div>`
                 : '';
 
             // If buff has spellId, load icon and name from spells.json

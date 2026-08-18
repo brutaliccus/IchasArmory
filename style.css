@@ -1568,12 +1568,11 @@ input, select {
     right: -5px;
     width: 20px;
     height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: var(--primary-color);
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    line-height: 18px;
-    text-align: center;
+    color: #ffd700;
     border-radius: 50%;
     border: 1px solid var(--border-color);
     cursor: pointer;
@@ -1581,16 +1580,22 @@ input, select {
     transition: transform 0.2s ease-out;
     z-index: 5;
 }
+.buff-upgrade-toggle svg {
+    display: block;
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+}
 .buff-icon.active .buff-upgrade-toggle {
     transform: scale(1);
 }
 .buff-icon.is-improved .buff-upgrade-toggle {
     background-color: #4CAF50;
-    color: #fff;
+    color: #ffd700;
 }
 .buff-icon.active:not(.is-improved) .buff-upgrade-toggle {
     background-color: #f44336;
-    color: #fff;
+    color: #ffd700;
 }
 .stats-grid-4-col {
     display: grid;
