@@ -1571,31 +1571,28 @@ input, select {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--primary-color);
+    background: none;
     color: #ffd700;
-    border-radius: 50%;
-    border: 1px solid var(--border-color);
+    border: none;
     cursor: pointer;
     transform: scale(0);
-    transition: transform 0.2s ease-out;
+    transition: transform 0.2s ease-out, color 0.15s ease-out;
     z-index: 5;
 }
 .buff-upgrade-toggle svg {
     display: block;
-    width: 12px;
-    height: 12px;
+    width: 20px;
+    height: 20px;
     flex-shrink: 0;
 }
 .buff-icon.active .buff-upgrade-toggle {
     transform: scale(1);
 }
 .buff-icon.is-improved .buff-upgrade-toggle {
-    background-color: #4CAF50;
-    color: #ffd700;
+    color: #4CAF50;
 }
 .buff-icon.active:not(.is-improved) .buff-upgrade-toggle {
-    background-color: #f44336;
-    color: #ffd700;
+    color: #f44336;
 }
 .stats-grid-4-col {
     display: grid;

@@ -588,7 +588,7 @@ Each buff icon is rendered with the following structure:
 - `.buff-category-header` - Subcategory title
 - `.buff-main-category` - Main category container
 - `.buff-main-header` - Main category title
-- `.buff-upgrade-toggle` - Upgrade-icon button for improved buffs (inline SVG, `currentColor` / gold theme)
+- `.buff-upgrade-toggle` - Circled up-arrow toggle for improved buffs (SVG Repo #478944, inline SVG ring; `currentColor` — gold default, green/red by state)
 
 ### Icon Loading
 
