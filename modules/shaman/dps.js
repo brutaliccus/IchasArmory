@@ -5334,6 +5334,7 @@ function generateSimConfigModalHTML(containerElement, stats, forceDefaultBoss = 
     html += '<div style="margin-bottom: 8px;">';
     html += '<label for="dps-boss-search" style="font-size: 10px; color: #888; display: block; margin-bottom: 4px;">Search / Custom Name</label>';
     html += `<input type="text" id="dps-boss-search" placeholder="Search or name…" value="${(bossSearchValue || '').replace(/"/g, '&quot;')}" `;
+    html += 'autocomplete="off" autocorrect="off" spellcheck="false" ';
     html += 'style="width: 100%; box-sizing: border-box; padding: 5px 6px; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; color: #ffd700; font-size: 13px; font-weight: bold;" title="Search database or type a custom target name">';
     html += '</div>';
 

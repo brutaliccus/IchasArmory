@@ -120,7 +120,7 @@
                 <div class="onboarding-import-section">
                     <h3>Import Your Character</h3>
                     <div class="onboarding-import-row">
-                        <input type="text" id="onboarding-char-name" placeholder="Character name" autocomplete="off" />
+                        <input type="text" id="onboarding-char-name" placeholder="Character name" autocomplete="off" autocorrect="off" spellcheck="false" />
                         <select id="onboarding-server-select">
                             <option value="nzoth">N'Zoth</option>
                             <option value="cthun">C'Thun (Hardcore)</option>
@@ -369,7 +369,7 @@
                                     <div class="status-bar-info">
                                     <div class="status-bar-left">
                                         <div class="character-name-controls">
-                                            <input type="text" id="characterName" placeholder="Import from Armory" class="character-name-input" />
+                                            <input type="text" id="characterName" placeholder="Import from Armory" class="character-name-input" autocomplete="off" autocorrect="off" spellcheck="false" />
                                             <div id="characterNameDisplay" class="character-name-display-text" style="display: none;">Character</div>
                                             <select id="serverSelect" class="server-select">
                                                 <option value="nzoth">N'Zoth</option>
@@ -618,7 +618,7 @@
                                             <div class="sim-control-group">
                                                 <label for="boss-search">Boss:</label>
                                                 <div class="boss-search-container">
-                                                    <input type="text" id="boss-search" class="sim-search-input" placeholder="Search boss name (e.g., Ragnaros)">
+                                                    <input type="text" id="boss-search" class="sim-search-input" placeholder="Search boss name (e.g., Ragnaros)" autocomplete="off" autocorrect="off" spellcheck="false">
                                                     <button id="boss-search-btn" class="sim-search-btn">Search</button>
                                                 </div>
                                                 <div id="boss-search-results" class="boss-search-results" style="display: none;"></div>
@@ -842,6 +842,9 @@
                                                         class="tank-sim-search-input"
                                                         placeholder="Type boss name (e.g., Ragnaros)"
                                                         style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #444; background: #2a2a2a; color: #fff;"
+                                                        autocomplete="off"
+                                                        autocorrect="off"
+                                                        spellcheck="false"
                                                     >
                                                     <div id="compare-boss-results" class="boss-search-results" style="display: none;"></div>
                                                 </div>
@@ -926,7 +929,7 @@
             <header class="gp-header">
                 <div class="gp-plan-name-wrap">
                     <span class="gp-plan-name-sizer" aria-hidden="true">New Gear Plan</span>
-                    <input type="text" id="gp-plan-name" class="gp-plan-name-input slick-input" value="New Gear Plan" maxlength="64" aria-label="Plan name" />
+                    <input type="text" id="gp-plan-name" class="gp-plan-name-input slick-input" value="New Gear Plan" maxlength="64" aria-label="Plan name" autocomplete="off" autocorrect="off" spellcheck="false" />
                 </div>
                 <div id="gp-header-votes" class="gp-header-votes" hidden>
                     <button type="button" class="gp-vote-btn gp-vote-up" id="gp-header-vote-up" data-vote="up" title="Upvote" aria-label="Upvote" aria-pressed="false">
@@ -1084,7 +1087,7 @@
                     <div class="gp-weights-controls">
                         <div class="gp-tank-boss-search-wrap">
                             <label for="gp-tank-boss-search">Boss</label>
-                            <input type="text" id="gp-tank-boss-search" class="slick-input" placeholder="Search boss…" autocomplete="off" aria-autocomplete="list" aria-controls="gp-tank-boss-results" />
+                            <input type="text" id="gp-tank-boss-search" class="slick-input" placeholder="Search boss…" autocomplete="off" autocorrect="off" spellcheck="false" aria-autocomplete="list" aria-controls="gp-tank-boss-results" />
                             <div id="gp-tank-boss-results" class="gp-tank-boss-results boss-search-results" style="display:none;" role="listbox"></div>
                         </div>
                         <label>Minutes <input type="number" id="gp-tank-time-min" value="3" min="0" max="60" /></label>
@@ -1110,12 +1113,12 @@
             </div>
         </div>
         <dialog id="gp-armory-import-dialog" class="gp-armory-import-dialog">
-            <form method="dialog" id="gp-armory-import-form" class="gp-armory-import-form">
+            <form method="dialog" id="gp-armory-import-form" class="gp-armory-import-form" autocomplete="off">
                 <h3>Import from Armory</h3>
                 <p class="gp-armory-import-hint">Load equipped gear and enchants into this plan's primary slots.</p>
                 <label class="gp-armory-import-field">
                     <span>Character name</span>
-                    <input type="text" id="gp-armory-char-name" autocomplete="off" required />
+                    <input type="text" id="gp-armory-char-name" autocomplete="off" autocorrect="off" spellcheck="false" required />
                 </label>
                 <label class="gp-armory-import-field">
                     <span>Realm</span>
@@ -1165,7 +1168,7 @@
             <div class="item-picker-body modal-body">
                 <div class="item-picker-filters modal-filters">
                     <div class="item-picker-filters-primary-row">
-                        <input type="text" id="modal-search-input" class="item-picker-search item-picker-search--inline" placeholder="Search name or stats…" autocomplete="off" aria-label="Search items">
+                        <input type="text" id="modal-search-input" class="item-picker-search item-picker-search--inline" placeholder="Search name or stats…" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Search items">
                         <div class="item-picker-type-cell" id="item-picker-type-cell">
                             <div class="stat-dropdown-container" id="armor-type-container">
                             <div class="stat-dropdown-header item-picker-dd-header" data-dropdown="armor-type">
@@ -1348,7 +1351,7 @@
             </div>
             <div class="modal-body enchant-modal-body">
                 <div class="modal-filters">
-                    <input type="text" id="enchant-search-input" placeholder="Search enchants by name or stats...">
+                    <input type="text" id="enchant-search-input" placeholder="Search enchants by name or stats..." autocomplete="off" autocorrect="off" spellcheck="false">
                 </div>
                 <div id="enchant-modal-list" class="modal-item-list enchant-picker-list"></div>
             </div>
@@ -1363,18 +1366,18 @@
                 <button id="bug-report-modal-close" class="modal-close">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="bug-report-form">
+                <form id="bug-report-form" autocomplete="off">
                     <div class="form-group">
                         <label for="bug-title">Title (optional)</label>
-                        <input type="text" id="bug-title" placeholder="Brief description of the issue" maxlength="100">
+                        <input type="text" id="bug-title" placeholder="Brief description of the issue" maxlength="100" autocomplete="off" autocorrect="off" spellcheck="false">
                     </div>
                     <div class="form-group">
                         <label for="bug-description">Description *</label>
-                        <textarea id="bug-description" placeholder="Please describe what went wrong, what you expected to happen, and steps to reproduce..." required rows="8"></textarea>
+                        <textarea id="bug-description" placeholder="Please describe what went wrong, what you expected to happen, and steps to reproduce..." required rows="8" autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="bug-contact">Contact (optional)</label>
-                        <input type="text" id="bug-contact" placeholder="Discord username or email if you want follow-up" maxlength="100">
+                        <input type="text" id="bug-contact" placeholder="Discord username or email if you want follow-up" maxlength="100" autocomplete="off" autocorrect="off" spellcheck="false">
                     </div>
                     <div class="form-group">
                         <label for="bug-screenshot">Screenshot (optional)</label>
@@ -1443,7 +1446,7 @@
             </div>
             <div class="save-profile-dialog-body">
                 <label for="profile-name-input">Profile Name:</label>
-                <input type="text" id="profile-name-input" placeholder="e.g., PvE Tank Build, Raid DPS" maxlength="50">
+                <input type="text" id="profile-name-input" placeholder="e.g., PvE Tank Build, Raid DPS" maxlength="50" autocomplete="off" autocorrect="off" spellcheck="false">
                 <div class="dialog-actions">
                     <button id="save-profile-confirm" class="primary-btn">Save</button>
                     <button id="save-profile-cancel" class="secondary-btn">Cancel</button>
@@ -1495,9 +1498,9 @@
             </div>
             <div class="share-modal-body">
                 <label for="recipient-id-input">Recipient Username or Discord ID:</label>
-                <input type="text" id="recipient-id-input" placeholder="Enter Discord username or ID" maxlength="50">
+                <input type="text" id="recipient-id-input" placeholder="Enter Discord username or ID" maxlength="50" autocomplete="off" autocorrect="off" spellcheck="false">
                 <label for="share-message-input">Message (optional):</label>
-                <textarea id="share-message-input" placeholder="Add a note about this build..." rows="3" maxlength="200"></textarea>
+                <textarea id="share-message-input" placeholder="Add a note about this build..." rows="3" maxlength="200" autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
                 <div class="dialog-actions">
                     <button id="share-build-confirm" class="primary-btn">Send</button>
                     <button id="share-build-cancel" class="secondary-btn">Cancel</button>
@@ -1529,7 +1532,7 @@
                 <p id="gp-save-overwrite-msg" class="gp-save-overwrite-msg">Tag this plan before saving. Cloud saves are published to the community browser.</p>
                 <div class="gp-save-meta-fields">
                     <label class="gp-save-meta-label" for="gp-save-name">Build title
-                        <input type="text" id="gp-save-name" class="slick-input gp-save-name-input" maxlength="64" placeholder="Gear plan name" aria-label="Build title" />
+                        <input type="text" id="gp-save-name" class="slick-input gp-save-name-input" maxlength="64" placeholder="Gear plan name" aria-label="Build title" autocomplete="off" autocorrect="off" spellcheck="false" />
                     </label>
                     <div class="gp-save-meta-row gp-save-meta-row--2">
                         <div class="gp-save-meta-label">
@@ -1560,7 +1563,7 @@
                         </div>
                     </div>
                     <label class="gp-save-meta-label" for="gp-save-description">Short description
-                        <textarea id="gp-save-description" class="item-picker-search gp-save-description" rows="2" maxlength="180" placeholder="Optional blurb for the community browser…" aria-describedby="gp-save-desc-count"></textarea>
+                        <textarea id="gp-save-description" class="item-picker-search gp-save-description" rows="2" maxlength="180" placeholder="Optional blurb for the community browser…" aria-describedby="gp-save-desc-count" autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
                         <span id="gp-save-desc-count" class="gp-save-desc-count">0 / 180</span>
                     </label>
                     <div class="gp-save-icon-section">
@@ -1570,7 +1573,7 @@
                             <input type="hidden" id="gp-save-icon-value" value="" />
                             <span id="gp-save-icon-name" class="gp-save-icon-name"></span>
                         </div>
-                        <input type="search" id="gp-save-icon-q" class="item-picker-search" placeholder="Filter icons…" aria-label="Filter icons" />
+                        <input type="search" id="gp-save-icon-q" class="item-picker-search" placeholder="Filter icons…" aria-label="Filter icons" autocomplete="off" autocorrect="off" spellcheck="false" />
                         <div id="gp-save-icon-grid" class="gp-save-icon-grid" role="listbox" aria-label="Plan icons"></div>
                     </div>
                     <p id="gp-save-meta-error" class="gp-save-meta-error" hidden>Select a role and a talent tree focus.</p>
@@ -1609,7 +1612,7 @@
             </div>
             <div class="gp-community-body">
                 <div class="gp-community-filters">
-                    <input type="search" id="gp-community-q" class="slick-input" placeholder="Search name or author…" aria-label="Search name or author" />
+                    <input type="search" id="gp-community-q" class="slick-input" placeholder="Search name or author…" aria-label="Search name or author" autocomplete="off" autocorrect="off" spellcheck="false" />
                     <select id="gp-community-class" class="slick-input gp-save-select" aria-label="Filter by class">
                         <option value="">All classes</option>
                         <option value="warrior">Warrior</option>

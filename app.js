@@ -767,6 +767,9 @@ function renderBuildTabs() {
             input.className = 'build-name-input build-name-input-in-row build-tab-active';
             input.placeholder = 'No Build Name';
             input.value = label;
+            input.setAttribute('autocomplete', 'off');
+            input.setAttribute('autocorrect', 'off');
+            input.setAttribute('spellcheck', 'false');
             input.setAttribute('data-tab-id', tab.id);
             input.setAttribute('role', 'tab');
             function syncMirror() {
