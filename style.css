@@ -1703,34 +1703,33 @@ input, select {
 .enchant-item-name {
     display: block;
     line-height: 1.35;
-    white-space: normal;
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 .enchant-item-name--wrap {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    word-break: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .enchant-item-name--split {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: baseline;
-    gap: 0.15em 0.35em;
+    gap: 0 0.35em;
+    white-space: nowrap;
+    overflow: hidden;
 }
 .enchant-item-name-prefix {
     min-width: 0;
-    flex: 1 1 auto;
+    flex: 0 1 auto;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 100%;
 }
 .enchant-item-name-effect {
-    flex: 1 1 auto;
-    min-width: 0;
-    white-space: normal;
-    word-break: break-word;
+    flex: 0 0 auto;
+    white-space: nowrap;
 }
 .enchant-item:hover {
     background-color: rgba(255, 255, 255, 0.06);
@@ -1747,8 +1746,12 @@ input, select {
 }
 
 /* Categorized enchant picker (buff-column inspired) */
+#enchant-modal .enchant-modal-content {
+    width: min(98vw, 1680px);
+    max-width: min(98vw, 1680px);
+}
 .enchant-modal-content {
-    max-width: min(96vw, 1180px);
+    max-width: min(98vw, 1680px);
 }
 .enchant-modal-body {
     display: flex;
@@ -1771,12 +1774,13 @@ input, select {
     gap: 14px;
     align-items: flex-start;
     flex-wrap: wrap;
+    justify-content: center;
     padding: 4px 2px 8px;
 }
 .enchant-picker-column {
-    flex: 1 1 150px;
-    min-width: 140px;
-    max-width: 220px;
+    flex: 0 1 220px;
+    min-width: 200px;
+    max-width: none;
     display: flex;
     flex-direction: column;
     gap: 10px;
