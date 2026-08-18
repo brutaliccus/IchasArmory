@@ -2797,13 +2797,23 @@ function userOwnsBrowsePlan(p) {
     return String(p.authorId) === String(user.id);
 }
 
-function buildBrowseCardVotesHtml(p) {
-    const voteId = getCommunityVoteId(p);
+/** Vote id for browse cards — community tab entries omit `community: true` from the list API. */
+function getBrowseCardVoteId(p, variant = 'community') {
+    const fromPlan = getCommunityVoteId(p);
+    if (fromPlan) return fromPlan;
+    if (variant === 'community' && p?.id && !String(p.id).startsWith('local_gp_')) {
+        return String(p.id);
+    }
+    return null;
+}
+
+function buildBrowseCardVotesHtml(p, variant = 'community') {
+    const voteId = getBrowseCardVoteId(p, variant);
     if (!voteId) return '';
     const up = Number(p.upvotes) || 0;
     const down = Number(p.downvotes) || 0;
     const my = p.myVote === 'up' || p.myVote === 'down' ? p.myVote : '';
-    return `<div class="gp-card-corner gp-card-corner--br gp-community-card-votes" data-stop="1">
+    return `<div class="gp-community-card-votes" data-stop="1">
             <button type="button" class="gp-vote-btn gp-vote-up ${my === 'up' ? 'is-active' : ''}" data-vote="up" data-id="${escapeHtml(voteId)}" title="Upvote" aria-label="Upvote" aria-pressed="${my === 'up' ? 'true' : 'false'}">
                 ${GP_ICON_VOTE_UP}<span class="gp-vote-count" data-up-count>${up}</span>
             </button>
@@ -2833,7 +2843,8 @@ function buildGearPlanCardHtml(p, { variant = 'community', isLocal = false } = {
     }
     if (date) authorParts.push(date);
     const authorLine = authorParts.join(' · ');
-    const showVotes = variant === 'community' || getCommunityVoteId(p);
+    const browseVoteId = getBrowseCardVoteId(p, variant);
+    const showVotes = variant === 'community' || browseVoteId;
     const canDelete = variant === 'personal' || userOwnsBrowsePlan(p);
     const favOn = !!p.favorite;
     const favBtn = variant === 'community'
@@ -2843,22 +2854,24 @@ function buildGearPlanCardHtml(p, { variant = 'community', isLocal = false } = {
     const deleteBtn = canDelete
         ? `<button type="button" class="gp-card-icon-btn gp-personal-delete-btn" data-personal-id="${escapeHtml(p.id || '')}" data-local="${isLocal ? '1' : ''}" title="Delete" aria-label="Delete">${GP_ICON_TRASH}</button>`
         : '';
-    const votesHtml = showVotes ? buildBrowseCardVotesHtml(p) : '';
+    const votesHtml = showVotes ? buildBrowseCardVotesHtml(p, variant) : '';
     const cardClass = showVotes ? 'gp-community-card gp-community-card--has-votes' : 'gp-community-card';
     return `<article class="${cardClass}" data-id="${escapeHtml(p.id || '')}" data-local="${isLocal ? '1' : ''}" data-variant="${variant}" role="listitem" tabindex="0">
-            ${canDelete ? `<div class="gp-card-corner gp-card-corner--tl" data-stop="1">${deleteBtn}</div>` : ''}
-            <div class="gp-card-corner gp-card-corner--tr" data-stop="1">${favBtn}${shareBtn}</div>
-            ${votesHtml}
             <div class="gp-community-card-main">
                 <img class="gp-community-card-icon" src="${resolveGearPlanIconUrl(p.icon)}" alt="" width="48" height="48" loading="lazy" />
                 <div class="gp-community-card-body">
-                    <div class="gp-community-card-title">${escapeHtml(p.name || 'Untitled')}</div>
+                    <div class="gp-community-card-title-row">
+                        ${canDelete ? `<div class="gp-community-card-title-leading" data-stop="1">${deleteBtn}</div>` : ''}
+                        <div class="gp-community-card-title">${escapeHtml(p.name || 'Untitled')}</div>
+                        <div class="gp-community-card-title-actions" data-stop="1">${favBtn}${shareBtn}</div>
+                    </div>
                     ${desc ? `<div class="gp-community-card-desc">${escapeHtml(desc)}</div>` : ''}
                     <div class="gp-community-card-spread" title="Talent tree points">${escapeHtml(spread)}</div>
                     <div class="gp-community-card-meta">${escapeHtml(metaParts.join(' · '))}</div>
                     <div class="gp-community-card-author">${escapeHtml(authorLine)}</div>
                 </div>
             </div>
+            ${votesHtml}
         </article>`;
 }
 

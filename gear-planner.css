@@ -1704,13 +1704,21 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
 .gp-community-empty { padding: 16px; text-align: center; color: #a09070; font-size: calc(0.9rem * var(--ts, 1)); }
 .gp-community-card {
     position: relative;
-    display: flex; align-items: stretch; gap: 0; text-align: left;
-    padding: 26px 10px 10px 10px; border-radius: 8px; border: 1px solid #3a3420;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    text-align: left;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #3a3420;
     background: linear-gradient(180deg, rgba(42, 38, 24, 0.9) 0%, rgba(24, 20, 12, 0.95) 100%);
-    color: var(--text-color); cursor: pointer; width: 100%;
+    color: var(--text-color);
+    cursor: pointer;
+    width: 100%;
     box-sizing: border-box;
 }
-.gp-community-card--has-votes { padding-bottom: 26px; }
+.gp-community-card--has-votes { padding-bottom: 8px; }
 .gp-community-card:hover,
 .gp-community-card:focus-visible {
     border-color: rgba(255, 215, 0, 0.45);
@@ -1725,7 +1733,32 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     flex-shrink: 0; border: 1px solid #5a4a20;
 }
 .gp-community-card-body { min-width: 0; flex: 1; display: flex; flex-direction: column; gap: 2px; }
-.gp-community-card-title { font-weight: 650; font-size: calc(0.98rem * var(--ts, 1)); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gp-community-card-title-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+}
+.gp-community-card-title-leading {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+}
+.gp-community-card-title {
+    flex: 1;
+    min-width: 0;
+    font-weight: 650;
+    font-size: calc(0.98rem * var(--ts, 1));
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.gp-community-card-title-actions {
+    display: flex;
+    flex-shrink: 0;
+    gap: 2px;
+    align-items: center;
+}
 .gp-community-card-desc {
     font-size: calc(0.8rem * var(--ts, 1));
     color: #c8b890;
@@ -1741,15 +1774,6 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
 }
 .gp-community-card-meta,
 .gp-community-card-author { font-size: calc(0.78rem * var(--ts, 1)); color: #a09070; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.gp-card-corner {
-    position: absolute;
-    display: flex;
-    gap: 2px;
-    z-index: 2;
-}
-.gp-card-corner--tl { top: 4px; left: 4px; }
-.gp-card-corner--tr { top: 4px; right: 4px; }
-.gp-card-corner--br { bottom: 4px; right: 4px; }
 .gp-card-icon-btn {
     width: 26px;
     height: 26px;
@@ -1774,7 +1798,14 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
 .gp-card-icon-btn.is-active { border-color: #c9a227; color: #ffd700; }
 .gp-card-icon-btn.gp-personal-delete-btn:hover { border-color: #a04040; color: #e07070; }
 .gp-community-card-votes {
-    display: flex; flex-direction: row; gap: 2px; flex-shrink: 0; align-items: center; justify-content: flex-end;
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 6px;
+    padding-top: 2px;
 }
 /* SVG-only votes (logout-style): no border / background box */
 .gp-vote-btn {
@@ -2295,7 +2326,6 @@ body.gp-mobile .gp-community-filters {
 }
 
 body.gp-mobile .gp-community-card {
-    flex-wrap: wrap;
     padding: 12px 10px 10px;
 }
 
@@ -2303,13 +2333,8 @@ body.gp-mobile .gp-community-card-title {
     white-space: normal;
 }
 
-body.gp-mobile .gp-card-corner {
-    position: static;
-}
-
 body.gp-mobile .gp-community-card-main {
     width: 100%;
-    order: -1;
 }
 
 body.gp-mobile .gp-card-icon-btn {
