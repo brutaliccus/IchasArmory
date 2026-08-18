@@ -97,7 +97,7 @@ export const enchantEffectIdMap = {
   "1508": "Lesser Arcanum of Voracity (+8 Agi)",
   "1509": "Lesser Arcanum of Voracity (+8 Int)",
   "1510": "Lesser Arcanum of Voracity (+8 Spi)",
-  "1843": "Rugged Armor Kit (+5 Stam)",
+  "1843": "Rugged Armor Kit (+5 Stam, +40 Armor)",
   "1883": "Enchant Bracer - Greater Intellect (+7 Int)",
   "1884": "Enchant Bracer - Superior Spirit (+9 Spi)",
   "1885": "Enchant Bracer - Superior Strength (+9 Str)",

@@ -304,7 +304,7 @@ export const enchantDatabase = {
       "effect_id": 16
     },
     {
-      "name": "Rugged Armor Kit (+5 Stam)",
+      "name": "Rugged Armor Kit (+5 Stam, +40 Armor)",
       "stats": {
         "sta": 5,
         "armor": 40
@@ -593,7 +593,7 @@ export const enchantDatabase = {
       "effect_id": 2590
     },
     {
-      "name": "Rugged Armor Kit (+5 Stam)",
+      "name": "Rugged Armor Kit (+5 Stam, +40 Armor)",
       "stats": {
         "sta": 5,
         "armor": 40
@@ -866,7 +866,7 @@ export const enchantDatabase = {
       "effect_id": 16
     },
     {
-      "name": "Rugged Armor Kit (+5 Stam)",
+      "name": "Rugged Armor Kit (+5 Stam, +40 Armor)",
       "stats": {
         "sta": 5,
         "armor": 40
@@ -1021,7 +1021,7 @@ export const enchantDatabase = {
       "effect_id": 16
     },
     {
-      "name": "Rugged Armor Kit (+5 Stam)",
+      "name": "Rugged Armor Kit (+5 Stam, +40 Armor)",
       "stats": {
         "sta": 5,
         "armor": 40
