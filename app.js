@@ -1834,16 +1834,32 @@ function calculateMitigationScore(totals, statWeights) {
     return Math.round(mitigationScore);
 }
 
+function calculateCharacterTankScore(totals, statWeights) {
+    if (!statWeights || !totals) return null;
+    const ehp = Math.round(
+        (totals.stamina || 0) * (statWeights.stamina1EHP || 0) +
+        (totals.armor || 0) * (statWeights.armor1EHP || 0)
+    );
+    const mitScore = calculateMitigationScore(totals, statWeights);
+    return { ehp, mitScore, tankScore: ehp + mitScore };
+}
+
 /**
  * Update the mitigation score display
  */
 function updateMitigationScore() {
     const mitigationScoreEl = document.getElementById('mitigationScore');
-    if (!mitigationScoreEl) return;
+    const defenseMitScoreEl = document.getElementById('defenseMitigationScore');
+    const defenseTankScoreEl = document.getElementById('defenseTankScore');
+    if (!mitigationScoreEl && !defenseMitScoreEl && !defenseTankScoreEl) return;
 
     if (!lastSimulationStatWeights) {
-        mitigationScoreEl.textContent = 'Run Sim';
-        mitigationScoreEl.style.fontSize = '0.75em';
+        if (mitigationScoreEl) {
+            mitigationScoreEl.textContent = 'Run Sim';
+            mitigationScoreEl.style.fontSize = '0.75em';
+        }
+        if (defenseMitScoreEl) defenseMitScoreEl.textContent = 'Run Sim';
+        if (defenseTankScoreEl) defenseTankScoreEl.textContent = 'Run Sim';
         return;
     }
 
@@ -1862,9 +1878,16 @@ function updateMitigationScore() {
 
     const totals = calculateEffectiveHealth(characterData);
     const score = calculateMitigationScore(totals, lastSimulationStatWeights);
+    const tankScore = calculateCharacterTankScore(totals, lastSimulationStatWeights);
 
-    mitigationScoreEl.textContent = score.toLocaleString();
-    mitigationScoreEl.style.fontSize = '1.1em';
+    if (mitigationScoreEl) {
+        mitigationScoreEl.textContent = score.toLocaleString();
+        mitigationScoreEl.style.fontSize = '1.1em';
+    }
+    if (defenseMitScoreEl) defenseMitScoreEl.textContent = score.toLocaleString();
+    if (defenseTankScoreEl && tankScore) {
+        defenseTankScoreEl.textContent = tankScore.tankScore.toLocaleString();
+    }
 }
 
 function escapeHtml(t) {
@@ -1913,6 +1936,7 @@ function displayMainResults(totals) {
 
     elements.totalHealth.textContent = (totals.health || 0).toLocaleString();
     if (elements.totalHealthBreakdown) elements.totalHealthBreakdown.textContent = (totals.health || 0).toLocaleString();
+    if (elements.defenseEffectiveHP) elements.defenseEffectiveHP.textContent = (totals.ehp || 0).toLocaleString();
     if (elements.totalMana) elements.totalMana.textContent = (totals.mana || 0).toLocaleString();
     elements.totalArmor.textContent = (totals.armor || 0).toLocaleString();
     elements.damageReduction.textContent = ((totals.physicalDR || 0) * 100).toFixed(2) + '%';
@@ -2417,7 +2441,7 @@ function displayMainResults(totals) {
         elements.totalDmgHeal.textContent = spellDamageToShow.toLocaleString();
     }
 
-    elements.totalDefense.textContent = (totals.defense || 0).toLocaleString();
+    if (elements.totalDefense) elements.totalDefense.textContent = (totals.defense || 0).toLocaleString();
     elements.totalDodge.textContent = formatSmartPercent(totals.dodge || 0);
     elements.totalParry.textContent = formatSmartPercent(totals.parry || 0);
     elements.totalBlock.textContent = formatSmartPercent(totals.block || 0);
@@ -4407,7 +4431,7 @@ async function init() {
 
     // 1. Cache DOM element references using auto-mapping
     const allElementIds = [
-        'attackerLevel', 'talents-list', 'buffs-list', 'talents-buffs-card', 'totalHealth', 'totalHealthBreakdown', 'totalMana', 'totalArmor', 'damageReduction', 'effectiveHP',
+        'attackerLevel', 'talents-list', 'buffs-list', 'talents-buffs-card', 'totalHealth', 'totalHealthBreakdown', 'defenseEffectiveHP', 'defenseMitigationScore', 'defenseTankScore', 'totalMana', 'totalArmor', 'damageReduction', 'effectiveHP',
         'drCapWarning', 'class-selector', 'race-selector', 'totalArmorBreakdown', 'totalStamina', 'totalAgility', 'totalStrength', 'totalIntellect', 'totalSpirit',
         'totalVampirism', 'totalCritDmgReduction', 'totalDefense', 'totalDodge', 'totalParry', 'totalBlock', 'totalMissChance', 'totalMitigation', 'totalAP', 'weaponDamageRange', 'weaponSpeed', 'weaponDPS', 'mhDamageRange', 'mhSpeed', 'mhDPS', 'ohDamageRange', 'ohSpeed', 'ohDPS', 'totalCrit', 'totalHit', 'totalHaste',
         'rangedWeaponDamageRange', 'rangedWeaponSpeed', 'rangedWeaponDPS', 'rangedAP', 'rangedCrit', 'rangedHit', 'rangedHaste',

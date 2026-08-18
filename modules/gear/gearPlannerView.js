@@ -1773,11 +1773,9 @@ const GP_STAT_GROUPS = [
         ['natureDamage', 'Nature Damage', null, 'school'], ['shadowDamage', 'Shadow Damage', null, 'school'],
         ['arcaneDamage', 'Arcane Damage', null, 'school'], ['holyDamage', 'Holy Damage', null, 'school'],
     ]},
-    { title: 'Defense', rows: [
-        ['health', 'Health'], ['mana', 'Mana'], ['armor', 'Armor'], ['defense', 'Defense'],
-    ]},
+    { title: 'Defense', rows: [] },
     { title: 'Damage Reduction', rows: [
-        ['magicDR', 'Magic', 'frac'],
+        ['magicDR', 'All Spell', 'frac'],
         ['fireDR', 'Fire', 'frac', 'schoolDr'], ['natureDR', 'Nature', 'frac', 'schoolDr'],
         ['frostDR', 'Frost', 'frac', 'schoolDr'], ['shadowDR', 'Shadow', 'frac', 'schoolDr'],
         ['arcaneDR', 'Arcane', 'frac', 'schoolDr'], ['holyDR', 'Holy', 'frac', 'schoolDr'],
@@ -1856,8 +1854,65 @@ function renderGpAvoidanceSection(full, ungeared, naked) {
         const row = renderGpStatEntry(key, label, kind, true, full, ungeared, naked);
         if (row) parts.push(row);
     }
-    const blockValueRow = renderGpStatEntry('blockValue', 'Block Value', null, false, full, ungeared, naked);
-    if (blockValueRow) parts.push(blockValueRow);
+    return parts.join('');
+}
+
+function gpCalcMitigationScore(totals, statWeights) {
+    if (!statWeights || !totals) return 0;
+    const dodge = totals.dodge || 0;
+    const parry = totals.parry || 0;
+    const block = totals.block || 0;
+    const blockValue = totals.blockValue || 0;
+    const defense = totals.defense || 0;
+    const critDmgReduction = totals.critDmgReduction || 0;
+    const avoidanceEHP = (dodge + parry) * (statWeights.avoidance1PercentEHP || 0);
+    const blockChanceEHP = block * (statWeights.blockChance1PercentEHP || 0);
+    const blockValueEHP = blockValue * (statWeights.blockValue1EHP || 0);
+    const defenseEHP = defense * (statWeights.defense1EHP || 0);
+    const critReductionEHP = critDmgReduction * (statWeights.avoidance1PercentEHP || 0) * 0.5;
+    return Math.round(avoidanceEHP + blockChanceEHP + blockValueEHP + defenseEHP + critReductionEHP);
+}
+
+function gpCalcTankScore(totals, statWeights) {
+    if (!statWeights || !totals) return null;
+    const ehp = Math.round(
+        (totals.stamina || 0) * (statWeights.stamina1EHP || 0) +
+        (totals.armor || 0) * (statWeights.armor1EHP || 0)
+    );
+    const mitScore = gpCalcMitigationScore(totals, statWeights);
+    return { ehp, mitScore, tankScore: ehp + mitScore };
+}
+
+function gpStaticStatRowHtml(label, text) {
+    return `<div class="gp-stat-item"><span>${escapeHtml(label)}</span><strong>${escapeHtml(text)}</strong></div>`;
+}
+
+function renderGpDefenseSection(full, ungeared, naked, tankWeights) {
+    const parts = [];
+    for (const [key, label, kind] of [
+        ['health', 'Health', null],
+        ['ehp', 'Effective HP', null],
+        ['armor', 'Armor', null],
+        ['physicalDR', 'DR', 'frac'],
+    ]) {
+        const row = renderGpStatEntry(key, label, kind, false, full, ungeared, naked);
+        if (row) parts.push(row);
+    }
+    const avoidance = renderGpAvoidanceSection(full, ungeared, naked);
+    if (avoidance) parts.push(avoidance);
+    if (tankWeights) {
+        const mitTotal = gpCalcMitigationScore(full, tankWeights);
+        const mitGear = mitTotal - gpCalcMitigationScore(ungeared, tankWeights);
+        const mitRow = gpStatRowHtml('Mit Score', mitTotal, mitGear, null);
+        if (mitRow) parts.push(mitRow);
+        const tankTotal = gpCalcTankScore(full, tankWeights);
+        const tankGear = tankTotal.tankScore - (gpCalcTankScore(ungeared, tankWeights)?.tankScore || 0);
+        const tankRow = gpStatRowHtml('Tank Score', tankTotal.tankScore, tankGear, null);
+        if (tankRow) parts.push(tankRow);
+    } else {
+        parts.push(gpStaticStatRowHtml('Mit Score', 'Run Sim'));
+        parts.push(gpStaticStatRowHtml('Tank Score', 'Run Sim'));
+    }
     return parts.join('');
 }
 
@@ -1923,7 +1978,7 @@ function renderStatsSidebar() {
             if (group.title === 'Melee') {
                 extra = renderGpWeaponSkillSection(full, ungeared, naked) + renderGpMeleeExtraRows(full, ungeared, naked);
             } else if (group.title === 'Defense') {
-                extra = renderGpAvoidanceSection(full, ungeared, naked);
+                extra = renderGpDefenseSection(full, ungeared, naked, resolveGpTankWeights());
             }
             const allRows = rows + extra;
             if (!allRows) return '';

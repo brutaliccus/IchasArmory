@@ -642,7 +642,7 @@ if ((offhandArmor || 0) <= 0) {
 const totalMitigation = missChance + totalDodge + totalParry + totalBlock;
 ```
 
-`missChance` is exported on the return object as **Chance to be Missed** in UI (nested under **Avoidance**). `totalMitigation` is shown as **Avoidance** (dodge + parry + block + miss).
+`missChance` is exported on the return object as **Chance to be Missed** in UI (nested under **Avoidance**). `totalMitigation` is shown as **Avoidance** (dodge + parry + block + miss). Character Planner and Gear Planner **Defense** columns also show **Effective HP** (`ehp`), **DR** (`physicalDR`), **Mit Score**, and **Tank Score** (EHP from stamina/armor weights + mitigation score; requires tank sim stat weights).
 
 ---
 
