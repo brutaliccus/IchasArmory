@@ -176,6 +176,11 @@
     min-height: 2.7em;
 }
 
+.ui-scale-settings-hint--compact {
+    margin: 0 0 8px;
+    min-height: auto;
+}
+
 .ui-scale-settings-label {
     display: block;
     font-size: 0.82rem;
