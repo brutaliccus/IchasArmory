@@ -115,26 +115,26 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
 }
 
 .gp-talents-header {
+    position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     flex-shrink: 0;
     align-self: flex-start;
-    padding: 4px 0 8px;
+    padding: 8px 0 10px;
     box-sizing: border-box;
-    gap: 12px;
     /* width + margin-left synced in syncGpTalentsHeaderLayout() to match scaled trees */
 }
 
 .gp-talents-title {
     margin: 0;
-    padding: 0;
+    padding: 6px 12px;
     color: #ffd700;
     font-weight: bold;
-    text-align: left;
-    flex: 0 1 auto;
-    min-width: 0;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
     /* font-size synced to scaled .tree-name in syncGpTalentsHeaderLayout() */
 }
 
@@ -278,10 +278,15 @@ body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
 }
 
 .gp-talent-preset-tools {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
     display: flex;
     justify-content: flex-end;
     align-items: center;
     flex-shrink: 0;
+    pointer-events: auto;
 }
 
 .gp-talent-preset-tools[hidden] {

@@ -836,6 +836,9 @@ function syncGpOverlayUi() {
     syncGpTalentsTitle();
 }
 
+/** Extra visual shrink for GP talent trees (on top of fit-to-host scale). */
+const GP_TALENT_TREE_VISUAL_SCALE = 0.85;
+
 let gpTalentFitObserver = null;
 let gpTalentFitLock = false;
 let gpTalentLastScale = 0;
@@ -865,7 +868,8 @@ function fitGpTalentTree() {
     const treeH = Math.max(tree.scrollHeight, tree.offsetHeight, 1);
     const boxW = Math.max(host.clientWidth, 1);
     const boxH = Math.max(host.clientHeight, 1);
-    const scale = Math.min(boxW / treeW, boxH / treeH);
+    const fitScale = Math.min(boxW / treeW, boxH / treeH);
+    const scale = fitScale * GP_TALENT_TREE_VISUAL_SCALE;
     if (!Number.isFinite(scale) || scale <= 0) return;
 
     const scaleChanged = Math.abs(scale - gpTalentLastScale) >= 0.002;
