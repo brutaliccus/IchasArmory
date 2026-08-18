@@ -164,9 +164,10 @@ Zul'Gurub consumables.
 - Examples: Juju Power (+30 str), Juju Might (+40 AP), Juju Flurry (+3% attack/casting speed for 20s, on-use via procs.js)
 
 #### Blasted Lands Buffs (`blastedLandsBuffs`)
-Blasted Lands NPC buffs. Only one can be active at a time.
+Blasted Lands consumables. Only one can be active at a time.
 - **Exclusivity Group**: `blasted_lands`
-- Examples: R.O.I.D.S. (+25 str), Ground Scorpok Assay (+25 agi)
+- Examples: R.O.I.D.S. (+25 str), Ground Scorpok Assay (+25 agi), Cerebral Cortex Compound (+25 int), Lung Juice Cocktail (+25 sta, icon `inv_drink_12`)
+- **Zanza exception**: Lung Juice Cocktail does **not** stack with Spirit of Zanza (`zanza`); enabling either deactivates the other. Other Blasted Lands buffs **do** stack with Zanza.
 
 #### Food Buffs (`foodBuffs`)
 Food consumables. Only one can be active at a time.
@@ -341,6 +342,8 @@ Many buffs belong to exclusivity groups, ensuring only one buff from that group 
 ### Standard Exclusivity Groups
 
 When a buff is activated, all other buffs in the same `exclusiveGroup` are automatically deactivated.
+
+**Lung Juice ↔ Zanza** (not `exclusiveGroup`): `handleBuffExclusivity` deactivates `lung_juice_cocktail` when a Zanza potion (`zanza`) is enabled, and vice versa. Other `blasted_lands` buffs are unaffected by Zanza.
 
 Example groups:
 - `weapon_imbue` - Shaman weapon imbues (Rockbiter, Windfury, Flametongue, Frostbrand)

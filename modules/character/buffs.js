@@ -482,8 +482,13 @@ export const jujuBuffs = [
 export const blastedLandsBuffs = [
     { id: 'roids', name: 'R.O.I.D.S.', icon: 'https://octowow.st/db/images/icons/large/inv_stone_15.png', base_stats: { str: 25 }, exclusiveGroup: 'blasted_lands', tooltip: '+25 Strength for 30 min.' },
     { id: 'scorpok_assay', name: 'Ground Scorpok Assay', icon: 'https://octowow.st/db/images/icons/large/inv_misc_dust_07.png', base_stats: { agi: 25 }, exclusiveGroup: 'blasted_lands', tooltip: '+25 Agility for 30 min.' },
-    { id: 'cerebral_cortex', name: 'Cerebral Cortex Compound', icon: 'https://octowow.st/db/images/icons/large/inv_potion_119.png', base_stats: { int: 25 }, exclusiveGroup: 'blasted_lands', tooltip: '+25 Intellect for 30 min.' }
+    { id: 'cerebral_cortex', name: 'Cerebral Cortex Compound', icon: 'https://octowow.st/db/images/icons/large/inv_potion_119.png', base_stats: { int: 25 }, exclusiveGroup: 'blasted_lands', tooltip: '+25 Intellect for 30 min.' },
+    { id: 'lung_juice_cocktail', name: 'Lung Juice Cocktail', icon: 'inv_drink_12', base_stats: { sta: 25 }, exclusiveGroup: 'blasted_lands', tooltip: '+25 Stamina for 1 hour.' }
 ];
+
+/** Zanza potion buff IDs — mutually exclusive with Lung Juice Cocktail only (other BL buffs stack with Zanza). */
+const ZANZA_BUFF_IDS = ['zanza'];
+const LUNG_JUICE_BUFF_ID = 'lung_juice_cocktail';
 
 // Food Buffs - Only one food buff can be active at a time
 export const foodBuffs = [
@@ -1510,8 +1515,23 @@ export function applyBuffListToDom(buffList, root = document.getElementById('buf
  * Deactivate other buffs in the same exclusive group as the activated buff.
  * @param {string} buffId - ID of the buff being activated
  */
+function deactivateBuffIcon(id) {
+    const icon = document.getElementById(id);
+    if (icon) {
+        icon.classList.remove('active');
+        icon.classList.remove('is-improved');
+    }
+}
+
 export function handleBuffExclusivity(buffId) {
     const buff = buffs.find(b => b.id === buffId);
+
+    // Lung Juice Cocktail ↔ Zanza (bidirectional); other Blasted Lands buffs stack with Zanza
+    if (buffId === LUNG_JUICE_BUFF_ID) {
+        ZANZA_BUFF_IDS.forEach(deactivateBuffIcon);
+    } else if (ZANZA_BUFF_IDS.includes(buffId)) {
+        deactivateBuffIcon(LUNG_JUICE_BUFF_ID);
+    }
 
     // Define concoction relationships (concoction -> [elixir1, elixir2])
     const concoctionRelationships = {
