@@ -24,7 +24,7 @@ import { getEmptySlotPlaceholderUrl, getMeleeWeaponType, getEnchantableSlots, re
 import { fetchArmoryData, applyArmoryEquipment, decodeChronicleTalents } from '../armory/armoryImport.js';
 import { enchantDatabase } from './enchants.js';
 import { getEnchantCompactLabel } from './enchantStatLabels.js';
-import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, getItemType, filterEnchantsByItemType, AP_VS_DISPLAY_ORDER, getApVsRowLabel } from '../character/stats.js';
+import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, getItemType, filterEnchantsByItemType, filterEnchantsByClass, AP_VS_DISPLAY_ORDER, getApVsRowLabel } from '../character/stats.js';
 import { baseStats, raceIconData, getSelectedRaceBonuses } from '../character/races.js';
 import { calculateEffectiveHealth } from '../ui/calculator.js';
 import { generateTalentInputs, updateTalentPoints, updateAllTalentStates, getTalentBonusesFromSpec, classTalents } from '../talents_new.js';
@@ -1647,7 +1647,11 @@ function pruneSlotEnchant(slotId) {
     }
     const item = slot.primary != null ? callbacks.getItemById?.(slot.primary) : null;
     if (!item) return;
-    const filtered = filterEnchantsByItemType(db, getItemType(item), slotId, item);
+    const planClass = currentPlan.class || document.getElementById('gp-class-sidebar')?.dataset?.selectedClass || 'warrior';
+    const filtered = filterEnchantsByClass(
+        filterEnchantsByItemType(db, getItemType(item), slotId, item),
+        planClass
+    );
     if (!filtered.some(e => e.name === enchant.name)) slot.enchant = null;
 }
 

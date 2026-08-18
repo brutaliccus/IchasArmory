@@ -866,6 +866,10 @@ function openEnchantModal(slotId) {
 }
 
 function openEnchantModalForGearPlan(slotId, item) {
+    const planClass = getCurrentGearPlan()?.class
+        || document.getElementById('gp-class-sidebar')?.dataset?.selectedClass
+        || 'warrior';
+    setItemModalPlayerClassOverride(planClass);
     const enchants = enchantDatabase[slotId] || [];
     elements.enchantModal.dataset.gearPlanEnchant = 'true';
     elements.enchantModal.dataset.gearPlanItemId = item?.id != null ? String(item.id) : '';

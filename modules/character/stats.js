@@ -1012,7 +1012,9 @@ export function filterEnchantsByItemType(enchants, itemType, slotId = null, item
     });
 }
 
-/** ZG head/leg class enchants and other known class-only enchants (base name, lowercase). */
+const ENCHANT_CLASS_IDS = ['warrior', 'paladin', 'shaman', 'hunter', 'rogue', 'priest', 'mage', 'warlock', 'druid'];
+
+/** ZG head/leg class enchants (Turtle/Octo) and other known class-only enchants (normalized base name). */
 const ENCHANT_BASE_CLASS_MAP = {
     'animist\'s caress': ['druid'],
     'falcon\'s call': ['hunter'],
@@ -1026,7 +1028,51 @@ const ENCHANT_BASE_CLASS_MAP = {
     'gift of ferocity': ['druid'],
 };
 
+/** effect_id fallback for ZG head/leg enchants and Gift of Ferocity (covers duplicate slot entries). */
+const ENCHANT_EFFECT_CLASS_MAP = {
+    2583: ['warrior'],   // Presence of Might
+    2584: ['paladin'],   // Syncretist's Sigil
+    2585: ['rogue'],     // Death's Embrace
+    2586: ['hunter'],    // Falcon's Call
+    2587: ['shaman'],    // Vodouisant's Vigilant Embrace
+    2588: ['mage'],      // Presence of Sight
+    2589: ['warlock'],   // Hoodoo Hex
+    2590: ['priest'],    // Prophetic Aura
+    2591: ['druid'],     // Animist's Caress
+    3004: ['druid'],     // Gift of Ferocity (head)
+};
+
 const ENCHANT_CLASS_SUFFIX_RE = /\((Warrior|Paladin|Shaman|Hunter|Rogue|Priest|Mage|Warlock|Druid)\)\s*$/i;
+const ENCHANT_CLASSES_LINE_RE = /Classes:\s*([^\n<]+)/i;
+const ENCHANT_ONLY_USABLE_BY_RE = /only usable by\s+(?:a\s+)?(warrior|paladin|shaman|hunter|rogue|priest|mage|warlock|druid)s?/i;
+const ENCHANT_REQUIRES_CLASS_RE = /requires\s+(?:a\s+)?(warrior|paladin|shaman|hunter|rogue|priest|mage|warlock|druid)/i;
+
+function normalizeEnchantText(value) {
+    return String(value || '')
+        .replace(/[\u2018\u2019\u201B`]/g, '\'')
+        .trim()
+        .toLowerCase();
+}
+
+function parseEnchantClassesList(raw) {
+    if (!raw) return null;
+    const allowed = String(raw)
+        .split(',')
+        .map((c) => normalizeEnchantText(c))
+        .filter((c) => ENCHANT_CLASS_IDS.includes(c));
+    return allowed.length ? allowed : null;
+}
+
+function parseClassesFromText(text) {
+    if (!text) return null;
+    const classesMatch = text.match(ENCHANT_CLASSES_LINE_RE);
+    if (classesMatch) return parseEnchantClassesList(classesMatch[1]);
+    const onlyUsable = text.match(ENCHANT_ONLY_USABLE_BY_RE);
+    if (onlyUsable) return [normalizeEnchantText(onlyUsable[1])];
+    const requiresClass = text.match(ENCHANT_REQUIRES_CLASS_RE);
+    if (requiresClass) return [normalizeEnchantText(requiresClass[1])];
+    return null;
+}
 
 /**
  * Strip trailing parenthetical summary from enchant display name (e.g. "+7 Agi").
@@ -1040,7 +1086,8 @@ export function getEnchantBaseName(name) {
 
 /**
  * Classes allowed to use this enchant, or null when unrestricted.
- * Checks `classes`, tooltip "Classes:" lines, "(Druid)" suffix, and known base-name map.
+ * Checks `classes`, tooltip "Classes:" lines, description restrictions, "(Druid)" suffix,
+ * effect_id map, and known base-name map.
  * @param {Object} enchant
  * @returns {string[]|null}
  */
@@ -1048,22 +1095,28 @@ export function getEnchantRestrictedClasses(enchant) {
     if (!enchant) return null;
 
     if (Array.isArray(enchant.classes) && enchant.classes.length > 0) {
-        return enchant.classes.map((c) => String(c).trim().toLowerCase()).filter(Boolean);
+        return parseEnchantClassesList(enchant.classes.join(','));
     }
 
     if (Array.isArray(enchant.tooltip_lines_raw)) {
         for (const line of enchant.tooltip_lines_raw) {
-            if (line.startsWith('Classes:')) {
-                const allowed = line.substring(8).split(',').map((c) => c.trim().toLowerCase()).filter(Boolean);
-                if (allowed.length) return allowed;
-            }
+            const fromLine = parseClassesFromText(line);
+            if (fromLine) return fromLine;
         }
     }
+
+    const fromDescription = parseClassesFromText(enchant.description);
+    if (fromDescription) return fromDescription;
 
     const suffixMatch = enchant.name?.match(ENCHANT_CLASS_SUFFIX_RE);
     if (suffixMatch) return [suffixMatch[1].toLowerCase()];
 
-    const baseKey = getEnchantBaseName(enchant.name).toLowerCase();
+    const effectId = Number(enchant.effect_id);
+    if (Number.isFinite(effectId) && ENCHANT_EFFECT_CLASS_MAP[effectId]) {
+        return ENCHANT_EFFECT_CLASS_MAP[effectId];
+    }
+
+    const baseKey = normalizeEnchantText(getEnchantBaseName(enchant.name));
     if (ENCHANT_BASE_CLASS_MAP[baseKey]) return ENCHANT_BASE_CLASS_MAP[baseKey];
 
     return null;

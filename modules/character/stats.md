@@ -25,9 +25,13 @@ Multi-type clauses (e.g. “Undead and Demons”) split on “and” and apply t
 
 1. `enchant.classes` array (lowercase ids)
 2. `tooltip_lines_raw` line `Classes: Shaman` / `Classes: Warrior, Paladin`
-3. Name suffix `(Druid)` etc.
-4. Known ZG head/leg base names (`ENCHANT_BASE_CLASS_MAP` in `stats.js`)
+3. `description` — same `Classes:` line, or “only usable by …” / “requires …” class text
+4. Name suffix `(Druid)` etc.
+5. `effect_id` map (`ENCHANT_EFFECT_CLASS_MAP`) — ZG head/leg IDs 2583–2591, Gift of Ferocity 3004
+6. Known base names (`ENCHANT_BASE_CLASS_MAP`) with apostrophe normalization (`'` / `'`)
 
-Used by `openEnchantModal` / `filterEnchantItems` with `getPlayerClassForItemFilters()` (GP plan class override or character sidebar class).
+**ZG head/leg (Turtle/Octo):** Animist's Caress → druid; Falcon's Call → hunter; Presence of Sight → mage; Syncretist's Sigil → paladin; Prophetic Aura → priest; Death's Embrace → rogue; Vodouisant's Vigilant Embrace → shaman; Hoodoo Hex → warlock; Presence of Might → warrior; Gift of Ferocity → druid.
+
+Used by `openEnchantModal` / `filterEnchantItems` with `getPlayerClassForItemFilters()` — GP mode prefers `#gp-class-sidebar` / `setItemModalPlayerClassOverride`; CP uses `#class-race-sidebar`. Also used in `gearCompare.js` and `gearPlannerView.js` `pruneSlotEnchant`.
 
 Calculator output spreads both `apVs*` and `dmgHealingVs*` from gear/enchants (see `modules/ui/calculator.js`). Shaman DPS merges target-matching bonuses into totals before `createShamanStatsFromCharacter` (`mergeDpsTargetFactionBonusesIntoTotals` in `dps.js`).

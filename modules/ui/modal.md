@@ -389,7 +389,7 @@ Each class can only wear certain armor types:
 - **`CLASS_RANGED_TYPE`**: Lookup table mapping class -> allowed ranged item subtype.
 - **`CAN_DUAL_WIELD`**: Set of classes that can equip weapons in offhand.
 - **`CAN_USE_SHIELD`**: Set of classes that can equip shields.
-- The current class is read via `getPlayerClassForItemFilters()`: `#class-race-sidebar` `dataset.selectedClass`, then fallback `.class-icon.active`, then `warrior`.
+- The current class is read via `getPlayerClassForItemFilters()`: `setItemModalPlayerClassOverride` (GP enchant/item pickers), then when `body[data-app-mode=gearPlanner]` the `#gp-class-sidebar` plan class, else `#class-race-sidebar` `dataset.selectedClass`, then `.class-icon.active`, then `warrior`.
 - The current slot is passed from `filters.slot` in `filterAndRenderItems`.
 - "Reset Filters" resets the toggle back to on.
 

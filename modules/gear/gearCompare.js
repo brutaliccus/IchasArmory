@@ -1,7 +1,7 @@
 // modules/gear/gearCompare.js - Gear comparison functionality
 
 import { getCurrentlyEquippedItem, createIconImage, PLACEHOLDER_ICON_URL, slotIconMap, getGearStats, getEnchantStats, getAppliedEnchant, getEnchantableSlots, getEquippedGearObjects, equipItem, clearItem, applyEnchant } from './gear.js';
-import { parseStatsFromTooltip, getItemType, filterEnchantsByItemType, KEY_MAP } from '../character/stats.js';
+import { parseStatsFromTooltip, getItemType, filterEnchantsByItemType, filterEnchantsByClass, KEY_MAP } from '../character/stats.js';
 import { enchantDatabase } from './enchants.js';
 import { createItemTooltipHTML } from '../ui/tooltips.js';
 import { calculateEffectiveHealth } from '../ui/calculator.js';
@@ -993,7 +993,11 @@ function populateEnchantDropdown(dropdownId, slot, item, selectedValue) {
 
     const itemType = getItemType(item);
     const enchants = enchantDatabase[slot] || [];
-    const filteredEnchants = filterEnchantsByItemType(enchants, itemType, slot, item);
+    const playerClass = getCurrentClassCallback ? getCurrentClassCallback() : 'warrior';
+    const filteredEnchants = filterEnchantsByClass(
+        filterEnchantsByItemType(enchants, itemType, slot, item),
+        playerClass
+    );
 
     dropdown.innerHTML = '';
 

@@ -44,9 +44,15 @@ export function setItemModalPlayerClassOverride(classId) {
 
 export function getPlayerClassForItemFilters() {
     if (itemModalPlayerClassOverride) return itemModalPlayerClassOverride;
+
+    // Gear planner plan class must win over the character-planner sidebar (often still warrior).
+    if (document.body?.dataset?.appMode === 'gearPlanner') {
+        const gpClass = document.getElementById('gp-class-sidebar')?.dataset?.selectedClass;
+        if (gpClass) return gpClass;
+    }
+
     const bar = document.getElementById('class-race-sidebar');
     return bar?.dataset?.selectedClass
-        || document.getElementById('gp-class-sidebar')?.dataset?.selectedClass
         || document.querySelector('.class-icon.active')?.dataset.classId
         || 'warrior';
 }
