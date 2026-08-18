@@ -1054,11 +1054,12 @@
                 <p class="gp-quick-sim-hint">Quick DPS sim uses this plan’s gear, talents, buffs, and rotation. Open the cog to set boss, duration, and combat options.</p>
                 <button type="button" id="gp-sim-hint-dismiss" class="gp-sim-hint-dismiss" title="Dismiss" aria-label="Dismiss">×</button>
             </div>
+            <div class="gp-stage">
             <div class="gp-layout">
                 <div class="gp-slot-column" id="gp-slots-left"></div>
                 <div class="gp-slot-column" id="gp-slots-right"></div>
             </div>
-            <div id="gp-talents-view" class="gp-talents-view" hidden>
+            <div id="gp-talents-view" class="gp-overlay-panel gp-talents-view" hidden>
                 <div id="gp-talents-header" class="gp-talents-header" hidden>
                     <h2 id="gp-talents-title" class="gp-talents-title"></h2>
                     <div id="gp-talent-tree-tabs" class="gp-talent-tree-tabs" hidden></div>
@@ -1078,11 +1079,11 @@
                 </div>
                 <div id="gp-talents-host" class="gp-talents-host"></div>
             </div>
-            <div id="gp-buffs-view" class="gp-buffs-view" hidden>
+            <div id="gp-buffs-view" class="gp-overlay-panel gp-buffs-view" hidden>
                 <div id="gp-buffs-tools-slot" class="gp-overlay-tools-slot"></div>
                 <div id="gp-buffs-list-slot"></div>
             </div>
-            <div id="gp-stat-weights-view" class="gp-stat-weights-view" hidden>
+            <div id="gp-stat-weights-view" class="gp-overlay-panel gp-stat-weights-view" hidden>
                 <div id="gp-tank-weights-panel" class="gp-weights-panel" hidden>
                     <h3>Tank stat weights</h3>
                     <p class="gp-weights-hint">Uses this plan’s class, race, talents, buffs, primary items, and enchants. Select a boss on Character Planner tank sim first (or search below).</p>
@@ -1112,6 +1113,7 @@
                     <div id="gp-dps-weights-host"></div>
                 </div>
                 <p id="gp-weights-unsupported" class="gp-weights-hint" hidden>Choose a DPS or Tank role (and class) to unlock the matching stat weight tools.</p>
+            </div>
             </div>
         </div>
         <dialog id="gp-armory-import-dialog" class="gp-armory-import-dialog">

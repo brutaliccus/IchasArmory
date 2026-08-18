@@ -870,9 +870,12 @@ function syncGpOverlayUi() {
     const talentsOpen = gpOverlay === 'talents';
     const buffsOpen = gpOverlay === 'buffs';
     const weightsOpen = gpOverlay === 'weights';
+    const overlayOpen = talentsOpen || buffsOpen || weightsOpen;
+    shell?.classList.toggle('gp-overlay-open', overlayOpen);
     shell?.classList.toggle('gp-talents-open', talentsOpen);
     shell?.classList.toggle('gp-buffs-open', buffsOpen);
     shell?.classList.toggle('gp-stat-weights-open', weightsOpen);
+    document.body.classList.toggle('gp-overlay-open', overlayOpen);
     document.body.classList.toggle('gp-talents-open', talentsOpen);
     document.body.classList.toggle('gp-buffs-open', buffsOpen);
     document.body.classList.toggle('gp-stat-weights-open', weightsOpen);
@@ -891,6 +894,7 @@ function syncGpOverlayUi() {
     syncGpTalentsTitle();
     if (talentsOpen || buffsOpen || weightsOpen) setGpMobilePane('gear');
     syncGpMobileChrome();
+    if (talentsOpen) requestAnimationFrame(() => fitGpTalentTree());
 }
 
 /** Extra visual shrink for GP talent trees (on top of fit-to-host scale). */
@@ -3626,12 +3630,23 @@ function gpSlotAddButtonHtml(slotId, hasPrimary, side) {
     </div>`;
 }
 
+function gpAltStackHtml(altIds) {
+    if (!altIds?.length) return '';
+    const icons = altIds.map((id) => {
+        const it = callbacks.getItemById?.(id);
+        if (!it) return '';
+        return `<span class="gp-alt-stack-icon">${itemIconHtml(it)}</span>`;
+    }).join('');
+    if (!icons) return '';
+    return `<span class="gp-alt-stack" aria-hidden="true">${icons}</span>`;
+}
+
 function renderSlotCard(slotId, side) {
     if (!currentPlan.ui) currentPlan.ui = { collapsed: {} };
     if (!currentPlan.ui.collapsed) currentPlan.ui.collapsed = {};
 
     const slot = currentPlan.slots[slotId];
-    const collapsed = currentPlan.ui.collapsed[slotId] !== false;
+    const collapsed = currentPlan.ui.collapsed[slotId] === true;
     const primaryId = slot?.primary;
     const alts = slot?.alternatives || [];
     const primaryItem = primaryId && callbacks.getItemById ? callbacks.getItemById(primaryId) : null;
@@ -3667,7 +3682,7 @@ function renderSlotCard(slotId, side) {
     const primaryInner = empty
         ? `<div class="gp-empty-primary">${nameBlock}</div>`
         : `<div class="gp-primary-row" data-slot="${slotId}" data-item-id="${primaryItem.id}" data-gp-role="primary">
-                <span class="gp-slot-icon-frame gp-drag-handle gp-item-tip" draggable="${editMode ? 'true' : 'false'}" data-slot="${slotId}" data-gp-role="primary" data-item-id="${primaryItem.id}">${itemIconHtml(primaryItem)}</span>
+                <span class="gp-slot-icon-frame gp-drag-handle gp-item-tip" draggable="${editMode ? 'true' : 'false'}" data-slot="${slotId}" data-gp-role="primary" data-item-id="${primaryItem.id}">${itemIconHtml(primaryItem)}${gpAltStackHtml(alts)}</span>
                 ${nameBlock}
                 ${clearBtn}
                 ${toggleBtn}
@@ -3689,7 +3704,7 @@ function renderSlotCard(slotId, side) {
 function toggleSlotCollapsed(slotId) {
     if (!currentPlan.ui) currentPlan.ui = { collapsed: {} };
     if (!currentPlan.ui.collapsed) currentPlan.ui.collapsed = {};
-    const wasCollapsed = currentPlan.ui.collapsed[slotId] !== false;
+    const wasCollapsed = currentPlan.ui.collapsed[slotId] === true;
     currentPlan.ui.collapsed[slotId] = !wasCollapsed;
     renderGearPlanner();
 }
