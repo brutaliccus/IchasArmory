@@ -2,6 +2,8 @@
 
 Renders the Gear Planner page: locations-needed sidebar, class drawer, two-column expandable slot cards, save/load/share, and Shaman quick sim.
 
+**Mobile:** The desktop three-pane layout (fixed 260px Locations / Modified stats docks + `--gp-center-width`) is not usable on a phone. The implementation spec is [`docs/GEAR_PLANNER_MOBILE_PLAN.md`](../../docs/GEAR_PLANNER_MOBILE_PLAN.md) — tabbed panes, sheet modals, disable UI zoom on GP mobile. Not implemented yet.
+
 ## Locations sidebar
 
 - `#gp-locations-sidebar` is **outside** `#ichacalc-scaled-root`: `position: fixed; left: 0; top: 60px` (below the unscaled nav), docked to the **screen** left. Hidden unless `body[data-app-mode="gearPlanner"]`. Uses `zoom: 1 !important` (no UI zoom) but inherits **text scale** via `--ts: var(--text-scale)` (same for `#gp-stats-sidebar` and GP save/community dialogs).
