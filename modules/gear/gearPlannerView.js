@@ -1352,7 +1352,7 @@ function renderGpManualDpsWeightsHost() {
                 const hasVal = typeof val === 'number' && !Number.isNaN(val) && Math.abs(val) > 1e-9;
                 const shown = hasVal ? val : '';
                 return `<label>${escapeHtml(label)}
-                    <input type="number" step="any" class="slick-input gp-manual-weight-input" data-weight-key="${escapeHtml(key)}" placeholder="-" value="${shown === '' ? '' : escapeHtml(String(shown))}" />
+                    <input type="number" step="any" class="gp-weight-field gp-manual-weight-input" data-weight-key="${escapeHtml(key)}" placeholder="-" value="${shown === '' ? '' : escapeHtml(String(shown))}" />
                 </label>`;
             }).join('')}
         </div>`;

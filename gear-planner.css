@@ -134,20 +134,28 @@ body[data-app-mode="character"] #gear-planner-shell {
 }
 
 .gp-overlay-center {
-    display: none;
+    display: block;
     order: 2;
     position: relative;
-    flex: 1 1 0;
+    flex: 0 0 14px;
+    width: 14px;
+    max-width: 14px;
     min-width: 0;
     align-self: stretch;
     overflow: hidden;
     opacity: 0;
     pointer-events: none;
-    transition: opacity var(--gp-part-duration, 750ms) var(--gp-part-ease, ease-in-out);
+    transition:
+        flex var(--gp-part-duration, 750ms) var(--gp-part-ease, ease-in-out),
+        width var(--gp-part-duration, 750ms) var(--gp-part-ease, ease-in-out),
+        max-width var(--gp-part-duration, 750ms) var(--gp-part-ease, ease-in-out),
+        opacity var(--gp-part-duration, 750ms) var(--gp-part-ease, ease-in-out);
 }
 
 #gear-planner-shell.gp-overlay-open .gp-overlay-center {
-    display: block;
+    flex: 1 1 0;
+    width: auto;
+    max-width: none;
     min-width: 0;
     overflow: visible;
     opacity: 1;
@@ -309,6 +317,55 @@ body[data-app-mode="character"] #gear-planner-shell {
 .gp-stat-weights-view .weight-value {
     text-align: center;
     min-width: 0;
+}
+
+/* Stat weight value fields — DPS inputs and tank read-only share one chrome family */
+.gp-stat-weights-view .gp-weight-field {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 7px 10px;
+    font-size: calc(0.9rem * var(--ts, 1));
+    font-family: inherit;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.35;
+    text-align: center;
+    border-radius: 6px;
+    border: 1px solid #5a4a20;
+    background: #1a1810;
+    color: #f0e6c8;
+    transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.gp-stat-weights-view .gp-manual-weight-input {
+    background: #1a1810 !important;
+    border: 1px solid #5a4a20 !important;
+    color: #f0e6c8 !important;
+    min-height: 34px;
+}
+
+.gp-stat-weights-view .gp-manual-weight-input:hover:not(:focus) {
+    border-color: #8a7030 !important;
+    background: #221e14 !important;
+}
+
+.gp-stat-weights-view .gp-manual-weight-input:focus {
+    outline: none !important;
+    border-color: #c9a227 !important;
+    background: rgba(255, 215, 0, 0.08) !important;
+    box-shadow: 0 0 0 1px rgba(255, 215, 0, 0.25);
+}
+
+.gp-stat-weights-view .gp-weight-field--readonly {
+    font-weight: 600;
+    color: #ffd700;
+    cursor: default;
+    user-select: text;
+}
+
+.gp-stat-weights-view .gp-weight-field--readonly:hover {
+    border-color: #5a4a20;
+    background: #1a1810;
 }
 
 .gp-stat-weights-view #gp-dps-weights-host {
@@ -1051,7 +1108,7 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-doc
     color: #c9a227;
 }
 
-.gp-manual-weights-grid input {
+.gp-manual-weights-grid input:not(.gp-manual-weight-input) {
     padding: 4px 8px;
     font-size: calc(0.85rem * var(--ts, 1));
 }
@@ -1163,17 +1220,11 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-doc
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    justify-content: center;
-    gap: 14px;
+    justify-content: space-between;
+    gap: 0;
     position: relative;
     z-index: 1;
     width: 100%;
-    transition: gap var(--gp-part-duration, 750ms) var(--gp-part-ease, ease-in-out);
-}
-
-#gear-planner-shell.gp-overlay-open .gp-layout {
-    justify-content: space-between;
-    gap: 8px;
 }
 
 .gp-slot-column {
@@ -1184,16 +1235,19 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-doc
     flex: 1 1 0;
     transition:
         flex var(--gp-part-duration, 750ms) var(--gp-part-ease, ease-in-out),
+        flex-basis var(--gp-part-duration, 750ms) var(--gp-part-ease, ease-in-out),
         max-width var(--gp-part-duration, 750ms) var(--gp-part-ease, ease-in-out),
-        transform var(--gp-part-duration, 750ms) var(--gp-part-ease, ease-in-out);
+        width var(--gp-part-duration, 750ms) var(--gp-part-ease, ease-in-out);
 }
 
 .gp-slot-rail--left {
     order: 1;
+    transform-origin: left center;
 }
 
 .gp-slot-rail--right {
     order: 3;
+    transform-origin: right center;
 }
 
 #gear-planner-shell.gp-overlay-open .gp-slot-rail {
@@ -1288,7 +1342,18 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-doc
     cursor: pointer;
     transition:
         padding var(--gp-part-duration, 750ms) var(--gp-part-ease, ease-in-out),
+        max-width var(--gp-part-duration, 750ms) var(--gp-part-ease, ease-in-out),
+        flex var(--gp-part-duration, 750ms) var(--gp-part-ease, ease-in-out),
+        flex-basis var(--gp-part-duration, 750ms) var(--gp-part-ease, ease-in-out),
         border-color 0.15s ease;
+}
+
+.gp-slot-rail--left .gp-slot-card {
+    transform-origin: left center;
+}
+
+.gp-slot-rail--right .gp-slot-card {
+    transform-origin: right center;
 }
 
 .gp-slot-card:hover {
@@ -2868,6 +2933,22 @@ body.gp-mobile .gp-armory-import-actions {
 body.gp-mobile .gp-armory-import-actions .gp-btn {
     width: 100%;
     min-height: 44px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gp-overlay-center,
+    .gp-slot-column,
+    .gp-slot-card,
+    .gp-slot-row,
+    .gp-item-meta,
+    .gp-empty-label,
+    .gp-toggle-alts,
+    .gp-clear-primary,
+    .gp-slot-add-wrap,
+    .gp-enchant-chrome,
+    .gp-alts-panel {
+        transition: none !important;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
