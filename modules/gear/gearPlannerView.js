@@ -128,6 +128,9 @@ const GP_ICON_WEIGHTS = `<svg xmlns="http://www.w3.org/2000/svg" width="18" heig
 /** Upvote: thumbs-up (SVG Repo 513857). Downvote: thumbs-down hand icon. */
 const GP_ICON_VOTE_UP = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.71V10c0-.55-.45-1-1-1h-4V3c0-1.1-.9-2-2-2s-2 .9-2 2v7H5c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1z"/></svg>`;
 const GP_ICON_VOTE_DOWN = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.71V12c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23 16.41 16.41c.37-.36.59-.86.59-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>`;
+const GP_ICON_SHARE = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>`;
+const GP_ICON_STAR = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
+const GP_ICON_TRASH = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>`;
 const GP_TANK_WEIGHT_CLASSES = new Set(['warrior', 'paladin', 'druid']);
 /** Classes that can meaningfully tank and DPS — show both stat-weight panels. */
 const GP_DUAL_ROLE_CLASSES = new Set(['warrior', 'paladin', 'druid', 'shaman']);
@@ -2689,6 +2692,28 @@ async function runPersonalBuildsSearch() {
     renderPersonalBuildResults(sorted, { cloudIds });
 }
 
+function userOwnsBrowsePlan(p) {
+    const user = window.profileManager?.user;
+    if (!user || !p?.authorId) return false;
+    return String(p.authorId) === String(user.id);
+}
+
+function buildBrowseCardVotesHtml(p) {
+    const voteId = getCommunityVoteId(p);
+    if (!voteId) return '';
+    const up = Number(p.upvotes) || 0;
+    const down = Number(p.downvotes) || 0;
+    const my = p.myVote === 'up' || p.myVote === 'down' ? p.myVote : '';
+    return `<div class="gp-card-corner gp-card-corner--br gp-community-card-votes" data-stop="1">
+            <button type="button" class="gp-vote-btn gp-vote-up ${my === 'up' ? 'is-active' : ''}" data-vote="up" data-id="${escapeHtml(voteId)}" title="Upvote" aria-label="Upvote" aria-pressed="${my === 'up' ? 'true' : 'false'}">
+                ${GP_ICON_VOTE_UP}<span class="gp-vote-count" data-up-count>${up}</span>
+            </button>
+            <button type="button" class="gp-vote-btn gp-vote-down ${my === 'down' ? 'is-active' : ''}" data-vote="down" data-id="${escapeHtml(voteId)}" title="Downvote" aria-label="Downvote" aria-pressed="${my === 'down' ? 'true' : 'false'}">
+                ${GP_ICON_VOTE_DOWN}<span class="gp-vote-count" data-down-count>${down}</span>
+            </button>
+        </div>`;
+}
+
 function buildGearPlanCardHtml(p, { variant = 'community', isLocal = false } = {}) {
     const roles = normalizeGearPlanRoles(p.role).map((r) => formatGearPlanRoleLabel(r)).join(', ');
     const cls = p.class ? String(p.class).charAt(0).toUpperCase() + String(p.class).slice(1) : '';
@@ -2709,36 +2734,32 @@ function buildGearPlanCardHtml(p, { variant = 'community', isLocal = false } = {
     }
     if (date) authorParts.push(date);
     const authorLine = authorParts.join(' · ');
-    let actionsHtml = '';
-    if (variant === 'community') {
-        const up = Number(p.upvotes) || 0;
-        const down = Number(p.downvotes) || 0;
-        const my = p.myVote === 'up' || p.myVote === 'down' ? p.myVote : '';
-        actionsHtml = `<button type="button" class="gp-fav-community-btn" data-fav-id="${escapeHtml(p.id || '')}" title="Copy to My Gear Plans" aria-label="Favorite to My Gear Plans">★ Favorite</button>
-                <div class="gp-community-card-votes">
-                    <button type="button" class="gp-vote-btn gp-vote-up ${my === 'up' ? 'is-active' : ''}" data-vote="up" data-id="${escapeHtml(p.id || '')}" title="Upvote" aria-label="Upvote" aria-pressed="${my === 'up' ? 'true' : 'false'}">
-                        ${GP_ICON_VOTE_UP}<span class="gp-vote-count" data-up-count>${up}</span>
-                    </button>
-                    <button type="button" class="gp-vote-btn gp-vote-down ${my === 'down' ? 'is-active' : ''}" data-vote="down" data-id="${escapeHtml(p.id || '')}" title="Downvote" aria-label="Downvote" aria-pressed="${my === 'down' ? 'true' : 'false'}">
-                        ${GP_ICON_VOTE_DOWN}<span class="gp-vote-count" data-down-count>${down}</span>
-                    </button>
-                </div>`;
-    } else {
-        const favOn = !!p.favorite;
-        actionsHtml = `<button type="button" class="gp-personal-card-btn gp-personal-fav-btn ${favOn ? 'is-active' : ''}" data-personal-id="${escapeHtml(p.id || '')}" data-local="${isLocal ? '1' : ''}" title="${favOn ? 'Unfavorite' : 'Favorite'}" aria-label="${favOn ? 'Unfavorite' : 'Favorite'}">★</button>
-                <button type="button" class="gp-personal-card-btn gp-personal-share-btn" data-personal-id="${escapeHtml(p.id || '')}" title="Share" aria-label="Share">Share</button>
-                <button type="button" class="gp-personal-card-btn gp-personal-delete-btn" data-personal-id="${escapeHtml(p.id || '')}" data-local="${isLocal ? '1' : ''}" title="Delete" aria-label="Delete">Delete</button>`;
-    }
-    return `<article class="gp-community-card" data-id="${escapeHtml(p.id || '')}" data-local="${isLocal ? '1' : ''}" data-variant="${variant}" role="listitem" tabindex="0">
-            <img class="gp-community-card-icon" src="${resolveGearPlanIconUrl(p.icon)}" alt="" width="48" height="48" loading="lazy" />
-            <div class="gp-community-card-body">
-                <div class="gp-community-card-title">${escapeHtml(p.name || 'Untitled')}</div>
-                ${desc ? `<div class="gp-community-card-desc">${escapeHtml(desc)}</div>` : ''}
-                <div class="gp-community-card-spread" title="Talent tree points">${escapeHtml(spread)}</div>
-                <div class="gp-community-card-meta">${escapeHtml(metaParts.join(' · '))}</div>
-                <div class="gp-community-card-author">${escapeHtml(authorLine)}</div>
+    const showVotes = variant === 'community' || getCommunityVoteId(p);
+    const canDelete = variant === 'personal' || userOwnsBrowsePlan(p);
+    const favOn = !!p.favorite;
+    const favBtn = variant === 'community'
+        ? `<button type="button" class="gp-card-icon-btn gp-fav-community-btn" data-fav-id="${escapeHtml(p.id || '')}" title="Copy to My Gear Plans" aria-label="Copy to My Gear Plans">${GP_ICON_STAR}</button>`
+        : `<button type="button" class="gp-card-icon-btn gp-personal-fav-btn ${favOn ? 'is-active' : ''}" data-personal-id="${escapeHtml(p.id || '')}" data-local="${isLocal ? '1' : ''}" title="${favOn ? 'Unfavorite' : 'Favorite'}" aria-label="${favOn ? 'Unfavorite' : 'Favorite'}">${GP_ICON_STAR}</button>`;
+    const shareBtn = `<button type="button" class="gp-card-icon-btn gp-browse-share-btn" data-plan-id="${escapeHtml(p.id || '')}" data-variant="${variant}" title="Share" aria-label="Share">${GP_ICON_SHARE}</button>`;
+    const deleteBtn = canDelete
+        ? `<button type="button" class="gp-card-icon-btn gp-personal-delete-btn" data-personal-id="${escapeHtml(p.id || '')}" data-local="${isLocal ? '1' : ''}" title="Delete" aria-label="Delete">${GP_ICON_TRASH}</button>`
+        : '';
+    const votesHtml = showVotes ? buildBrowseCardVotesHtml(p) : '';
+    const cardClass = showVotes ? 'gp-community-card gp-community-card--has-votes' : 'gp-community-card';
+    return `<article class="${cardClass}" data-id="${escapeHtml(p.id || '')}" data-local="${isLocal ? '1' : ''}" data-variant="${variant}" role="listitem" tabindex="0">
+            ${canDelete ? `<div class="gp-card-corner gp-card-corner--tl" data-stop="1">${deleteBtn}</div>` : ''}
+            <div class="gp-card-corner gp-card-corner--tr" data-stop="1">${favBtn}${shareBtn}</div>
+            ${votesHtml}
+            <div class="gp-community-card-main">
+                <img class="gp-community-card-icon" src="${resolveGearPlanIconUrl(p.icon)}" alt="" width="48" height="48" loading="lazy" />
+                <div class="gp-community-card-body">
+                    <div class="gp-community-card-title">${escapeHtml(p.name || 'Untitled')}</div>
+                    ${desc ? `<div class="gp-community-card-desc">${escapeHtml(desc)}</div>` : ''}
+                    <div class="gp-community-card-spread" title="Talent tree points">${escapeHtml(spread)}</div>
+                    <div class="gp-community-card-meta">${escapeHtml(metaParts.join(' · '))}</div>
+                    <div class="gp-community-card-author">${escapeHtml(authorLine)}</div>
+                </div>
             </div>
-            <div class="gp-community-card-actions" data-stop="1">${actionsHtml}</div>
         </article>`;
 }
 
@@ -2783,7 +2804,7 @@ function renderCommunityResults(plans) {
         return;
     }
     list.innerHTML = plans.map((p) => buildGearPlanCardHtml(p, { variant: 'community' })).join('');
-    wireCommunityResultCards(list);
+    wireCommunityResultCards(list, plans);
 }
 
 function renderPersonalBuildResults(plans, { cloudIds } = {}) {
@@ -2800,7 +2821,7 @@ function renderPersonalBuildResults(plans, { cloudIds } = {}) {
     wirePersonalResultCards(list, plans);
 }
 
-function wireCommunityResultCards(list) {
+function wireCommunityResultCards(list, plans = []) {
     list.querySelectorAll('.gp-community-card').forEach((card) => {
         card.addEventListener('click', (e) => {
             if (e.target.closest('[data-stop]')) return;
@@ -2825,6 +2846,67 @@ function wireCommunityResultCards(list) {
             e.stopPropagation();
             e.preventDefault();
             favoriteCommunityPlanById(btn.dataset.favId);
+        });
+    });
+    wireBrowseShareButtons(list, plans);
+    wireBrowseDeleteButtons(list, plans, () => runCommunitySearch());
+}
+
+async function shareGearPlanFromBrowse(plan, variant) {
+    if (!plan) return;
+    if (variant === 'personal' && window.profileManager?.user && window.profileManager.openShareModal) {
+        window.profileManager.openShareModal({ id: plan.id, name: plan.name, kind: 'gearPlan', buildData: plan });
+        return;
+    }
+    let full = plan;
+    if (variant === 'community') {
+        const voterId = getCommunityVoterId();
+        if (window.profileManager?.fetchCommunityGearPlan) {
+            full = await window.profileManager.fetchCommunityGearPlan(plan.id, voterId) || plan;
+        } else {
+            try {
+                const qs = voterId ? `?voterId=${encodeURIComponent(voterId)}` : '';
+                const res = await fetch(`/community-gear-plans/${encodeURIComponent(plan.id)}${qs}`, { credentials: 'include' });
+                const data = await res.json();
+                full = data.success ? data.plan : plan;
+            } catch (e) {
+                console.error('[Gear Planner] share fetch failed', e);
+            }
+        }
+    }
+    if (callbacks.exportGearPlanToURL) {
+        await callbacks.exportGearPlanToURL(getGearPlanData(full));
+    }
+}
+
+function wireBrowseShareButtons(list, plans) {
+    list.querySelectorAll('.gp-browse-share-btn').forEach((btn) => {
+        btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            const id = btn.dataset.planId;
+            const variant = btn.dataset.variant || 'personal';
+            const plan = plans.find((p) => String(p.id) === String(id));
+            if (!plan) return;
+            await shareGearPlanFromBrowse(plan, variant);
+        });
+    });
+}
+
+function wireBrowseDeleteButtons(list, plans, onDeleted) {
+    list.querySelectorAll('.gp-personal-delete-btn').forEach((btn) => {
+        btn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            const id = btn.dataset.personalId;
+            const plan = plans.find((p) => String(p.id) === String(id));
+            if (!plan || !confirm(`Delete gear plan "${plan.name || 'Untitled'}"?`)) return;
+            if (btn.dataset.local === '1') {
+                saveLocalGearPlans(loadLocalGearPlans().filter((p) => String(p.id) !== String(id)));
+            } else if (window.profileManager?.deleteGearPlan) {
+                await window.profileManager.deleteGearPlan(id);
+            }
+            onDeleted?.();
         });
     });
 }
@@ -2863,34 +2945,8 @@ function wirePersonalResultCards(list, plans) {
             runPersonalBuildsSearch();
         });
     });
-    list.querySelectorAll('.gp-personal-share-btn').forEach((btn) => {
-        btn.addEventListener('click', async (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            const plan = plans.find((p) => String(p.id) === String(btn.dataset.personalId));
-            if (!plan) return;
-            if (window.profileManager?.user && window.profileManager.openShareModal) {
-                window.profileManager.openShareModal({ id: plan.id, name: plan.name, kind: 'gearPlan', buildData: plan });
-            } else if (callbacks.exportGearPlanToURL) {
-                await callbacks.exportGearPlanToURL(getGearPlanData(plan));
-            }
-        });
-    });
-    list.querySelectorAll('.gp-personal-delete-btn').forEach((btn) => {
-        btn.addEventListener('click', async (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            const id = btn.dataset.personalId;
-            const plan = plans.find((p) => String(p.id) === String(id));
-            if (!plan || !confirm(`Delete gear plan "${plan.name || 'Untitled'}"?`)) return;
-            if (btn.dataset.local === '1') {
-                saveLocalGearPlans(loadLocalGearPlans().filter((p) => String(p.id) !== String(id)));
-            } else if (window.profileManager?.deleteGearPlan) {
-                await window.profileManager.deleteGearPlan(id);
-            }
-            runPersonalBuildsSearch();
-        });
-    });
+    wireBrowseShareButtons(list, plans);
+    wireBrowseDeleteButtons(list, plans, () => runPersonalBuildsSearch());
 }
 
 async function loadPersonalPlanFromBrowse(plan) {

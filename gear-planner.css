@@ -1698,17 +1698,22 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
 }
 .gp-community-empty { padding: 16px; text-align: center; color: #a09070; font-size: calc(0.9rem * var(--ts, 1)); }
 .gp-community-card {
-    display: flex; align-items: center; gap: 12px; text-align: left;
-    padding: 10px 12px; border-radius: 8px; border: 1px solid #3a3420;
+    position: relative;
+    display: flex; align-items: stretch; gap: 0; text-align: left;
+    padding: 26px 10px 10px 10px; border-radius: 8px; border: 1px solid #3a3420;
     background: linear-gradient(180deg, rgba(42, 38, 24, 0.9) 0%, rgba(24, 20, 12, 0.95) 100%);
     color: var(--text-color); cursor: pointer; width: 100%;
     box-sizing: border-box;
 }
+.gp-community-card--has-votes { padding-bottom: 26px; }
 .gp-community-card:hover,
 .gp-community-card:focus-visible {
     border-color: rgba(255, 215, 0, 0.45);
     outline: none;
     box-shadow: 0 0 0 1px rgba(255, 215, 0, 0.2);
+}
+.gp-community-card-main {
+    display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;
 }
 .gp-community-card-icon {
     width: 48px; height: 48px; border-radius: 4px; image-rendering: pixelated;
@@ -1731,31 +1736,41 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
 }
 .gp-community-card-meta,
 .gp-community-card-author { font-size: calc(0.78rem * var(--ts, 1)); color: #a09070; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.gp-community-card-actions {
-    display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; align-items: stretch;
+.gp-card-corner {
+    position: absolute;
+    display: flex;
+    gap: 2px;
+    z-index: 2;
 }
+.gp-card-corner--tl { top: 4px; left: 4px; }
+.gp-card-corner--tr { top: 4px; right: 4px; }
+.gp-card-corner--br { bottom: 4px; right: 4px; }
+.gp-card-icon-btn {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #4a4030;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.35);
+    color: #c8b890;
+    cursor: pointer;
+    line-height: 1;
+}
+.gp-card-icon-btn svg {
+    width: 14px;
+    height: 14px;
+    display: block;
+    flex-shrink: 0;
+}
+.gp-card-icon-btn:hover { border-color: #8a7a50; color: #e8dcc8; }
+.gp-card-icon-btn.is-active { border-color: #c9a227; color: #ffd700; }
+.gp-card-icon-btn.gp-personal-delete-btn:hover { border-color: #a04040; color: #e07070; }
 .gp-community-card-votes {
     display: flex; flex-direction: row; gap: 2px; flex-shrink: 0; align-items: center; justify-content: flex-end;
 }
-.gp-fav-community-btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
-    min-width: 52px; padding: 4px 8px; border-radius: 4px;
-    border: 1px solid #5a4a20; background: #1a1810; color: #c8b890;
-    cursor: pointer; font-size: calc(0.72rem * var(--ts, 1)); line-height: 1;
-}
-.gp-fav-community-btn:hover { border-color: #c9a227; color: #ffd700; }
-.gp-personal-card-btn {
-    font-size: calc(0.75rem * var(--ts, 1));
-    padding: 4px 8px;
-    border-radius: 4px;
-    border: 1px solid #4a4030;
-    background: rgba(0,0,0,0.25);
-    color: #c8b890;
-    cursor: pointer;
-}
-.gp-personal-card-btn:hover { border-color: #8a7a50; color: #e8dcc8; }
-.gp-personal-card-btn.is-active { border-color: #c9a227; color: #ffd700; }
-.gp-personal-card-btn.gp-personal-delete-btn:hover { border-color: #a04040; color: #e07070; }
 /* SVG-only votes (logout-style): no border / background box */
 .gp-vote-btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 3px;
