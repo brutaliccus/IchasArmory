@@ -1718,7 +1718,6 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     width: 100%;
     box-sizing: border-box;
 }
-.gp-community-card--has-votes { padding-bottom: 8px; }
 .gp-community-card:hover,
 .gp-community-card:focus-visible {
     border-color: rgba(255, 215, 0, 0.45);
@@ -1774,6 +1773,16 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
 }
 .gp-community-card-meta,
 .gp-community-card-author { font-size: calc(0.78rem * var(--ts, 1)); color: #a09070; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gp-community-card-bottom-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+.gp-community-card-bottom-row .gp-community-card-author {
+    flex: 1;
+    min-width: 0;
+}
 .gp-card-icon-btn {
     width: 26px;
     height: 26px;
@@ -1804,8 +1813,7 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     flex-shrink: 0;
     align-items: center;
     justify-content: flex-end;
-    margin-top: 6px;
-    padding-top: 2px;
+    margin-left: auto;
 }
 /* SVG-only votes (logout-style): no border / background box */
 .gp-vote-btn {

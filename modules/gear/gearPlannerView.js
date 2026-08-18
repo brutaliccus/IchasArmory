@@ -2855,8 +2855,13 @@ function buildGearPlanCardHtml(p, { variant = 'community', isLocal = false } = {
         ? `<button type="button" class="gp-card-icon-btn gp-personal-delete-btn" data-personal-id="${escapeHtml(p.id || '')}" data-local="${isLocal ? '1' : ''}" title="Delete" aria-label="Delete">${GP_ICON_TRASH}</button>`
         : '';
     const votesHtml = showVotes ? buildBrowseCardVotesHtml(p, variant) : '';
-    const cardClass = showVotes ? 'gp-community-card gp-community-card--has-votes' : 'gp-community-card';
-    return `<article class="${cardClass}" data-id="${escapeHtml(p.id || '')}" data-local="${isLocal ? '1' : ''}" data-variant="${variant}" role="listitem" tabindex="0">
+    const authorRowHtml = showVotes
+        ? `<div class="gp-community-card-bottom-row">
+                    <div class="gp-community-card-author">${escapeHtml(authorLine)}</div>
+                    ${votesHtml}
+                </div>`
+        : `<div class="gp-community-card-author">${escapeHtml(authorLine)}</div>`;
+    return `<article class="gp-community-card" data-id="${escapeHtml(p.id || '')}" data-local="${isLocal ? '1' : ''}" data-variant="${variant}" role="listitem" tabindex="0">
             <div class="gp-community-card-main">
                 <img class="gp-community-card-icon" src="${resolveGearPlanIconUrl(p.icon)}" alt="" width="48" height="48" loading="lazy" />
                 <div class="gp-community-card-body">
@@ -2868,10 +2873,9 @@ function buildGearPlanCardHtml(p, { variant = 'community', isLocal = false } = {
                     ${desc ? `<div class="gp-community-card-desc">${escapeHtml(desc)}</div>` : ''}
                     <div class="gp-community-card-spread" title="Talent tree points">${escapeHtml(spread)}</div>
                     <div class="gp-community-card-meta">${escapeHtml(metaParts.join(' · '))}</div>
-                    <div class="gp-community-card-author">${escapeHtml(authorLine)}</div>
+                    ${authorRowHtml}
                 </div>
             </div>
-            ${votesHtml}
         </article>`;
 }
 
