@@ -7,9 +7,10 @@
     height: 60px;
     background: var(--bg-color);
     border-bottom: 1px solid transparent;
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    display: flex;
+    flex-wrap: nowrap;
     align-items: center;
+    gap: 8px;
     padding: 0 20px;
     z-index: 2000;
     transition: all 0.3s ease;
@@ -24,24 +25,44 @@
     backdrop-filter: blur(10px);
 }
 
-/* Left side - login / profile / logout */
+/* Login / profile / logout — sits with the other actions on the right */
 .top-nav-left {
     display: flex;
     align-items: center;
     gap: 8px;
-    justify-self: start;
+    order: 2;
+    justify-self: end;
     min-height: 38px;
+    flex-shrink: 0;
 }
 
-/* Center - site title */
+/* Brand — circular portrait + site title */
+.top-nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    order: 1;
+    margin-right: auto;
+    justify-self: start;
+}
+
+.site-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    display: block;
+}
+
 .site-title {
     margin: 0;
     font-size: 1.5em;
     color: var(--accent-color);
     font-weight: bold;
     white-space: nowrap;
-    text-align: center;
-    justify-self: center;
+    text-align: left;
 }
 
 .bug-report-controls {
@@ -108,7 +129,9 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    order: 3;
     justify-self: end;
+    flex-shrink: 0;
 }
 
 /* UI scale settings (top nav) */
@@ -165,15 +188,127 @@
 body.gp-mobile .ui-scale-settings-panel {
     left: 8px;
     right: 8px;
+    top: calc(var(--gp-nav-offset, 40px) + 6px);
     width: auto;
     max-height: 80dvh;
     overflow: auto;
 }
 
+/* Compact single-row GP mobile nav: logo + title left, actions right */
+body.gp-mobile .top-nav-bar {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    height: 40px;
+    min-height: 40px;
+    max-height: 40px;
+    padding: 0 6px;
+    column-gap: 4px;
+    overflow: hidden;
+}
+
+body.gp-mobile .top-nav-brand {
+    order: 1;
+    flex: 1 1 auto;
+    min-width: 0;
+    justify-self: start;
+    justify-content: flex-start;
+    gap: 6px;
+}
+
+body.gp-mobile .site-logo {
+    width: 28px;
+    height: 28px;
+}
+
+body.gp-mobile .top-nav-left {
+    order: 2;
+    flex: 0 0 auto;
+    min-height: 0;
+    gap: 4px;
+}
+
+body.gp-mobile .site-title {
+    font-size: 0.78rem;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+
+body.gp-mobile .user-controls {
+    order: 3;
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    gap: 4px;
+    min-width: 0;
+}
+
+body.gp-mobile #mode-character-btn {
+    display: none !important;
+}
+
+body.gp-mobile .planner-mode-toggle {
+    gap: 0;
+}
+
+body.gp-mobile #login-btn.login-btn {
+    gap: 0 !important;
+    padding: 3px 5px !important;
+    min-width: 28px;
+    min-height: 28px;
+    border-radius: 6px;
+    font-size: 0 !important;
+    line-height: 0;
+}
+
+body.gp-mobile #login-btn .login-btn-label {
+    display: none;
+}
+
+body.gp-mobile #login-btn.login-btn svg {
+    width: 14px;
+    height: 14px;
+}
+
+body.gp-mobile .user-info {
+    gap: 4px;
+}
+
+body.gp-mobile .user-name {
+    display: none;
+}
+
+body.gp-mobile .user-avatar {
+    width: 22px;
+    height: 22px;
+}
+
 body.gp-mobile .top-nav-icon-btn,
-body.gp-mobile .dropdown-btn.icon-only {
-    min-width: 44px;
-    min-height: 44px;
+body.gp-mobile .dropdown-btn.icon-only,
+body.gp-mobile .planner-mode-btn.dropdown-btn.icon-only,
+body.gp-mobile .ui-scale-settings-btn {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    min-height: 28px;
+    padding: 3px !important;
+}
+
+body.gp-mobile .top-nav-icon-btn svg,
+body.gp-mobile .dropdown-btn.icon-only svg,
+body.gp-mobile .planner-mode-btn svg {
+    width: 14px;
+    height: 14px;
+}
+
+body.gp-mobile .ui-scale-settings-label-text {
+    font-size: 0.62rem;
+    letter-spacing: 0.02em;
+}
+
+body.gp-mobile .bug-report-controls {
+    gap: 4px;
 }
 
 .ui-scale-settings-header {
@@ -601,16 +736,23 @@ body.gp-mobile .dropdown-btn.icon-only {
     .top-nav-bar {
         height: auto;
         padding: 10px;
-        grid-template-columns: auto 1fr auto;
+    }
+
+    .top-nav-brand {
+        order: 1;
     }
 
     .top-nav-left {
-        order: 1;
+        order: 2;
     }
 
     .site-title {
         font-size: 1em;
-        order: 2;
+    }
+
+    .site-logo {
+        width: 28px;
+        height: 28px;
     }
 
     .user-controls {
@@ -626,6 +768,22 @@ body.gp-mobile .dropdown-btn.icon-only {
     .main-content {
         padding-top: 0;
         padding-left: 0;
+    }
+
+    body.gp-mobile .top-nav-bar {
+        height: 40px;
+        min-height: 40px;
+        max-height: 40px;
+        padding: 0 6px;
+    }
+
+    body.gp-mobile .user-controls {
+        flex-wrap: nowrap;
+        gap: 4px;
+    }
+
+    body.gp-mobile .app-scroll-layout {
+        padding-top: calc(var(--gp-nav-offset, 40px) / var(--ui-scale, 1));
     }
 
 }

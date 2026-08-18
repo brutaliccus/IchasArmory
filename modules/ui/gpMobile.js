@@ -45,7 +45,7 @@ export function setGpMobilePane(pane) {
 
 export function syncGpNavOffset() {
     const nav = document.querySelector('.top-nav-bar');
-    const h = nav ? Math.max(48, Math.round(nav.getBoundingClientRect().height)) : 60;
+    const h = nav ? Math.max(36, Math.round(nav.getBoundingClientRect().height)) : 60;
     document.documentElement.style.setProperty('--gp-nav-offset', `${h}px`);
     const tabbar = document.getElementById('gp-mobile-tabbar');
     const th = tabbar && !tabbar.hidden ? Math.round(tabbar.getBoundingClientRect().height) : 0;

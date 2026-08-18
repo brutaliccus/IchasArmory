@@ -102,7 +102,7 @@ Class/race no longer uses `translateX(-100% - 8px)`.
 
 ```text
 ┌─────────────────────────────────────┐
-│ Top nav (compact / wrapping)        │
+│ Top nav (single compact row)        │
 ├─────────────────────────────────────┤
 │ GP header: name · class/race · ⋯    │
 ├─────────────────────────────────────┤
@@ -484,7 +484,7 @@ Do not use hover delays on coarse pointers.
 Nav:
 
 - Measure `#top-nav-bar` height and set `--gp-nav-offset` (JS `ResizeObserver`). Docks/sheets/tab bar use it instead of `60px`.
-- Existing 768/480 nav rules stay; icon buttons already shrink at 480 — bump GP-critical nav controls (mode toggle, UI, login) to 44px when `.gp-mobile`.
+- On `.gp-mobile` the top nav stays **one 40px row**: circular armory portrait + title left-aligned, actions (icon-only Discord, remaining icons) right-aligned. `#mode-character-btn` is hidden. Do not wrap to a second row.
 
 Shell padding today: `calc(68px / var(--ui-scale))` top and `calc(52px + safe-area)` bottom. On mobile: top = nav + 8px; bottom = tab bar + safe-area (+ coffee if kept).
 
