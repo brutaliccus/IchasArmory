@@ -183,16 +183,76 @@ export function getEnchantQualityClass(enchant) {
     return 'q2';
 }
 
+/** Numeric quality rank for sorting (higher = better): q4 → 4 … q0 → 0. */
+const ENCHANT_QUALITY_RANK = { q4: 4, q3: 3, q2: 2, q1: 1, q0: 0 };
+
+/** @type {Record<string, Set<string>>} */
+const BUCKET_STAT_KEYS = {
+    'offensive.phys': OFFENSIVE_PHYS_KEYS,
+    'offensive.spell': OFFENSIVE_SPELL_KEYS,
+    'defensive.phys': DEFENSIVE_PHYS_KEYS,
+    'defensive.spell': DEFENSIVE_SPELL_KEYS,
+    healing: HEALING_KEYS,
+    utility: UTILITY_STAT_KEYS,
+};
+
 /**
- * Group enchants by category for picker rendering. Preserves input order within buckets.
+ * @param {object} enchant
+ * @returns {number}
+ */
+export function getEnchantQualityRank(enchant) {
+    return ENCHANT_QUALITY_RANK[getEnchantQualityClass(enchant)] ?? 0;
+}
+
+/**
+ * Dominant stat magnitude for sorting within a bucket (max abs value from bucket-relevant keys).
+ * @param {object} enchant
+ * @param {string} bucketId
+ * @returns {number}
+ */
+export function getEnchantDominantStatValue(enchant, bucketId) {
+    const stats = enchant?.stats || {};
+    const keySet = BUCKET_STAT_KEYS[bucketId];
+    let max = 0;
+
+    if (keySet) {
+        for (const key of keySet) {
+            const val = stats[key];
+            if (val != null) max = Math.max(max, Math.abs(Number(val)) || 0);
+        }
+        return max;
+    }
+
+    for (const val of Object.values(stats)) {
+        if (typeof val === 'number') max = Math.max(max, Math.abs(val));
+    }
+    return max;
+}
+
+/**
+ * Sort enchants within a bucket: quality (best first), then dominant stat value (highest first).
  * @param {object[]} enchants
- * @returns {Map<string, object[]>}
+ * @param {string} bucketId
+ * @returns {object[]}
+ */
+export function sortEnchantsInBucket(enchants, bucketId) {
+    return [...enchants].sort((a, b) => {
+        const qualityDiff = getEnchantQualityRank(b) - getEnchantQualityRank(a);
+        if (qualityDiff !== 0) return qualityDiff;
+        return getEnchantDominantStatValue(b, bucketId) - getEnchantDominantStatValue(a, bucketId);
+    });
+}
+
+/**
+ * Group enchants by category for picker rendering. Sorts within each bucket.
+ * `None` is returned separately (not placed in the Other bucket).
+ * @param {object[]} enchants
+ * @returns {{ groups: Map<string, object[]>; none: object|null }}
  */
 export function groupEnchantsByCategory(enchants) {
     /** @type {Map<string, object[]>} */
     const groups = new Map();
-    const noneEntry = enchants.find((e) => e.name === 'None');
-    if (noneEntry) groups.set('other', [noneEntry]);
+    const none = enchants.find((e) => e.name === 'None') || null;
 
     for (const enchant of enchants) {
         if (enchant.name === 'None') continue;
@@ -200,5 +260,10 @@ export function groupEnchantsByCategory(enchants) {
         if (!groups.has(bucketId)) groups.set(bucketId, []);
         groups.get(bucketId).push(enchant);
     }
-    return groups;
+
+    for (const [bucketId, list] of groups) {
+        groups.set(bucketId, sortEnchantsInBucket(list, bucketId));
+    }
+
+    return { groups, none };
 }

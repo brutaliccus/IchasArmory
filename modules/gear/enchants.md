@@ -209,11 +209,11 @@ The enchant modal (`modal.js` → `renderEnchants`) groups slot-filtered enchant
 | **Defensive** | Phys, Spell | Blue |
 | **Healing** | — | Green |
 | **Utility** | — | Gold |
-| **Other** | — | Gray (`None` + unclassified) |
+| **Other** | — | Gray (unclassified only; column hidden when empty) |
 
 ### Mapping rules (priority)
 
-1. **`None`** → Other (always first in that bucket).
+1. **`None`** — dedicated first row in the picker (not an Other-column item).
 2. **Healing** — `stats.healing` or healing-focused name (`Healing Power`, `Serenity`, etc.). Skipped when spell-damage keys dominate (e.g. `dmgAndHealing` + `spellHit` → Offensive Spell).
 3. **Offensive Phys** — `ap`, `attackPower`, `rap`, `rangedAttackPower`, `rangedDmg`, `str`, `agi`, `crit`, `hit`, `hitPercent`, `weaponDamage`, `armorPen`, `haste`, `vampirism`; proc names (Crusader, Fiery, Lifestealing, Demonslaying, etc.).
 4. **Offensive Spell** — `dmgAndHealing`, school spell damage keys, `spellCrit`, `spellHit`, `spellPen`, `int`; names with spell power / fire-frost-shadow power.
@@ -223,6 +223,16 @@ The enchant modal (`modal.js` → `renderEnchants`) groups slot-filtered enchant
 8. **Other** — no matching stats or name patterns.
 
 Ties: highest score among buckets wins. Description text is **not** used for healing/offensive/defensive name patterns (avoids ZG leg/head flavor text false positives); utility patterns may use name + description.
+
+### Sorting (within each bucket)
+
+1. **Quality** — `q4` (legendary-tier names) down through `q0` (`getEnchantQualityClass`).
+2. **Dominant stat** — highest absolute value among bucket-relevant keys in `enchant.stats` (e.g. `ap`, `dmgAndHealing`, `sta`).
+
+### Other column visibility
+
+- **Other** column renders only when at least one non-`None` enchant lands in `other`.
+- When every enchant is classified elsewhere, **Other** is hidden and **`None`** stays in the top dedicated row.
 
 ### Related files
 

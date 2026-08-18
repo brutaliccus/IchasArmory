@@ -136,11 +136,13 @@ Renders enchants in a **categorized column layout** (buff/consumable inspired): 
 - Colored category headers; Phys/Spell subheaders under Offensive and Defensive
 - Truncated display names (`mechanicShortNameFromFullName`); full name in `title` + tooltip
 - Quality-colored row names via `getEnchantQualityClass` (`q0`–`q4`)
+- Within each bucket: sorted by quality (best first), then dominant stat magnitude
 - Selected enchant: `.is-selected.is-enchanted` gold text + glow (matches gear strip)
 - Maps enchants to original database indices for selection (`data-enchant-index`)
 - Attaches tooltip handlers showing enchant effects
 - Shows "No enchants found" when filter results are empty
-- `None` always appears under **Other**
+- **`None`** — dedicated top row (`.enchant-picker-none-row`), not in the Other column
+- **Other** column hidden when no unclassified enchants (only `None` would have been there)
 - Shared Character Planner + Gear Planner via `openEnchantModal(..., selectedEnchantIndex)`
 
 ---

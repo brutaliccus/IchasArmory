@@ -1147,13 +1147,24 @@ function renderEnchants(enchants, allEnchants, listElement, selectedEnchantIndex
         return;
     }
 
-    const groups = groupEnchantsByCategory(enchants);
-    const columnsHtml = ENCHANT_CATEGORY_ORDER
+    const { groups, none } = groupEnchantsByCategory(enchants);
+    const otherEnchants = groups.get('other');
+    const showOtherColumn = otherEnchants && otherEnchants.length > 0;
+    const categoryOrder = showOtherColumn
+        ? ENCHANT_CATEGORY_ORDER
+        : ENCHANT_CATEGORY_ORDER.filter((mainId) => mainId !== 'other');
+
+    const noneHtml = none
+        ? `<div class="enchant-picker-none-row">${renderEnchantItemHtml(none, allEnchants, selectedEnchantIndex)}</div>`
+        : '';
+
+    const columnsHtml = categoryOrder
         .map((mainId) => renderEnchantCategoryColumn(mainId, groups, allEnchants, selectedEnchantIndex))
         .filter(Boolean)
         .join('');
 
     listElement.innerHTML = `
+        ${noneHtml}
         <div class="enchant-picker-categories">
             ${columnsHtml}
         </div>
