@@ -132,6 +132,8 @@ let characterBuffSnapshot = null;
 let buffsListHome = null;
 let consumeToolsHome = null;
 let gpQuickSimRunning = false;
+let gpLocationsDockCollapsed = false;
+let gpStatsDockCollapsed = false;
 
 const GP_ICON_TALENTS = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>`;
 const GP_ICON_BUFFS = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v7.31L4.21 20.39A1 1 0 0 0 5.08 22h13.84a1 1 0 0 0 .87-1.61L14 9.31V2"/><path d="M8.5 2h7"/><path d="M7 15h10"/></svg>`;
@@ -310,6 +312,12 @@ export function initGearPlannerView(cbs) {
         } else {
             editMode = !currentPlan.id;
         }
+        if (typeof session.locationsDockCollapsed === 'boolean') {
+            gpLocationsDockCollapsed = session.locationsDockCollapsed;
+        }
+        if (typeof session.statsDockCollapsed === 'boolean') {
+            gpStatsDockCollapsed = session.statsDockCollapsed;
+        }
     } else {
         editMode = true;
     }
@@ -331,6 +339,8 @@ export function initGearPlannerView(cbs) {
     wireGpConsumeToolsSync();
     wireGpTankBossSearch();
     wireGpSimConfigButton();
+    wireGpDockToggles();
+    syncGpDockUi();
     if (!document.body.dataset.gpTipDocWired) {
         document.body.dataset.gpTipDocWired = '1';
         document.addEventListener('click', (e) => {
@@ -351,6 +361,7 @@ export function initGearPlannerView(cbs) {
             persistSession();
             applyUiScale();
             if (gpOverlay === 'talents') requestAnimationFrame(() => fitGpTalentTree());
+            syncGpDockUi();
         },
     });
     refreshGearPlannerWhenItemsReady();
@@ -436,7 +447,48 @@ function persistSession() {
         plan: getGearPlanData(currentPlan),
         editMode,
         mobileTab: getGpMobilePane(),
+        locationsDockCollapsed: gpLocationsDockCollapsed,
+        statsDockCollapsed: gpStatsDockCollapsed,
         timestamp: Date.now(),
+    });
+}
+
+function syncGpDockUi() {
+    const locSidebar = document.getElementById('gp-locations-sidebar');
+    const statsSidebar = document.getElementById('gp-stats-sidebar');
+    const locBtn = document.getElementById('gp-locations-dock-toggle');
+    const statsBtn = document.getElementById('gp-stats-dock-toggle');
+    const mobile = isGpMobileLayout();
+    const locTucked = !mobile && gpLocationsDockCollapsed;
+    const statsTucked = !mobile && gpStatsDockCollapsed;
+    locSidebar?.classList.toggle('is-dock-tucked', locTucked);
+    statsSidebar?.classList.toggle('is-dock-tucked', statsTucked);
+    if (locBtn) {
+        locBtn.setAttribute('aria-expanded', locTucked ? 'false' : 'true');
+        locBtn.title = locTucked ? 'Show locations' : 'Hide locations';
+        locBtn.setAttribute('aria-label', locTucked ? 'Show locations panel' : 'Hide locations panel');
+    }
+    if (statsBtn) {
+        statsBtn.setAttribute('aria-expanded', statsTucked ? 'false' : 'true');
+        statsBtn.title = statsTucked ? 'Show modified stats' : 'Hide modified stats';
+        statsBtn.setAttribute('aria-label', statsTucked ? 'Show modified stats panel' : 'Hide modified stats panel');
+    }
+}
+
+function wireGpDockToggles() {
+    document.getElementById('gp-locations-dock-toggle')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (isGpMobileLayout()) return;
+        gpLocationsDockCollapsed = !gpLocationsDockCollapsed;
+        syncGpDockUi();
+        persistSession();
+    });
+    document.getElementById('gp-stats-dock-toggle')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (isGpMobileLayout()) return;
+        gpStatsDockCollapsed = !gpStatsDockCollapsed;
+        syncGpDockUi();
+        persistSession();
     });
 }
 
@@ -3426,11 +3478,17 @@ function renderLocationsSidebar() {
         <div class="gp-locations-group" data-kind="${escapeHtml(g.kind)}">
             <h4 class="gp-locations-group-heading">${escapeHtml(g.label)}</h4>
             <ul>${g.entries.map(e => {
-                const many = (e.items || []).length > 3;
+                const itemCount = (e.items || []).length;
+                const many = itemCount > 3;
+                const mobile = isGpMobileLayout();
+                const startCollapsed = many && mobile;
+                const showListToggle = many;
                 return `<li class="gp-location-entry" data-instance-id="${escapeHtml(e.id)}" data-instance-name="${escapeHtml(e.name)}" role="button" tabindex="0">
-                <span class="gp-location-name">${escapeHtml(e.name)}</span>
-                ${many ? `<button type="button" class="gp-location-toggle" aria-expanded="false">${e.items.length} items</button>` : ''}
-                <ul class="gp-location-items${many ? ' is-collapsed' : ''}">${(e.items || []).map(it => {
+                <div class="gp-location-entry-head">
+                    <span class="gp-location-name">${escapeHtml(e.name)}</span>
+                    ${showListToggle ? `<button type="button" class="gp-location-list-toggle" aria-expanded="${startCollapsed ? 'false' : 'true'}" aria-label="Toggle item list" title="Toggle items"><span class="gp-location-list-caret" aria-hidden="true">▾</span></button>` : ''}
+                </div>
+                <ul class="gp-location-items${startCollapsed ? ' is-collapsed' : ''}">${(e.items || []).map(it => {
                     const q = it.quality ?? callbacks.getItemById?.(it.id)?.quality ?? 0;
                     return `<li class="gp-location-item" data-item-id="${it.id}"><span class="q${q}">${escapeHtml(it.name)}</span></li>`;
                 }).join('')}</ul>
@@ -3523,15 +3581,16 @@ function bindLocationHoverHighlights() {
             });
         }
         li.addEventListener('click', (e) => {
-            if (e.target.closest('.gp-location-item') || e.target.closest('.gp-location-toggle')) return;
+            if (e.target.closest('.gp-location-item') || e.target.closest('.gp-location-list-toggle') || e.target.closest('.gp-location-toggle')) return;
             if (!isGpMobileLayout() && hoverOk) return;
             pinLocation(li.dataset.instanceId || '', li.dataset.instanceName || '');
         });
     });
-    list.querySelectorAll('.gp-location-toggle').forEach((btn) => {
+    list.querySelectorAll('.gp-location-list-toggle, .gp-location-toggle').forEach((btn) => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const items = btn.parentElement?.querySelector('.gp-location-items');
+            const entry = btn.closest('.gp-location-entry');
+            const items = entry?.querySelector('.gp-location-items');
             if (!items) return;
             const collapsed = items.classList.toggle('is-collapsed');
             btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
@@ -3612,6 +3671,7 @@ export function renderGearPlanner() {
     bindSlotEvents();
     persistSession();
     syncGpMobileChrome();
+    syncGpDockUi();
 }
 
 function getGpClassId() {

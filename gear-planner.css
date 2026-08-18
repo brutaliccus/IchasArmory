@@ -39,28 +39,6 @@ body[data-app-mode="character"] #gear-planner-shell {
     display: none;
 }
 
-body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    right: 0;
-    left: auto;
-    top: 60px;
-    bottom: 0;
-    width: 260px;
-    z-index: 1100;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 16px 16px 20px;
-    background: linear-gradient(145deg, #1a1a1f 0%, #121218 100%);
-    border: 1px solid #3d3520;
-    border-right: none;
-    border-radius: 0;
-    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.4);
-    box-sizing: border-box;
-    zoom: 1 !important;
-}
-
 .gp-stats-sidebar {
     display: none;
 }
@@ -428,18 +406,133 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     left: 0;
     top: 60px;
     bottom: 0;
-    width: 260px;
+    width: var(--gp-dock-panel-width, 260px);
     z-index: 1100;
+    overflow: visible;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+    zoom: 1 !important;
+    transition: transform var(--gp-part-duration, 320ms) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body[data-app-mode="gearPlanner"] .gp-stats-sidebar:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    right: 0;
+    left: auto;
+    top: 60px;
+    bottom: 0;
+    width: var(--gp-dock-panel-width, 260px);
+    z-index: 1100;
+    overflow: visible;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+    zoom: 1 !important;
+    transition: transform var(--gp-part-duration, 320ms) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gp-dock-panel {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 16px 16px 20px;
     background: linear-gradient(145deg, #1a1a1f 0%, #121218 100%);
     border: 1px solid #3d3520;
-    border-left: none;
-    border-radius: 0;
-    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
     box-sizing: border-box;
-    zoom: 1 !important;
+}
+
+.gp-dock-sidebar--left .gp-dock-panel {
+    border-left: none;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
+}
+
+.gp-dock-sidebar--right .gp-dock-panel {
+    border-right: none;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Desktop dock tuck toggles — hidden on mobile (tab bar owns pane switching) */
+.gp-dock-toggle {
+    display: none;
+}
+
+body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    width: 22px;
+    height: 52px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #5a4a20;
+    background: linear-gradient(180deg, #2a2418 0%, #1a1810 100%);
+    color: #c9a227;
+    cursor: pointer;
+    transform: translateY(-50%);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-toggle--left {
+    right: -11px;
+    border-radius: 0 8px 8px 0;
+}
+
+body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-toggle--right {
+    left: -11px;
+    border-radius: 8px 0 0 8px;
+}
+
+.gp-dock-caret {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(135deg);
+    margin-left: 2px;
+}
+
+.gp-dock-toggle--right .gp-dock-caret {
+    transform: rotate(-45deg);
+    margin-left: -2px;
+}
+
+body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--left.is-dock-tucked {
+    transform: translateX(calc(-1 * var(--gp-dock-panel-width, 260px) + 22px));
+}
+
+body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-dock-tucked {
+    transform: translateX(calc(var(--gp-dock-panel-width, 260px) - 22px));
+}
+
+body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--left.is-dock-tucked .gp-dock-caret {
+    transform: rotate(-45deg);
+    margin-left: -2px;
+}
+
+body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-dock-tucked .gp-dock-caret {
+    transform: rotate(135deg);
+    margin-left: 2px;
+}
+
+.gp-dock-toggle:hover {
+    border-color: #c9a227;
+    color: #ffd700;
 }
 
 .gp-locations-title {
@@ -487,6 +580,18 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     border: 1px solid transparent;
     border-radius: 6px;
     cursor: default;
+}
+
+.gp-location-entry-head {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+}
+
+.gp-location-name {
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 .gp-location-entry:hover {
@@ -2110,16 +2215,34 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     box-shadow: inset 3px 0 0 #ffd700;
 }
 
-.gp-location-toggle {
+.gp-location-toggle,
+.gp-location-list-toggle {
     appearance: none;
-    margin-left: 6px;
-    padding: 2px 8px;
+    flex: 0 0 auto;
+    margin-left: auto;
+    padding: 2px 6px;
     border-radius: 4px;
-    border: 1px solid #5a4a20;
+    border: 1px solid transparent;
     background: transparent;
     color: #c9a227;
     font-size: calc(0.75rem * var(--ts, 1));
     cursor: pointer;
+    line-height: 1;
+}
+
+.gp-location-list-toggle:hover,
+.gp-location-toggle:hover {
+    border-color: #5a4a20;
+    background: rgba(201, 162, 39, 0.08);
+}
+
+.gp-location-list-caret {
+    display: inline-block;
+    transition: transform var(--gp-part-duration, 320ms) ease;
+}
+
+.gp-location-list-toggle[aria-expanded="false"] .gp-location-list-caret {
+    transform: rotate(-90deg);
 }
 
 .gp-location-items.is-collapsed {
@@ -2333,7 +2456,15 @@ body.gp-mobile .gp-stats-sidebar:not([hidden]) {
     z-index: 8;
     border: none;
     box-shadow: none;
+    padding: 0;
+    transform: none !important;
+}
+
+body.gp-mobile .gp-dock-panel {
+    height: 100%;
     padding: 12px 14px 16px;
+    border: none;
+    box-shadow: none;
 }
 
 body.gp-mobile .gp-locations-sidebar[hidden],

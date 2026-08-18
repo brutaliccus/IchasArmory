@@ -1518,7 +1518,11 @@
     </div>
     </div><!-- /#ichacalc-scaled-root -->
 
-    <aside id="gp-locations-sidebar" class="gp-locations-sidebar" aria-label="Locations needed" hidden>
+    <aside id="gp-locations-sidebar" class="gp-locations-sidebar gp-dock-sidebar gp-dock-sidebar--left" aria-label="Locations needed" hidden>
+        <button type="button" id="gp-locations-dock-toggle" class="gp-dock-toggle gp-dock-toggle--left" aria-expanded="true" aria-controls="gp-locations-dock" aria-label="Hide locations panel" title="Hide locations">
+            <span class="gp-dock-caret" aria-hidden="true"></span>
+        </button>
+        <div id="gp-locations-dock" class="gp-dock-panel">
         <div class="gp-pane-toolbar">
             <h3 class="gp-locations-title">Locations needed</h3>
             <div class="gp-pane-actions">
@@ -1528,13 +1532,19 @@
         </div>
         <p class="gp-pane-hint gp-locations-empty-hint">Equip items in Gear to see where to farm.</p>
         <div id="gp-locations-list" class="gp-locations-list"></div>
+        </div>
     </aside>
 
-    <aside id="gp-stats-sidebar" class="gp-stats-sidebar" aria-label="Plan stats" hidden>
+    <aside id="gp-stats-sidebar" class="gp-stats-sidebar gp-dock-sidebar gp-dock-sidebar--right" aria-label="Plan stats" hidden>
+        <button type="button" id="gp-stats-dock-toggle" class="gp-dock-toggle gp-dock-toggle--right" aria-expanded="true" aria-controls="gp-stats-dock" aria-label="Hide modified stats panel" title="Hide stats">
+            <span class="gp-dock-caret" aria-hidden="true"></span>
+        </button>
+        <div id="gp-stats-dock" class="gp-dock-panel">
         <div class="gp-pane-toolbar">
             <h3 class="gp-locations-title">Modified stats</h3>
         </div>
         <div id="gp-stats-list" class="gp-stats-list"></div>
+        </div>
     </aside>
 
     <nav id="gp-mobile-tabbar" class="gp-mobile-tabbar" hidden aria-label="Gear planner views">
