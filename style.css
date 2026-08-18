@@ -1747,11 +1747,17 @@ input, select {
 
 /* Categorized enchant picker (buff-column inspired) */
 #enchant-modal .enchant-modal-content {
-    width: min(98vw, 2520px);
-    max-width: min(98vw, 2520px);
+    width: fit-content;
+    max-width: 98vw;
+    height: auto;
+    max-height: 85vh;
 }
 .enchant-modal-content {
-    max-width: min(98vw, 2520px);
+    --enchant-picker-col-w: 330px;
+    --enchant-picker-col-gap: 14px;
+    max-width: 98vw;
+    height: auto;
+    max-height: 85vh;
 }
 .enchant-modal-body {
     display: flex;
@@ -1771,15 +1777,16 @@ input, select {
 }
 .enchant-picker-categories {
     display: flex;
-    gap: 14px;
+    gap: var(--enchant-picker-col-gap, 14px);
     align-items: flex-start;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
     padding: 4px 2px 8px;
 }
 .enchant-picker-column {
-    flex: 0 1 330px;
-    min-width: 300px;
+    flex: 0 0 var(--enchant-picker-col-w, 330px);
+    min-width: var(--enchant-picker-col-w, 330px);
+    width: var(--enchant-picker-col-w, 330px);
     max-width: none;
     display: flex;
     flex-direction: column;

@@ -1119,6 +1119,68 @@ function renderEnchantCategoryColumn(mainId, groups, allEnchants, selectedEnchan
     `;
 }
 
+function getEnchantPickerLayoutMetrics(categoriesEl) {
+    const modalContent = categoriesEl.closest('.enchant-modal-content');
+    const rootStyle = modalContent ? getComputedStyle(modalContent) : getComputedStyle(categoriesEl);
+    const colW = parseFloat(rootStyle.getPropertyValue('--enchant-picker-col-w')) || 330;
+    const gap = parseFloat(rootStyle.getPropertyValue('--enchant-picker-col-gap'))
+        || parseFloat(getComputedStyle(categoriesEl).gap)
+        || 14;
+    const columnCount = categoriesEl.querySelectorAll('.enchant-picker-column').length;
+    return { colW, gap, columnCount };
+}
+
+function fitEnchantModalWidth(listElement) {
+    const modalContent = document.querySelector('#enchant-modal .enchant-modal-content');
+    const categoriesEl = listElement?.querySelector('.enchant-picker-categories');
+    if (!modalContent) return;
+
+    if (!categoriesEl) {
+        modalContent.style.removeProperty('width');
+        return;
+    }
+
+    const { colW, gap, columnCount } = getEnchantPickerLayoutMetrics(categoriesEl);
+    if (columnCount === 0) {
+        modalContent.style.removeProperty('width');
+        return;
+    }
+
+    const categoriesStyle = getComputedStyle(categoriesEl);
+    const categoriesPadX = parseFloat(categoriesStyle.paddingLeft) + parseFloat(categoriesStyle.paddingRight);
+    const columnsWidth = (columnCount * colW) + (Math.max(0, columnCount - 1) * gap) + categoriesPadX;
+
+    const listStyle = getComputedStyle(listElement);
+    const listPadX = parseFloat(listStyle.paddingLeft) + parseFloat(listStyle.paddingRight);
+
+    const bodyEl = modalContent.querySelector('.enchant-modal-body');
+    const bodyStyle = bodyEl ? getComputedStyle(bodyEl) : null;
+    const bodyPadX = bodyStyle
+        ? parseFloat(bodyStyle.paddingLeft) + parseFloat(bodyStyle.paddingRight)
+        : 0;
+
+    const contentStyle = getComputedStyle(modalContent);
+    const contentPadX = parseFloat(contentStyle.paddingLeft) + parseFloat(contentStyle.paddingRight);
+    const borderX = parseFloat(contentStyle.borderLeftWidth) + parseFloat(contentStyle.borderRightWidth);
+
+    const noneRow = listElement.querySelector('.enchant-picker-none-row');
+    const noneWidth = noneRow ? noneRow.scrollWidth : 0;
+    const innerContent = Math.max(columnsWidth + listPadX, noneWidth + listPadX);
+
+    const filtersEl = bodyEl?.querySelector('.modal-filters');
+    const filtersWidth = filtersEl ? filtersEl.scrollWidth + bodyPadX : 0;
+
+    const totalWidth = Math.max(innerContent, filtersWidth) + contentPadX + borderX;
+    const maxWidth = Math.floor(window.innerWidth * 0.98);
+    modalContent.style.width = `${Math.min(Math.ceil(totalWidth), maxWidth)}px`;
+}
+
+function scheduleEnchantModalWidthFit(listElement) {
+    const modal = document.getElementById('enchant-modal');
+    if (!modal || modal.style.display === 'none') return;
+    requestAnimationFrame(() => fitEnchantModalWidth(listElement));
+}
+
 function attachEnchantItemTooltips(listElement, allEnchants) {
     const tooltip = document.getElementById('item-tooltip');
     if (!tooltip) return;
@@ -1178,6 +1240,7 @@ function renderEnchants(enchants, allEnchants, listElement, selectedEnchantIndex
     `;
 
     attachEnchantItemTooltips(listElement, allEnchants);
+    scheduleEnchantModalWidthFit(listElement);
 }
 
 /**
@@ -2097,6 +2160,7 @@ export function openEnchantModal(slotId, enchants, elements, itemOverride = null
     filterAndRenderEnchants(classFilteredEnchants, '', elements.enchantModalList, enchants, selectedEnchantIndex);
 
     elements.enchantModal.style.display = 'flex';
+    requestAnimationFrame(() => fitEnchantModalWidth(elements.enchantModalList));
     if (enchantSearchInput) enchantSearchInput.focus();
 }
 
@@ -2114,6 +2178,8 @@ export function closeModal(elements) {
     }
     if (elements.enchantModal) {
         elements.enchantModal.style.display = 'none';
+        const enchantModalContent = elements.enchantModal.querySelector('.enchant-modal-content');
+        if (enchantModalContent) enchantModalContent.style.removeProperty('width');
         delete elements.enchantModal.dataset.gearPlanEnchant;
         delete elements.enchantModal.dataset.gearPlanItemId;
     }
