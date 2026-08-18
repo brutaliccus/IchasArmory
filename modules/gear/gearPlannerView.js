@@ -2354,6 +2354,14 @@ function formatTalentSpread(spread) {
     return arr.slice(0, 3).join('/');
 }
 
+let communitySearchDebounceTimer = null;
+const COMMUNITY_SEARCH_DEBOUNCE_MS = 250;
+
+function scheduleCommunitySearch() {
+    clearTimeout(communitySearchDebounceTimer);
+    communitySearchDebounceTimer = setTimeout(() => runCommunitySearch(), COMMUNITY_SEARCH_DEBOUNCE_MS);
+}
+
 function wireCommunitySearchDialog() {
     const hide = () => {
         const el = document.getElementById('gp-community-search-dialog');
@@ -2364,12 +2372,19 @@ function wireCommunitySearchDialog() {
         if (e.target.id === 'gp-community-search-dialog') hide();
     });
     document.getElementById('gp-community-search-go')?.addEventListener('click', () => runCommunitySearch());
+    document.getElementById('gp-community-q')?.addEventListener('input', () => scheduleCommunitySearch());
     document.getElementById('gp-community-q')?.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') runCommunitySearch();
+        if (e.key === 'Enter') {
+            clearTimeout(communitySearchDebounceTimer);
+            runCommunitySearch();
+        }
     });
     document.getElementById('gp-community-class')?.addEventListener('change', () => {
         fillCommunitySpecFilter(document.getElementById('gp-community-class')?.value || '');
+        runCommunitySearch();
     });
+    document.getElementById('gp-community-role')?.addEventListener('change', () => runCommunitySearch());
+    document.getElementById('gp-community-spec')?.addEventListener('change', () => runCommunitySearch());
     document.getElementById('gp-community-sort')?.addEventListener('change', () => runCommunitySearch());
 }
 

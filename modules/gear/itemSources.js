@@ -104,12 +104,37 @@ export function formatItemSourceLine(itemId) {
 /**
  * OR semantics: item matches if any source instanceId is in selectedIds.
  * Empty selectedIds → no filter (all items pass).
+ * @deprecated Prefer exclude-based filtering via itemIsExcludedBySourceFilter.
  */
 export function itemMatchesInstanceFilter(itemId, selectedInstanceIds) {
     if (!selectedInstanceIds?.length) return true;
     const sources = getSourcesForItem(itemId);
     if (!sources.length) return selectedInstanceIds.includes('__other__');
     return sources.some(s => selectedInstanceIds.includes(s.instanceId));
+}
+
+/**
+ * Exclude semantics (include-by-default): returns true when the item should be hidden.
+ * excludedInstanceIds — specific dungeon/raid/other instance ids to hide.
+ * excludedSourceGroups — kind keys (dungeon, raid, worldboss) or otherGroup ids (quests, pvp, …).
+ */
+export function itemIsExcludedBySourceFilter(itemId, excludedInstanceIds, excludedSourceGroups) {
+    const exIds = excludedInstanceIds?.length ? excludedInstanceIds : null;
+    const exGroups = excludedSourceGroups?.length ? excludedSourceGroups : null;
+    if (!exIds && !exGroups) return false;
+
+    const sources = getSourcesForItem(itemId);
+    if (!sources.length) {
+        return (exIds && exIds.includes('__other__'))
+            || (exGroups && exGroups.includes('__other__'));
+    }
+
+    return sources.some((s) => {
+        if (exIds && exIds.includes(s.instanceId)) return true;
+        if (exGroups && exGroups.includes(s.kind)) return true;
+        if (exGroups && exGroups.includes(s.instanceId)) return true;
+        return false;
+    });
 }
 
 /** Item has no dungeon/raid/worldboss source (only other or none). */

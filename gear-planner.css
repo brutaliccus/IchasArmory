@@ -1626,12 +1626,28 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     flex-shrink: 0;
 }
 
-.gp-community-modal { width: min(720px, 94vw); max-height: 85vh; display: flex; flex-direction: column; }
-.gp-community-body { display: flex; flex-direction: column; gap: 12px; padding: 12px 16px 16px; min-height: 0; }
+.gp-community-modal {
+    width: min(720px, 94vw);
+    max-height: 85vh;
+    height: min(85vh, 80vh);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.gp-community-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 16px 16px;
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+}
 .gp-community-filters {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
+    flex-shrink: 0;
 }
 .gp-community-filters #gp-community-q { grid-column: 1 / -1; }
 .gp-community-filters #gp-community-search-go { grid-column: 1 / -1; }
@@ -1643,8 +1659,9 @@ body[data-app-mode="gearPlanner"] .gp-locations-sidebar:not([hidden]) {
     .gp-community-filters #gp-community-search-go { grid-column: auto; }
 }
 .gp-community-results {
+    flex: 1;
+    min-height: 0;
     overflow: auto;
-    max-height: min(55vh, 480px);
     display: flex;
     flex-direction: column;
     gap: 8px;

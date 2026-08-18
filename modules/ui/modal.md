@@ -398,11 +398,13 @@ Each class can only wear certain armor types:
 
 ## Loot Source / Instance Filter
 
-Four compact **dropdowns** on `.item-picker-instance-row` (`#instances-dungeons-dropdown`, `#instances-raids-dropdown`, `#instances-worldbosses-dropdown`, `#instances-other-dropdown`). Open the header, check instances, close — menus are `max-height: 220px` with overflow scroll so they do not fill the screen. Labels show a count when filters are active (`Raids (2)`). Data from `/data/loot/` via `modules/gear/itemSources.js`.
+**Group exclude row** (`.item-picker-source-group-row`): quick toggles to hide whole categories — dungeons, raids, world bosses, quests, PvP, crafting, world drops, events, collections, factions, unknown. Checked = exclude that category (include-by-default).
 
-- **OR semantics**: item shown if any source matches a selected instance id
-- **Empty selection**: no instance filter (all items)
-- **`savedFilters.instances`**: persisted with other modal filters
+Four compact **dropdowns** on `.item-picker-instance-row` (`#instances-dungeons-dropdown`, `#instances-raids-dropdown`, `#instances-worldbosses-dropdown`, `#instances-other-dropdown`). Each menu shows **“Check to hide”**; checking an instance excludes items from that source without selecting every other source. Labels show a hide count when active (`Raids (−2)`). Data from `/data/loot/` via `modules/gear/itemSources.js`.
+
+- **Exclude semantics**: item hidden if any source matches an excluded instance id or excluded group (kind `dungeon`/`raid`/`worldboss` or otherGroup id like `quests`)
+- **Empty exclusions**: no source filter (all items)
+- **`savedFilters.excludedInstances` / `excludedSourceGroups`**: persisted with other modal filters
 - **Source subline**: `getPrimarySourceLabel(itemId)` on each modal row (`.modal-item-source`)
 - **Gear planner**: `setItemModalPlayerClassOverride(classId)` for can-equip when picking plan items
 

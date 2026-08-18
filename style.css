@@ -1831,6 +1831,39 @@ input, select {
     margin-bottom: 10px;
     align-items: stretch;
 }
+.item-picker-source-group-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    margin-bottom: 8px;
+    padding: 6px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.15);
+}
+.item-picker-source-group-hint {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #a09070;
+    margin-right: 4px;
+    flex: 0 0 auto;
+}
+.item-picker-source-group-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    white-space: nowrap;
+    user-select: none;
+}
+.item-picker-source-group-chip input {
+    margin: 0;
+    accent-color: #c9a227;
+}
 .item-picker-instance-row .stat-dropdown-container {
     min-width: 0;
     position: relative;

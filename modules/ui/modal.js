@@ -8,7 +8,7 @@ import { getStatSearchTerms, getItemType, filterEnchantsByItemType, filterEnchan
 import {
     ensureItemSourcesLoaded,
     getPrimarySourceLabel,
-    itemMatchesInstanceFilter,
+    itemIsExcludedBySourceFilter,
     getInstanceFilterGroups,
 } from '../gear/itemSources.js';
 
@@ -58,7 +58,8 @@ const savedFilters = {
     qualities: [3, 4, 5], // Default: rare, epic, legendary
     ilvlMin: 1,
     ilvlMax: 60,
-    instances: [],
+    excludedInstances: [],
+    excludedSourceGroups: [],
 };
 
 // Sort toggle states (DPS / Tank mutually exclusive)
@@ -602,10 +603,10 @@ export function filterAndRenderItems(allItems, filters, listElement) {
         });
     }
 
-    // Apply instance / loot source filter (OR semantics)
-    if (filters.instances && filters.instances.length > 0) {
+    // Apply instance / loot source exclude filters (include-by-default)
+    if ((filters.excludedInstances?.length) || (filters.excludedSourceGroups?.length)) {
         filteredItems = filteredItems.filter(item =>
-            itemMatchesInstanceFilter(item.id, filters.instances)
+            !itemIsExcludedBySourceFilter(item.id, filters.excludedInstances, filters.excludedSourceGroups)
         );
     }
 
@@ -1193,9 +1194,12 @@ function resetFilters() {
     savedFilters.qualities = [3, 4, 5];
     savedFilters.ilvlMin = REQ_LEVEL_MIN;
     savedFilters.ilvlMax = REQ_LEVEL_MAX;
-    savedFilters.instances = [];
-    document.querySelectorAll('input.instance-filter-cb').forEach(cb => { cb.checked = false; });
+    savedFilters.excludedInstances = [];
+    savedFilters.excludedSourceGroups = [];
+    document.querySelectorAll('input.instance-exclude-cb').forEach(cb => { cb.checked = false; });
+    document.querySelectorAll('input.source-group-exclude-cb').forEach(cb => { cb.checked = false; });
     updateInstanceFilterLabel();
+    updateSourceGroupExcludeLabel();
 
     // Reset sort buttons
     sortByDpsActive = false;
@@ -1456,6 +1460,20 @@ export function repositionItemPickerIfOpen() {
 
 let instanceFilterUiReady = false;
 
+const SOURCE_GROUP_EXCLUDE_OPTIONS = [
+    { id: 'dungeon', label: 'Hide dungeons' },
+    { id: 'raid', label: 'Hide raids' },
+    { id: 'worldboss', label: 'Hide world bosses' },
+    { id: 'quests', label: 'Hide quests' },
+    { id: 'pvp', label: 'Hide PvP' },
+    { id: 'crafting', label: 'Hide crafting' },
+    { id: 'world-drops', label: 'Hide world drops' },
+    { id: 'world-events', label: 'Hide events' },
+    { id: 'collections', label: 'Hide collections' },
+    { id: 'factions', label: 'Hide factions' },
+    { id: '__other__', label: 'Hide unknown' },
+];
+
 const INSTANCE_FILTER_MENUS = [
     { key: 'dungeons', menuId: 'instances-dungeons-dropdown', labelId: 'instance-filter-label-dungeons', title: 'Dungeons' },
     { key: 'raids', menuId: 'instances-raids-dropdown', labelId: 'instance-filter-label-raids', title: 'Raids' },
@@ -1468,19 +1486,33 @@ function updateInstanceFilterLabel() {
         const label = document.getElementById(labelId);
         const menu = document.getElementById(menuId);
         if (!label || !menu) continue;
-        const count = menu.querySelectorAll('input.instance-filter-cb:checked').length;
-        label.textContent = count > 0 ? `${title} (${count})` : title;
+        const count = menu.querySelectorAll('input.instance-exclude-cb:checked').length;
+        label.textContent = count > 0 ? `${title} (−${count})` : title;
+    }
+}
+
+function updateSourceGroupExcludeLabel() {
+    const row = document.getElementById('source-group-exclude-row');
+    if (!row) return;
+    const count = row.querySelectorAll('input.source-group-exclude-cb:checked').length;
+    const hint = row.querySelector('.item-picker-source-group-hint');
+    if (hint) {
+        hint.textContent = count > 0 ? `Hiding ${count} categor${count === 1 ? 'y' : 'ies'}` : 'Hide whole categories';
     }
 }
 
 function fillInstanceFilterMenu(menu, list) {
     menu.innerHTML = '';
+    const title = document.createElement('div');
+    title.className = 'instance-filter-section-title';
+    title.textContent = 'Check to hide';
+    menu.appendChild(title);
     for (const inst of list) {
         const id = `inst-filter-${inst.id}`;
         const row = document.createElement('label');
-        row.innerHTML = `<input type="checkbox" class="instance-filter-cb" id="${id}" value="${inst.id}"><span>${inst.name}</span>`;
+        row.innerHTML = `<input type="checkbox" class="instance-exclude-cb" id="${id}" value="${inst.id}"><span>${inst.name}</span>`;
         const cb = row.querySelector('input');
-        cb.checked = savedFilters.instances.includes(inst.id);
+        cb.checked = savedFilters.excludedInstances.includes(inst.id);
         cb.addEventListener('change', () => {
             updateInstanceFilterLabel();
             document.dispatchEvent(new CustomEvent('filterChanged'));
@@ -1489,11 +1521,38 @@ function fillInstanceFilterMenu(menu, list) {
     }
 }
 
+function setupSourceGroupExcludeUI() {
+    const row = document.getElementById('source-group-exclude-row');
+    if (!row || row.dataset.ready === '1') {
+        row?.querySelectorAll('input.source-group-exclude-cb').forEach((cb) => {
+            cb.checked = savedFilters.excludedSourceGroups.includes(cb.value);
+        });
+        updateSourceGroupExcludeLabel();
+        return;
+    }
+    row.innerHTML = '<span class="item-picker-source-group-hint">Hide whole categories</span>';
+    for (const opt of SOURCE_GROUP_EXCLUDE_OPTIONS) {
+        const label = document.createElement('label');
+        label.className = 'item-picker-source-group-chip';
+        label.innerHTML = `<input type="checkbox" class="source-group-exclude-cb" value="${opt.id}"><span>${opt.label}</span>`;
+        const cb = label.querySelector('input');
+        cb.checked = savedFilters.excludedSourceGroups.includes(opt.id);
+        cb.addEventListener('change', () => {
+            updateSourceGroupExcludeLabel();
+            document.dispatchEvent(new CustomEvent('filterChanged'));
+        });
+        row.appendChild(label);
+    }
+    row.dataset.ready = '1';
+    updateSourceGroupExcludeLabel();
+}
+
 async function setupInstanceFilterUI() {
     await ensureItemSourcesLoaded();
+    setupSourceGroupExcludeUI();
     if (instanceFilterUiReady) {
-        document.querySelectorAll('input.instance-filter-cb').forEach(cb => {
-            cb.checked = savedFilters.instances.includes(cb.value);
+        document.querySelectorAll('input.instance-exclude-cb').forEach(cb => {
+            cb.checked = savedFilters.excludedInstances.includes(cb.value);
         });
         updateInstanceFilterLabel();
         return;
@@ -1630,7 +1689,8 @@ export function openItemModal(slotId, items, elements, anchorEl = null) {
         qualities: selectedQualities.length > 0 ? selectedQualities : savedFilters.qualities,
         ilvlMin: savedFilters.ilvlMin,
         ilvlMax: savedFilters.ilvlMax,
-        instances: savedFilters.instances,
+        excludedInstances: savedFilters.excludedInstances,
+        excludedSourceGroups: savedFilters.excludedSourceGroups,
         slot: slotId
     }, elements.modalItemList);
 
@@ -1686,8 +1746,11 @@ export function getCurrentFilters() {
     savedFilters.ilvlMin = lo;
     savedFilters.ilvlMax = hi;
 
-    const instanceCbs = document.querySelectorAll('input.instance-filter-cb:checked');
-    savedFilters.instances = Array.from(instanceCbs).map(cb => cb.value);
+    const instanceCbs = document.querySelectorAll('input.instance-exclude-cb:checked');
+    savedFilters.excludedInstances = Array.from(instanceCbs).map(cb => cb.value);
+
+    const groupCbs = document.querySelectorAll('input.source-group-exclude-cb:checked');
+    savedFilters.excludedSourceGroups = Array.from(groupCbs).map(cb => cb.value);
 
     return {
         search: savedFilters.search,
@@ -1695,7 +1758,8 @@ export function getCurrentFilters() {
         qualities: savedFilters.qualities,
         ilvlMin: lo,
         ilvlMax: hi,
-        instances: savedFilters.instances,
+        excludedInstances: savedFilters.excludedInstances,
+        excludedSourceGroups: savedFilters.excludedSourceGroups,
         slot: currentSlot
     };
 }
