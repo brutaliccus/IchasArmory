@@ -304,7 +304,7 @@ body {
     border: none;
     background: none;
     color: var(--text-color);
-    font-size: 13px;
+    font-size: calc(13px * var(--ts, 1));
     text-align: left;
     cursor: pointer;
 }
@@ -337,7 +337,7 @@ body {
 .build-close-dialog h4 {
     margin: 0 0 12px 0;
     color: var(--accent-color);
-    font-size: 14px;
+    font-size: calc(14px * var(--ts, 1));
 }
 
 .build-close-dialog-actions {
@@ -350,7 +350,7 @@ body {
 .build-close-dialog-actions button {
     padding: 8px 14px;
     border-radius: 6px;
-    font-size: 13px;
+    font-size: calc(13px * var(--ts, 1));
     cursor: pointer;
     border: 1px solid var(--border-color);
     background: var(--input-bg);
@@ -866,7 +866,7 @@ input, select {
     transition: opacity 0.3s ease-in-out, width 0.3s ease-in-out;
     overflow: hidden; /* ADD THIS to hide text as the element shrinks */
     color: #ffd700;
-    font-size: 11px;
+    font-size: calc(11px * var(--ts, 1));
     font-weight: bold;
     text-shadow: 1px 1px 2px #000;
     margin-bottom: 8px; 
@@ -1699,7 +1699,7 @@ input, select {
     background-color: var(--accent-color);
 }
 /* fixed; JS sets transform-origin to the outer icon corner used for placement */
-.item-tooltip { position: fixed; z-index: 3000; background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 10px; border-radius: 4px; max-width: 350px; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.5; pointer-events: none; transform-origin: top left; }
+.item-tooltip { position: fixed; z-index: 3000; background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 10px; border-radius: 4px; max-width: 350px; font-family: Arial, sans-serif; font-size: calc(14px * var(--ts, 1)); line-height: 1.5; pointer-events: none; transform-origin: top left; }
 .item-tooltip b.q0, .q0 { color: #9d9d9d; }
 .item-tooltip b.q1, .q1 { color: #ffffff; }
 .item-tooltip b.q2, .q2 { color: #1eff00; }
@@ -1717,7 +1717,7 @@ input, select {
 .tooltip-name-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .tooltip-sim-star {
     color: #ffd700;
-    font-size: 16px;
+    font-size: calc(16px * var(--ts, 1));
     flex-shrink: 0;
     text-shadow: 0 0 6px rgba(255, 215, 0, 0.8), 0 0 12px rgba(255, 215, 0, 0.4);
     animation: simStarPulse 2s ease-in-out infinite;
@@ -1775,7 +1775,7 @@ input, select {
     border: 1px solid var(--border-color);
     border-radius: 12px;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
-    font-size: 0.95rem;
+    font-size: calc(0.95rem * var(--ts, 1));
     opacity: 0;
     /* Horizontal slide from slot; transform-origin set in JS (0 0 = east, 100% 0 = west) */
     transform: translateX(-12px) scale(0.98);
@@ -1803,10 +1803,10 @@ input, select {
     flex-shrink: 0;
 }
 .item-picker-header .modal-close {
-    font-size: 2rem;
+    font-size: calc(2rem * var(--ts, 1));
 }
 .item-picker-header.modal-header h2 {
-    font-size: 1.05rem;
+    font-size: calc(1.05rem * var(--ts, 1));
 }
 .item-picker-body.modal-body {
     padding: 12px 16px 16px;
@@ -1823,7 +1823,7 @@ input, select {
 .item-picker-search {
     width: 100%;
     padding: 10px 12px;
-    font-size: 1rem;
+    font-size: calc(1rem * var(--ts, 1));
     margin-bottom: 10px;
     box-sizing: border-box;
     background-color: var(--input-bg);
@@ -1898,7 +1898,7 @@ input, select {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.78rem;
+    font-size: calc(0.78rem * var(--ts, 1));
     white-space: nowrap;
     user-select: none;
 }
@@ -1916,7 +1916,7 @@ input, select {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.85rem;
+    font-size: calc(0.85rem * var(--ts, 1));
     font-weight: 700;
     line-height: 1;
     box-sizing: border-box;
@@ -1953,7 +1953,7 @@ input, select {
 .instance-filter-name {
     flex: 1;
     min-width: 0;
-    font-size: 0.82rem;
+    font-size: calc(0.82rem * var(--ts, 1));
 }
 .instance-filter-dropdown-menu .instance-filter-row:first-child {
     padding-top: 6px;
@@ -1968,7 +1968,7 @@ input, select {
     min-height: 40px;
     height: 100%;
     align-self: stretch;
-    font-size: 0.88rem;
+    font-size: calc(0.88rem * var(--ts, 1));
     padding: 8px 10px;
 }
 .item-picker-type-cell {
@@ -2015,7 +2015,7 @@ input, select {
 }
 .instance-filter-section-title {
     padding: 8px 12px 4px;
-    font-size: 0.72rem;
+    font-size: calc(0.72rem * var(--ts, 1));
     font-weight: bold;
     color: #c9a227;
     text-transform: uppercase;
@@ -2028,14 +2028,14 @@ input, select {
 }
 .item-picker-dd-header.stat-dropdown-header {
     padding: 6px 8px;
-    font-size: 0.8rem;
+    font-size: calc(0.8rem * var(--ts, 1));
     border-radius: 6px;
     min-height: 40px;
     box-sizing: border-box;
 }
 .item-picker-dd-group {
     padding: 6px 8px 2px;
-    font-size: 0.7rem;
+    font-size: calc(0.7rem * var(--ts, 1));
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -2079,13 +2079,13 @@ input, select {
     text-align: right;
 }
 .item-picker-axis-label {
-    font-size: 0.7rem;
+    font-size: calc(0.7rem * var(--ts, 1));
     font-weight: 600;
     color: #aaa;
     letter-spacing: 0.03em;
 }
 .item-picker-axis-value {
-    font-size: 0.85rem;
+    font-size: calc(0.85rem * var(--ts, 1));
     font-variant-numeric: tabular-nums;
     color: var(--text-color);
     line-height: 1.2;
@@ -2186,7 +2186,7 @@ input, select {
     flex-shrink: 0;
 }
 .can-equip-toggle-text {
-    font-size: 0.8rem;
+    font-size: calc(0.8rem * var(--ts, 1));
     font-weight: 600;
     color: var(--text-color);
 }
@@ -2234,7 +2234,7 @@ input, select {
 }
 .item-picker-sort-btn {
     padding: 10px 20px;
-    font-size: 0.95rem;
+    font-size: calc(0.95rem * var(--ts, 1));
     font-weight: 700;
     min-height: 42px;
     border-radius: 8px;
@@ -2260,7 +2260,7 @@ input, select {
 .item-picker-reset-btn {
     margin-left: 0;
     padding: 5px 12px;
-    font-size: 0.78rem;
+    font-size: calc(0.78rem * var(--ts, 1));
     font-weight: 600;
     border-radius: 6px;
     border: 1px solid #a93226;
@@ -2303,7 +2303,7 @@ input, select {
 .save-profile-dialog-content { width: auto; min-width: 320px; max-width: 420px; height: auto; }
 .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; border-bottom: 1px solid var(--border-color); }
 .modal-header h2 { margin: 0; border: none; padding: 0; }
-.modal-close { background: none; border: none; color: var(--text-color); font-size: 2.5rem; font-weight: bold; line-height: 1; cursor: pointer; opacity: 0.7; }
+.modal-close { background: none; border: none; color: var(--text-color); font-size: calc(2.5rem * var(--ts, 1)); font-weight: bold; line-height: 1; cursor: pointer; opacity: 0.7; }
 .modal-close:hover { opacity: 1; }
 .modal-body { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
 .modal-filters { margin-bottom: 20px; }
@@ -2490,9 +2490,9 @@ input, select {
 .item-stat-preview { font-size: 0.95em; color: #8bc34a; opacity: 0.9; }
 .filter-actions-row { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 8px; }
 .filter-actions-row .reset-filters-btn { width: auto; padding: 10px 18px; }
-.item-dps-score { margin-left: auto; flex-shrink: 0; font-size: 12px; font-weight: bold; color: #ffd700; white-space: nowrap; padding-left: 8px; }
-.item-tank-score { flex-shrink: 0; font-size: 12px; font-weight: bold; color: #7ec8e3; white-space: nowrap; padding-left: 8px; }
-.item-equipped-tag { display: inline-block; padding: 1px 5px; margin-left: 6px; background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.3); border-radius: 3px; font-size: 9px; color: #ffd700; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
+.item-dps-score { margin-left: auto; flex-shrink: 0; font-size: calc(12px * var(--ts, 1)); font-weight: bold; color: #ffd700; white-space: nowrap; padding-left: 8px; }
+.item-tank-score { flex-shrink: 0; font-size: calc(12px * var(--ts, 1)); font-weight: bold; color: #7ec8e3; white-space: nowrap; padding-left: 8px; }
+.item-equipped-tag { display: inline-block; padding: 1px 5px; margin-left: 6px; background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.3); border-radius: 3px; font-size: calc(9px * var(--ts, 1)); color: #ffd700; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
 
 /* Ultrawide adjustments - keep proportions correct */
 @media (min-width: 3000px) {
@@ -2898,7 +2898,7 @@ input, select {
     border: 2px solid var(--border-color);
     border-bottom: 3px solid transparent;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: calc(1rem * var(--ts, 1));
     font-weight: 500;
     transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -2997,7 +2997,7 @@ input, select {
     border: 2px solid var(--border-color);
     border-bottom: 3px solid transparent;
     cursor: pointer;
-    font-size: 0.95rem;
+    font-size: calc(0.95rem * var(--ts, 1));
     font-weight: 500;
     transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -3038,7 +3038,7 @@ input, select {
     border: 2px solid var(--border-color);
     border-bottom: 3px solid transparent;
     cursor: pointer;
-    font-size: 0.95rem;
+    font-size: calc(0.95rem * var(--ts, 1));
     font-weight: 500;
     transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -3258,7 +3258,7 @@ input, select {
     bottom: -20px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 10px;
+    font-size: calc(10px * var(--ts, 1));
     font-weight: bold;
     color: var(--text-color);
     white-space: nowrap;
@@ -3272,7 +3272,7 @@ input, select {
     white-space: normal;
     text-align: center;
     line-height: 1.15;
-    font-size: 9px;
+    font-size: calc(9px * var(--ts, 1));
     font-weight: 600;
     bottom: -22px;
 }
@@ -4131,8 +4131,10 @@ html {
     --ui-user-scale: 1;
     --ui-scale: 1;
     --text-scale: 1;
+    --ts: 1;
 }
 .ichacalc-scaled-root {
+    --ts: var(--text-scale, 1);
     zoom: var(--ui-scale);
     font-size: calc(1rem * var(--text-scale, 1));
 }
@@ -4811,7 +4813,7 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: calc(12px * var(--ts, 1));
     font-weight: bold;
     border: 2px solid var(--bg-color);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -4868,7 +4870,7 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: calc(20px * var(--ts, 1));
     font-weight: bold;
     flex-shrink: 0;
 }
@@ -4882,19 +4884,19 @@ html {
 
 .bug-report-notification-text strong {
     color: var(--primary-color);
-    font-size: 14px;
+    font-size: calc(14px * var(--ts, 1));
 }
 
 .bug-report-notification-text span {
     color: var(--text-color);
-    font-size: 12px;
+    font-size: calc(12px * var(--ts, 1));
 }
 
 .bug-report-notification-close {
     background: none;
     border: none;
     color: var(--text-color);
-    font-size: 24px;
+    font-size: calc(24px * var(--ts, 1));
     font-weight: bold;
     cursor: pointer;
     opacity: 0.7;
@@ -4943,7 +4945,7 @@ html {
     margin-bottom: 8px;
     color: var(--accent-color);
     font-weight: bold;
-    font-size: 14px;
+    font-size: calc(14px * var(--ts, 1));
 }
 
 .bug-report-modal-content input[type="text"],
@@ -4956,7 +4958,7 @@ html {
     border-radius: 6px;
     color: var(--text-color);
     font-family: inherit;
-    font-size: 14px;
+    font-size: calc(14px * var(--ts, 1));
     box-sizing: border-box;
 }
 
@@ -4984,7 +4986,7 @@ html {
     padding: 10px 20px;
     border: none;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: calc(14px * var(--ts, 1));
     font-weight: bold;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -5056,7 +5058,7 @@ html {
     border-bottom: 3px solid transparent;
     color: var(--secondary-color);
     padding: 12px 24px;
-    font-size: 16px;
+    font-size: calc(16px * var(--ts, 1));
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -5310,7 +5312,7 @@ html {
     color: var(--bg-color);
     border: none;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: calc(14px * var(--ts, 1));
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -5391,7 +5393,7 @@ html {
     filter: drop-shadow(0 0 8px rgba(76, 175, 80, 0.35));
 }
 #onboarding-overlay.onboarding-overlay--build-picker .onboarding-title {
-    font-size: 1.35rem;
+    font-size: calc(1.35rem * var(--ts, 1));
     color: var(--text-color, #e8e8ec);
     text-shadow: none;
     margin-bottom: 6px;
@@ -5403,7 +5405,7 @@ html {
     line-height: 1.45;
 }
 .onboarding-pick-build-lead {
-    font-size: 0.9em !important;
+    font-size: calc(0.9em * var(--ts, 1)) !important;
     max-width: 380px;
     margin-left: auto;
     margin-right: auto;
@@ -5647,7 +5649,7 @@ html {
     top: 100%;
     transform: translateX(-50%);
     margin-top: 2px;
-    font-size: 9px;
+    font-size: calc(9px * var(--ts, 1));
     line-height: 1;
     font-weight: 500;
     color: rgba(140, 140, 148, 0.72);
@@ -5658,7 +5660,7 @@ html {
 
 .shaman-clear-consumables-btn {
     padding: 8px 12px;
-    font-size: 12px;
+    font-size: calc(12px * var(--ts, 1));
     font-weight: 600;
     color: var(--text-color, #d8d8dc);
     background: var(--input-bg, #232328);
@@ -5748,7 +5750,7 @@ html {
 }
 
 .shaman-consume-preset-col-title {
-    font-size: 1.05rem;
+    font-size: calc(1.05rem * var(--ts, 1));
     font-weight: 800;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -5782,7 +5784,7 @@ html {
 }
 
 .shaman-consume-preset-spec-label {
-    font-size: clamp(0.88rem, 1.9vw, 1.05rem);
+    font-size: calc(clamp(0.88rem, 1.9vw, 1.05rem) * var(--ts, 1));
     font-weight: 800;
     line-height: 1.2;
     color: #ffd700;
@@ -6044,7 +6046,7 @@ html {
     background: color-mix(in srgb, var(--card-bg, #1c1c20) 88%, #2a2410);
     color: color-mix(in srgb, var(--accent-color, #ffd700) 78%, #c9a227);
     text-decoration: none;
-    font-size: 0.85rem;
+    font-size: calc(0.85rem * var(--ts, 1));
     font-weight: 600;
     letter-spacing: 0.02em;
     opacity: 0.85;

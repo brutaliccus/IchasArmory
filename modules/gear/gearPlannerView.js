@@ -10,10 +10,8 @@ import {
     saveLocalGearPlans,
     applyGearPlanItemMove,
     getGearPlanPrimaryEquipped,
-    saveGearPlannerTankStatWeights,
-    getGearPlannerTankStatWeights,
-    saveGearPlannerDpsStatWeights,
-    getGearPlannerDpsStatWeights,
+    migrateGearPlanStatWeightsToByClass,
+    sanitizeGearPlanStatWeightsByClass,
     normalizeGearPlanRoles,
     defaultIconForClassSpec,
     sanitizeGearPlanDescription,
@@ -1105,7 +1103,7 @@ function isGpDualWeightsLayout() {
 }
 
 function gpStatWeightsTableHtml(weights, tableClass) {
-    let html = `<div class="stat-weights-table-wrap"><table class="stat-weights-table ${tableClass}" style="font-size: 12px;"><thead><tr>`;
+    let html = `<div class="stat-weights-table-wrap"><table class="stat-weights-table ${tableClass}"><thead><tr>`;
     html += '<th class="stat-weight-sortable" data-sort="stat" style="cursor: pointer; user-select: none; text-align: left; padding: 4px 6px;">Stat <span class="sort-indicator"></span></th>';
     html += '<th class="stat-weight-sortable stat-weight-value-col" data-sort="dps" style="cursor: pointer; user-select: none; text-align: right; padding: 4px 6px;"><span class="stat-weight-col-label">DPS</span> <span class="sort-indicator"></span></th>';
     html += '<th class="stat-weight-sortable" data-sort="ap" style="cursor: pointer; user-select: none; text-align: right; padding: 4px 6px;">AP <span class="sort-indicator"></span></th>';

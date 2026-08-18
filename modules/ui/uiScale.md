@@ -4,7 +4,7 @@
 
 `modules/ui/uiScale.js` manages **automatic viewport fitting** and an optional **manual UI scale** multiplier, independent of browser zoom. Auto-fit targets the character planner / gear planner two-column chrome at **1920×1200** usable area below the **60px** fixed nav.
 
-A separate **text scale** multiplier enlarges readable text inside `#ichacalc-scaled-root` without changing nav chrome, settings panel, or layout/icon sizing from UI scale.
+A separate **text scale** multiplier enlarges readable text in both planners without changing nav chrome, settings panel, or layout/icon sizing from UI scale.
 
 ## Auto-scale formula
 
@@ -22,8 +22,19 @@ Unlike the older 2560×1440 cap-at-1 formula, auto can **scale up** on 4K/ultraw
 ## Text scale composition
 
 - **UI scale** (`--ui-scale` + `zoom` on `#ichacalc-scaled-root`): scales layout, icons, and all pixels inside the scaled root.
-- **Text scale** (`--text-scale` + `font-size: calc(1rem * var(--text-scale))` on `#ichacalc-scaled-root`): multiplies the em/rem text chain inside main content only (nav and settings panel stay at default text size).
-- **Visual text size** for em/rem-based labels: `base × textScale × uiScale`. Fixed `px` font sizes still follow UI zoom only.
+- **Text scale** (`--text-scale` on `html`, consumed as `--ts` on planner roots): multiplies user-visible text in Character Planner and Gear Planner.
+- **Mechanism:** planner CSS uses `font-size: calc(<base> * var(--ts, 1))` for explicit `px`/`rem` sizes. `em`-based rules inherit from a scaled parent (`font-size: calc(1rem * var(--text-scale))` on `#ichacalc-scaled-root`). Nav and the settings panel keep `--ts: 1` (default on `html`).
+- **Visual text size:** `base × textScale × uiScale` for px/rem rules inside the UI-scaled root; GP fixed sidebars get text scale only (they use `zoom: 1 !important`).
+
+## Planner coverage
+
+| Region | UI zoom | Text scale (`--ts`) |
+|--------|---------|---------------------|
+| Character Planner (`#ichacalc-scaled-root`) | yes | yes |
+| Gear Planner shell (`#gear-planner-shell`, inside scaled root) | yes | yes |
+| GP locations/stats sidebars (fixed, outside scaled root) | no | yes |
+| GP save/community dialogs (outside scaled root) | no | yes |
+| Top nav + UI settings panel | no | no (`--ts: 1`) |
 
 ## Exports
 
@@ -64,11 +75,13 @@ Unlike the older 2560×1440 cap-at-1 formula, auto can **scale up** on 4K/ultraw
 
 ## CSS
 
-`style.css` sets `.ichacalc-scaled-root { zoom: var(--ui-scale); font-size: calc(1rem * var(--text-scale)); }`. Top nav and settings panel stay at `zoom: 1`.
+- `style.css`: `html { --text-scale: 1; --ts: 1; }`, `.ichacalc-scaled-root { --ts: var(--text-scale); zoom: var(--ui-scale); font-size: calc(1rem * var(--text-scale)); }`, planner `font-size` rules use `calc(... * var(--ts, 1))`.
+- `gear-planner.css`: `--ts` on `#gear-planner-shell`, GP sidebars, and GP dialogs; all GP text rules use `--ts`.
+- `shaman-dps.css`: stat weights and DPS panel px/rem sizes use `--ts` (inherits from scaled root in CP).
 
 ## Consumers
 
 - `app.js` — `initUiScale()` on startup; `repositionItemPickerIfOpen` on `uiScaleChanged`
 - `index.html` — inline head script applies scale before first paint; settings markup in top nav
-- `topnav.css` — settings panel styles
-- `style.css` — `--text-scale` and scaled-root font-size
+- `topnav.css` — settings panel styles (unscaled text)
+- `style.css`, `gear-planner.css`, `shaman-dps.css` — text scale via `--ts`

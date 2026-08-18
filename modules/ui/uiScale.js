@@ -160,7 +160,7 @@ function syncTextScaleCssVar(text) {
     document.documentElement.style.setProperty('--text-scale', String(text));
 }
 
-/** Multiply font sizes inside #ichacalc-scaled-root (independent of layout zoom). */
+/** Sets --text-scale on html; planner roots consume it as --ts via CSS. */
 export function applyTextScale() {
     const text = getTextScale();
     syncTextScaleCssVar(text);
