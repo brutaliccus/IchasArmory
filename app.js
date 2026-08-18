@@ -9,7 +9,7 @@ import { findEnchantIndexByEffectId } from './modules/gear/enchantEffectIds.js';
 import { generateBuffIcons, getActiveBuffs, handleBuffExclusivity, applyBuffListToDom, clearAllBuffsDebuffsInDom } from './modules/character/buffs.js';
 import { getSelectedRaceBonuses, getRaceBonuses, baseStats, raceIconData } from './modules/character/races.js';
 import { generateTalentInputs, getTalentBonuses, classTalents } from './modules/talents_new.js';
-import { calculateEffectiveHealth } from './modules/ui/calculator.js';
+import { calculateEffectiveHealth, classShowsRangedStats } from './modules/ui/calculator.js';
 import { createItemTooltipHTML, createEnchantTooltipHTML, setGetEquippedGear } from './modules/ui/tooltips.js';
 import { getSetBonuses } from './modules/gear/setBonuses.js';
 import { getStatSearchTerms, parseStatsFromTooltip, KEY_MAP, getItemType, filterEnchantsByItemType, filterEnchantsByClass, getAttackPowerBonusVsCreatureType, getSpellDamageHealingBonusVsCreatureType, AP_VS_DISPLAY_ORDER, DMG_HEALING_VS_DISPLAY_ORDER, getApVsRowLabel, getDmgHealingVsRowLabel, formatSmartPercent } from './modules/character/stats.js';
@@ -1290,6 +1290,11 @@ function addEnchantButtons() {
     });
 }
 
+function updateRangedStatsColumnVisibility(classId = getCurrentClass()) {
+    const col = document.getElementById('ranged-stats-column');
+    if (col) col.style.display = classShowsRangedStats(classId) ? '' : 'none';
+}
+
 function updateRangedEnchantVisibility() {
     const rangedFrame = document.getElementById('icon_frame_ranged');
     if (!rangedFrame) return;
@@ -1446,6 +1451,7 @@ async function handleClassChange(update = true) {
     }
 
     refreshEmptySlotPlaceholders(selectedClass);
+    updateRangedStatsColumnVisibility(selectedClass);
 }
 
 /**
@@ -1732,6 +1738,8 @@ function calculateEHPWithSwap(newItem = null, oldItem = null, newEnchantIndex = 
 
 function updateAllCalculations() {
     if (!elements.attackerLevel) return;
+
+    updateRangedStatsColumnVisibility();
 
     // Remember current active main tab to prevent unwanted switching
     const currentActiveTab = document.querySelector('.tab-btn.active')?.dataset.tab;
@@ -2457,12 +2465,25 @@ function displayMainResults(totals) {
     elements.totalArcaneResist.textContent = (totals.arcaneResist || 0).toLocaleString();
 
     if (elements.totalPhysicalDR) elements.totalPhysicalDR.textContent = ((totals.physicalDR || 0) * 100).toFixed(2) + '%';
-    if (elements.totalFireDR) elements.totalFireDR.textContent = ((totals.fireDR || 0) * 100).toFixed(2) + '%';
-    if (elements.totalNatureDR) elements.totalNatureDR.textContent = ((totals.natureDR || 0) * 100).toFixed(2) + '%';
-    if (elements.totalFrostDR) elements.totalFrostDR.textContent = ((totals.frostDR || 0) * 100).toFixed(2) + '%';
-    if (elements.totalShadowDR) elements.totalShadowDR.textContent = ((totals.shadowDR || 0) * 100).toFixed(2) + '%';
-    if (elements.totalArcaneDR) elements.totalArcaneDR.textContent = ((totals.arcaneDR || 0) * 100).toFixed(2) + '%';
-    if (elements.totalHolyDR) elements.totalHolyDR.textContent = ((totals.holyDR || 0) * 100).toFixed(2) + '%';
+
+    const magicDRBaseline = totals.magicDR ?? 0;
+    if (elements.totalMagicDR) elements.totalMagicDR.textContent = ((magicDRBaseline) * 100).toFixed(2) + '%';
+    const schoolDRRows = [
+        ['totalFireDR', 'fireDR'],
+        ['totalNatureDR', 'natureDR'],
+        ['totalFrostDR', 'frostDR'],
+        ['totalShadowDR', 'shadowDR'],
+        ['totalArcaneDR', 'arcaneDR'],
+        ['totalHolyDR', 'holyDR'],
+    ];
+    for (const [elKey, totalsKey] of schoolDRRows) {
+        const el = elements[elKey];
+        const val = totals[totalsKey] || 0;
+        const show = Math.abs((val - magicDRBaseline) * 100) >= 0.01;
+        if (el) el.textContent = (val * 100).toFixed(2) + '%';
+        const row = el?.closest('.stat-item');
+        if (row) row.style.display = show ? '' : 'none';
+    }
 
     const spellDamageBaseline = totals.dmgAndHealing || 0;
     const schoolDamageRows = [
@@ -4392,7 +4413,7 @@ async function init() {
         'rangedWeaponDamageRange', 'rangedWeaponSpeed', 'rangedWeaponDPS', 'rangedAP', 'rangedCrit', 'rangedHit', 'rangedHaste',
         'totalWeaponSkill', 'enemyDodgeChance', 'glancingDamage', 'totalArmorPen',
         'totalSpellCrit', 'totalSpellHit', 'totalSpellCritDamageBonus', 'totalHasteSpell', 'totalHealing', 'totalDmgHeal', 'totalBlockValue', 'totalFireResist', 'totalNatureResist', 'spellSchoolFilter', 'spellSubCategoryFilter', 'healingStatItem',
-        'totalFrostResist', 'totalShadowResist', 'totalArcaneResist', 'totalPhysicalDR', 'totalFireDR', 'totalNatureDR',
+        'totalFrostResist', 'totalShadowResist', 'totalArcaneResist', 'totalPhysicalDR', 'totalMagicDR', 'totalFireDR', 'totalNatureDR',
         'totalFrostDR', 'totalShadowDR', 'totalArcaneDR', 'totalHolyDR', 'totalFireDamage', 'totalFrostDamage', 'totalNatureDamage',
         'totalShadowDamage', 'totalArcaneDamage', 'totalHolyDamage', 'totalSpellPen', 'spellStrikeSourcesCount', 'spellStrikeSourcesList', 'totalFortune',
         'item-modal', 'modal-title', 'modal-close-btn', 'modal-search-input',

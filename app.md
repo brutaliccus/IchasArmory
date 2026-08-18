@@ -232,6 +232,10 @@ Returns a complete build object:
   - `.enchant-details` (text display + connector line)
   - `.enchant-button` (clickable button to open enchant modal)
 
+#### `updateRangedStatsColumnVisibility(classId?)` 
+- Shows/hides `#ranged-stats-column` in Stat Breakdown via `classShowsRangedStats()` (hidden for shaman/druid/paladin; relic classes do not use bow/gun/wand stats).
+- Called from `handleClassChange` and `updateAllCalculations`.
+
 #### `updateRangedEnchantVisibility()` (Lines 526-540)
 - Shows/hides ranged enchant button based on equipped ranged weapon type
 - Only shows if weapon is enchantable (uses `isRangedWeaponEnchantable()`)

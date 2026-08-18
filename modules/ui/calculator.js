@@ -1,6 +1,14 @@
 // modules/ui/calculator.js (Corrected)
 import { baseStats } from '../character/races.js';
 import { AP_VS_GEAR_STAT_KEYS, DMG_HEALING_VS_GEAR_STAT_KEYS } from '../character/stats.js';
+
+const NO_RANGED_STATS_CLASSES = new Set(['shaman', 'druid', 'paladin']);
+
+/** Bow/gun/wand classes show the Ranged Modified Stats card; relic classes use the ranged slot for totems/idols/librams only. */
+export function classShowsRangedStats(classId) {
+    return !NO_RANGED_STATS_CLASSES.has(String(classId || '').toLowerCase());
+}
+
 const classAvoStats = {
     druid:   { dodge: 0.9, parry: 0,   block: 0,   agiPerDodge: 20.0 },
     warrior: { dodge: 0.0, parry: 5.0, block: 5.0, agiPerDodge: 20.0 },
@@ -670,6 +678,9 @@ export function calculateEffectiveHealth(data) {
     const totalArcaneDR = 1 - ((1 - arcaneDRFromResist) * (1 - arcaneDRFromTalents) * (1 - flatDRFromTalents) * (1 - baseSetDR) * (1 - buffDR));
     const totalHolyDR = 1 - ((1 - 0) * (1 - holyDRFromTalents) * (1 - flatDRFromTalents) * (1 - baseSetDR) * (1 - buffDR)); // No holy resistance
 
+    // Baseline magic DR: shared modifiers only (no school resist or school-specific talent DR)
+    const magicDR = 1 - ((1 - flatDRFromTalents) * (1 - baseSetDR) * (1 - buffDR));
+
     // Physical damage uses armor DR + talents + flatDR from Rockbiter (with set bonus) + base set DR + buff DR
     const totalPhysicalDR = 1 - ((1 - cappedArmorDR) * (1 - physicalDRFromTalents) * (1 - flatDRFromTalents) * (1 - baseSetDR) * (1 - buffDR));
 
@@ -792,6 +803,7 @@ export function calculateEffectiveHealth(data) {
         fireResist: totalFireResist, natureResist: totalNatureResist,
         frostResist: totalFrostResist, shadowResist: totalShadowResist,
         arcaneResist: totalArcaneResist,
+        magicDR,
         fireDR: totalFireDR, natureDR: totalNatureDR, frostDR: totalFrostDR,
         shadowDR: totalShadowDR, arcaneDR: totalArcaneDR, holyDR: totalHolyDR,
         physicalDR: totalPhysicalDR,

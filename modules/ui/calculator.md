@@ -6,7 +6,7 @@
 
 **File Size:** 747 lines of code
 **Type:** ES6 Module
-**Key Export:** `calculateEffectiveHealth(data)` function
+**Key Export:** `calculateEffectiveHealth(data)` function; `classShowsRangedStats(classId)` for UI that shows/hides the Ranged Modified Stats card (hidden for shaman/druid/paladin — relic slot only).
 
 ---
 
@@ -816,6 +816,9 @@ const totalArcaneDR = 1 - ((1 - arcaneDRFromResist) × (1 - arcaneDRFromTalents)
 const totalHolyDR = 1 - ((1 - 0) × (1 - holyDRFromTalents) ×
                          (1 - flatDRFromTalents) × (1 - baseSetDR) × (1 - buffDR));
 
+// Baseline magic DR: shared modifiers only (no school resist or school-specific talent DR)
+const magicDR = 1 - ((1 - flatDRFromTalents) × (1 - baseSetDR) × (1 - buffDR));
+
 // Physical uses armor DR instead of resistance DR
 const totalPhysicalDR = 1 - ((1 - cappedArmorDR) × (1 - physicalDRFromTalents) ×
                              (1 - flatDRFromTalents) × (1 - baseSetDR) × (1 - buffDR));
@@ -951,6 +954,7 @@ return {
     arcaneResist: totalArcaneResist,
 
     // School Damage Reduction
+    magicDR,
     fireDR: totalFireDR,
     natureDR: totalNatureDR,
     frostDR: totalFrostDR,

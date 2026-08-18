@@ -26,7 +26,7 @@ import { enchantDatabase } from './enchants.js';
 import { getEnchantCompactLabel } from './enchantStatLabels.js';
 import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, getItemType, filterEnchantsByItemType, filterEnchantsByClass, AP_VS_DISPLAY_ORDER, getApVsRowLabel, getEffectiveEnchantStats } from '../character/stats.js';
 import { baseStats, raceIconData, getSelectedRaceBonuses } from '../character/races.js';
-import { calculateEffectiveHealth } from '../ui/calculator.js';
+import { calculateEffectiveHealth, classShowsRangedStats } from '../ui/calculator.js';
 import { generateTalentInputs, updateTalentPoints, updateAllTalentStates, getTalentBonusesFromSpec, classTalents } from '../talents_new.js';
 import { generateBuffIcons, applyBuffListToDom, getBuffsFromSavedList, handleBuffExclusivity } from '../character/buffs.js';
 import { getSetBonuses } from './setBonuses.js';
@@ -1785,8 +1785,10 @@ const GP_STAT_GROUPS = [
         ['totalMitigation', 'Total Avoidance', 'pct'],
     ]},
     { title: 'Damage Reduction', rows: [
-        ['fireDR', 'Fire', 'frac'], ['natureDR', 'Nature', 'frac'], ['frostDR', 'Frost', 'frac'],
-        ['shadowDR', 'Shadow', 'frac'], ['arcaneDR', 'Arcane', 'frac'], ['holyDR', 'Holy', 'frac'],
+        ['magicDR', 'Magic', 'frac'],
+        ['fireDR', 'Fire', 'frac', 'schoolDr'], ['natureDR', 'Nature', 'frac', 'schoolDr'],
+        ['frostDR', 'Frost', 'frac', 'schoolDr'], ['shadowDR', 'Shadow', 'frac', 'schoolDr'],
+        ['arcaneDR', 'Arcane', 'frac', 'schoolDr'], ['holyDR', 'Holy', 'frac', 'schoolDr'],
     ]},
     { title: 'Misc Effects', rows: [
         ['vampirism', 'Vampirism', 'pct'],
@@ -1831,8 +1833,15 @@ function gpSchoolDiffersFromBaseline(full, key) {
     return Math.abs(school - baseline) >= 0.5;
 }
 
+function gpSchoolDrDiffersFromBaseline(full, key) {
+    const baseline = Number(full.magicDR) || 0;
+    const school = Number(full[key]) || 0;
+    return Math.abs((school - baseline) * 100) >= 0.01;
+}
+
 function renderGpStatEntry(key, label, kind, nested, full, ungeared, naked, rowTag) {
     if (rowTag === 'school' && !gpSchoolDiffersFromBaseline(full, key)) return '';
+    if (rowTag === 'schoolDr' && !gpSchoolDrDiffersFromBaseline(full, key)) return '';
     const total = Number(full[key]) || 0;
     const gearBonus = total - (Number(ungeared[key]) || 0);
     const vsNaked = total - (Number(naked[key]) || 0);
@@ -1891,7 +1900,10 @@ function renderStatsSidebar() {
         const full = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: true, includeTalents: true, includeBuffs: true }));
         const ungeared = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: false, includeTalents: true, includeBuffs: true }));
         const naked = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: false, includeTalents: false, includeBuffs: false }));
-        const cards = GP_STAT_GROUPS.map(group => {
+        const statGroups = classShowsRangedStats(getGpClassId())
+            ? GP_STAT_GROUPS
+            : GP_STAT_GROUPS.filter((g) => g.title !== 'Ranged');
+        const cards = statGroups.map(group => {
             const rows = group.rows.map(([key, label, kind, rowTag]) =>
                 renderGpStatEntry(key, label, kind, false, full, ungeared, naked, rowTag)
             ).filter(Boolean).join('');
