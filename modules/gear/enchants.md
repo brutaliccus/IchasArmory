@@ -47,6 +47,8 @@ Each enchant is defined as an object with the following properties:
     spellId: number,        // Optional: Spell ID for advanced lookups
     requiresItem: string,   // Optional: Item name requirement (e.g., "Smoking Heart of the Mountain")
     requiresItemType: string, // Optional: Item type requirement ("shield", "2h", "ranged")
+    classes: string[],      // Optional: lowercase class ids when restricted (e.g. ["hunter"])
+    tooltip_lines_raw: string[], // Optional: consumable tooltip; "Classes:" line used for filtering
     slot: string           // Optional: Slot override for multi-slot enchants
 }
 ```

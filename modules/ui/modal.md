@@ -120,6 +120,7 @@ The system automatically filters enchants based on the currently equipped item:
 - Determines item type (weapon type, armor type, etc.)
 - Uses `filterEnchantsByItemType()` to show only relevant enchants
 - For example: Only shows shield-specific enchants when a shield is equipped
+- Uses `filterEnchantsByClass()` with `getPlayerClassForItemFilters()` (GP plan class or character sidebar) so class-only enchants (e.g. Falcon's Call → Hunter) are hidden for other classes
 
 ### Enchant Rendering
 

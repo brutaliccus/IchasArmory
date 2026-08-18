@@ -50,6 +50,7 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 - New unsaved plans start with edit **on**. Saved or loaded plans start with edit **off** (session `editMode` overrides when present). Saving a plan turns edit off.
 - **View (off):** hide clear/remove X **and** empty `inventoryslot_*` add icons (`.gp-slot-add-wrap`); no picker or drag-reorder; cards still expand to show alts. Shell gets `.gp-view-mode`.
 - **Edit (on):** X buttons, outside empty-slot add icons, icon drag-and-drop, item picker.
+- **Remove X:** Primary × promotes the first alternative into primary (remaining alts shift up); clears enchant only when the slot becomes empty. Alt × removes just that alternative (`splice` on `alternatives`).
 
 ## Slot cards
 

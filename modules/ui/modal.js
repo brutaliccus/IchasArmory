@@ -4,7 +4,7 @@
 import { createItemTooltipHTML, createEnchantTooltipHTML, calculateItemDpsScore, calculateItemTankScore, getActiveItemScoreWeights } from './tooltips.js';
 import { positionItemTooltipOnIcon } from './itemTooltipPosition.js';
 import { createIconImage, getCurrentlyEquippedItem } from '../gear/gear.js';
-import { getStatSearchTerms, getItemType, filterEnchantsByItemType, parseStatsFromTooltip, KEY_MAP } from '../character/stats.js';
+import { getStatSearchTerms, getItemType, filterEnchantsByItemType, filterEnchantsByClass, parseStatsFromTooltip, KEY_MAP } from '../character/stats.js';
 import {
     ensureItemSourcesLoaded,
     getPrimarySourceLabel,
@@ -42,7 +42,7 @@ export function setItemModalPlayerClassOverride(classId) {
     itemModalPlayerClassOverride = classId || null;
 }
 
-function getPlayerClassForItemFilters() {
+export function getPlayerClassForItemFilters() {
     if (itemModalPlayerClassOverride) return itemModalPlayerClassOverride;
     const bar = document.getElementById('class-race-sidebar');
     return bar?.dataset?.selectedClass
@@ -1728,10 +1728,11 @@ export function openEnchantModal(slotId, enchants, elements, itemOverride = null
         totalEnchants: enchants.length
     });
     const filteredEnchants = filterEnchantsByItemType(enchants, itemType, slotId, equippedItem);
-    console.log('After filtering:', filteredEnchants.length, 'enchants remaining');
+    const classFilteredEnchants = filterEnchantsByClass(filteredEnchants, getPlayerClassForItemFilters());
+    console.log('After filtering:', classFilteredEnchants.length, 'enchants remaining');
 
     // Render filtered enchants, passing the original database for index mapping
-    filterAndRenderEnchants(filteredEnchants, '', elements.enchantModalList, enchants);
+    filterAndRenderEnchants(classFilteredEnchants, '', elements.enchantModalList, enchants);
 
     elements.enchantModal.style.display = 'flex';
     if (enchantSearchInput) enchantSearchInput.focus();

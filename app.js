@@ -12,9 +12,9 @@ import { generateTalentInputs, getTalentBonuses, classTalents } from './modules/
 import { calculateEffectiveHealth } from './modules/ui/calculator.js';
 import { createItemTooltipHTML, createEnchantTooltipHTML, setGetEquippedGear } from './modules/ui/tooltips.js';
 import { getSetBonuses } from './modules/gear/setBonuses.js';
-import { getStatSearchTerms, parseStatsFromTooltip, KEY_MAP, getItemType, filterEnchantsByItemType, getAttackPowerBonusVsCreatureType, getSpellDamageHealingBonusVsCreatureType, AP_VS_DISPLAY_ORDER, DMG_HEALING_VS_DISPLAY_ORDER, getApVsRowLabel, getDmgHealingVsRowLabel } from './modules/character/stats.js';
+import { getStatSearchTerms, parseStatsFromTooltip, KEY_MAP, getItemType, filterEnchantsByItemType, filterEnchantsByClass, getAttackPowerBonusVsCreatureType, getSpellDamageHealingBonusVsCreatureType, AP_VS_DISPLAY_ORDER, DMG_HEALING_VS_DISPLAY_ORDER, getApVsRowLabel, getDmgHealingVsRowLabel } from './modules/character/stats.js';
 import { initializeGearCompare, setComparisonItem, getCurrentCompareSlot, setEHPCalculator, setGetCurrentClass, setCharacterDataCallbacks } from './modules/gear/gearCompare.js';
-import { filterAndRenderItems, filterAndRenderEnchants, getSelectedQualities, getCurrentFilters, openItemModal as openItemModalFromModule, openEnchantModal as openEnchantModalFromModule, repositionItemPickerIfOpen, setItemModalPlayerClassOverride } from './modules/ui/modal.js';
+import { filterAndRenderItems, filterAndRenderEnchants, getSelectedQualities, getCurrentFilters, openItemModal as openItemModalFromModule, openEnchantModal as openEnchantModalFromModule, repositionItemPickerIfOpen, setItemModalPlayerClassOverride, getPlayerClassForItemFilters } from './modules/ui/modal.js';
 import { initUiScale } from './modules/ui/uiScale.js';
 import { positionItemTooltipOnIcon } from './modules/ui/itemTooltipPosition.js';
 import { itemLoader } from './modules/gear/itemLoader.js';
@@ -932,8 +932,9 @@ function filterEnchantItems() {
     }
     const itemType = getItemType(equippedItem);
     const filteredEnchants = filterEnchantsByItemType(allEnchantsForSlot, itemType, currentSlot, equippedItem);
+    const classFilteredEnchants = filterEnchantsByClass(filteredEnchants, getPlayerClassForItemFilters());
 
-    filterAndRenderEnchants(filteredEnchants, searchTerm, elements.enchantModalList, allEnchantsForSlot);
+    filterAndRenderEnchants(classFilteredEnchants, searchTerm, elements.enchantModalList, allEnchantsForSlot);
 }
 
 // --- Rendering Functions ---

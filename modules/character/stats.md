@@ -17,5 +17,17 @@ Multi-type clauses (e.g. “Undead and Demons”) split on “and” and apply t
 - `getApVsRowLabel`, `getDmgHealingVsRowLabel` (UI: “SP vs …”), `mapCreatureLabelToApVsStatKey`, `mapCreatureLabelToDmgHealingVsStatKey`
 - `getAttackPowerBonusVsCreatureType`, `getSpellDamageHealingBonusVsCreatureType`
 - `parseStatsFromTooltip`, `createEmptyStats`, enchant helpers
+- `filterEnchantsByItemType`, `filterEnchantsByClass`, `getEnchantRestrictedClasses`, `getEnchantBaseName`
+
+### Enchant class filter
+
+`filterEnchantsByClass(enchants, playerClass)` hides enchants restricted to other classes. Restriction sources (first match):
+
+1. `enchant.classes` array (lowercase ids)
+2. `tooltip_lines_raw` line `Classes: Shaman` / `Classes: Warrior, Paladin`
+3. Name suffix `(Druid)` etc.
+4. Known ZG head/leg base names (`ENCHANT_BASE_CLASS_MAP` in `stats.js`)
+
+Used by `openEnchantModal` / `filterEnchantItems` with `getPlayerClassForItemFilters()` (GP plan class override or character sidebar class).
 
 Calculator output spreads both `apVs*` and `dmgHealingVs*` from gear/enchants (see `modules/ui/calculator.js`). Shaman DPS merges target-matching bonuses into totals before `createShamanStatsFromCharacter` (`mergeDpsTargetFactionBonusesIntoTotals` in `dps.js`).

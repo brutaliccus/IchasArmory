@@ -1011,3 +1011,77 @@ export function filterEnchantsByItemType(enchants, itemType, slotId = null, item
         return true;
     });
 }
+
+/** ZG head/leg class enchants and other known class-only enchants (base name, lowercase). */
+const ENCHANT_BASE_CLASS_MAP = {
+    'animist\'s caress': ['druid'],
+    'falcon\'s call': ['hunter'],
+    'presence of might': ['warrior'],
+    'presence of sight': ['mage'],
+    'prophetic aura': ['priest'],
+    'syncretist\'s sigil': ['paladin'],
+    'death\'s embrace': ['rogue'],
+    'vodouisant\'s vigilant embrace': ['shaman'],
+    'hoodoo hex': ['warlock'],
+    'gift of ferocity': ['druid'],
+};
+
+const ENCHANT_CLASS_SUFFIX_RE = /\((Warrior|Paladin|Shaman|Hunter|Rogue|Priest|Mage|Warlock|Druid)\)\s*$/i;
+
+/**
+ * Strip trailing parenthetical summary from enchant display name (e.g. "+7 Agi").
+ * @param {string} name
+ * @returns {string}
+ */
+export function getEnchantBaseName(name) {
+    if (!name) return '';
+    return name.replace(/\s*\([^)]*\)\s*$/, '').trim();
+}
+
+/**
+ * Classes allowed to use this enchant, or null when unrestricted.
+ * Checks `classes`, tooltip "Classes:" lines, "(Druid)" suffix, and known base-name map.
+ * @param {Object} enchant
+ * @returns {string[]|null}
+ */
+export function getEnchantRestrictedClasses(enchant) {
+    if (!enchant) return null;
+
+    if (Array.isArray(enchant.classes) && enchant.classes.length > 0) {
+        return enchant.classes.map((c) => String(c).trim().toLowerCase()).filter(Boolean);
+    }
+
+    if (Array.isArray(enchant.tooltip_lines_raw)) {
+        for (const line of enchant.tooltip_lines_raw) {
+            if (line.startsWith('Classes:')) {
+                const allowed = line.substring(8).split(',').map((c) => c.trim().toLowerCase()).filter(Boolean);
+                if (allowed.length) return allowed;
+            }
+        }
+    }
+
+    const suffixMatch = enchant.name?.match(ENCHANT_CLASS_SUFFIX_RE);
+    if (suffixMatch) return [suffixMatch[1].toLowerCase()];
+
+    const baseKey = getEnchantBaseName(enchant.name).toLowerCase();
+    if (ENCHANT_BASE_CLASS_MAP[baseKey]) return ENCHANT_BASE_CLASS_MAP[baseKey];
+
+    return null;
+}
+
+/**
+ * Hide class-restricted enchants when the current class is not allowed.
+ * @param {Array} enchants
+ * @param {string} playerClass
+ * @returns {Array}
+ */
+export function filterEnchantsByClass(enchants, playerClass) {
+    if (!enchants || !playerClass) return enchants;
+    const cls = String(playerClass).toLowerCase();
+    return enchants.filter((enchant) => {
+        if (enchant.name === 'None') return true;
+        const restricted = getEnchantRestrictedClasses(enchant);
+        if (!restricted || restricted.length === 0) return true;
+        return restricted.includes(cls);
+    });
+}

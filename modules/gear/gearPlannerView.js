@@ -3070,8 +3070,17 @@ function bindSlotEvents() {
     document.querySelectorAll('.gp-clear-primary').forEach(el => {
         el.addEventListener('click', (e) => {
             e.stopPropagation();
-            currentPlan.slots[el.dataset.slot].primary = null;
-            currentPlan.slots[el.dataset.slot].enchant = null;
+            const slotId = el.dataset.slot;
+            const slot = currentPlan.slots[slotId];
+            if (!slot) return;
+            const alts = slot.alternatives || [];
+            if (alts.length > 0) {
+                slot.primary = alts[0];
+                slot.alternatives = alts.slice(1);
+            } else {
+                slot.primary = null;
+                slot.enchant = null;
+            }
             renderGearPlanner();
         });
     });

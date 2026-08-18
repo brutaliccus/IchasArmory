@@ -1,20 +1,41 @@
 // modules/ui/uiScale.js - Auto + manual UI scaling (independent of browser zoom)
 
 const STORAGE_KEY = 'ichacalc_uiUserScale';
-export const DESIGN_WIDTH = 2560;
-export const DESIGN_HEIGHT = 1440;
-export const USER_SCALE_MIN = 0.7;
-export const USER_SCALE_MAX = 1.3;
+
+/** Layout design width: character planner main column (~1850px) / GP center column target. */
+export const DESIGN_WIDTH = 1920;
+/** Usable height below fixed nav (60px) for two-column planner chrome. */
+export const DESIGN_HEIGHT = 1200;
+export const NAV_CHROME_HEIGHT = 60;
+
+export const AUTO_SCALE_MIN = 0.5;
+export const AUTO_SCALE_MAX = 2.0;
+export const USER_SCALE_MIN = 0.5;
+export const USER_SCALE_MAX = 2.0;
 export const USER_SCALE_DEFAULT = 1;
 
 /**
- * Scale down to fit the design baseline (2560×1440) in both width and height.
- * Never scales above 1.
+ * Fit planner chrome to the viewport using both width and height.
+ * Scales up on large displays (4K) and down on small ones; clamped to [0.5, 2.0].
+ *
+ * Formula: auto = clamp(min(availW / DESIGN_WIDTH, availH / DESIGN_HEIGHT), 0.5, 2.0)
+ * where availH = innerHeight - NAV_CHROME_HEIGHT.
  */
 export function computeAutoScale() {
     const w = window.innerWidth || DESIGN_WIDTH;
-    const h = window.innerHeight || DESIGN_HEIGHT;
-    return Math.min(w / DESIGN_WIDTH, h / DESIGN_HEIGHT, 1);
+    const h = Math.max(1, (window.innerHeight || DESIGN_HEIGHT + NAV_CHROME_HEIGHT) - NAV_CHROME_HEIGHT);
+    const scaleW = w / DESIGN_WIDTH;
+    const scaleH = h / DESIGN_HEIGHT;
+    const raw = Math.min(scaleW, scaleH);
+    return Math.max(AUTO_SCALE_MIN, Math.min(AUTO_SCALE_MAX, raw));
+}
+
+export function hasUserScalePreference() {
+    try {
+        return localStorage.getItem(STORAGE_KEY) != null;
+    } catch {
+        return false;
+    }
 }
 
 export function getUserScale() {
@@ -27,6 +48,15 @@ export function getUserScale() {
     } catch {
         return USER_SCALE_DEFAULT;
     }
+}
+
+export function clearUserScalePreference() {
+    try {
+        localStorage.removeItem(STORAGE_KEY);
+    } catch {
+        /* ignore quota errors */
+    }
+    applyUiScale();
 }
 
 export function setUserScale(value) {
@@ -151,7 +181,7 @@ function bindUiScaleSettings() {
     if (resetBtn && !resetBtn.dataset.bound) {
         resetBtn.dataset.bound = '1';
         resetBtn.addEventListener('click', () => {
-            setUserScale(USER_SCALE_DEFAULT);
+            clearUserScalePreference();
             syncPanelValues();
         });
     }

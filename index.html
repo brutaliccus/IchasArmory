@@ -53,12 +53,13 @@
     </style>
     <script>
         (function () {
-            var DESIGN_W = 2560, DESIGN_H = 1440;
-            var USER_MIN = 0.7, USER_MAX = 1.3;
+            var DESIGN_W = 1920, DESIGN_H = 1200, NAV = 60;
+            var USER_MIN = 0.5, USER_MAX = 2.0, AUTO_MIN = 0.5, AUTO_MAX = 2.0;
             try {
                 var w = window.innerWidth || DESIGN_W;
-                var h = window.innerHeight || DESIGN_H;
-                var auto = Math.min(w / DESIGN_W, h / DESIGN_H, 1);
+                var h = Math.max(1, (window.innerHeight || DESIGN_H + NAV) - NAV);
+                var auto = Math.min(w / DESIGN_W, h / DESIGN_H);
+                auto = Math.max(AUTO_MIN, Math.min(AUTO_MAX, auto));
                 var user = parseFloat(localStorage.getItem('ichacalc_uiUserScale'));
                 if (!isFinite(user)) user = 1;
                 user = Math.max(USER_MIN, Math.min(USER_MAX, user));
@@ -284,7 +285,7 @@
         <p class="ui-scale-settings-hint">Adjust layout size without changing browser zoom. Auto-fit uses your screen size.</p>
         <label class="ui-scale-settings-label" for="ui-scale-slider">Manual scale</label>
         <div class="ui-scale-slider-row">
-            <input type="range" id="ui-scale-slider" min="0.7" max="1.3" step="0.05" value="1" aria-valuemin="70" aria-valuemax="130">
+            <input type="range" id="ui-scale-slider" min="0.5" max="2" step="0.05" value="1" aria-valuemin="50" aria-valuemax="200">
             <span id="ui-scale-value" class="ui-scale-value">100%</span>
         </div>
         <div class="ui-scale-effective-grid" aria-live="polite">
