@@ -1418,8 +1418,8 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-class-sidebar {
 .gp-slot-add .gp-slot-add-plus {
     position: absolute;
     bottom: 1px;
-    width: 12px;
-    height: 12px;
+    width: 15px;
+    height: 15px;
     object-fit: contain;
     pointer-events: none;
     filter: drop-shadow(0 0 2px #000);
@@ -1728,8 +1728,8 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-class-sidebar {
 .gp-icon-remove {
     position: absolute;
     top: -6px;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     padding: 0;
     border: none;
     background: transparent;
@@ -1739,8 +1739,8 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-class-sidebar {
 }
 
 .gp-alt-icon > .gp-icon-remove {
-    width: 15px;
-    height: 15px;
+    width: 17px;
+    height: 17px;
     top: -4px;
 }
 
