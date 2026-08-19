@@ -4,7 +4,7 @@
 import { isItemProcModeled } from '../gear/procs.js';
 import { setDatabase } from '../gear/setDatabase.js';
 import { parseStatsFromTooltip } from '../character/stats.js';
-import { getCurrentlyEquippedItem } from '../gear/gear.js';
+import { getCurrentlyEquippedItem, getMeleeWeaponType } from '../gear/gear.js';
 import { formatEnchantStatsHTML } from '../gear/enchantStatLabels.js';
 
 function isGearPlannerAppMode() {
@@ -106,6 +106,49 @@ const WEAPON_TYPES = new Set([
     'polearm', 'staff', 'bow', 'crossbow', 'gun', 'thrown'
 ]);
 
+const WEAPON_SKILL_SINGULAR = {
+    axe: 'Axe', axes: 'Axe',
+    sword: 'Sword', swords: 'Sword',
+    mace: 'Mace', maces: 'Mace',
+    dagger: 'Dagger', daggers: 'Dagger',
+    'fist weapon': 'Fist Weapon', 'fist weapons': 'Fist Weapon',
+    polearm: 'Polearm', polearms: 'Polearm',
+    staff: 'Staff', staves: 'Staff',
+    bow: 'Bow', bows: 'Bow',
+    crossbow: 'Crossbow', crossbows: 'Crossbow',
+    gun: 'Gun', guns: 'Gun',
+    thrown: 'Thrown',
+    weapon: 'Weapon', weapons: 'Weapon',
+};
+
+/**
+ * Canonical weapon skill / subtype string for strict matching (1H and 2H stay separate).
+ * Examples: "Two-handed Maces" → "Two-handed Mace", "Mace" → "Mace".
+ */
+function canonicalWeaponSkillType(type) {
+    if (!type) return null;
+    let s = String(type).trim();
+    let twoHand = false;
+    const twoHandPrefix = /^two[- ]hand(?:ed)?\s+/i;
+    if (twoHandPrefix.test(s)) {
+        twoHand = true;
+        s = s.replace(twoHandPrefix, '');
+    }
+    const lower = s.toLowerCase();
+    const base = WEAPON_SKILL_SINGULAR[lower]
+        || (s ? s.charAt(0).toUpperCase() + s.slice(1) : null);
+    if (!base) return null;
+    return twoHand ? `Two-handed ${base}` : base;
+}
+
+function itemTooltipIsTwoHanded(item) {
+    if (!item?.tooltip_lines_raw) return false;
+    return item.tooltip_lines_raw.some((line) => {
+        const t = (line || '').trim().toLowerCase();
+        return t === 'two-hand' || t === 'two-handed' || t.startsWith('two-hand');
+    });
+}
+
 /**
  * Get the weapon subtype (e.g. "Axe", "Two-handed Mace") from a weapon item's tooltip.
  * Returns null for non-weapons.
@@ -115,11 +158,28 @@ function getWeaponSubtype(weaponItem) {
     let isTwoHand = false;
     for (const line of weaponItem.tooltip_lines_raw) {
         const trimmed = line.trim();
-        if (trimmed === 'Two-hand' || trimmed === 'Two-Hand') isTwoHand = true;
+        if (/^two[- ]hand(?:ed)?$/i.test(trimmed)) isTwoHand = true;
         if (WEAPON_TYPES.has(trimmed.toLowerCase())) {
-            return isTwoHand ? `Two-handed ${trimmed}` : trimmed;
+            return canonicalWeaponSkillType(isTwoHand ? `Two-handed ${trimmed}` : trimmed);
         }
     }
+    const meleeType = getMeleeWeaponType(weaponItem);
+    if (meleeType) {
+        return canonicalWeaponSkillType(
+            itemTooltipIsTwoHanded(weaponItem) ? `Two-handed ${meleeType}` : meleeType
+        );
+    }
+    return null;
+}
+
+function resolveEquippedGearSnapshot(equippedGear) {
+    if (equippedGear) return equippedGear;
+    if (document.body?.dataset?.appMode === 'gearPlanner'
+        && typeof window.getGearPlannerWeaponSkillEquippedGear === 'function') {
+        const gpGear = window.getGearPlannerWeaponSkillEquippedGear();
+        if (gpGear) return gpGear;
+    }
+    if (getEquippedGearFunc) return getEquippedGearFunc();
     return null;
 }
 
@@ -128,11 +188,13 @@ function getWeaponSubtype(weaponItem) {
  * Uses the item's own subtype when it is a weapon (item picker / unequipped weapons),
  * plus the equipped mainhand when present (armor and accessories).
  */
-function getWeaponSkillMatchTypes(item) {
+function getWeaponSkillMatchTypes(item, equippedGear = null) {
     const types = new Set();
     const itemType = getWeaponSubtype(item);
     if (itemType) types.add(itemType);
-    const mainhand = getCurrentlyEquippedItem('mainhand');
+
+    const gear = resolveEquippedGearSnapshot(equippedGear);
+    const mainhand = gear?.mainhand || getCurrentlyEquippedItem('mainhand');
     const equippedType = mainhand ? getWeaponSubtype(mainhand) : null;
     if (equippedType) types.add(equippedType);
     return types;
@@ -143,9 +205,10 @@ function getWeaponSkillMatchTypes(item) {
  * Typed weapon skill counts when it matches the scored weapon and/or equipped mainhand.
  * @param {Object} item - Item object with tooltip_lines_raw
  * @param {Array|null} statWeights - Array of stat weight objects (from getStoredStatWeights)
+ * @param {Object|null} [equippedGear] - Optional {slot: item} snapshot for weapon-skill matching (Gear Planner)
  * @returns {number|null} DPS score, or null if weights unavailable
  */
-export function calculateItemDpsScore(item, statWeights) {
+export function calculateItemDpsScore(item, statWeights, equippedGear = null) {
     if (!statWeights || !Array.isArray(statWeights) || statWeights.length === 0) return null;
     if (!item) return null;
 
@@ -168,14 +231,15 @@ export function calculateItemDpsScore(item, statWeights) {
 
     const wepSkillWeight = weightMap.wepSkill;
     if (wepSkillWeight) {
-        const matchTypes = getWeaponSkillMatchTypes(item);
+        const matchTypes = getWeaponSkillMatchTypes(item, equippedGear);
 
         // Weapon skill by type (e.g. "Increased Two-handed Axes +5")
         if (stats.weaponSkillByType && matchTypes.size > 0) {
             for (const [skillType, skillValue] of Object.entries(stats.weaponSkillByType)) {
                 if (!skillValue) continue;
+                const canonicalSkill = canonicalWeaponSkillType(skillType);
                 for (const weaponType of matchTypes) {
-                    if (doesWeaponSkillMatch(skillType, weaponType)) {
+                    if (doesWeaponSkillMatch(canonicalSkill, weaponType)) {
                         score += skillValue * wepSkillWeight;
                         break;
                     }
@@ -194,10 +258,15 @@ export function calculateItemDpsScore(item, statWeights) {
 
 /**
  * Check if a weapon skill type (e.g. "Axe", "Two-handed Axe") matches a weapon subtype.
- * Classic treats 1H and 2H skills as separate — strict type match only.
+ * Classic treats 1H and 2H skills as separate. Generic "Two-handed Weapon" matches any 2H subtype.
  */
 function doesWeaponSkillMatch(skillType, weaponType) {
-    return skillType === weaponType;
+    const skill = canonicalWeaponSkillType(skillType);
+    const weapon = canonicalWeaponSkillType(weaponType);
+    if (!skill || !weapon) return false;
+    if (skill === weapon) return true;
+    if (skill === 'Two-handed Weapon' && weapon.startsWith('Two-handed ')) return true;
+    return false;
 }
 
 /**
@@ -449,7 +518,7 @@ export function createItemTooltipHTML(item, equippedGear = null) {
 
     // Build bottom score line: DPS on the left, tank score on the right
     const { dps: statWeights, tank: tankWeights } = getActiveItemScoreWeights();
-    const dpsScore = statWeights ? calculateItemDpsScore(item, statWeights) : null;
+    const dpsScore = statWeights ? calculateItemDpsScore(item, statWeights, equippedGear) : null;
     const hasDps = dpsScore !== null && dpsScore > 0;
 
     const tankScore = tankWeights ? calculateItemTankScore(item, tankWeights) : null;

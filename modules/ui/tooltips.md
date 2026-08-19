@@ -54,7 +54,7 @@ Returns `{ ehp, mitScore, tankScore }` where `tankScore = ehp + mitScore` (stami
 ### `formatItemTankScoreBadge(tank)`
 Compact label for GP slot cards: `Tank score: X (EHP Y · MIT Z)`.
 
-**Weapon skill handling:** Items with `weaponSkillByType` (e.g., "Increased Axes +5") contribute `skillValue × wepSkill` when the skill type strictly matches the scored item's weapon subtype and/or the equipped mainhand (`getWeaponSkillMatchTypes()`). Weapons in the item picker count their own type even when not equipped yet. `getWeaponSubtype()` reads `tooltip_lines_raw` (e.g., "Axe", "Two-handed Mace"). One-handed and two-handed skills are separate in Classic (e.g. "Axe" does not match "Two-handed Axe"). Generic weapon skill (rare) always counts.
+**Weapon skill handling:** Items with `weaponSkillByType` (e.g., "Increased Two-handed Maces +5") contribute `skillValue × wepSkill` when the skill type strictly matches the scored item's weapon subtype and/or the equipped mainhand (`getWeaponSkillMatchTypes()`). Matching uses `canonicalWeaponSkillType()` so plural tooltip lines (`Maces`) align with equipped subtypes (`Two-handed Mace`). Weapons in the item picker count their own type even when not equipped yet. Armor uses the equipped mainhand from the passed `equippedGear` snapshot, `setGetEquippedGear` callback, or `getCurrentlyEquippedItem` (Gear Planner passes its plan snapshot). One-handed and two-handed skills are separate in Classic (e.g. "Axe" does not match "Two-handed Axe"). Generic `Two-handed Weapon` skill matches any equipped two-handed subtype. Generic weapon skill (rare) always counts.
 
 ## Internal Functions
 
@@ -64,8 +64,11 @@ Extracts the weapon subtype string (e.g., `"Axe"`, `"Two-handed Mace"`) from a w
 ### `getWeaponSkillMatchTypes(item)`
 Returns a `Set` of weapon subtypes for typed weapon-skill scoring: the item's own subtype when it is a weapon, plus the equipped mainhand subtype when present.
 
+### `calculateItemDpsScore(item, statWeights, equippedGear?)`
+Optional `equippedGear` `{slot: item}` snapshot for typed weapon-skill matching (required in Gear Planner item picker).
+
 ### `doesWeaponSkillMatch(skillType, weaponType)`
-Checks if a weapon skill bonus type matches a weapon subtype. Strict equality only — `"Axe"` matches `"Axe"` but not `"Two-handed Axe"`.
+Checks if a weapon skill bonus type matches a weapon subtype via `canonicalWeaponSkillType()`. Strict 1H≠2H; `"Two-handed Weapon"` matches any `"Two-handed …"` equipped subtype.
 
 ### `extractSetInfo(item, equippedGear)`
 Determines which set pieces are equipped and which set bonuses are active, used for green/gray highlighting. The ★ on `(N) Set:` lines uses `setDatabase` entries whose `displayName` or `displayNameAliases` matches the tooltip set name, and only tiers with **`modeledInSim: true`** on the bonus object (not merely having `statsKey`).

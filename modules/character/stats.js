@@ -357,6 +357,8 @@ export const STAT_PATTERNS = {
 
 // Weapon skill by type pattern: "Increased {WeaponType} +X"
 export const WEAPON_SKILL_BY_TYPE_PATTERN = /Increased (Two[- ]handed )?(?:Axes|Swords|Maces|Daggers|Fist Weapons|Polearms|Staves|Bows|Crossbows|Guns|Thrown) \+(\d+)/i;
+// Generic two-handed weapon skill (not axe/mace/sword-specific)
+export const TWO_HANDED_WEAPON_SKILL_PATTERN = /Increased Two[- ]handed Weapon Skill \+(\d+)/i;
 
 // Spell Strike: "Adds X {school} damage to your weapon/melee attack(s)."
 // Matches both "weapon attacks" and "melee attacks" (e.g. "Adds 3 Lightning damage to your melee attacks.").
@@ -893,6 +895,16 @@ export function parseStatsFromTooltip(item) {
 
                 // Add to the weapon type
                 stats.weaponSkillByType[weaponType] = (stats.weaponSkillByType[weaponType] || 0) + skillValue;
+            }
+        }
+
+        // Generic two-handed weapon skill (matches any equipped 2H weapon in tooltip DPS scoring)
+        const twoHandedWeaponSkillMatch = line.match(TWO_HANDED_WEAPON_SKILL_PATTERN);
+        if (twoHandedWeaponSkillMatch) {
+            const skillValue = parseInt(twoHandedWeaponSkillMatch[1], 10);
+            if (!isNaN(skillValue)) {
+                if (!stats.weaponSkillByType) stats.weaponSkillByType = {};
+                stats.weaponSkillByType['Two-handed Weapon'] = (stats.weaponSkillByType['Two-handed Weapon'] || 0) + skillValue;
             }
         }
 

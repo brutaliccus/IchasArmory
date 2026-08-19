@@ -288,6 +288,7 @@ function installGpWeightResolvers() {
     if (typeof window === 'undefined') return;
     window.getGearPlannerDpsStatWeights = (isAoe = false) => resolveGpDpsWeights(isAoe);
     window.getGearPlannerTankStatWeights = () => resolveGpTankWeights();
+    window.getGearPlannerWeaponSkillEquippedGear = () => getGpPrimaryEquipped();
 }
 
 export function initGearPlannerView(cbs) {
@@ -3795,7 +3796,7 @@ function gpItemScoreBadgesHtml(item) {
     const dpsW = resolveGpDpsWeights(false);
     const tankW = resolveGpTankWeights();
     if (hasMeaningfulDpsWeights(dpsW)) {
-        const dps = calculateItemDpsScore(item, dpsW);
+        const dps = calculateItemDpsScore(item, dpsW, getGpPrimaryEquipped());
         if (dps != null) parts.push(`<span class="gp-item-score-dps" title="Estimated DPS score">~${Math.round(dps).toLocaleString()} DPS</span>`);
     }
     if (hasMeaningfulTankWeights(tankW)) {
