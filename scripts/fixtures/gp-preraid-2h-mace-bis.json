@@ -1,0 +1,454 @@
+{
+  "schemaVersion": 1,
+  "kind": "gearPlan",
+  "name": "Ichabaddie's 2H Mace Pre-Raid BIS",
+  "class": "shaman",
+  "race": "tauren",
+  "talents": {
+    "elemental-1": 2,
+    "elemental-2": 5,
+    "elemental-6": 3,
+    "elemental-8": 1,
+    "elemental-9": 3,
+    "enhancement-1": 5,
+    "enhancement-5": 5,
+    "enhancement-6": 3,
+    "enhancement-8": 3,
+    "enhancement-10": 1,
+    "enhancement-13": 5,
+    "enhancement-16": 2,
+    "enhancement-17": 3,
+    "enhancement-18": 1,
+    "enhancement-22": 5,
+    "enhancement-25": 1
+  },
+  "buffs": [
+    {
+      "id": "mastery_axes",
+      "improved": false
+    },
+    {
+      "id": "mastery_hammers",
+      "improved": false
+    },
+    {
+      "id": "motw",
+      "improved": true
+    },
+    {
+      "id": "fortitude",
+      "improved": true
+    },
+    {
+      "id": "graceOfAir",
+      "improved": true
+    },
+    {
+      "id": "strengthOfEarthTotem",
+      "improved": true
+    },
+    {
+      "id": "arcaneBrilliance",
+      "improved": false
+    },
+    {
+      "id": "bok",
+      "improved": false
+    },
+    {
+      "id": "battleShout",
+      "improved": true
+    },
+    {
+      "id": "blessingOfMight",
+      "improved": true
+    },
+    {
+      "id": "leaderOfThePack",
+      "improved": false
+    },
+    {
+      "id": "emeraldBlessing",
+      "improved": false
+    },
+    {
+      "id": "greaterBlessingOfSalvation",
+      "improved": false
+    },
+    {
+      "id": "thunderfury_debuff",
+      "improved": false
+    },
+    {
+      "id": "curseOfTheElements",
+      "improved": false
+    },
+    {
+      "id": "curseOfShadows",
+      "improved": false
+    },
+    {
+      "id": "exposeArmor",
+      "improved": true
+    },
+    {
+      "id": "fireVulnerability",
+      "improved": false
+    },
+    {
+      "id": "nightfall",
+      "improved": false
+    },
+    {
+      "id": "faerieFire",
+      "improved": false
+    },
+    {
+      "id": "curseOfRecklessness",
+      "improved": false
+    },
+    {
+      "id": "mongoose",
+      "improved": false
+    },
+    {
+      "id": "giants",
+      "improved": false
+    },
+    {
+      "id": "roids",
+      "improved": false
+    }
+  ],
+  "slots": {
+    "head": {
+      "primary": 81223,
+      "alternatives": [],
+      "enchant": 5
+    },
+    "neck": {
+      "primary": 61029,
+      "alternatives": [
+        15411
+      ],
+      "enchant": 6
+    },
+    "shoulder": {
+      "primary": 12927,
+      "alternatives": [
+        61017
+      ],
+      "enchant": 13
+    },
+    "back": {
+      "primary": 61010,
+      "alternatives": [
+        61709
+      ],
+      "enchant": 12
+    },
+    "chest": {
+      "primary": 60574,
+      "alternatives": [
+        15050
+      ],
+      "enchant": 5
+    },
+    "wrist": {
+      "primary": 18375,
+      "alternatives": [],
+      "enchant": 18
+    },
+    "hands": {
+      "primary": 15063,
+      "alternatives": [
+        83463
+      ],
+      "enchant": 10
+    },
+    "waist": {
+      "primary": 60550,
+      "alternatives": [
+        13252,
+        51749,
+        60576
+      ],
+      "enchant": 9
+    },
+    "legs": {
+      "primary": 15062,
+      "alternatives": [],
+      "enchant": 4
+    },
+    "feet": {
+      "primary": 60578,
+      "alternatives": [
+        60553,
+        16984
+      ],
+      "enchant": 3
+    },
+    "ring1": {
+      "primary": 13098,
+      "alternatives": [],
+      "enchant": 6
+    },
+    "ring2": {
+      "primary": 80760,
+      "alternatives": [],
+      "enchant": 6
+    },
+    "trinket1": {
+      "primary": 13965,
+      "alternatives": [],
+      "enchant": null
+    },
+    "trinket2": {
+      "primary": 11815,
+      "alternatives": [],
+      "enchant": null
+    },
+    "mainhand": {
+      "primary": 83440,
+      "alternatives": [],
+      "enchant": 10
+    },
+    "offhand": {
+      "primary": null,
+      "alternatives": [],
+      "enchant": null
+    },
+    "ranged": {
+      "primary": 22395,
+      "alternatives": [],
+      "enchant": null
+    }
+  },
+  "ui": {
+    "collapsed": {
+      "back": false
+    },
+    "stRotation": "enhSt",
+    "statsCardOrder": [],
+    "statsCardCollapsed": {}
+  },
+  "role": [
+    "dps"
+  ],
+  "spec": "Enhancement",
+  "description": "2H Mace physhance pre raid",
+  "icon": "inv_mace_26",
+  "community": true,
+  "id": "gp_1787144445118",
+  "authorName": "ord1nary_joe",
+  "authorId": "249930058918133761",
+  "createdAt": "2026-08-19T13:00:45.115Z",
+  "updatedAt": "2026-08-19T16:05:43.607Z",
+  "upvotes": 1,
+  "downvotes": 0,
+  "myVote": null,
+  "statWeightsByClass": {
+    "shaman": {
+      "statWeights": [
+        {
+          "key": "physHit",
+          "stat": "1% Physical Hit",
+          "statDps": 0,
+          "statTps": 0,
+          "dps": "0.000",
+          "ap": "0.000",
+          "sp": "0.000",
+          "tps": "0.000",
+          "tpsAp": "0.000",
+          "tpsSp": "0.000"
+        },
+        {
+          "key": "ap",
+          "stat": "1 Attack Power",
+          "statDps": 0.22098027171195667,
+          "statTps": 0.1405128493439557,
+          "dps": "0.221",
+          "ap": "1.000",
+          "sp": "1.095",
+          "tps": "0.141",
+          "tpsAp": "1.000",
+          "tpsSp": "1.089"
+        },
+        {
+          "key": "str",
+          "stat": "1 Strength",
+          "statDps": 0.5150226673175996,
+          "statTps": 0.3273978770695254,
+          "dps": "0.515",
+          "ap": "2.331",
+          "sp": "2.552",
+          "tps": "0.327",
+          "tpsAp": "2.330",
+          "tpsSp": "2.537"
+        },
+        {
+          "key": "agi",
+          "stat": "1 Agility",
+          "statDps": 0.20002775609598758,
+          "statTps": 0.11239709260642883,
+          "dps": "0.200",
+          "ap": "0.905",
+          "sp": "0.991",
+          "tps": "0.112",
+          "tpsAp": "0.800",
+          "tpsSp": "0.871"
+        },
+        {
+          "key": "int",
+          "stat": "1 Intellect",
+          "statDps": 0.011594691921807225,
+          "statTps": 0.010211281725738673,
+          "dps": "0.012",
+          "ap": "0.052",
+          "sp": "0.057",
+          "tps": "0.010",
+          "tpsAp": "0.073",
+          "tpsSp": "0.079"
+        },
+        {
+          "key": "arp",
+          "stat": "1 Armor Penetration",
+          "statDps": 0.03958312365196662,
+          "statTps": 0.022265507054237334,
+          "dps": "0.040",
+          "ap": "0.179",
+          "sp": "0.196",
+          "tps": "0.022",
+          "tpsAp": "0.158",
+          "tpsSp": "0.173"
+        },
+        {
+          "key": "sp",
+          "stat": "1 Spell Power",
+          "statDps": 0.20178028800389483,
+          "statTps": 0.1290733941474707,
+          "dps": "0.202",
+          "ap": "0.913",
+          "sp": "1.000",
+          "tps": "0.129",
+          "tpsAp": "0.919",
+          "tpsSp": "1.000"
+        },
+        {
+          "key": "natureSp",
+          "stat": "1 Nature Spell Power",
+          "statDps": 0.08645528515626211,
+          "statTps": 0.08654169287109881,
+          "dps": "0.086",
+          "ap": "0.391",
+          "sp": "0.428",
+          "tps": "0.087",
+          "tpsAp": "0.616",
+          "tpsSp": "0.670"
+        },
+        {
+          "key": "fireSp",
+          "stat": "1 Fire Spell Power",
+          "statDps": 0.11532500284764297,
+          "statTps": 0.042531701276377024,
+          "dps": "0.115",
+          "ap": "0.522",
+          "sp": "0.572",
+          "tps": "0.043",
+          "tpsAp": "0.303",
+          "tpsSp": "0.330"
+        },
+        {
+          "key": "spellPen",
+          "stat": "1 Spell Penetration",
+          "statDps": 0.6520645929677584,
+          "statTps": 0.5167349453093948,
+          "dps": "0.652",
+          "ap": "2.951",
+          "sp": "3.232",
+          "tps": "0.517",
+          "tpsAp": "3.677",
+          "tpsSp": "4.003"
+        },
+        {
+          "key": "fortune",
+          "stat": "1% Fortune",
+          "statDps": 0.06753071457922033,
+          "statTps": 0.04355698401207064,
+          "dps": "0.068",
+          "ap": "0.306",
+          "sp": "0.335",
+          "tps": "0.044",
+          "tpsAp": "0.310",
+          "tpsSp": "0.337"
+        },
+        {
+          "key": "physCrit",
+          "stat": "1% Physical Critical Strike",
+          "statDps": 3.484765507532046,
+          "statTps": 2.0158904424786073,
+          "dps": "3.485",
+          "ap": "15.770",
+          "sp": "17.270",
+          "tps": "2.016",
+          "tpsAp": "14.347",
+          "tpsSp": "15.618"
+        },
+        {
+          "key": "haste",
+          "stat": "1% Haste",
+          "statDps": 2.115296208295786,
+          "statTps": 1.162013016529079,
+          "dps": "2.115",
+          "ap": "9.572",
+          "sp": "10.483",
+          "tps": "1.162",
+          "tpsAp": "8.270",
+          "tpsSp": "9.003"
+        },
+        {
+          "key": "wepSkill",
+          "stat": "1 Weapon Skill",
+          "statDps": 2.9146497554538655,
+          "statTps": 1.6863081895787861,
+          "dps": "2.915",
+          "ap": "13.190",
+          "sp": "14.445",
+          "tps": "1.686",
+          "tpsAp": "12.001",
+          "tpsSp": "13.065"
+        },
+        {
+          "key": "spellCrit",
+          "stat": "1% Spell Critical Strike",
+          "statDps": 0.8086362020985689,
+          "statTps": 0.6558520891025097,
+          "dps": "0.809",
+          "ap": "3.659",
+          "sp": "4.008",
+          "tps": "0.656",
+          "tpsAp": "4.668",
+          "tpsSp": "5.081"
+        },
+        {
+          "key": "spellHit",
+          "stat": "1% Spell Hit",
+          "statDps": 1.8769277229498205,
+          "statTps": 1.7690250864995012,
+          "dps": "1.877",
+          "ap": "8.494",
+          "sp": "9.302",
+          "tps": "1.769",
+          "tpsAp": "12.590",
+          "tpsSp": "13.706"
+        }
+      ]
+    }
+  },
+  "favorite": false,
+  "talentSpread": [
+    14,
+    34,
+    0
+  ]
+}

@@ -6,6 +6,12 @@ import { getTrinketArcaneSurgeSpellPower } from '../sim/trinketSystem.js';
 import { calculateResistanceStats, calculateExpectedResistanceMultiplier } from '../sim/damageSystem.js';
 import { isTargetSchoolImmune } from './targetSchoolImmunity.js';
 
+function getPhysicalArmorMultiplier(stats) {
+    return typeof stats.getArmorDamageMultiplier === 'function'
+        ? stats.getArmorDamageMultiplier()
+        : 1;
+}
+
 /**
  * Calculate damage for a shaman spell using the 6-step formula
  *
@@ -641,8 +647,9 @@ export function calculateSpellDamage(spell, stats, ctx = null) {
         // Physical component: 2.0x crit (NOT affected by Elemental Fury - physical damage only)
         const physicalCritMultiplier = 2.0;
         const physicalCritDamage = effectivePhysicalCrit * physicalCritMultiplier + (1 - effectivePhysicalCrit);
-        const physicalExpectedMin = physImmune ? 0 : physicalDisplayMin * physicalCritDamage * avoidance.landChance;
-        const physicalExpectedMax = physImmune ? 0 : physicalDisplayMax * physicalCritDamage * avoidance.landChance;
+        const armorMult = getPhysicalArmorMultiplier(stats);
+        const physicalExpectedMin = physImmune ? 0 : physicalDisplayMin * physicalCritDamage * avoidance.landChance * armorMult;
+        const physicalExpectedMax = physImmune ? 0 : physicalDisplayMax * physicalCritDamage * avoidance.landChance * armorMult;
 
         if (physImmune) {
             physicalDisplayMin = 0;
@@ -819,6 +826,8 @@ export function calculateSpellDamage(spell, stats, ctx = null) {
         // Binary spells skip resistance damage reduction (already applied to hit chance)
         if (spell.school !== 'physical') {
             expectedDamage = applyMagicResistance(expectedDamage, spell, stats);
+        } else {
+            expectedDamage *= getPhysicalArmorMultiplier(stats);
         }
 
         expectedResults.push(expectedDamage);

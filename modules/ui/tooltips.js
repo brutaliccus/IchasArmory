@@ -223,7 +223,42 @@ function getScoringContextKey(equippedGear) {
     const gear = resolveEquippedGearSnapshot(equippedGear) || {};
     const mhId = gear.mainhand?.id ?? '';
     const ohId = gear.offhand?.id ?? '';
-    return `${_scoringContextVersion}|${classId}|${raceId}|${mhId}|${ohId}`;
+    const gpCombatToken = getGpCombatScoringToken();
+    return `${_scoringContextVersion}|${classId}|${raceId}|${mhId}|${ohId}|${gpCombatToken}`;
+}
+
+function getGpCombatScoringToken() {
+    if (!isGearPlannerAppMode()) return '';
+    const payload = getGpCharacterCalcPayload();
+    if (!payload) return '';
+    let armorReduction = 0;
+    let windfuryFlag = 0;
+    for (const buff of payload.activeBuffs || []) {
+        if (buff?.enemyArmorReduction) armorReduction += Math.abs(buff.enemyArmorReduction);
+        const id = buff?.id || '';
+        const name = (buff?.name || '').toLowerCase();
+        if (id === 'windfury' || name.includes('windfury')) windfuryFlag = 1;
+    }
+    const rot = payload.stRotation === 'eleSt' ? 'eleSt' : 'enhSt';
+    const assumeWindfury = (!windfuryFlag && rot === 'enhSt') ? 1 : 0;
+    return `a${armorReduction}|wf${windfuryFlag}|awf${assumeWindfury}|${rot}`;
+}
+
+function hasActiveWeaponImbueBuff(activeBuffs) {
+    return (activeBuffs || []).some((buff) => {
+        const id = buff?.id || '';
+        const name = (buff?.name || '').toLowerCase();
+        return id === 'windfury' || id === 'flametongue' || id === 'frostbrand' || id === 'rockbiter'
+            || name.includes('windfury') || name === 'flametongue weapon'
+            || name === 'frostbrand weapon' || name === 'rockbiter weapon';
+    });
+}
+
+function applyGpEnhancementWindfuryDefault(stats, activeBuffs) {
+    if (!stats || hasActiveWeaponImbueBuff(activeBuffs)) return;
+    const payload = getGpCharacterCalcPayload();
+    const rot = payload?.stRotation === 'eleSt' ? 'eleSt' : 'enhSt';
+    if (rot === 'enhSt') stats.toggleModifier('windfuryActive', true);
 }
 
 function getGpCharacterCalcPayloadCached() {
@@ -355,6 +390,34 @@ function applyMinimalTalentModifiers(stats, talentBonuses) {
     }
 }
 
+/** Level-63 boss base armor; GP sim subtracts plan debuff reductions (applyGearPlanCapturedCombatToStats). */
+const GP_BOSS_BASE_ARMOR = 3731;
+
+function computeEffectiveTargetArmorFromBuffs(activeBuffs, baseArmor = GP_BOSS_BASE_ARMOR) {
+    let armorReduction = 0;
+    for (const buff of activeBuffs || []) {
+        if (buff?.enemyArmorReduction) armorReduction += Math.abs(buff.enemyArmorReduction);
+    }
+    return Math.max(0, baseArmor - armorReduction);
+}
+
+/** Apply raid boss debuffs from GP plan buffs to tooltip weapon-scaling stats (matches GP sim target). */
+function applyGpPlanCombatDebuffsToStats(stats, activeBuffs) {
+    if (!stats) return;
+    stats.targetArmor = computeEffectiveTargetArmorFromBuffs(activeBuffs);
+    for (const buff of activeBuffs || []) {
+        if (buff.enemyNatureResistReduction) {
+            stats.natureResist = Math.max(0, (stats.natureResist || 0) - Math.abs(buff.enemyNatureResistReduction));
+        }
+        if (buff.enemyFireResistReduction) {
+            stats.fireResist = Math.max(0, (stats.fireResist || 0) - Math.abs(buff.enemyFireResistReduction));
+        }
+        if (buff.enemyFrostResistReduction) {
+            stats.frostResist = Math.max(0, (stats.frostResist || 0) - Math.abs(buff.enemyFrostResistReduction));
+        }
+    }
+}
+
 function applyWeaponDamageToShamanStats(stats, baseMin, baseMax, baseSpeed, setWeaponMin = 0, setWeaponMax = 0) {
     if (!stats || !baseSpeed) return;
 
@@ -413,6 +476,11 @@ function buildShamanBaseStats(equippedGear) {
     const activeBuffs = resolveActiveBuffsForTooltips(classId, talentBonuses);
     const hasWindfury = activeBuffs.some((buff) => buff.name && buff.name.toLowerCase().includes('windfury'));
     if (hasWindfury) stats.toggleModifier('windfuryActive', true);
+
+    if (isGearPlannerAppMode()) {
+        applyGpPlanCombatDebuffsToStats(stats, activeBuffs);
+        if (classId === 'shaman') applyGpEnhancementWindfuryDefault(stats, activeBuffs);
+    }
 
     return stats;
 }

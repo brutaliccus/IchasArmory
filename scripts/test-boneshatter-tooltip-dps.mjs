@@ -75,6 +75,9 @@ const GP_BUFFS = [
     { id: 'battleShout', improved: true },
     { id: 'blessingOfMight', improved: true },
     { id: 'leaderOfThePack' },
+    { id: 'exposeArmor', improved: true },
+    { id: 'faerieFire' },
+    { id: 'curseOfRecklessness' },
 ];
 
 function buildMockGpPayload() {
@@ -113,6 +116,7 @@ function buildMockGpPayload() {
         mainhandIsTwoHanded: true,
         offhandIsTwoHanded: false,
         rangedWeaponType: null,
+        stRotation: 'enhSt',
     };
 }
 

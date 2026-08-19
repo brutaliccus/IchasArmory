@@ -1950,6 +1950,7 @@ function buildGpCalcPayload(plan, { includeGear, includeTalents, includeBuffs })
         mainhandIsTwoHanded: mh?.tooltip_lines_raw?.includes('Two-hand') || false,
         offhandIsTwoHanded: oh?.tooltip_lines_raw?.includes('Two-hand') || false,
         rangedWeaponType: null,
+        stRotation: plan.ui?.stRotation === 'eleSt' ? 'eleSt' : 'enhSt',
     };
 }
 
