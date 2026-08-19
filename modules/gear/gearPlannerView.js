@@ -1901,38 +1901,142 @@ function buildGpCalcPayload(plan, { includeGear, includeTalents, includeBuffs })
 }
 
 const GP_STAT_GROUPS = [
-    { title: 'Attributes', rows: [
+    { id: 'attributes', title: 'Attributes', rows: [
         ['strength', 'Strength'], ['agility', 'Agility'], ['stamina', 'Stamina'],
         ['intellect', 'Intellect'], ['spirit', 'Spirit'],
         ['critDmgReduction', 'Crit Dmg Reduction', 'pct'],
     ]},
-    { title: 'Melee', rows: [
+    { id: 'melee', title: 'Melee', rows: [
         ['attackPower', 'Attack Power'], ['crit', 'Melee Crit', 'pct'],
         ['hit', 'Melee Hit', 'pct'], ['haste', 'Haste', 'pct'], ['armorPen', 'Armor Pen'],
     ]},
-    { title: 'Ranged', rows: [
+    { id: 'ranged', title: 'Ranged', rows: [
         ['rangedAttackPower', 'Attack Power'], ['rangedCrit', 'Ranged Crit', 'pct'],
         ['rangedHit', 'Ranged Hit', 'pct'],
     ]},
-    { title: 'Spell', rows: [
+    { id: 'spell', title: 'Spell', rows: [
         ['dmgAndHealing', 'Spell Damage'], ['healing', 'Healing'], ['spellCrit', 'Spell Crit', 'pct'],
         ['spellHit', 'Spell Hit', 'pct'], ['spellPen', 'Spell Pen'], ['mp5', 'Mp5'],
         ['fireDamage', 'Fire Damage', null, 'school'], ['frostDamage', 'Frost Damage', null, 'school'],
         ['natureDamage', 'Nature Damage', null, 'school'], ['shadowDamage', 'Shadow Damage', null, 'school'],
         ['arcaneDamage', 'Arcane Damage', null, 'school'], ['holyDamage', 'Holy Damage', null, 'school'],
     ]},
-    { title: 'Defense', rows: [] },
-    { title: 'Damage Reduction', rows: [
+    { id: 'defense', title: 'Defense', rows: [] },
+    { id: 'damageReduction', title: 'Damage Reduction', rows: [
         ['magicDR', 'All Spell', 'frac'],
         ['fireDR', 'Fire', 'frac', 'schoolDr'], ['natureDR', 'Nature', 'frac', 'schoolDr'],
         ['frostDR', 'Frost', 'frac', 'schoolDr'], ['shadowDR', 'Shadow', 'frac', 'schoolDr'],
         ['arcaneDR', 'Arcane', 'frac', 'schoolDr'], ['holyDR', 'Holy', 'frac', 'schoolDr'],
     ]},
-    { title: 'Misc Effects', rows: [
+    { id: 'miscEffects', title: 'Misc Effects', rows: [
         ['vampirism', 'Vampirism', 'pct'],
         ['fortune', 'Fortune', 'pct'],
     ]},
 ];
+
+const GP_STAT_GROUP_BY_ID = Object.fromEntries(GP_STAT_GROUPS.map((g) => [g.id, g]));
+
+function ensureGpStatsUi(plan) {
+    if (!plan.ui) plan.ui = { collapsed: {}, stRotation: 'enhSt' };
+    if (!plan.ui.collapsed) plan.ui.collapsed = {};
+    if (!Array.isArray(plan.ui.statsCardOrder)) plan.ui.statsCardOrder = [];
+    if (!plan.ui.statsCardCollapsed || typeof plan.ui.statsCardCollapsed !== 'object') {
+        plan.ui.statsCardCollapsed = {};
+    }
+}
+
+function getVisibleGpStatGroupIds(classId) {
+    const showRanged = classShowsRangedStats(classId);
+    return GP_STAT_GROUPS.filter((g) => showRanged || g.id !== 'ranged').map((g) => g.id);
+}
+
+function resolveGpStatGroupOrder(plan, classId) {
+    ensureGpStatsUi(plan);
+    const visible = getVisibleGpStatGroupIds(classId);
+    const visibleSet = new Set(visible);
+    const ordered = [];
+    for (const id of plan.ui.statsCardOrder) {
+        if (visibleSet.has(id) && !ordered.includes(id)) ordered.push(id);
+    }
+    for (const id of visible) {
+        if (!ordered.includes(id)) ordered.push(id);
+    }
+    return ordered;
+}
+
+function renderGpStatCardHtml(groupId, title, bodyHtml, collapsed) {
+    return `<div class="gp-stat-card${collapsed ? ' is-collapsed' : ''}" data-gp-stat-group="${escapeHtml(groupId)}" draggable="true">
+        <div class="gp-stat-card-head">
+            <span class="gp-stat-card-drag" aria-hidden="true" title="Drag to reorder">⋮⋮</span>
+            <h4 class="gp-stat-card-title">${escapeHtml(title)}</h4>
+            <button type="button" class="gp-stat-card-toggle" aria-expanded="${collapsed ? 'false' : 'true'}" aria-label="Toggle ${escapeHtml(title)}" title="Toggle group">
+                <span class="gp-stat-card-caret" aria-hidden="true">▾</span>
+            </button>
+        </div>
+        <div class="gp-stat-card-body">${bodyHtml}</div>
+    </div>`;
+}
+
+function persistGpStatsCardOrderFromDom(list) {
+    if (!list || !currentPlan) return;
+    ensureGpStatsUi(currentPlan);
+    currentPlan.ui.statsCardOrder = [...list.querySelectorAll('.gp-stat-card[data-gp-stat-group]')]
+        .map((el) => el.dataset.gpStatGroup)
+        .filter(Boolean);
+    persistSession();
+}
+
+function bindGpStatsCardUi(list) {
+    if (!list) return;
+    list.querySelectorAll('.gp-stat-card-toggle').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const card = btn.closest('.gp-stat-card');
+            const groupId = card?.dataset.gpStatGroup;
+            if (!groupId || !currentPlan) return;
+            ensureGpStatsUi(currentPlan);
+            const collapsed = !card.classList.contains('is-collapsed');
+            card.classList.toggle('is-collapsed', collapsed);
+            btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+            if (collapsed) currentPlan.ui.statsCardCollapsed[groupId] = true;
+            else delete currentPlan.ui.statsCardCollapsed[groupId];
+            persistSession();
+        });
+    });
+
+    let dragGroupId = null;
+    list.querySelectorAll('.gp-stat-card').forEach((card) => {
+        card.addEventListener('dragstart', (e) => {
+            if (e.target.closest('.gp-stat-card-toggle')) {
+                e.preventDefault();
+                return;
+            }
+            dragGroupId = card.dataset.gpStatGroup || null;
+            card.classList.add('is-dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', dragGroupId || '');
+        });
+        card.addEventListener('dragend', () => {
+            card.classList.remove('is-dragging');
+            dragGroupId = null;
+        });
+        card.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            const dragging = list.querySelector('.gp-stat-card.is-dragging');
+            if (!dragging || dragging === card) return;
+            const rect = card.getBoundingClientRect();
+            const before = e.clientY < rect.top + rect.height / 2;
+            if (before) list.insertBefore(dragging, card);
+            else list.insertBefore(dragging, card.nextSibling);
+        });
+        card.addEventListener('drop', (e) => {
+            e.preventDefault();
+            persistGpStatsCardOrderFromDom(list);
+        });
+    });
+}
 
 /** Smart percent for modified-stats drawer: 3%, 3.5%, not 3.00%. */
 function formatGpSmartPercent(value) {
@@ -2116,24 +2220,28 @@ function renderStatsSidebar() {
         const full = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: true, includeTalents: true, includeBuffs: true }));
         const ungeared = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: false, includeTalents: true, includeBuffs: true }));
         const naked = calculateEffectiveHealth(buildGpCalcPayload(plan, { includeGear: false, includeTalents: false, includeBuffs: false }));
-        const statGroups = classShowsRangedStats(getGpClassId())
-            ? GP_STAT_GROUPS
-            : GP_STAT_GROUPS.filter((g) => g.title !== 'Ranged');
-        const cards = statGroups.map(group => {
+        const classId = getGpClassId();
+        ensureGpStatsUi(plan);
+        const groupOrder = resolveGpStatGroupOrder(plan, classId);
+        const cards = groupOrder.map((groupId) => {
+            const group = GP_STAT_GROUP_BY_ID[groupId];
+            if (!group) return '';
             const rows = group.rows.map(([key, label, kind, rowTag]) =>
                 renderGpStatEntry(key, label, kind, false, full, ungeared, naked, rowTag)
             ).filter(Boolean).join('');
             let extra = '';
-            if (group.title === 'Melee') {
+            if (group.id === 'melee') {
                 extra = renderGpWeaponSkillSection(full, ungeared, naked) + renderGpMeleeExtraRows(full, ungeared, naked);
-            } else if (group.title === 'Defense') {
+            } else if (group.id === 'defense') {
                 extra = renderGpDefenseSection(full, ungeared, naked, resolveGpTankWeights());
             }
             const allRows = rows + extra;
             if (!allRows) return '';
-            return `<div class="gp-stat-card"><h4 class="gp-locations-group-heading">${escapeHtml(group.title)}</h4>${allRows}</div>`;
+            const collapsed = !!plan.ui.statsCardCollapsed[group.id];
+            return renderGpStatCardHtml(group.id, group.title, allRows, collapsed);
         }).filter(Boolean).join('');
         list.innerHTML = cards || '<p class="gp-locations-empty">No modified stats yet. Buffs, talents, and equipped primaries appear here.</p>';
+        bindGpStatsCardUi(list);
         list.querySelectorAll('[data-gp-open-weights]').forEach((btn) => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();

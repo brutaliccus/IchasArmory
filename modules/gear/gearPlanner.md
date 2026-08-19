@@ -17,7 +17,7 @@ Gear plan data model and localStorage persistence for the Gear Planner page.
   slots: {
     [slotId]: { primary: number|null, alternatives: number[], enchant: number|null }
   },
-  ui: { collapsed: { [slotId]: boolean }, stRotation?: 'enhSt'|'eleSt' },
+  ui: { collapsed: { [slotId]: boolean }, stRotation?: 'enhSt'|'eleSt', statsCardOrder?: string[], statsCardCollapsed?: Record<string, boolean> },
   role: Array<'dps'|'tank'|'healer'>,  // required before save (UI uses single dropdown)
   spec: string,           // talent-tree display name (e.g. Enhancement)
   icon: string,           // vanilla icon basename (e.g. spell_nature_lightning)

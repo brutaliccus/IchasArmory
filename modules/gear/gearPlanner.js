@@ -84,7 +84,7 @@ export function createEmptyGearPlan(classId = 'warrior', name = 'New Gear Plan')
         talents: {},
         buffs: [],
         slots,
-        ui: { collapsed: {}, stRotation: 'enhSt' },
+        ui: { collapsed: {}, stRotation: 'enhSt', statsCardOrder: [], statsCardCollapsed: {} },
         role: [],
         spec: '',
         description: '',
@@ -110,7 +110,7 @@ export function createEmptyGearPlan(classId = 'warrior', name = 'New Gear Plan')
  * @property {Record<string, number>} talents
  * @property {Array<{ id: string, improved?: boolean }>} buffs
  * @property {Record<string, GearPlanSlot>} slots
- * @property {{ collapsed?: Record<string, boolean>, stRotation?: 'enhSt'|'eleSt' }} ui
+ * @property {{ collapsed?: Record<string, boolean>, stRotation?: 'enhSt'|'eleSt', statsCardOrder?: string[], statsCardCollapsed?: Record<string, boolean> }} ui
  * @property {Array<'dps'|'tank'|'healer'>} [role]
  * @property {string} [spec]
  * @property {string} [description] Short blurb (max 180)
@@ -210,6 +210,15 @@ export function getGearPlanData(plan) {
         };
     }
     if (plan.ui?.collapsed) out.ui.collapsed = { ...plan.ui.collapsed };
+    if (Array.isArray(plan.ui?.statsCardOrder)) {
+        out.ui.statsCardOrder = plan.ui.statsCardOrder.map((id) => String(id).trim()).filter(Boolean);
+    }
+    if (plan.ui?.statsCardCollapsed && typeof plan.ui.statsCardCollapsed === 'object') {
+        out.ui.statsCardCollapsed = {};
+        for (const [key, val] of Object.entries(plan.ui.statsCardCollapsed)) {
+            if (val) out.ui.statsCardCollapsed[String(key)] = true;
+        }
+    }
     if (plan.ui?.stRotation === 'eleSt' || plan.ui?.stRotation === 'enhSt') {
         out.ui.stRotation = plan.ui.stRotation;
     }

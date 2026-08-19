@@ -54,6 +54,91 @@ body[data-app-mode="character"] #gear-planner-shell {
     gap: 4px;
 }
 
+.gp-stat-card-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    margin: 0 0 4px;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+}
+
+.gp-stat-card.is-dragging {
+    opacity: 0.55;
+}
+
+.gp-stat-card.is-dragging .gp-stat-card-head {
+    cursor: grabbing;
+}
+
+.gp-stat-card-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    color: var(--accent-color, #ffd700);
+    font-size: calc((0.95rem + 2pt) * var(--ts, 1));
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.gp-stat-card-drag {
+    flex: 0 0 auto;
+    color: #8a8070;
+    font-size: calc(0.95rem * var(--ts, 1));
+    line-height: 1;
+    letter-spacing: -0.12em;
+    padding: 2px 2px 2px 0;
+    pointer-events: none;
+}
+
+.gp-stat-card-toggle {
+    appearance: none;
+    flex: 0 0 auto;
+    margin-left: auto;
+    padding: 4px 8px;
+    min-width: 32px;
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #c9a227;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.gp-stat-card-toggle:hover {
+    border-color: #5a4a20;
+    background: rgba(201, 162, 39, 0.08);
+}
+
+.gp-stat-card-caret {
+    display: inline-block;
+    font-size: calc(1.25rem * var(--ts, 1));
+    line-height: 1;
+    transition: transform var(--gp-dock-duration, 250ms) var(--gp-dock-ease, ease-in-out);
+}
+
+.gp-stat-card.is-collapsed .gp-stat-card-caret,
+.gp-stat-card-toggle[aria-expanded="false"] .gp-stat-card-caret {
+    transform: rotate(-90deg);
+}
+
+.gp-stat-card.is-collapsed .gp-stat-card-body {
+    display: none;
+}
+
+.gp-stat-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
 .gp-stat-item {
     display: flex;
     justify-content: space-between;
@@ -2587,6 +2672,16 @@ body.gp-mobile .gp-location-list-toggle {
 }
 
 body.gp-mobile .gp-location-list-caret {
+    font-size: calc(1.5rem * var(--ts, 1));
+}
+
+body.gp-mobile .gp-stat-card-toggle {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px 10px;
+}
+
+body.gp-mobile .gp-stat-card-caret {
     font-size: calc(1.5rem * var(--ts, 1));
 }
 
