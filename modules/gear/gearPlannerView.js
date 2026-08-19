@@ -118,6 +118,8 @@ const classIconData = {
 };
 
 const SIM_HINT_DISMISS_KEY = 'ichacalc_gp_sim_hint_dismissed';
+const GP_REMOVE_ICON_URL = resolveIconUrl('assets/icons/UI-Panel-MinimizeButton-Up.png');
+const GP_ADD_PLUS_ICON_URL = resolveIconUrl('assets/icons/UI-PlusButton-Up.png');
 
 let currentPlan = createEmptyGearPlan();
 let callbacks = {};
@@ -1543,6 +1545,7 @@ async function applyLoadedPlanToLiveUi() {
     updateQuickSimVisibility();
     updateStatWeightsBtnVisibility();
     updateHeaderVotesUi();
+    updateHeaderCategoryUi();
     syncEditModeUi();
     syncGpStRotationUi();
     renderLocationsSidebar();
@@ -1571,6 +1574,7 @@ function requestClearCurrentPlan() {
     } catch { /* ignore */ }
     persistSession();
     updateHeaderVotesUi();
+    updateHeaderCategoryUi();
     refreshGearPlannerWhenItemsReady(currentPlan).then(() => applyLoadedPlanToLiveUi());
     window.notify?.success?.('Gear plan cleared', 2500, 'Gear Planner');
 }
@@ -2429,6 +2433,7 @@ function applySaveMetaToPlan(meta) {
         : sanitizeGearPlanDescription(currentPlan.description || '');
     persistSession();
     updateStatWeightsBtnVisibility();
+    updateHeaderCategoryUi();
 }
 
 function validateSaveMeta(meta) {
@@ -2715,6 +2720,7 @@ async function hydrateCommunityVoteMeta(plan = currentPlan) {
     currentPlan.downvotes = Number(meta.downvotes) || 0;
     currentPlan.myVote = meta.myVote === 'up' || meta.myVote === 'down' ? meta.myVote : null;
     updateHeaderVotesUi();
+    updateHeaderCategoryUi();
     persistSession();
 }
 
@@ -3363,6 +3369,21 @@ function updateHeaderVotesUi() {
     if (downBtn) downBtn.setAttribute('aria-pressed', my === 'down' ? 'true' : 'false');
 }
 
+function updateHeaderCategoryUi() {
+    const el = document.getElementById('gp-header-category');
+    if (!el) return;
+    const roles = normalizeGearPlanRoles(currentPlan?.role).map((r) => formatGearPlanRoleLabel(r));
+    const spec = String(currentPlan?.spec || '').trim();
+    const parts = [...roles, spec].filter(Boolean);
+    if (!parts.length) {
+        el.hidden = true;
+        el.textContent = '';
+        return;
+    }
+    el.hidden = false;
+    el.textContent = parts.join(' · ');
+}
+
 function wireHeaderVotes() {
     const wrap = document.getElementById('gp-header-votes');
     if (!wrap || wrap.dataset.wired === '1') return;
@@ -3485,7 +3506,6 @@ function updateQuickSimVisibility() {
     if (cfg) cfg.style.display = isShaman ? '' : 'none';
     if (simWrap) {
         simWrap.hidden = !isShaman;
-        simWrap.style.display = isShaman ? '' : 'none';
     }
     if (rotRow) {
         rotRow.hidden = !isShaman;
@@ -3797,6 +3817,7 @@ export function renderGearPlanner() {
     updateQuickSimVisibility();
     updateStatWeightsBtnVisibility();
     updateHeaderVotesUi();
+    updateHeaderCategoryUi();
     syncEditModeUi();
     renderLocationsSidebar();
     renderStatsSidebar();
@@ -3818,6 +3839,12 @@ function getGpClassId() {
     return currentPlan.class || document.getElementById('gp-class-sidebar')?.dataset.selectedClass || 'warrior';
 }
 
+function gpIconRemoveBtnHtml(extraClass, attrs) {
+    return `<button type="button" class="gp-icon-remove ${extraClass}" ${attrs} title="Remove" aria-label="Remove">
+        <img src="${GP_REMOVE_ICON_URL}" alt="">
+    </button>`;
+}
+
 function gpSlotAddButtonHtml(slotId, hasPrimary, side) {
     const url = getEmptySlotPlaceholderUrl(slotId, getGpClassId());
     const label = SLOT_LABELS[slotId] || slotId;
@@ -3825,7 +3852,7 @@ function gpSlotAddButtonHtml(slotId, hasPrimary, side) {
     return `<div class="gp-slot-add-wrap">
         <button type="button" class="gp-slot-add" data-slot="${slotId}" title="${escapeHtml(title)}" aria-label="${escapeHtml(title)}"${editMode ? '' : ' disabled'}>
             <img src="${url}" alt="">
-            <span class="gp-slot-add-plus" aria-hidden="true">+</span>
+            <img class="gp-slot-add-plus" src="${GP_ADD_PLUS_ICON_URL}" alt="" aria-hidden="true">
         </button>
     </div>`;
 }
@@ -3861,13 +3888,15 @@ function renderSlotCard(slotId, side) {
         const source = it ? formatPlannerSourceLine(it.id) : '';
         const icon = it ? itemIconHtml(it) : '';
         return `<div class="gp-alt-row" data-slot="${slotId}" data-gp-role="alt" data-alt-index="${i}" data-item-id="${id}">
-            <div class="gp-alt-icon gp-drag-handle gp-item-tip" draggable="${editMode ? 'true' : 'false'}" data-slot="${slotId}" data-gp-role="alt" data-alt-index="${i}" data-item-id="${id}">${icon}</div>
+            <div class="gp-alt-icon gp-drag-handle gp-item-tip" draggable="${editMode ? 'true' : 'false'}" data-slot="${slotId}" data-gp-role="alt" data-alt-index="${i}" data-item-id="${id}">
+                ${icon}
+                ${gpIconRemoveBtnHtml('gp-remove-alt', `data-slot="${slotId}" data-alt-index="${i}"`)}
+            </div>
             <div class="gp-item-meta">
                 <div class="gp-item-name q${q}"><span class="gp-item-name-text">${escapeHtml(name)}</span></div>
                 ${source ? `<div class="gp-item-source">${escapeHtml(source)}</div>` : ''}
                 ${it ? gpItemScoreBadgesHtml(it) : ''}
             </div>
-            <button type="button" class="gp-remove-alt" data-slot="${slotId}" data-alt-index="${i}" title="Remove"${editMode ? '' : ' hidden'}>×</button>
         </div>`;
     }).join('');
 
@@ -3878,13 +3907,14 @@ function renderSlotCard(slotId, side) {
         ? `<div class="gp-item-name-row"><span class="gp-empty-label">${escapeHtml(label)}</span>${enchantChrome}</div>`
         : renderItemMeta(primaryItem, enchantChrome);
     const toggleBtn = `<button type="button" class="gp-toggle-alts" data-slot="${slotId}" aria-expanded="${expanded}" title="Alternatives">▾</button>`;
-    const clearBtn = `<button type="button" class="gp-clear-primary" data-slot="${slotId}" title="Clear"${editMode ? '' : ' hidden'}>×</button>`;
     const primaryInner = empty
         ? `<div class="gp-empty-primary">${nameBlock}</div>`
         : `<div class="gp-primary-row" data-slot="${slotId}" data-item-id="${primaryItem.id}" data-gp-role="primary">
-                <span class="gp-slot-icon-frame gp-drag-handle gp-item-tip" draggable="${editMode ? 'true' : 'false'}" data-slot="${slotId}" data-gp-role="primary" data-item-id="${primaryItem.id}">${itemIconHtml(primaryItem)}${gpAltStackHtml(alts)}</span>
+                <span class="gp-slot-icon-frame gp-drag-handle gp-item-tip" draggable="${editMode ? 'true' : 'false'}" data-slot="${slotId}" data-gp-role="primary" data-item-id="${primaryItem.id}">
+                    ${itemIconHtml(primaryItem)}${gpAltStackHtml(alts)}
+                    ${gpIconRemoveBtnHtml('gp-clear-primary', `data-slot="${slotId}"`)}
+                </span>
                 ${nameBlock}
-                ${clearBtn}
                 ${toggleBtn}
            </div>`;
 
@@ -4262,6 +4292,7 @@ function loadPlanIntoView(plan) {
     persistSession();
     closeBuildsBrowseDialog();
     updateHeaderVotesUi();
+    updateHeaderCategoryUi();
     updateStatWeightsBtnVisibility();
     const ready = refreshGearPlannerWhenItemsReady(currentPlan);
     ready.then(() => applyLoadedPlanToLiveUi());

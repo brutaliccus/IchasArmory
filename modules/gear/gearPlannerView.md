@@ -26,9 +26,9 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 - **Clear build:** `#gp-clear-btn` (clear-all icon, SVG Repo 375990) in Plans column resets gear/talents/buffs with confirm.
 - Save dialog includes `#gp-save-name`; overwrite updates community browser name via server `publishCommunityGearPlan`.
 - **Save icon picker:** loads ~4300 icons from local pack (`assets/wow-icons/wowiconpack.zip` → `assets/wow-icons/large/` via `npm run icons:unpack`); manifest `data/wow-icons.json`. Picker uses `buildLocalWowIconPackUrl`; stored plan icons use `resolveGearPlanIconUrl` (local → octowow fallback on error).
-- Header: 5-column grid — plan name, votes, **Build** (talents/buffs/weights), **Plans** (save/edit/browse/share/clear), **Sim** (shaman only).
+- Header: 3-column grid — **left** (talents/buffs/weights), **center** cluster (`#gp-header-category` · `#gp-plan-name` · votes · Plans buttons), **right** Sim (`--gp-header-sim-slot` reserved when hidden).
 - **Item scores:** larger `.gp-item-scores` (~0.88rem) for ~DPS and tank score badges.
-- Header: `#gp-plan-name` + `#gp-header-votes` then three titled columns; icon buttons Save / **Edit mode** / **Browse builds** (magnifying glass) …
+- Header: `#gp-header-category` + `#gp-plan-name` + `#gp-header-votes` then Plans icon buttons (Save / **Edit mode** / **Browse builds** / … **Clear build**); Build column left; Sim far right
 
 ## Integration (app.js)
 
@@ -41,7 +41,7 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 ## UI elements (index.html)
 
 - `#gear-planner-shell`, `#gp-locations-sidebar`, `#gp-class-sidebar`, `#gp-slots-left`, `#gp-slots-right`
-- Header: `#gp-plan-name` + `#gp-header-votes` then **Build** / **Plans** / **Sim** columns; icon buttons Save / **Edit mode** / **Browse builds** (`#gp-community-search-btn`) … **Clear build** (`#gp-clear-btn`)
+- Header: `#gp-header-category` + `#gp-plan-name` + `#gp-header-votes` + Plans buttons in `.gp-header-center`; Build tools in `.gp-header-side--left`; **Sim** in `.gp-header-side--right` (`#gp-header-sim`, reserved width when hidden)
 - Talents view: `#gp-talents-header` row — **`#gp-talents-title`** (plan class name, **centered** above trees with padding), `#gp-talent-preset-tools` hamburger absolutely right (**shaman only**, hidden for all other classes); `syncGpTalentsHeaderLayout()` / `fitGpTalentTree()` align the header over the scaled tree block (width + `margin-left` from tree `getBoundingClientRect()`, title font size = `.tree-name` font × tree scale); talent tree is **top-aligned** in `#gp-talents-host` (`transform: scale()` from top center, fit scale × **0.85** visual shrink).
 - `#gp-quick-sim-btn`: Shaman-only header icon … `#gp-sim-settings-btn`: shaman-only cog wired via **direct click listener** on the button (`openGpSimConfigModal()` → `prepareDpsSimConfigForGearPlanner()` + `openDpsSimConfigModal()`). Talents/buffs apply to `currentPlan` **on change** (`wireGpTalentSync`, `wireGpConsumeToolsSync`, buff icon clicks) — not only when leaving the overlay view.
 - **Quick DPS sim running state:** `runQuickSim()` calls **`flushGpOverlayStateToPlan()`** then **`runGearPlanQuickSim(getGearPlanData(currentPlan))`**. Quick sim uses **`withGearPlanCharacterContext`** (same as GP stat weights): GP class/race/talents/buffs/gear/enchants are applied to CP calculator state for the run, then restored. Combat config (boss, duration, iterations, threat, etc.) comes from the GP sim settings modal (`#gp-sim-settings-btn` → `openGpSimConfigModal()`). Sets `gpQuickSimRunning`, disables `#gp-quick-sim-btn` and `#gp-sim-settings-btn`, swaps the sword icon for `.loading-spinner-small`, and shows **Simming…** (with **%** from progress) in `#gp-quick-sim-result`. UI helpers re-query live DOM nodes so `renderGearPlanner()` during a run does not orphan state. Restores icon/labels on success, error, or throw.

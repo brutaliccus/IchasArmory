@@ -114,6 +114,8 @@ const LOCAL_APP_ICON_BASENAMES = new Set([
     'standinginfront',
     'opener',
     'threathold',
+    'ui-panel-minimizebutton-up',
+    'ui-plusbutton-up',
 ]);
 
 function isWikiClassIconRef(iconRef) {
