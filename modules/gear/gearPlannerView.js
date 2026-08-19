@@ -804,6 +804,18 @@ function syncGpRaceToggle() {
     }
 }
 
+/** Re-sync GP class/race drawer icons from currentPlan (e.g. after sim restores CP state). */
+function refreshGpClassRaceUiFromPlan() {
+    ensurePlanRace();
+    const sidebar = document.getElementById('gp-class-sidebar');
+    if (sidebar) {
+        sidebar.dataset.selectedClass = currentPlan.class || 'warrior';
+        sidebar.dataset.selectedRace = currentPlan.race || 'human';
+    }
+    syncGpClassToggle();
+    syncGpRaceToggle();
+}
+
 function serializeTalentSpec(root) {
     const spec = {};
     root?.querySelectorAll('.talent-icon-container').forEach(el => {
@@ -4386,5 +4398,6 @@ async function runQuickSim() {
     } finally {
         gpQuickSimRunning = false;
         setGpQuickSimRunningUi(false);
+        refreshGpClassRaceUiFromPlan();
     }
 }

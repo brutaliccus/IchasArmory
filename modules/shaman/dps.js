@@ -16,10 +16,10 @@ let lastShamanAdvancedSimReplayContext = null;
 let lastShamanSimDistributionBundle = null;
 
 let simHistogramClickAbort = null;
-import { getActiveBuffs, generateBuffIcons, applyBuffListToDom } from '../character/buffs.js';
+import { getActiveBuffs, getBuffsFromSavedList, generateBuffIcons, applyBuffListToDom } from '../character/buffs.js';
 import { procDefinitions, getOnUseTrinketProcs, procIdToCamelCase } from '../gear/procs.js';
 import { parseStatsFromTooltip, getAttackPowerBonusVsCreatureType, getSpellDamageHealingBonusVsCreatureType } from '../character/stats.js';
-import { getTalentBonuses, generateTalentInputs, updateTalentPoints } from '../talents_new.js';
+import { getTalentBonuses, getTalentBonusesFromSpec, generateTalentInputs, updateTalentPoints } from '../talents_new.js';
 import { getSetBonuses } from '../gear/setBonuses.js';
 import { createItemTooltipHTML } from '../ui/tooltips.js';
 import { positionItemTooltipOnIcon } from '../ui/itemTooltipPosition.js';
@@ -12099,11 +12099,10 @@ function restorePlanEnchants(enchantSnap) {
  * Apply GP class/race/talents/buffs/primaries/enchants onto Character Planner state, run fn, restore.
  */
 async function withGearPlanCharacterContext(gearPlan, fn) {
-    const sidebar = document.getElementById('class-race-sidebar');
     const talentList = document.getElementById('talents-list');
     const buffList = document.getElementById('buffs-list');
-    const classSnap = sidebar?.dataset?.selectedClass || 'warrior';
-    const raceSnap = sidebar?.dataset?.selectedRace || 'human';
+    const classSnap = document.getElementById('class-race-sidebar')?.dataset?.selectedClass || 'warrior';
+    const raceSnap = document.getElementById('class-race-sidebar')?.dataset?.selectedRace || 'human';
     const talentSnap = { classId: classSnap, spec: serializeTalentSpecFromRoot(talentList) };
     const buffSnap = { classId: classSnap, spec: serializeBuffSpecFromList(buffList) };
     const gearSnap = {};
@@ -12111,9 +12110,9 @@ async function withGearPlanCharacterContext(gearPlan, fn) {
     const enchantSnap = getSelectedEnchants();
 
     try {
-        if (sidebar) {
-            sidebar.dataset.selectedClass = gearPlan.class || 'shaman';
-            if (gearPlan.race) sidebar.dataset.selectedRace = gearPlan.race;
+        if (typeof window !== 'undefined') {
+            window.__ichacalcGpSimClass = gearPlan.class || 'shaman';
+            window.__ichacalcGpSimRace = gearPlan.race || 'human';
         }
         if (talentList) {
             generateTalentInputs(talentList, gearPlan.class || 'shaman');
@@ -12134,9 +12133,9 @@ async function withGearPlanCharacterContext(gearPlan, fn) {
         }
         return await fn();
     } finally {
-        if (sidebar) {
-            sidebar.dataset.selectedClass = classSnap;
-            sidebar.dataset.selectedRace = raceSnap;
+        if (typeof window !== 'undefined') {
+            delete window.__ichacalcGpSimClass;
+            delete window.__ichacalcGpSimRace;
         }
         for (const slot of GEAR_PLAN_SLOTS) {
             const prev = gearSnap[slot];
@@ -12193,6 +12192,113 @@ function captureShamanStatWeightSimOptions(isAoe = false) {
     };
 }
 
+/** Resolve boss base stats from sim modal + apply raid/boss debuffs from the gear plan buff list. */
+function computeEffectiveSimTargetStatsFromModalAndBuffs(activeBuffs) {
+    const armorEl = document.querySelector('#target-armor');
+    const natureEl = document.querySelector('#target-nature-resist');
+    const fireEl = document.querySelector('#target-fire-resist');
+    const frostEl = document.querySelector('#target-frost-resist');
+    const swingEl = document.querySelector('#config-enemy-swing-timer');
+
+    const parsedBaseArmor = parseInt(armorEl?.dataset?.baseArmor, 10);
+    const parsedArmorVal = parseInt(armorEl?.value, 10);
+    const armorBase = Number.isFinite(parsedBaseArmor)
+        ? parsedBaseArmor
+        : (Number.isFinite(parsedArmorVal) ? parsedArmorVal : 3731);
+
+    let armorReduction = 0;
+    (activeBuffs || []).forEach(buff => {
+        if (buff?.enemyArmorReduction) armorReduction += Math.abs(buff.enemyArmorReduction);
+    });
+
+    const parsedBaseNature = parseInt(natureEl?.dataset?.baseNatureResist, 10);
+    const parsedBaseFire = parseInt(fireEl?.dataset?.baseFireResist, 10);
+    const parsedBaseFrost = parseInt(frostEl?.dataset?.baseFrostResist, 10);
+    let natureResist = Number.isFinite(parsedBaseNature)
+        ? parsedBaseNature
+        : (parseInt(natureEl?.value, 10) || 0);
+    let fireResist = Number.isFinite(parsedBaseFire)
+        ? parsedBaseFire
+        : (parseInt(fireEl?.value, 10) || 0);
+    let frostResist = Number.isFinite(parsedBaseFrost)
+        ? parsedBaseFrost
+        : (parseInt(frostEl?.value, 10) || 0);
+
+    (activeBuffs || []).forEach(buff => {
+        if (buff?.enemyNatureResistReduction) {
+            natureResist = Math.max(0, natureResist + buff.enemyNatureResistReduction);
+        }
+        if (buff?.enemyFireResistReduction) {
+            fireResist = Math.max(0, fireResist + buff.enemyFireResistReduction);
+        }
+        if (buff?.enemyFrostResistReduction) {
+            frostResist = Math.max(0, frostResist + buff.enemyFrostResistReduction);
+        }
+    });
+
+    let enemySwingTimer = parseFloat(swingEl?.value) || 2.0;
+    const baseSwing = parseFloat(swingEl?.dataset?.baseEnemySwing);
+    if (Number.isFinite(baseSwing)) {
+        enemySwingTimer = computeEffectiveEnemySwingSec(baseSwing, activeBuffs);
+    }
+
+    return {
+        targetArmor: Math.max(0, armorBase - armorReduction),
+        natureResist,
+        fireResist,
+        frostResist,
+        enemySwingTimer,
+    };
+}
+
+function raidDebuffSimFlagsFromBuffs(activeBuffs) {
+    const list = activeBuffs || [];
+    return {
+        nightfallEnabled: list.some(buff => buff && (buff.id === 'nightfall' || buff.name?.toLowerCase().includes('nightfall'))),
+        hemoEnabled: list.some(buff => buff && (buff.id === 'hemorrhage' || buff.name?.toLowerCase().includes('hemorrhage'))),
+        hemoImproved: list.some(buff => buff && buff.id === 'hemorrhage' && buff.isImproved),
+        corrosiveSpitEnabled: list.some(buff => buff && (buff.id === 'corrosiveSpit' || buff.name?.toLowerCase().includes('corrosive spit'))),
+    };
+}
+
+function getGearPlanActiveBuffs(gearPlan) {
+    const cls = gearPlan?.class || 'shaman';
+    const talentBonuses = getTalentBonusesFromSpec(cls, gearPlan?.talents || {});
+    return getBuffsFromSavedList(gearPlan?.buffs || [], talentBonuses);
+}
+
+function applyGearPlanCapturedCombatToStats(freshStats, captured, planBuffs) {
+    const target = computeEffectiveSimTargetStatsFromModalAndBuffs(planBuffs);
+    freshStats.targetArmor = target.targetArmor;
+    freshStats.natureResist = target.natureResist;
+    freshStats.fireResist = target.fireResist;
+    freshStats.frostResist = target.frostResist;
+    freshStats.setCombatConfig('beingAttacked', captured.beingAttacked);
+    freshStats.setCombatConfig('wearingShield', captured.wearingShield);
+    freshStats.setCombatConfig('inFrontOfBoss', captured.inFrontOfBoss);
+    freshStats.setCombatConfig('threatHold', captured.threatHold);
+    freshStats.setCombatConfig('threatHoldDuration', captured.threatHoldDuration);
+    freshStats.setCombatConfig('handOfEdwardSpell', captured.handOfEdwardSpell);
+    freshStats.setCombatConfig('jewelForcedOutcome', captured.jewelForcedOutcome);
+    freshStats.setCombatConfig(
+        'enemySwingTimer',
+        captured.beingAttacked ? target.enemySwingTimer : captured.enemySwingTimer
+    );
+    freshStats.setCombatConfig('aoeEnabled', !!captured.isAoe);
+    freshStats.setCombatConfig('aoeTargetCount', captured.aoeTargetCount);
+    freshStats.setCombatConfig('casterMode', captured.casterMode);
+    freshStats.fireDamageMultiplier = 1.0;
+    freshStats.frostDamageMultiplier = 1.0;
+    freshStats.shadowDamageMultiplier = 1.0;
+    freshStats.arcaneDamageMultiplier = 1.0;
+    freshStats.wintersChillFrostCritBonus = 0;
+    applyResistanceDebuffs(freshStats, planBuffs);
+    freshStats.targetArmor = target.targetArmor;
+    freshStats.natureResist = target.natureResist;
+    freshStats.fireResist = target.fireResist;
+    freshStats.frostResist = target.frostResist;
+}
+
 /**
  * Gear Planner shaman stat weights: GP class/race/talents/buffs/primaries/enchants, existing formulas.
  * @param {import('../gear/gearPlanner.js').GearPlan} gearPlan
@@ -12202,33 +12308,20 @@ export async function runGearPlanStatWeightSimulations(gearPlan, options = {}, p
         throw new Error('Shaman DPS stat weights are only available for Shaman gear plans.');
     }
     const captured = { ...captureShamanStatWeightSimOptions(!!options.isAoe), ...options };
+    const planBuffs = getGearPlanActiveBuffs(gearPlan);
+    const raidDebuffFlags = raidDebuffSimFlagsFromBuffs(planBuffs);
     return withGearPlanCharacterContext(gearPlan, async () => {
         const freshStats = getFreshShamanStats();
-        freshStats.targetArmor = captured.targetArmor;
-        freshStats.natureResist = captured.targetNatureResist;
-        freshStats.fireResist = captured.targetFireResist;
-        freshStats.frostResist = captured.targetFrostResist;
-        freshStats.setCombatConfig('beingAttacked', captured.beingAttacked);
-        freshStats.setCombatConfig('wearingShield', captured.wearingShield);
-        freshStats.setCombatConfig('inFrontOfBoss', captured.inFrontOfBoss);
-        freshStats.setCombatConfig('threatHold', captured.threatHold);
-        freshStats.setCombatConfig('threatHoldDuration', captured.threatHoldDuration);
-        freshStats.setCombatConfig('handOfEdwardSpell', captured.handOfEdwardSpell);
-        freshStats.setCombatConfig('jewelForcedOutcome', captured.jewelForcedOutcome);
-        freshStats.setCombatConfig('enemySwingTimer', captured.enemySwingTimer);
-        freshStats.setCombatConfig('aoeEnabled', !!captured.isAoe);
-        freshStats.setCombatConfig('aoeTargetCount', captured.aoeTargetCount);
-        freshStats.setCombatConfig('casterMode', captured.casterMode);
+        applyGearPlanCapturedCombatToStats(freshStats, captured, planBuffs);
 
         const priorityConfig = loadPriorityConfig(freshStats.setBonuses || {});
         syncSearingTotemCombatConfigFromPriority(freshStats, priorityConfig);
-        const currentActiveBuffs = getActiveBuffs(freshStats.talentBonuses || {});
         const simOptions = {
             maxWorkers: captured.workers || undefined,
-            nightfallEnabled: currentActiveBuffs.some(buff => buff && (buff.id === 'nightfall' || buff.name?.toLowerCase().includes('nightfall'))),
-            hemoEnabled: currentActiveBuffs.some(buff => buff && (buff.id === 'hemorrhage' || buff.name?.toLowerCase().includes('hemorrhage'))),
-            hemoImproved: currentActiveBuffs.some(buff => buff && buff.id === 'hemorrhage' && buff.isImproved),
-            corrosiveSpitEnabled: currentActiveBuffs.some(buff => buff && (buff.id === 'corrosiveSpit' || buff.name?.toLowerCase().includes('corrosive spit'))),
+            nightfallEnabled: raidDebuffFlags.nightfallEnabled,
+            hemoEnabled: raidDebuffFlags.hemoEnabled,
+            hemoImproved: raidDebuffFlags.hemoImproved,
+            corrosiveSpitEnabled: raidDebuffFlags.corrosiveSpitEnabled,
             quickSim: true,
             skipPersist: true,
             isAoe: !!captured.isAoe,
@@ -12255,6 +12348,8 @@ export async function runGearPlanQuickSim(gearPlan, onProgress) {
     }
 
     const captured = captureShamanStatWeightSimOptions(false);
+    const planBuffs = getGearPlanActiveBuffs(gearPlan);
+    const raidDebuffFlags = raidDebuffSimFlagsFromBuffs(planBuffs);
     const prevPriorityTab = activePriorityTabMode;
     const gpRot = gearPlan.ui?.stRotation === 'eleSt' ? 'eleSt' : 'enhSt';
     activePriorityTabMode = gpRot;
@@ -12262,25 +12357,10 @@ export async function runGearPlanQuickSim(gearPlan, onProgress) {
     try {
         return await withGearPlanCharacterContext(gearPlan, async () => {
             const freshStats = getFreshShamanStats();
-            freshStats.targetArmor = captured.targetArmor;
-            freshStats.natureResist = captured.targetNatureResist;
-            freshStats.fireResist = captured.targetFireResist;
-            freshStats.frostResist = captured.targetFrostResist;
-            freshStats.setCombatConfig('beingAttacked', captured.beingAttacked);
-            freshStats.setCombatConfig('wearingShield', captured.wearingShield);
-            freshStats.setCombatConfig('inFrontOfBoss', captured.inFrontOfBoss);
-            freshStats.setCombatConfig('threatHold', captured.threatHold);
-            freshStats.setCombatConfig('threatHoldDuration', captured.threatHoldDuration);
-            freshStats.setCombatConfig('handOfEdwardSpell', captured.handOfEdwardSpell);
-            freshStats.setCombatConfig('jewelForcedOutcome', captured.jewelForcedOutcome);
-            freshStats.setCombatConfig('enemySwingTimer', captured.enemySwingTimer);
-            freshStats.setCombatConfig('aoeEnabled', false);
-            freshStats.setCombatConfig('aoeTargetCount', captured.aoeTargetCount);
-            freshStats.setCombatConfig('casterMode', captured.casterMode);
+            applyGearPlanCapturedCombatToStats(freshStats, captured, planBuffs);
 
             const priorityConfig = loadPriorityConfig(freshStats.setBonuses || {});
             syncSearingTotemCombatConfigFromPriority(freshStats, priorityConfig);
-            const currentActiveBuffs = getActiveBuffs(freshStats.talentBonuses || {});
             const results = await runShamanSimulation(
                 freshStats,
                 captured.duration,
@@ -12290,10 +12370,10 @@ export async function runGearPlanQuickSim(gearPlan, onProgress) {
                 {
                     quickSim: true,
                     maxWorkers: captured.workers || undefined,
-                    nightfallEnabled: currentActiveBuffs.some(buff => buff && (buff.id === 'nightfall' || buff.name?.toLowerCase().includes('nightfall'))),
-                    hemoEnabled: currentActiveBuffs.some(buff => buff && (buff.id === 'hemorrhage' || buff.name?.toLowerCase().includes('hemorrhage'))),
-                    hemoImproved: currentActiveBuffs.some(buff => buff && buff.id === 'hemorrhage' && buff.isImproved),
-                    corrosiveSpitEnabled: currentActiveBuffs.some(buff => buff && (buff.id === 'corrosiveSpit' || buff.name?.toLowerCase().includes('corrosive spit'))),
+                    nightfallEnabled: raidDebuffFlags.nightfallEnabled,
+                    hemoEnabled: raidDebuffFlags.hemoEnabled,
+                    hemoImproved: raidDebuffFlags.hemoImproved,
+                    corrosiveSpitEnabled: raidDebuffFlags.corrosiveSpitEnabled,
                 }
             );
 

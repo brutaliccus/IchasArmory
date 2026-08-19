@@ -151,7 +151,17 @@ window.getFreshCalculatorTotals = function() {
     return totals;
 };
 
+function getGpSimClassRaceOverride() {
+    if (typeof window === 'undefined') return null;
+    const cls = window.__ichacalcGpSimClass;
+    const race = window.__ichacalcGpSimRace;
+    if (!cls && !race) return null;
+    return { cls, race };
+}
+
 export function getCurrentClass() {
+    const gpOverride = getGpSimClassRaceOverride();
+    if (gpOverride?.cls && classIconData[gpOverride.cls]) return gpOverride.cls;
     const bar = document.getElementById('class-race-sidebar');
     const id = bar?.dataset?.selectedClass;
     if (id && classIconData[id]) return id;
@@ -159,6 +169,8 @@ export function getCurrentClass() {
 }
 
 export function getCurrentRace() {
+    const gpOverride = getGpSimClassRaceOverride();
+    if (gpOverride?.race && raceIconData[gpOverride.race]) return gpOverride.race;
     const bar = document.getElementById('class-race-sidebar');
     const id = bar?.dataset?.selectedRace;
     if (id && raceIconData[id]) return id;
