@@ -26,7 +26,7 @@ Computes an item's estimated DPS contribution from its parsed stats and current 
 **Parameters:**
 - `item` — Item object with `tooltip_lines_raw`
 - `statWeights` — Array from `window.getStoredStatWeights()`, each with `key` and `statDps`
-- `equippedGear` — Optional `{slot: item}` snapshot for weapon-skill matching and weapon swap baseline (Gear Planner passes its plan snapshot)
+- `equippedGear` — Optional `{slot: item}` snapshot for weapon-skill matching (Gear Planner passes its plan snapshot)
 - `targetSlot` — Optional picker slot (`mainhand` / `offhand`); defaults to mainhand for one-hand weapons, always mainhand for two-hand
 
 **Returns:** Numeric DPS score, or `null` if weights are unavailable.
@@ -50,14 +50,13 @@ Computes an item's estimated DPS contribution from its parsed stats and current 
 
 Stats not in this mapping (stamina, spirit, defense, etc.) contribute 0 DPS.
 
-**Weapon physical-output delta (not listed tooltip DPS):** For weapons with damage/speed lines, the score adds the **change in physical output** when equipping that weapon vs the current weapon in the target slot — not the item's listed `(X damage per second)` line.
+**Weapon physical-output add (not listed tooltip DPS):** For weapons with damage/speed lines, the score adds how much **physical output this weapon contributes** from its damage range — not the item's listed `(X damage per second)` line, and **not** a swap delta vs the currently equipped weapon.
 
-- **Shaman:** Uses `damageCalc.js` `calculateSpellDPS` for weapon-scaling abilities: Auto Attack, Stormstrike, Lightning Strike, and Windfury Attack (when Windfury is active). Weapon effective damage follows the same `(base + AP/14 × speed) × talent multiplier` model as the character sheet and sim (`getEffectiveWeaponDamage` in `damageCalc.js`). Delta = sum of those ability DPS with the candidate weapon − sum with the current weapon. If no weapon is equipped in that slot, delta = full output of the new weapon.
-- **Other classes:** Uses the character-sheet white-hit formula from `app.js` `displayMainResults`: `((min+max)/2) / hastedSpeed` where `min/max = floor/ceil((weapon base + AP/14 × speed) × weaponDamageMultiplier)`. Off-hand picks apply the 50% off-hand penalty (plus Savage Strikes when talented).
+- **Formula:** `physicalOutput(candidate min/max/speed, current AP/talents/abilities) − physicalOutput(0–0 damage at the same speed, same AP/talents/abilities)` plus stat-weight score for str/agi/crit/hit/AP/wepSkill on the item (weapon min/max are never multiplied by stat weights).
+- **Shaman:** Uses `damageCalc.js` `calculateSpellDPS` for weapon-scaling abilities in the current rotation context: Auto Attack, Stormstrike, Lightning Strike, and Windfury Attack (when Windfury is active). Weapon effective damage follows the same `(base + AP/14 × speed) × talent multiplier` model as the character sheet and sim (`getEffectiveWeaponDamage` in `damageCalc.js`).
+- **Other classes / offhand:** Uses the character-sheet white-hit formula from `app.js` `displayMainResults`: `((min+max)/2) / hastedSpeed` where `min/max = floor/ceil((weapon base + AP/14 × speed) × weaponDamageMultiplier)`. Off-hand picks apply the 50% off-hand penalty (plus Savage Strikes when talented).
 
-Weapon base damage/speed are **never** multiplied by stat weights directly (avoids double-counting with AP and naïve listed DPS).
-
-If the candidate weapon is **already equipped** in the target slot (matched by item id), the physical-output delta is **0** — stat weights alone show str/crit/hit/etc. on that item without a self-swap penalty.
+**Calibration (manual sim):** Level 2 white (11–17, 3.7 speed) ≈ **~700 DPS** total; Boneshatter Maul (156–250, 3.7 + stats) ≈ **~900 DPS** total. Hovering Boneshatter while equipped still shows the full score (weapon range add + stats), not 0.
 
 ### `calculateItemTankScore(item, tankWeights)`
 Returns `{ ehp, mitScore, tankScore }` where `tankScore = ehp + mitScore` (stamina/armor vs mitigation stats).
@@ -75,11 +74,14 @@ Extracts the weapon subtype string (e.g., `"Axe"`, `"Two-handed Mace"`) from a w
 ### `getWeaponSkillMatchTypes(item)`
 Returns a `Set` of weapon subtypes for typed weapon-skill scoring: the item's own subtype when it is a weapon, plus the equipped mainhand subtype when present.
 
-### `computeWeaponPhysicalOutputDelta(item, equippedGear, targetSlot?)`
-Core weapon swap delta used by `calculateItemDpsScore`. See weapon section above.
+### `computeWeaponPhysicalOutputAdd(item, equippedGear, targetSlot?)`
+Core weapon range add used by `calculateItemDpsScore`. Candidate vs 0–0 at same speed; see weapon section above.
 
 ### `computeSheetWeaponDps(weaponItem, context)`
 Character-sheet white DPS for one weapon (`app.js` formula).
+
+### `computeSheetWeaponDpsAdd(candidateItem, equippedGear, targetSlot?)`
+Non-shaman (or shaman offhand) weapon range add: candidate sheet DPS minus 0–0 baseline at same speed.
 
 ### `doesWeaponSkillMatch(skillType, weaponType)`
 Checks if a weapon skill bonus type matches a weapon subtype via `canonicalWeaponSkillType()`. Strict 1H≠2H; `"Two-handed Weapon"` matches any `"Two-handed …"` equipped subtype.
