@@ -4,8 +4,8 @@
     --gp-dock-width: clamp(200px, 16vw, 260px);
     --gp-dock-duration: 250ms;
     --gp-dock-ease: ease-in-out;
-    /* Center column: fit between fixed docks with a sensible floor */
-    --gp-center-width: min(960px, max(300px, calc(100vw - 2 * var(--gp-dock-width) - 48px)));
+    /* Center column ~80% viewport; side docks overlay edges — don't subtract dock width */
+    --gp-center-width: clamp(320px, 80vw, 1850px);
 }
 
 body[data-app-mode="gearPlanner"] .app-scroll-layout {
@@ -889,8 +889,8 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-doc
 
 .gp-header-col-btns {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    flex-wrap: nowrap;
+    gap: 6px;
     align-items: center;
     justify-content: center;
 }
@@ -947,8 +947,8 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-doc
 
 .gp-header-actions {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    flex-wrap: nowrap;
+    gap: 6px;
     align-items: center;
     justify-content: center;
     justify-self: center;
@@ -2365,26 +2365,20 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-doc
     display: none;
 }
 
-/* Desktop/laptop: tighten GP header and docks before overlap */
+/* Desktop/laptop: keep header on one row; tighten gaps only */
 @media (max-width: 1440px) {
-    .gp-header {
-        grid-template-columns: minmax(0, 1fr) auto auto;
-        gap: 8px 10px;
+    body:not(.gp-mobile) .gp-header {
+        gap: 6px 8px;
+        padding: 12px 14px;
     }
-    .gp-header-col--plans {
-        justify-self: stretch;
+    body:not(.gp-mobile) .gp-header-col-btns {
+        gap: 4px;
     }
 }
 
 @media (max-width: 1280px) {
     :root {
         --gp-dock-width: clamp(180px, 15vw, 220px);
-    }
-    .gp-header {
-        grid-template-columns: 1fr 1fr;
-    }
-    .gp-header-col--build {
-        grid-column: 1 / -1;
     }
 }
 

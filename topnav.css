@@ -429,8 +429,8 @@ body.gp-mobile .bug-report-controls {
 .main-content {
     grid-column: 2;
     justify-self: center;
-    width: 100%;
-    max-width: 1850px;
+    width: min(80vw, 1850px);
+    max-width: min(80vw, 1850px);
     margin: 0;
     padding-top: 0;
     padding-left: 0;
