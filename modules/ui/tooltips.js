@@ -194,12 +194,10 @@ export function calculateItemDpsScore(item, statWeights) {
 
 /**
  * Check if a weapon skill type (e.g. "Axe", "Two-handed Axe") matches a weapon subtype.
- * One-handed skill (e.g. "Axe") also matches the two-handed variant ("Two-handed Axe").
+ * Classic treats 1H and 2H skills as separate — strict type match only.
  */
 function doesWeaponSkillMatch(skillType, weaponType) {
-    if (skillType === weaponType) return true;
-    if (!skillType.startsWith('Two-handed ') && weaponType === `Two-handed ${skillType}`) return true;
-    return false;
+    return skillType === weaponType;
 }
 
 /**
