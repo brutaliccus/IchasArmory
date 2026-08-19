@@ -6,6 +6,13 @@ import { setDatabase } from '../gear/setDatabase.js';
 import { parseStatsFromTooltip } from '../character/stats.js';
 import { getCurrentlyEquippedItem, getMeleeWeaponType } from '../gear/gear.js';
 import { formatEnchantStatsHTML } from '../gear/enchantStatLabels.js';
+import { calculateEffectiveHealth } from './calculator.js';
+import { getSelectedRaceBonuses } from '../character/races.js';
+import { getTalentBonuses } from '../talents_new.js';
+import { getSetBonuses } from '../gear/setBonuses.js';
+import { ShamanStats } from '../character/shamanTalents.js';
+import { calculateSpellDPS } from '../shaman/damageCalc.js';
+import { shamanSpells } from '../shaman/spells.js';
 
 function isGearPlannerAppMode() {
     return document.body?.dataset?.appMode === 'gearPlanner';
@@ -183,6 +190,287 @@ function resolveEquippedGearSnapshot(equippedGear) {
     return null;
 }
 
+const WEAPON_GEAR_SLOTS = new Set(['mainhand', 'offhand', 'ranged']);
+const WEAPON_SCALING_SPELL_KEYS = ['autoAttack', 'stormstrike', 'lightningStrike', 'windfuryAttack'];
+const WEAPON_STAT_KEYS = new Set(['weaponDamageMin', 'weaponDamageMax', 'weaponSpeed']);
+
+function resolveClassId() {
+    if (typeof window !== 'undefined') {
+        if (window.__ichacalcGpSimClass) return window.__ichacalcGpSimClass;
+        const sidebar = document.getElementById('class-race-sidebar');
+        if (sidebar?.dataset?.selectedClass) return sidebar.dataset.selectedClass;
+    }
+    return 'warrior';
+}
+
+function resolveRaceId() {
+    if (typeof window !== 'undefined') {
+        if (window.__ichacalcGpSimRace) return window.__ichacalcGpSimRace;
+        const sidebar = document.getElementById('class-race-sidebar');
+        if (sidebar?.dataset?.selectedRace) return sidebar.dataset.selectedRace;
+    }
+    return 'human';
+}
+
+function isScorableWeaponItem(item) {
+    if (!item?.tooltip_lines_raw) return false;
+    const stats = parseStatsFromTooltip(item);
+    return !!(stats.weaponDamageMin && stats.weaponDamageMax && stats.weaponSpeed);
+}
+
+function aggregateGearStatsFromSnapshot(equippedGear) {
+    const total = { weaponSkillByType: {} };
+    for (const [slot, item] of Object.entries(equippedGear || {})) {
+        if (!item?.tooltip_lines_raw) continue;
+        const parsed = parseStatsFromTooltip(item);
+        for (const [key, value] of Object.entries(parsed)) {
+            if (WEAPON_GEAR_SLOTS.has(slot) && WEAPON_STAT_KEYS.has(key)) continue;
+            if (key === 'weaponSkillByType' && value && typeof value === 'object') {
+                for (const [skillType, skillValue] of Object.entries(value)) {
+                    total.weaponSkillByType[skillType] = (total.weaponSkillByType[skillType] || 0) + skillValue;
+                }
+            } else if (typeof value === 'number') {
+                total[key] = (total[key] || 0) + value;
+            }
+        }
+    }
+    return total;
+}
+
+function buildCalculatorTotalsFromEquippedSnapshot(equippedGear) {
+    const gear = equippedGear || {};
+    const classId = resolveClassId();
+    const raceId = resolveRaceId();
+    const mh = gear.mainhand;
+    const oh = gear.offhand;
+    const mhType = getMeleeWeaponType(mh);
+    const ohType = getMeleeWeaponType(oh);
+    const talentBonuses = getTalentBonuses(classId);
+    const characterData = {
+        selectedClass: classId,
+        selectedRace: raceId,
+        attackerLevel: 63,
+        gearStats: aggregateGearStatsFromSnapshot(gear),
+        talentBonuses,
+        racialBonuses: getSelectedRaceBonuses(raceId),
+        activeBuffs: [],
+        enchantStats: {},
+        offhandArmor: oh?.stats?.armor || 0,
+        setBonuses: getSetBonuses(gear, false),
+        isDualWielding: !!(oh && ohType),
+        mainhandWeaponType: mhType,
+        offhandWeaponType: ohType,
+        mainhandIsTwoHanded: itemTooltipIsTwoHanded(mh),
+        offhandIsTwoHanded: itemTooltipIsTwoHanded(oh),
+        rangedWeaponType: null,
+    };
+    return calculateEffectiveHealth(characterData);
+}
+
+function applyMinimalTalentModifiers(stats, talentBonuses) {
+    if (!talentBonuses || !stats?.setTalent) return;
+    if (talentBonuses.elemental_fury_crit_damage !== undefined) {
+        const ranks = Math.min(Math.round(talentBonuses.elemental_fury_crit_damage / 50), 2);
+        stats.setTalent('elementalFury', ranks);
+    }
+    if (talentBonuses.weaponDamageMultiplier !== undefined) {
+        const ranks = Math.min(Math.round(talentBonuses.weaponDamageMultiplier * 100 / 2), 5);
+        stats.setTalent('elementsGrace', ranks);
+    }
+}
+
+function applyMainhandWeaponToStats(stats, weaponItem, setWeaponMin = 0, setWeaponMax = 0) {
+    if (!weaponItem?.tooltip_lines_raw || !stats) return;
+    const weaponStats = parseStatsFromTooltip(weaponItem);
+    if (!weaponStats.weaponDamageMin || !weaponStats.weaponDamageMax || !weaponStats.weaponSpeed) return;
+
+    const ap = stats.attackPower || 0;
+    const mult = 1 + (stats.talentBonuses?.weaponDamageMultiplier || 0);
+    const baseSpeed = weaponStats.weaponSpeed;
+    const baseMin = weaponStats.weaponDamageMin + setWeaponMin;
+    const baseMax = weaponStats.weaponDamageMax + setWeaponMax;
+
+    stats.baseWeaponDamageMin = baseMin;
+    stats.baseWeaponDamageMax = baseMax;
+    stats.baseWeaponSpeed = baseSpeed;
+    const apContrib = (ap / 14) * baseSpeed;
+    stats.weaponDamage = {
+        min: Math.floor((baseMin + apContrib) * mult),
+        max: Math.ceil((baseMax + apContrib) * mult),
+    };
+    const haste = stats.meleeHaste || 0;
+    stats.weaponSpeed = baseSpeed / (1 + haste / 100);
+}
+
+function buildShamanStatsForEquippedSnapshot(equippedGear) {
+    const gear = equippedGear || {};
+    const classId = resolveClassId();
+    if (classId !== 'shaman') return null;
+
+    const totals = isGearPlannerAppMode()
+        ? buildCalculatorTotalsFromEquippedSnapshot(gear)
+        : (typeof window.getFreshCalculatorTotals === 'function'
+            ? window.getFreshCalculatorTotals()
+            : (window.currentCalculatorTotals || buildCalculatorTotalsFromEquippedSnapshot(gear)));
+
+    const talentBonuses = getTalentBonuses(classId);
+    const setBonuses = getSetBonuses(gear, false);
+    const stats = new ShamanStats();
+    stats.talentBonuses = talentBonuses;
+    stats.setBonuses = setBonuses;
+    stats.attackPower = totals.attackPower || 0;
+    stats.spellPower = totals.dmgAndHealing || 0;
+    stats.natureDamage = totals.natureDamage || 0;
+    stats.fireDamage = totals.fireDamage || 0;
+    stats.frostDamage = totals.frostDamage || 0;
+    stats.meleeCrit = (totals.crit || 0) / 100;
+    stats.spellCrit = (totals.spellCrit || 0) / 100;
+    stats.meleeHit = (totals.hit || 0) / 100;
+    stats.spellHit = (totals.spellHit || 0) / 100;
+    stats.weaponSkill = totals.weaponSkill || 300;
+    stats.glancingDamagePercent = totals.glancingDamage || 65;
+    stats.enemyDodgeChancePercent = totals.enemyDodgeChance || 6.5;
+    stats.meleeHaste = totals.meleeHastePassive ?? totals.meleeHaste ?? totals.haste ?? 0;
+    stats.armorPen = totals.armorPen || 0;
+    stats.spellPen = totals.spellPen || 0;
+    stats.bossDodgeChancePercent = stats.enemyDodgeChancePercent;
+
+    applyMinimalTalentModifiers(stats, talentBonuses);
+
+    const setWeaponMin = setBonuses?.sheetStats?.weaponDamageMin || 0;
+    const setWeaponMax = setBonuses?.sheetStats?.weaponDamageMax || 0;
+    if (gear.mainhand) {
+        applyMainhandWeaponToStats(stats, gear.mainhand, setWeaponMin, setWeaponMax);
+    }
+
+    return stats;
+}
+
+function sumWeaponScalingAbilityDps(stats) {
+    if (!stats) return 0;
+    let total = 0;
+    for (const key of WEAPON_SCALING_SPELL_KEYS) {
+        const spell = shamanSpells[key];
+        if (!spell?.weaponDamagePercent) continue;
+        if (key === 'windfuryAttack' && !stats.activeModifiers?.windfuryActive) continue;
+        try {
+            const result = calculateSpellDPS(spell, stats);
+            total += result?.dps || 0;
+        } catch (_) {
+            // ignore individual spell failures
+        }
+    }
+    return total;
+}
+
+/**
+ * Character-sheet white-hit DPS (app.js displayMainResults): ((min+max)/2) / hastedSpeed
+ * with min/max = (weapon base + AP/14×speed) × talent weapon-damage multiplier.
+ */
+function computeSheetWeaponDps(weaponItem, context) {
+    if (!weaponItem?.tooltip_lines_raw) return 0;
+    const weaponStats = parseStatsFromTooltip(weaponItem);
+    if (!weaponStats.weaponDamageMin || !weaponStats.weaponDamageMax || !weaponStats.weaponSpeed) return 0;
+
+    const {
+        ap = 0,
+        haste = 0,
+        weaponDamageMultiplier = 1,
+        damageModifier = 1,
+        offhandMultiplier = 1,
+        setWeaponMin = 0,
+        setWeaponMax = 0,
+    } = context;
+
+    const baseSpeed = weaponStats.weaponSpeed;
+    const hastedSpeed = baseSpeed / (1 + haste / 100);
+    const minDamage = Math.floor(
+        (weaponStats.weaponDamageMin + setWeaponMin + (ap / 14) * baseSpeed)
+        * weaponDamageMultiplier * damageModifier * offhandMultiplier
+    );
+    const maxDamage = Math.ceil(
+        (weaponStats.weaponDamageMax + setWeaponMax + (ap / 14) * baseSpeed)
+        * weaponDamageMultiplier * damageModifier * offhandMultiplier
+    );
+    return ((minDamage + maxDamage) / 2) / hastedSpeed;
+}
+
+function buildSheetWeaponContext(equippedGear) {
+    const gear = equippedGear || {};
+    const classId = resolveClassId();
+    const talentBonuses = getTalentBonuses(classId);
+    const totals = isGearPlannerAppMode()
+        ? buildCalculatorTotalsFromEquippedSnapshot(gear)
+        : (typeof window.getFreshCalculatorTotals === 'function'
+            ? window.getFreshCalculatorTotals()
+            : (window.currentCalculatorTotals || buildCalculatorTotalsFromEquippedSnapshot(gear)));
+    const setBonuses = getSetBonuses(gear, false);
+    return {
+        ap: totals.attackPower || 0,
+        haste: totals.meleeHastePassive ?? totals.meleeHaste ?? totals.haste ?? 0,
+        weaponDamageMultiplier: 1 + (talentBonuses.weaponDamageMultiplier || 0),
+        damageModifier: 1,
+        offhandMultiplier: 0.5 * (1 + (talentBonuses.offhand_damage_percent || 0)),
+        setWeaponMin: setBonuses?.sheetStats?.weaponDamageMin || 0,
+        setWeaponMax: setBonuses?.sheetStats?.weaponDamageMax || 0,
+    };
+}
+
+function computeSheetWeaponDpsDelta(candidateItem, equippedGear, targetSlot = 'mainhand') {
+    const gear = { ...(equippedGear || {}) };
+    const slot = targetSlot || 'mainhand';
+    const ctx = buildSheetWeaponContext(gear);
+    const offhandMult = slot === 'offhand' ? ctx.offhandMultiplier : 1;
+    const newDps = computeSheetWeaponDps(candidateItem, { ...ctx, offhandMultiplier: offhandMult });
+
+    const currentWeapon = slot === 'offhand' ? gear.offhand : gear.mainhand;
+    if (!currentWeapon) return newDps;
+    const oldDps = computeSheetWeaponDps(currentWeapon, { ...ctx, offhandMultiplier: offhandMult });
+    return newDps - oldDps;
+}
+
+function inferWeaponTargetSlot(item) {
+    if (itemTooltipIsTwoHanded(item)) return 'mainhand';
+    return 'mainhand';
+}
+
+/**
+ * Delta in physical output when swapping to candidateItem.
+ * Shaman: damageCalc weapon-scaling abilities (auto, Stormstrike, Lightning Strike, Windfury).
+ * Others: character-sheet weapon DPS formula (app.js).
+ */
+function computeWeaponPhysicalOutputDelta(candidateItem, equippedGear, targetSlot) {
+    if (!isScorableWeaponItem(candidateItem)) return 0;
+
+    const slot = targetSlot || inferWeaponTargetSlot(candidateItem);
+    const gear = { ...(resolveEquippedGearSnapshot(equippedGear) || {}) };
+    const classId = resolveClassId();
+
+    if (classId === 'shaman') {
+        const currentWeapon = slot === 'offhand' ? gear.offhand : gear.mainhand;
+        const baselineStats = buildShamanStatsForEquippedSnapshot(gear);
+        if (!baselineStats) return 0;
+
+        const swappedGear = { ...gear };
+        if (slot === 'offhand') {
+            swappedGear.offhand = candidateItem;
+        } else {
+            swappedGear.mainhand = candidateItem;
+            if (itemTooltipIsTwoHanded(candidateItem)) delete swappedGear.offhand;
+        }
+
+        const swappedStats = buildShamanStatsForEquippedSnapshot(swappedGear);
+        if (!swappedStats) return 0;
+
+        const baselineOutput = sumWeaponScalingAbilityDps(baselineStats);
+        const swappedOutput = sumWeaponScalingAbilityDps(swappedStats);
+        if (!currentWeapon) return swappedOutput;
+        return swappedOutput - baselineOutput;
+    }
+
+    return computeSheetWeaponDpsDelta(candidateItem, gear, slot);
+}
+
 /**
  * Weapon types used to decide whether typed weapon skill on an item applies.
  * Uses the item's own subtype when it is a weapon (item picker / unequipped weapons),
@@ -203,12 +491,14 @@ function getWeaponSkillMatchTypes(item, equippedGear = null) {
 /**
  * Calculate an item's DPS score from its stats and current stat weights.
  * Typed weapon skill counts when it matches the scored weapon and/or equipped mainhand.
+ * Weapons add a physical-output delta (sheet + weapon-scaling abilities), not listed tooltip DPS.
  * @param {Object} item - Item object with tooltip_lines_raw
  * @param {Array|null} statWeights - Array of stat weight objects (from getStoredStatWeights)
  * @param {Object|null} [equippedGear] - Optional {slot: item} snapshot for weapon-skill matching (Gear Planner)
+ * @param {string|null} [targetSlot] - Slot being picked (mainhand/offhand); defaults from weapon type
  * @returns {number|null} DPS score, or null if weights unavailable
  */
-export function calculateItemDpsScore(item, statWeights, equippedGear = null) {
+export function calculateItemDpsScore(item, statWeights, equippedGear = null, targetSlot = null) {
     if (!statWeights || !Array.isArray(statWeights) || statWeights.length === 0) return null;
     if (!item) return null;
 
@@ -223,6 +513,7 @@ export function calculateItemDpsScore(item, statWeights, equippedGear = null) {
     const stats = parseStatsFromTooltip(item);
     let score = 0;
     for (const [tooltipKey, weightKey] of Object.entries(TOOLTIP_TO_WEIGHT_KEY)) {
+        if (WEAPON_STAT_KEYS.has(tooltipKey)) continue;
         const value = stats[tooltipKey];
         if (value && weightMap[weightKey]) {
             score += value * weightMap[weightKey];
@@ -251,6 +542,11 @@ export function calculateItemDpsScore(item, statWeights, equippedGear = null) {
         if (stats.weaponSkill) {
             score += stats.weaponSkill * wepSkillWeight;
         }
+    }
+
+    if (isScorableWeaponItem(item)) {
+        const weaponDelta = computeWeaponPhysicalOutputDelta(item, equippedGear, targetSlot);
+        if (Number.isFinite(weaponDelta)) score += weaponDelta;
     }
 
     return score;
