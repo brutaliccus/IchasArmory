@@ -2337,6 +2337,7 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-class-sidebar {
     align-items: center;
     gap: 6px;
     min-width: 0;
+    overflow: visible;
 }
 .gp-community-card-bottom-row .gp-community-card-author {
     flex: 1;
@@ -2373,6 +2374,8 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-class-sidebar {
     align-items: center;
     justify-content: flex-end;
     margin-left: auto;
+    min-width: max-content;
+    visibility: visible;
 }
 /* SVG-only votes (logout-style): no border / background box */
 .gp-vote-btn {

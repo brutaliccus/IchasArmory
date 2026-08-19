@@ -3000,14 +3000,22 @@ function userOwnsBrowsePlan(p) {
     return String(p.authorId) === String(user.id);
 }
 
+/** Whether a browse card should expose vote controls (independent of `community: true` on list API rows). */
+function isBrowsePlanVotable(p, variant = 'community', { isLocal = false } = {}) {
+    if (!p || isLocal) return false;
+    if (p.sourceCommunityId && String(p.sourceCommunityId).trim()) return true;
+    const id = String(p.id || '').trim();
+    if (!id || id.startsWith('local_gp_')) return false;
+    if (variant === 'community') return true;
+    return !!p.community;
+}
+
 /** Vote id for browse cards — community tab entries omit `community: true` from the list API. */
-function getBrowseCardVoteId(p, variant = 'community') {
-    const fromPlan = getCommunityVoteId(p);
-    if (fromPlan) return fromPlan;
-    if (variant === 'community' && p?.id && !String(p.id).startsWith('local_gp_')) {
-        return String(p.id);
-    }
-    return null;
+function getBrowseCardVoteId(p, variant = 'community', { isLocal = false } = {}) {
+    if (!isBrowsePlanVotable(p, variant, { isLocal })) return null;
+    const sourceId = p.sourceCommunityId ? String(p.sourceCommunityId).trim() : '';
+    if (sourceId) return sourceId;
+    return String(p.id).trim();
 }
 
 function buildBrowseCardVotesHtml(p, variant = 'community') {
@@ -3046,8 +3054,8 @@ function buildGearPlanCardHtml(p, { variant = 'community', isLocal = false } = {
     }
     if (date) authorParts.push(date);
     const authorLine = authorParts.join(' · ');
-    const browseVoteId = getBrowseCardVoteId(p, variant);
-    const showVotes = variant === 'community' || browseVoteId;
+    const browseVoteId = getBrowseCardVoteId(p, variant, { isLocal });
+    const showVotes = !!browseVoteId;
     const canDelete = variant === 'personal' || userOwnsBrowsePlan(p);
     const favOn = !!p.favorite;
     const favBtn = variant === 'community'
@@ -3140,6 +3148,18 @@ function renderPersonalBuildResults(plans, { cloudIds } = {}) {
     wirePersonalResultCards(list, plans);
 }
 
+function wireBrowseVoteButtons(list) {
+    list.querySelectorAll('.gp-vote-btn').forEach((btn) => {
+        if (btn.dataset.wired === '1') return;
+        btn.dataset.wired = '1';
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            voteCommunityPlan(btn.dataset.id, btn.dataset.vote);
+        });
+    });
+}
+
 function wireCommunityResultCards(list, plans = []) {
     list.querySelectorAll('.gp-community-card').forEach((card) => {
         card.addEventListener('click', (e) => {
@@ -3153,13 +3173,7 @@ function wireCommunityResultCards(list, plans = []) {
             loadCommunityPlanById(card.dataset.id);
         });
     });
-    list.querySelectorAll('.gp-vote-btn').forEach((btn) => {
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            voteCommunityPlan(btn.dataset.id, btn.dataset.vote);
-        });
-    });
+    wireBrowseVoteButtons(list);
     list.querySelectorAll('.gp-fav-community-btn').forEach((btn) => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -3264,6 +3278,7 @@ function wirePersonalResultCards(list, plans) {
             runPersonalBuildsSearch();
         });
     });
+    wireBrowseVoteButtons(list);
     wireBrowseShareButtons(list, plans);
     wireBrowseDeleteButtons(list, plans, () => runPersonalBuildsSearch());
 }
@@ -3340,7 +3355,8 @@ function syncVoteUiEverywhere(updated, id) {
     const list = document.getElementById('gp-community-results');
     if (!list) return;
     list.querySelectorAll('.gp-community-card').forEach((card) => {
-        if (String(card.dataset.id) === String(id)) applyVoteUi(updated, card);
+        const cardVoteId = card.querySelector('.gp-vote-btn[data-id]')?.dataset?.id || card.dataset.id;
+        if (String(cardVoteId) === String(id)) applyVoteUi(updated, card);
     });
 }
 
