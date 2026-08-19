@@ -53,7 +53,8 @@ Stats not in this mapping (stamina, spirit, defense, etc.) contribute 0 DPS.
 **Weapon physical-output add (not listed tooltip DPS):** For weapons with damage/speed lines, the score adds how much **physical output this weapon contributes** from its damage range — not the item's listed `(X damage per second)` line, and **not** a swap delta vs the currently equipped weapon.
 
 - **Formula:** `physicalOutput(candidate min/max/speed, current AP/talents/abilities) − physicalOutput(0–0 damage at the same speed, same AP/talents/abilities)` plus stat-weight score for str/agi/crit/hit/AP/wepSkill on the item (weapon min/max are never multiplied by stat weights).
-- **Shaman:** Uses `damageCalc.js` `calculateSpellDPS` for weapon-scaling abilities in the current rotation context: Auto Attack, Stormstrike, Lightning Strike, and Windfury Attack (when Windfury is active). Weapon effective damage follows the same `(base + AP/14 × speed) × talent multiplier` model as the character sheet and sim (`getEffectiveWeaponDamage` in `damageCalc.js`).
+- **Shaman:** Uses `damageCalc.js` `calculateSpellDPS` for weapon-scaling abilities in the current rotation context: Auto Attack, Stormstrike, Lightning Strike, and Windfury Attack (when Windfury is active). Windfury uses expected proc DPS: 20% × 2 extra attacks × weapon damage / swing time. Weapon effective damage follows the same `(base + AP/14 × speed) × talent multiplier` model as the character sheet and sim (`getEffectiveWeaponDamage` in `damageCalc.js`).
+- **Gear Planner:** Class/race/talents/buffs for weapon scoring come from `window.getGearPlannerCalcPayload()` (plan snapshot via `buildGpCalcPayload`), not the Character Planner sidebar (which often stays `warrior`).
 - **Other classes / offhand:** Uses the character-sheet white-hit formula from `app.js` `displayMainResults`: `((min+max)/2) / hastedSpeed` where `min/max = floor/ceil((weapon base + AP/14 × speed) × weaponDamageMultiplier)`. Off-hand picks apply the 50% off-hand penalty (plus Savage Strikes when talented).
 
 **Calibration (manual sim):** Level 2 white (11–17, 3.7 speed) ≈ **~700 DPS** total; Boneshatter Maul (156–250, 3.7 + stats) ≈ **~900 DPS** total. Hovering Boneshatter while equipped still shows the full score (weapon range add + stats), not 0.
@@ -75,7 +76,7 @@ Extracts the weapon subtype string (e.g., `"Axe"`, `"Two-handed Mace"`) from a w
 Returns a `Set` of weapon subtypes for typed weapon-skill scoring: the item's own subtype when it is a weapon, plus the equipped mainhand subtype when present.
 
 ### `computeWeaponPhysicalOutputAdd(item, equippedGear, targetSlot?)`
-Core weapon range add used by `calculateItemDpsScore`. Candidate vs 0–0 at same speed; see weapon section above.
+Core weapon range add used by `calculateItemDpsScore`. Candidate vs 0–0 at same speed; exported for calibration tests (`scripts/test-boneshatter-tooltip-dps.mjs`).
 
 ### `computeSheetWeaponDps(weaponItem, context)`
 Character-sheet white DPS for one weapon (`app.js` formula).

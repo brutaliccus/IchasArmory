@@ -198,6 +198,10 @@ const WEAPON_STAT_KEYS = new Set(['weaponDamageMin', 'weaponDamageMax', 'weaponS
 function resolveClassId() {
     if (typeof window !== 'undefined') {
         if (window.__ichacalcGpSimClass) return window.__ichacalcGpSimClass;
+        if (isGearPlannerAppMode()) {
+            const gpClass = document.getElementById('gp-class-sidebar')?.dataset?.selectedClass;
+            if (gpClass) return gpClass;
+        }
         const sidebar = document.getElementById('class-race-sidebar');
         if (sidebar?.dataset?.selectedClass) return sidebar.dataset.selectedClass;
     }
@@ -207,10 +211,41 @@ function resolveClassId() {
 function resolveRaceId() {
     if (typeof window !== 'undefined') {
         if (window.__ichacalcGpSimRace) return window.__ichacalcGpSimRace;
+        if (isGearPlannerAppMode()) {
+            const gpRace = document.getElementById('gp-class-sidebar')?.dataset?.selectedRace;
+            if (gpRace) return gpRace;
+        }
         const sidebar = document.getElementById('class-race-sidebar');
         if (sidebar?.dataset?.selectedRace) return sidebar.dataset.selectedRace;
     }
     return 'human';
+}
+
+function getGpCharacterCalcPayload() {
+    if (typeof window.getGearPlannerCalcPayload === 'function') {
+        return window.getGearPlannerCalcPayload();
+    }
+    return null;
+}
+
+function resolveTalentBonuses(classId) {
+    const gpPayload = isGearPlannerAppMode() ? getGpCharacterCalcPayload() : null;
+    if (gpPayload?.talentBonuses) return gpPayload.talentBonuses;
+    return getTalentBonuses(classId);
+}
+
+function resolveActiveBuffsForTooltips(classId, talentBonuses) {
+    const gpPayload = isGearPlannerAppMode() ? getGpCharacterCalcPayload() : null;
+    if (gpPayload?.activeBuffs) return gpPayload.activeBuffs;
+    return getActiveBuffs(talentBonuses);
+}
+
+function resolveCalculatorTotals(equippedGear) {
+    const gpPayload = isGearPlannerAppMode() ? getGpCharacterCalcPayload() : null;
+    if (gpPayload) {
+        return calculateEffectiveHealth(gpPayload);
+    }
+    return buildCalculatorTotalsFromEquippedSnapshot(equippedGear);
 }
 
 function isScorableWeaponItem(item) {
@@ -306,12 +341,12 @@ function buildShamanBaseStats(equippedGear) {
     if (classId !== 'shaman') return null;
 
     const totals = isGearPlannerAppMode()
-        ? buildCalculatorTotalsFromEquippedSnapshot(gear)
+        ? resolveCalculatorTotals(gear)
         : (typeof window.getFreshCalculatorTotals === 'function'
             ? window.getFreshCalculatorTotals()
             : (window.currentCalculatorTotals || buildCalculatorTotalsFromEquippedSnapshot(gear)));
 
-    const talentBonuses = getTalentBonuses(classId);
+    const talentBonuses = resolveTalentBonuses(classId);
     const setBonuses = getSetBonuses(gear, false);
     const stats = new ShamanStats();
     stats.talentBonuses = talentBonuses;
@@ -335,7 +370,7 @@ function buildShamanBaseStats(equippedGear) {
 
     applyMinimalTalentModifiers(stats, talentBonuses);
 
-    const activeBuffs = getActiveBuffs(talentBonuses);
+    const activeBuffs = resolveActiveBuffsForTooltips(classId, talentBonuses);
     const hasWindfury = activeBuffs.some((buff) => buff.name && buff.name.toLowerCase().includes('windfury'));
     if (hasWindfury) stats.toggleModifier('windfuryActive', true);
 
@@ -354,19 +389,36 @@ function buildShamanStatsWithWeaponDamage(equippedGear, baseMin, baseMax, baseSp
     return stats;
 }
 
+const WINDFURY_PROC_CHANCE = 0.20;
+const WINDFURY_EXTRA_ATTACKS = 2;
+
+function getWeaponScalingSpellDps(spellKey, stats) {
+    const spell = shamanSpells[spellKey];
+    if (!spell?.weaponDamagePercent) return 0;
+    if (spellKey === 'windfuryAttack') {
+        if (!stats.activeModifiers?.windfuryActive) return 0;
+        try {
+            const result = calculateSpellDPS(spell, stats);
+            const swing = stats.weaponSpeed || stats.baseWeaponSpeed || 0;
+            if (!swing || !result?.expectedAverage) return 0;
+            return (WINDFURY_PROC_CHANCE * WINDFURY_EXTRA_ATTACKS * result.expectedAverage) / swing;
+        } catch (_) {
+            return 0;
+        }
+    }
+    try {
+        const result = calculateSpellDPS(spell, stats);
+        return result?.dps || 0;
+    } catch (_) {
+        return 0;
+    }
+}
+
 function sumWeaponScalingAbilityDps(stats) {
     if (!stats) return 0;
     let total = 0;
     for (const key of WEAPON_SCALING_SPELL_KEYS) {
-        const spell = shamanSpells[key];
-        if (!spell?.weaponDamagePercent) continue;
-        if (key === 'windfuryAttack' && !stats.activeModifiers?.windfuryActive) continue;
-        try {
-            const result = calculateSpellDPS(spell, stats);
-            total += result?.dps || 0;
-        } catch (_) {
-            // ignore individual spell failures
-        }
+        total += getWeaponScalingSpellDps(key, stats);
     }
     return total;
 }
@@ -416,9 +468,9 @@ function computeSheetWeaponDps(weaponItem, context) {
 function buildSheetWeaponContext(equippedGear) {
     const gear = equippedGear || {};
     const classId = resolveClassId();
-    const talentBonuses = getTalentBonuses(classId);
+    const talentBonuses = resolveTalentBonuses(classId);
     const totals = isGearPlannerAppMode()
-        ? buildCalculatorTotalsFromEquippedSnapshot(gear)
+        ? resolveCalculatorTotals(gear)
         : (typeof window.getFreshCalculatorTotals === 'function'
             ? window.getFreshCalculatorTotals()
             : (window.currentCalculatorTotals || buildCalculatorTotalsFromEquippedSnapshot(gear)));
@@ -468,7 +520,7 @@ function inferWeaponTargetSlot(item) {
  * Shaman mainhand: damageCalc weapon-scaling abilities (auto, Stormstrike, Lightning Strike, Windfury).
  * Others / offhand: character-sheet weapon DPS formula (app.js).
  */
-function computeWeaponPhysicalOutputAdd(candidateItem, equippedGear, targetSlot) {
+export function computeWeaponPhysicalOutputAdd(candidateItem, equippedGear, targetSlot) {
     if (!isScorableWeaponItem(candidateItem)) return 0;
 
     const slot = targetSlot || inferWeaponTargetSlot(candidateItem);

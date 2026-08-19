@@ -289,6 +289,10 @@ function installGpWeightResolvers() {
     window.getGearPlannerDpsStatWeights = (isAoe = false) => resolveGpDpsWeights(isAoe);
     window.getGearPlannerTankStatWeights = () => resolveGpTankWeights();
     window.getGearPlannerWeaponSkillEquippedGear = () => getGpPrimaryEquipped();
+    window.getGearPlannerCalcPayload = () => buildGpCalcPayload(
+        getGearPlanData(currentPlan),
+        { includeGear: true, includeTalents: true, includeBuffs: true }
+    );
 }
 
 export function initGearPlannerView(cbs) {
