@@ -1,7 +1,7 @@
 // modules/ui/modal.js - Unified modal system for items and enchants
 // Consolidates duplicate modal logic
 
-import { createItemTooltipHTML, createEnchantTooltipHTML, calculateItemDpsScore, calculateItemTankScore, getActiveItemScoreWeights } from './tooltips.js';
+import { createItemTooltipHTML, createEnchantTooltipHTML, calculateItemDpsScore, calculateItemTankScore, getActiveItemScoreWeights, invalidateItemScoreCache } from './tooltips.js';
 import { positionItemTooltipOnIcon, hideItemTooltip } from './itemTooltipPosition.js';
 import { isGpMobileLayout } from './gpMobile.js';
 import { createIconImage, getCurrentlyEquippedItem } from '../gear/gear.js';
@@ -860,9 +860,11 @@ export function filterAndRenderItems(allItems, filters, listElement) {
     if (sortByDpsActive) {
         const { dps: sw } = getActiveItemScoreWeights();
         if (sw) {
+            const pickerSlot = filters.slot || document.getElementById('item-modal')?.dataset?.currentSlot || null;
+            const fastOpts = { fastWeaponScoring: true };
             filteredItems.sort((a, b) => {
-                const scoreA = calculateItemDpsScore(a, sw) || 0;
-                const scoreB = calculateItemDpsScore(b, sw) || 0;
+                const scoreA = calculateItemDpsScore(a, sw, null, pickerSlot, fastOpts) || 0;
+                const scoreB = calculateItemDpsScore(b, sw, null, pickerSlot, fastOpts) || 0;
                 return scoreB - scoreA;
             });
         }
@@ -937,6 +939,9 @@ function renderItems(items, listElement) {
         return;
     }
 
+    const debugScores = typeof window !== 'undefined' && window.__ichacalcDebugItemScores === true;
+    const renderT0 = debugScores ? performance.now() : 0;
+
     listElement.innerHTML = '';
 
     // Get currently selected stats for preview
@@ -948,6 +953,7 @@ function renderItems(items, listElement) {
     const currentSlot = modal?.dataset.currentSlot || null;
     const equippedItem = currentSlot ? getCurrentlyEquippedItem(currentSlot) : null;
     const equippedItemId = equippedItem ? String(equippedItem.id) : null;
+    const fastScoreOpts = { fastWeaponScoring: true };
 
     items.forEach(item => {
         const modalItem = document.createElement('div');
@@ -1001,7 +1007,7 @@ function renderItems(items, listElement) {
 
         // Add DPS score if stat weights are available
         if (statWeights) {
-            const dpsScore = calculateItemDpsScore(item, statWeights);
+            const dpsScore = calculateItemDpsScore(item, statWeights, null, currentSlot, fastScoreOpts);
             if (dpsScore !== null && dpsScore > 0) {
                 const dpsSpan = document.createElement('span');
                 dpsSpan.className = 'item-dps-score';
@@ -1049,6 +1055,11 @@ function renderItems(items, listElement) {
 
         listElement.appendChild(modalItem);
     });
+
+    if (debugScores) {
+        const ms = Math.round(performance.now() - renderT0);
+        console.log(`[ItemModal] renderItems: ${items.length} rows, DPS scores ${ms}ms (fastWeaponScoring)`);
+    }
 }
 
 /**
@@ -2020,6 +2031,8 @@ async function setupInstanceFilterUI() {
  */
 export function openItemModal(slotId, items, elements, anchorEl = null) {
     migrateLegacyStatFiltersToStates();
+
+    invalidateItemScoreCache();
 
     elements.modal.dataset.currentSlot = slotId;
     elements.modal.dataset.anchorSlotId = slotId;

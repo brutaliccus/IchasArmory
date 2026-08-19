@@ -443,7 +443,7 @@ Creates DOM elements for each item in the filtered list.
 
 ### DPS Score Display
 
-When stat weights have been generated (via the Stat Weights sim), each item row shows an estimated DPS contribution (`~X DPS`) right-aligned. The score is computed by `calculateItemDpsScore()` in `tooltips.js`, which multiplies each parsed item stat by the corresponding stat weight. Item tooltips also show the score at the bottom.
+When stat weights have been generated (via the Stat Weights sim), each item row shows an estimated DPS contribution (`~X DPS`) right-aligned. The score is computed by `calculateItemDpsScore()` in `tooltips.js` with `{ fastWeaponScoring: true }` (linear weapon-add cache + stat weights). Item tooltip hover uses the full memoized weapon-add calc at the bottom. `invalidateItemScoreCache()` runs on modal open.
 
 **Sort by DPS:** A "Sort by DPS" toggle button appears in the modal filter area when stat weights are available. When active (gold highlight), items are sorted descending by DPS score, overriding stat-based sort. The toggle state resets when filters are cleared.
 

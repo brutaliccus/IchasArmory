@@ -195,6 +195,45 @@ const WEAPON_GEAR_SLOTS = new Set(['mainhand', 'offhand', 'ranged']);
 const WEAPON_SCALING_SPELL_KEYS = ['autoAttack', 'stormstrike', 'lightningStrike', 'windfuryAttack'];
 const WEAPON_STAT_KEYS = new Set(['weaponDamageMin', 'weaponDamageMax', 'weaponSpeed']);
 
+/** Linear reference avg damage for per-speed weapon-add scaling (k = fullAdd / REF_AVG_DAMAGE). */
+const WEAPON_LINEAR_REF_AVG_DAMAGE = 100;
+
+let _scoringContextVersion = 0;
+let _calcTotalsCache = null;
+let _gpPayloadCache = null;
+const _weaponLinearKCache = new Map();
+const _weaponFullAddCache = new Map();
+
+function isItemScoreDebugEnabled() {
+    return typeof window !== 'undefined' && window.__ichacalcDebugItemScores === true;
+}
+
+/** Bust weapon/DPS score caches (call on item-modal open or GP plan/stats change). */
+export function invalidateItemScoreCache() {
+    _scoringContextVersion += 1;
+    _calcTotalsCache = null;
+    _gpPayloadCache = null;
+    _weaponLinearKCache.clear();
+    _weaponFullAddCache.clear();
+}
+
+function getScoringContextKey(equippedGear) {
+    const classId = resolveClassId();
+    const raceId = resolveRaceId();
+    const gear = resolveEquippedGearSnapshot(equippedGear) || {};
+    const mhId = gear.mainhand?.id ?? '';
+    const ohId = gear.offhand?.id ?? '';
+    return `${_scoringContextVersion}|${classId}|${raceId}|${mhId}|${ohId}`;
+}
+
+function getGpCharacterCalcPayloadCached() {
+    if (typeof window.getGearPlannerCalcPayload !== 'function') return null;
+    const fresh = window.getGearPlannerCalcPayload();
+    if (fresh && fresh === _gpPayloadCache?.ref) return _gpPayloadCache.payload;
+    _gpPayloadCache = { ref: fresh, payload: fresh };
+    return fresh;
+}
+
 function resolveClassId() {
     if (typeof window !== 'undefined') {
         if (window.__ichacalcGpSimClass) return window.__ichacalcGpSimClass;
@@ -222,10 +261,7 @@ function resolveRaceId() {
 }
 
 function getGpCharacterCalcPayload() {
-    if (typeof window.getGearPlannerCalcPayload === 'function') {
-        return window.getGearPlannerCalcPayload();
-    }
-    return null;
+    return getGpCharacterCalcPayloadCached();
 }
 
 function resolveTalentBonuses(classId) {
@@ -241,11 +277,15 @@ function resolveActiveBuffsForTooltips(classId, talentBonuses) {
 }
 
 function resolveCalculatorTotals(equippedGear) {
+    const cacheKey = getScoringContextKey(equippedGear);
+    if (_calcTotalsCache?.key === cacheKey) return _calcTotalsCache.totals;
+
     const gpPayload = isGearPlannerAppMode() ? getGpCharacterCalcPayload() : null;
-    if (gpPayload) {
-        return calculateEffectiveHealth(gpPayload);
-    }
-    return buildCalculatorTotalsFromEquippedSnapshot(equippedGear);
+    const totals = gpPayload
+        ? calculateEffectiveHealth(gpPayload)
+        : buildCalculatorTotalsFromEquippedSnapshot(equippedGear);
+    _calcTotalsCache = { key: cacheKey, totals };
+    return totals;
 }
 
 function isScorableWeaponItem(item) {
@@ -515,19 +555,67 @@ function inferWeaponTargetSlot(item) {
     return 'mainhand';
 }
 
+function buildWeaponFullAddCacheKey(candidateItem, equippedGear, targetSlot) {
+    const slot = targetSlot || inferWeaponTargetSlot(candidateItem);
+    const weaponStats = parseStatsFromTooltip(candidateItem);
+    return [
+        getScoringContextKey(equippedGear),
+        resolveClassId(),
+        slot,
+        weaponStats.weaponDamageMin,
+        weaponStats.weaponDamageMax,
+        weaponStats.weaponSpeed,
+    ].join('|');
+}
+
+function makeReferenceWeaponItem(avgDamage, speed) {
+    const dmg = Math.round(avgDamage);
+    return {
+        tooltip_lines_raw: [
+            `${dmg} - ${dmg}  Damage`,
+            `Speed ${speed}`,
+        ],
+    };
+}
+
+function getWeaponLinearKPerAvgDamage(speed, equippedGear, targetSlot) {
+    const slot = targetSlot || 'mainhand';
+    const classId = resolveClassId();
+    const cacheKey = `${getScoringContextKey(equippedGear)}|${classId}|${slot}|${speed}`;
+    if (_weaponLinearKCache.has(cacheKey)) return _weaponLinearKCache.get(cacheKey);
+
+    const refItem = makeReferenceWeaponItem(WEAPON_LINEAR_REF_AVG_DAMAGE, speed);
+    const fullAdd = computeWeaponPhysicalOutputAddFull(refItem, equippedGear, slot);
+    const k = fullAdd / WEAPON_LINEAR_REF_AVG_DAMAGE;
+    _weaponLinearKCache.set(cacheKey, k);
+    return k;
+}
+
+function computeWeaponPhysicalOutputAddFast(candidateItem, equippedGear, targetSlot) {
+    const weaponStats = parseStatsFromTooltip(candidateItem);
+    if (weaponStats.weaponDamageMin == null || weaponStats.weaponDamageMax == null || !weaponStats.weaponSpeed) {
+        return 0;
+    }
+    const slot = targetSlot || inferWeaponTargetSlot(candidateItem);
+    const avgDamage = (weaponStats.weaponDamageMin + weaponStats.weaponDamageMax) / 2;
+    return getWeaponLinearKPerAvgDamage(weaponStats.weaponSpeed, equippedGear, slot) * avgDamage;
+}
+
 /**
- * Physical output this weapon adds: candidate vs 0–0 at same speed (current AP/talents/abilities).
- * Shaman mainhand: damageCalc weapon-scaling abilities (auto, Stormstrike, Lightning Strike, Windfury).
- * Others / offhand: character-sheet weapon DPS formula (app.js).
+ * Full weapon-range add (candidate vs 0–0 at same speed). Memoized per (min, max, speed, slot, context).
  */
-export function computeWeaponPhysicalOutputAdd(candidateItem, equippedGear, targetSlot) {
+function computeWeaponPhysicalOutputAddFull(candidateItem, equippedGear, targetSlot) {
     if (!isScorableWeaponItem(candidateItem)) return 0;
+
+    const cacheKey = buildWeaponFullAddCacheKey(candidateItem, equippedGear, targetSlot);
+    if (_weaponFullAddCache.has(cacheKey)) return _weaponFullAddCache.get(cacheKey);
 
     const slot = targetSlot || inferWeaponTargetSlot(candidateItem);
     const gear = resolveEquippedGearSnapshot(equippedGear) || {};
     const classId = resolveClassId();
     const weaponStats = parseStatsFromTooltip(candidateItem);
 
+    let result;
     if (classId === 'shaman' && slot !== 'offhand') {
         const candidateStats = buildShamanStatsWithWeaponDamage(
             gear,
@@ -536,12 +624,28 @@ export function computeWeaponPhysicalOutputAdd(candidateItem, equippedGear, targ
             weaponStats.weaponSpeed
         );
         const zeroStats = buildShamanStatsWithWeaponDamage(gear, 0, 0, weaponStats.weaponSpeed);
-        if (!candidateStats || !zeroStats) return 0;
-
-        return sumWeaponScalingAbilityDps(candidateStats) - sumWeaponScalingAbilityDps(zeroStats);
+        if (!candidateStats || !zeroStats) result = 0;
+        else result = sumWeaponScalingAbilityDps(candidateStats) - sumWeaponScalingAbilityDps(zeroStats);
+    } else {
+        result = computeSheetWeaponDpsAdd(candidateItem, gear, slot);
     }
 
-    return computeSheetWeaponDpsAdd(candidateItem, gear, slot);
+    _weaponFullAddCache.set(cacheKey, result);
+    return result;
+}
+
+/**
+ * Physical output this weapon adds: candidate vs 0–0 at same speed (current AP/talents/abilities).
+ * Shaman mainhand: damageCalc weapon-scaling abilities (auto, Stormstrike, Lightning Strike, Windfury).
+ * Others / offhand: character-sheet weapon DPS formula (app.js).
+ * @param {Object} [options]
+ * @param {boolean} [options.fastWeaponScoring] - Use cached linear k×avgDamage (list/sort); default full calc.
+ */
+export function computeWeaponPhysicalOutputAdd(candidateItem, equippedGear, targetSlot, options = {}) {
+    if (options.fastWeaponScoring) {
+        return computeWeaponPhysicalOutputAddFast(candidateItem, equippedGear, targetSlot);
+    }
+    return computeWeaponPhysicalOutputAddFull(candidateItem, equippedGear, targetSlot);
 }
 
 /**
@@ -569,9 +673,11 @@ function getWeaponSkillMatchTypes(item, equippedGear = null) {
  * @param {Array|null} statWeights - Array of stat weight objects (from getStoredStatWeights)
  * @param {Object|null} [equippedGear] - Optional {slot: item} snapshot for weapon-skill matching (Gear Planner)
  * @param {string|null} [targetSlot] - Slot being picked (mainhand/offhand); defaults from weapon type
+ * @param {Object} [options]
+ * @param {boolean} [options.fastWeaponScoring] - Cheap k×avgDamage for picker lists (default false for tooltips)
  * @returns {number|null} DPS score, or null if weights unavailable
  */
-export function calculateItemDpsScore(item, statWeights, equippedGear = null, targetSlot = null) {
+export function calculateItemDpsScore(item, statWeights, equippedGear = null, targetSlot = null, options = {}) {
     if (!statWeights || !Array.isArray(statWeights) || statWeights.length === 0) return null;
     if (!item) return null;
 
@@ -618,7 +724,7 @@ export function calculateItemDpsScore(item, statWeights, equippedGear = null, ta
     }
 
     if (isScorableWeaponItem(item)) {
-        const weaponDelta = computeWeaponPhysicalOutputAdd(item, equippedGear, targetSlot);
+        const weaponDelta = computeWeaponPhysicalOutputAdd(item, equippedGear, targetSlot, options);
         if (Number.isFinite(weaponDelta)) score += weaponDelta;
     }
 

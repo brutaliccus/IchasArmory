@@ -75,8 +75,17 @@ Extracts the weapon subtype string (e.g., `"Axe"`, `"Two-handed Mace"`) from a w
 ### `getWeaponSkillMatchTypes(item)`
 Returns a `Set` of weapon subtypes for typed weapon-skill scoring: the item's own subtype when it is a weapon, plus the equipped mainhand subtype when present.
 
-### `computeWeaponPhysicalOutputAdd(item, equippedGear, targetSlot?)`
+### `computeWeaponPhysicalOutputAdd(item, equippedGear, targetSlot?, options?)`
 Core weapon range add used by `calculateItemDpsScore`. Candidate vs 0–0 at same speed; exported for calibration tests (`scripts/test-boneshatter-tooltip-dps.mjs`).
+
+- **Full calc (default):** Memoized shaman ability suite or sheet formula — used for tooltip hover.
+- **`options.fastWeaponScoring`:** Cached linear `k × (min+max)/2` per weapon speed (one full reference calc per speed on picker open). Used for modal list rows and DPS sort.
+
+### `invalidateItemScoreCache()`
+Clears calculator-totals cache, GP payload cache, linear-`k` cache, and full weapon-add memo. Called when the item modal opens.
+
+### `calculateItemDpsScore(..., options?)`
+Accepts `{ fastWeaponScoring: true }` for cheap picker list/sort scoring (stat weights + linear weapon add).
 
 ### `computeSheetWeaponDps(weaponItem, context)`
 Character-sheet white DPS for one weapon (`app.js` formula).
