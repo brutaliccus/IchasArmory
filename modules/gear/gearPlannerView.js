@@ -3483,11 +3483,10 @@ function renderLocationsSidebar() {
                 const many = itemCount > 3;
                 const mobile = isGpMobileLayout();
                 const startCollapsed = many && mobile;
-                const showListToggle = many;
                 return `<li class="gp-location-entry" data-instance-id="${escapeHtml(e.id)}" data-instance-name="${escapeHtml(e.name)}" role="button" tabindex="0">
                 <div class="gp-location-entry-head">
                     <span class="gp-location-name">${escapeHtml(e.name)}</span>
-                    ${showListToggle ? `<button type="button" class="gp-location-list-toggle" aria-expanded="${startCollapsed ? 'false' : 'true'}" aria-label="Toggle item list" title="Toggle items"><span class="gp-location-list-caret" aria-hidden="true">▾</span></button>` : ''}
+                    <button type="button" class="gp-location-list-toggle" aria-expanded="${startCollapsed ? 'false' : 'true'}" aria-label="Toggle item list" title="Toggle items"><span class="gp-location-list-caret" aria-hidden="true">▾</span></button>
                 </div>
                 <ul class="gp-location-items${startCollapsed ? ' is-collapsed' : ''}">${(e.items || []).map(it => {
                     const q = it.quality ?? callbacks.getItemById?.(it.id)?.quality ?? 0;
