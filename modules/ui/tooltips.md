@@ -57,6 +57,8 @@ Stats not in this mapping (stamina, spirit, defense, etc.) contribute 0 DPS.
 
 Weapon base damage/speed are **never** multiplied by stat weights directly (avoids double-counting with AP and naïve listed DPS).
 
+If the candidate weapon is **already equipped** in the target slot (matched by item id), the physical-output delta is **0** — stat weights alone show str/crit/hit/etc. on that item without a self-swap penalty.
+
 ### `calculateItemTankScore(item, tankWeights)`
 Returns `{ ehp, mitScore, tankScore }` where `tankScore = ehp + mitScore` (stamina/armor vs mitigation stats).
 

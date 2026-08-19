@@ -218,6 +218,26 @@ function isScorableWeaponItem(item) {
     return !!(stats.weaponDamageMin && stats.weaponDamageMax && stats.weaponSpeed);
 }
 
+function getItemId(item) {
+    if (!item) return null;
+    const id = item.id ?? item.itemId;
+    return id == null ? null : String(id);
+}
+
+/** True when candidate is already equipped in targetSlot (or either hand if slot omitted). */
+function isEquippedWeaponInSlot(candidateItem, equippedGear, targetSlot) {
+    const candidateId = getItemId(candidateItem);
+    if (!candidateId || !equippedGear) return false;
+
+    const slotMatches = (slot) => {
+        const equippedId = getItemId(equippedGear[slot]);
+        return equippedId != null && equippedId === candidateId;
+    };
+
+    if (targetSlot === 'mainhand' || targetSlot === 'offhand') return slotMatches(targetSlot);
+    return slotMatches('mainhand') || slotMatches('offhand');
+}
+
 function aggregateGearStatsFromSnapshot(equippedGear) {
     const total = { weaponSkillByType: {} };
     for (const [slot, item] of Object.entries(equippedGear || {})) {
@@ -417,8 +437,10 @@ function buildSheetWeaponContext(equippedGear) {
 }
 
 function computeSheetWeaponDpsDelta(candidateItem, equippedGear, targetSlot = 'mainhand') {
-    const gear = { ...(equippedGear || {}) };
-    const slot = targetSlot || 'mainhand';
+    const gear = { ...(resolveEquippedGearSnapshot(equippedGear) || {}) };
+    const slot = targetSlot || inferWeaponTargetSlot(candidateItem);
+    if (isEquippedWeaponInSlot(candidateItem, gear, slot)) return 0;
+
     const ctx = buildSheetWeaponContext(gear);
     const offhandMult = slot === 'offhand' ? ctx.offhandMultiplier : 1;
     const newDps = computeSheetWeaponDps(candidateItem, { ...ctx, offhandMultiplier: offhandMult });
@@ -444,6 +466,8 @@ function computeWeaponPhysicalOutputDelta(candidateItem, equippedGear, targetSlo
 
     const slot = targetSlot || inferWeaponTargetSlot(candidateItem);
     const gear = { ...(resolveEquippedGearSnapshot(equippedGear) || {}) };
+    if (isEquippedWeaponInSlot(candidateItem, gear, slot)) return 0;
+
     const classId = resolveClassId();
 
     if (classId === 'shaman') {
