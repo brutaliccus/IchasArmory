@@ -48,6 +48,52 @@ function normalizeReqLevelPair(minV, maxV) {
 /** When set (gear planner), overrides sidebar class for can-equip filter. */
 let itemModalPlayerClassOverride = null;
 
+/** Element to restore focus when the item picker closes (slot opener or last focused control). */
+let itemPickerReturnFocusEl = null;
+
+/**
+ * Blur focused descendants and optionally restore focus before hiding an overlay.
+ * @param {HTMLElement|null} overlayEl
+ * @param {HTMLElement|null} [returnFocusTo]
+ */
+export function releaseFocusFromOverlay(overlayEl, returnFocusTo = null) {
+    if (!overlayEl) return;
+    const active = document.activeElement;
+    if (active && active !== document.body && overlayEl.contains(active)) {
+        if (typeof active.blur === 'function') active.blur();
+    }
+    let target = returnFocusTo || itemPickerReturnFocusEl;
+    if (!target && overlayEl.dataset.returnFocusId) {
+        target = document.getElementById(overlayEl.dataset.returnFocusId);
+    }
+    if (target && typeof target.focus === 'function' && document.contains(target)) {
+        try {
+            target.focus({ preventScroll: true });
+        } catch {
+            target.focus();
+        }
+    }
+}
+
+function showAccessibleOverlay(el) {
+    if (!el) return;
+    el.removeAttribute('inert');
+    el.setAttribute('aria-hidden', 'false');
+}
+
+function hideAccessibleOverlay(el, returnFocusTo = null) {
+    if (!el) return;
+    releaseFocusFromOverlay(el, returnFocusTo);
+    if (el.id === 'item-modal') {
+        itemPickerReturnFocusEl = null;
+    }
+    delete el.dataset.returnFocusId;
+    el.setAttribute('inert', '');
+    el.setAttribute('aria-hidden', 'true');
+}
+
+export { hideAccessibleOverlay, showAccessibleOverlay };
+
 export function setItemModalPlayerClassOverride(classId) {
     itemModalPlayerClassOverride = classId || null;
 }
@@ -2081,9 +2127,20 @@ export function openItemModal(slotId, items, elements, anchorEl = null) {
 
     const root = elements.modal;
     const panel = document.getElementById('item-modal-panel');
+    const opener = anchorEl
+        || (document.activeElement && document.activeElement !== document.body
+            && !root.contains(document.activeElement)
+            ? document.activeElement
+            : null);
+    itemPickerReturnFocusEl = opener;
+    if (opener?.id) {
+        root.dataset.returnFocusId = opener.id;
+    } else {
+        delete root.dataset.returnFocusId;
+    }
     root.classList.add('item-picker--open');
     root.style.display = 'block';
-    root.setAttribute('aria-hidden', 'false');
+    showAccessibleOverlay(root);
     if (panel) {
         panel.classList.remove('item-picker-panel--visible');
     }
@@ -2237,7 +2294,7 @@ export function closeModal(elements) {
     if (elements.modal) {
         elements.modal.classList.remove('item-picker--open');
         elements.modal.style.display = 'none';
-        elements.modal.setAttribute('aria-hidden', 'true');
+        hideAccessibleOverlay(elements.modal);
     }
     if (elements.enchantModal) {
         elements.enchantModal.style.display = 'none';

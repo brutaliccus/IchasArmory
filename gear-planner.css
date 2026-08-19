@@ -1,11 +1,11 @@
 /* Gear Planner — DPS-sim themed panels, gold accents */
 
 :root {
-    --gp-dock-width: 260px;
+    --gp-dock-width: clamp(200px, 16vw, 260px);
     --gp-dock-duration: 250ms;
     --gp-dock-ease: ease-in-out;
-    /* Center column ~70% of viewport, capped by space between fixed location/stats docks */
-    --gp-center-width: min(70vw, calc(100vw - 2 * var(--gp-dock-width) - 32px));
+    /* Center column: fit between fixed docks with a sensible floor */
+    --gp-center-width: min(960px, max(300px, calc(100vw - 2 * var(--gp-dock-width) - 48px)));
 }
 
 body[data-app-mode="gearPlanner"] .app-scroll-layout {
@@ -30,10 +30,8 @@ body[data-app-mode="character"] #gear-planner-shell {
     max-width: none;
     margin: 0 auto;
     box-sizing: border-box;
-    /* Nav is position:fixed + unscaled; this padding is inside CSS zoom */
-    /* Locations/stats docks overlay screen edges; center column width is fixed via --gp-center-width */
-    padding: calc(68px / var(--ui-scale, 1)) 16px calc(52px + env(safe-area-inset-bottom, 0px)) 16px;
-    min-height: calc(100vh / var(--ui-scale, 1));
+    padding: calc(var(--ichacalc-nav-h, 60px) + 8px) 16px calc(52px + env(safe-area-inset-bottom, 0px)) 16px;
+    min-height: var(--ichacalc-usable-h, 100dvh);
 }
 
 .gp-locations-sidebar {
@@ -141,7 +139,7 @@ body[data-app-mode="character"] #gear-planner-shell {
 #gear-planner-shell.gp-stat-weights-open .gp-main {
     display: flex;
     flex-direction: column;
-    min-height: calc(100vh / var(--ui-scale, 1) - 80px);
+    min-height: calc(var(--ichacalc-usable-h, 100dvh) - 80px);
 }
 
 #gear-planner-shell.gp-talents-open .gp-talents-view:not([hidden]),
@@ -402,7 +400,7 @@ body[data-app-mode="character"] #gear-planner-shell {
 
 #gear-planner-shell.gp-talents-open .gp-talents-view {
     flex: 1 1 auto;
-    min-height: calc(100vh / var(--ui-scale, 1) - 140px);
+    min-height: calc(var(--ichacalc-usable-h, 100dvh) - 140px);
 }
 
 .gp-overlay-tools-slot {
@@ -1648,9 +1646,9 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-doc
     border: 1px solid #4a4028;
     border-radius: 10px;
     padding: 20px;
-    min-width: 320px;
-    max-width: 90vw;
-    max-height: 70vh;
+    min-width: min(320px, calc(var(--ichacalc-usable-w, 100vw) - 32px));
+    max-width: min(90vw, 560px);
+    max-height: min(70dvh, var(--ichacalc-usable-h, 100dvh));
     overflow-y: auto;
 }
 
@@ -1741,9 +1739,9 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-doc
     position: relative;
     left: auto;
     top: auto;
-    width: min(640px, 96vw);
+    width: min(640px, calc(var(--ichacalc-usable-w, 100vw) - 32px));
     height: auto;
-    max-height: min(90vh, 820px);
+    max-height: min(90dvh, var(--ichacalc-usable-h, 100dvh));
     min-height: 0;
     opacity: 1;
     transform: none;
@@ -1957,9 +1955,9 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-doc
 }
 
 .gp-community-modal {
-    width: min(720px, 94vw);
-    max-height: 85vh;
-    height: min(85vh, 80vh);
+    width: min(720px, calc(var(--ichacalc-usable-w, 100vw) - 32px));
+    max-height: min(85dvh, var(--ichacalc-usable-h, 100dvh));
+    height: auto;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -2365,6 +2363,29 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-doc
 
 .item-picker-filters-toggle {
     display: none;
+}
+
+/* Desktop/laptop: tighten GP header and docks before overlap */
+@media (max-width: 1440px) {
+    .gp-header {
+        grid-template-columns: minmax(0, 1fr) auto auto;
+        gap: 8px 10px;
+    }
+    .gp-header-col--plans {
+        justify-self: stretch;
+    }
+}
+
+@media (max-width: 1280px) {
+    :root {
+        --gp-dock-width: clamp(180px, 15vw, 220px);
+    }
+    .gp-header {
+        grid-template-columns: 1fr 1fr;
+    }
+    .gp-header-col--build {
+        grid-column: 1 / -1;
+    }
 }
 
 /* ===== Gear Planner mobile chrome ===== */

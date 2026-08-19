@@ -24,6 +24,7 @@ Unlike the older 2560×1440 cap-at-1 formula, auto can **scale up** on 4K/ultraw
 ## Text scale composition
 
 - **UI scale** (`--ui-scale` + `zoom` on `#ichacalc-scaled-root`): scales layout, icons, and all pixels inside the scaled root.
+- **Modals inside the scaled root** (`#item-modal`, `#enchant-modal`): use `zoom: calc(1 / var(--ui-scale))` so they fill the real viewport with `dvh`/`vw` once — no second 1920-based fit or `calc(… / var(--ui-scale))` on modal chrome.
 - **Text scale** (`--text-scale` on `html`, consumed as `--ts` on planner roots): multiplies user-visible text in Character Planner and Gear Planner.
 - **Mechanism:** planner CSS uses `font-size: calc(<base> * var(--ts, 1))` for explicit `px`/`rem` sizes. `em`-based rules inherit from a scaled parent (`font-size: calc(1rem * var(--text-scale))` on `#ichacalc-scaled-root`). Nav and the settings panel keep `--ts: 1` (default on `html`).
 - **Visual text size:** `base × textScale × uiScale` for px/rem rules inside the UI-scaled root; GP fixed sidebars get text scale only (they use `zoom: 1 !important`).
@@ -77,7 +78,7 @@ Unlike the older 2560×1440 cap-at-1 formula, auto can **scale up** on 4K/ultraw
 
 ## CSS
 
-- `style.css`: `html { --text-scale: 1; --ts: 1; }`, `.ichacalc-scaled-root { --ts: var(--text-scale); zoom: var(--ui-scale); font-size: calc(1rem * var(--text-scale)); }`, planner `font-size` rules use `calc(... * var(--ts, 1))`.
+- `style.css`: `html { --ichacalc-nav-h; --ichacalc-usable-h; --text-scale; --ts }`, `.ichacalc-scaled-root { zoom }`, counter-zoom on `.item-picker-root` / `#enchant-modal`, planner `font-size` rules use `calc(... * var(--ts, 1))`.
 - `gear-planner.css`: `--ts` on `#gear-planner-shell`, GP sidebars, and GP dialogs; all GP text rules use `--ts`.
 - `shaman-dps.css`: stat weights and DPS panel px/rem sizes use `--ts` (inherits from scaled root in CP).
 

@@ -423,7 +423,7 @@ body.gp-mobile .bug-report-controls {
     max-width: none;
     margin: 0;
     box-sizing: border-box;
-    padding-top: calc(60px / var(--ui-scale, 1));
+    padding-top: calc(var(--ichacalc-nav-h, 60px) / var(--ui-scale, 1));
 }
 
 .main-content {

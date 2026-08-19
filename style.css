@@ -1785,16 +1785,16 @@ input, select {
 /* Categorized enchant picker (buff-column inspired) */
 #enchant-modal .enchant-modal-content {
     width: max-content;
-    max-width: 98vw;
+    max-width: min(calc(var(--ichacalc-usable-w, 100vw) - 24px), 98vw);
     height: auto;
-    max-height: 85vh;
+    max-height: min(85dvh, calc(var(--ichacalc-usable-h, 100dvh) - 24px));
 }
 .enchant-modal-content {
-    --enchant-picker-col-w: 330px;
+    --enchant-picker-col-w: min(330px, calc((var(--ichacalc-usable-w, 100vw) - 80px) / 3));
     --enchant-picker-col-gap: 14px;
-    max-width: 98vw;
+    max-width: min(calc(var(--ichacalc-usable-w, 100vw) - 24px), 98vw);
     height: auto;
-    max-height: 85vh;
+    max-height: min(85dvh, calc(var(--ichacalc-usable-h, 100dvh) - 24px));
 }
 #enchant-modal .enchant-modal-body {
     flex-grow: 0;
@@ -1914,18 +1914,21 @@ input, select {
     left: 0;
     width: 100%;
     height: 100%;
+    height: 100dvh;
+    max-height: var(--ichacalc-usable-h, 100dvh);
     background-color: rgba(0, 0, 0, 0.75);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 2000;
+    padding: max(12px, env(safe-area-inset-top, 0px)) 12px max(12px, env(safe-area-inset-bottom, 0px));
+    box-sizing: border-box;
 }
 
 /* --- Item picker (anchored panel, not centered modal) --- */
 .item-picker-root {
     position: fixed;
-    /* Clear the unscaled 60px top nav while this overlay lives inside zoomed root */
-    top: calc(60px / var(--ui-scale, 1));
+    top: var(--ichacalc-nav-h, 60px);
     right: 0;
     bottom: 0;
     left: 0;
@@ -1946,10 +1949,10 @@ input, select {
     position: absolute;
     left: 0;
     top: 0;
-    width: min(96vw, 1320px);
-    max-width: min(96vw, 1320px);
+    width: min(calc(var(--ichacalc-usable-w, 100vw) - 24px), 1320px);
+    max-width: min(calc(var(--ichacalc-usable-w, 100vw) - 24px), 1320px);
     height: auto;
-    max-height: min(94vh, calc(100dvh - 16px));
+    max-height: min(var(--ichacalc-usable-h, 100dvh), calc(100dvh - var(--ichacalc-nav-h, 60px) - 16px));
     min-height: 0;
     display: flex;
     flex-direction: column;
@@ -2508,14 +2511,14 @@ input, select {
     }
 }
 
-.modal-content { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; width: 90%; max-width: 1200px; height: 80vh; display: flex; flex-direction: column; box-shadow: 0 5px 25px rgba(0,0,0,0.5); font-size: 1.1em; }
+.modal-content { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; width: min(90%, calc(var(--ichacalc-usable-w, 100vw) - 32px)); max-width: 1200px; max-height: min(90dvh, var(--ichacalc-usable-h, 100dvh)); height: auto; display: flex; flex-direction: column; box-shadow: 0 5px 25px rgba(0,0,0,0.5); font-size: 1.1em; }
 #enchant-modal .modal-content.enchant-modal-content {
     width: max-content;
-    max-width: 98vw;
+    max-width: min(calc(var(--ichacalc-usable-w, 100vw) - 24px), 98vw);
     height: auto;
-    max-height: 85vh;
+    max-height: min(85dvh, calc(var(--ichacalc-usable-h, 100dvh) - 24px));
 }
-.bug-report-modal-content { height: auto; max-height: 90vh; min-height: 400px; }
+.bug-report-modal-content { height: auto; max-height: min(90dvh, var(--ichacalc-usable-h, 100dvh)); min-height: min(400px, 50dvh); }
 .save-profile-dialog-content { width: auto; min-width: 320px; max-width: 420px; height: auto; }
 .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; border-bottom: 1px solid var(--border-color); }
 .modal-header h2 { margin: 0; border: none; padding: 0; }
@@ -4348,6 +4351,9 @@ html {
     --ui-scale: 1;
     --text-scale: 1;
     --ts: 1;
+    --ichacalc-nav-h: 60px;
+    --ichacalc-usable-h: calc(100dvh - var(--ichacalc-nav-h));
+    --ichacalc-usable-w: 100vw;
 }
 .ichacalc-scaled-root {
     --ts: var(--text-scale, 1);
@@ -4355,11 +4361,67 @@ html {
     font-size: calc(1rem * var(--text-scale, 1));
 }
 
+/* Modals inside the zoomed root: counter-scale once so vw/dvh map to the real viewport */
+.ichacalc-scaled-root > .item-picker-root,
+.ichacalc-scaled-root > #enchant-modal.modal-overlay {
+    zoom: calc(1 / var(--ui-scale, 1));
+}
+
 /* Ultrawide: constrain main column width at very large resolutions */
 @media (min-width: 3000px) {
     .main-content {
         max-width: 2400px;
         margin: 0 auto;
+    }
+}
+
+/* Laptop / small desktop: shrink planner chrome before overflow */
+@media (max-width: 1600px) {
+    #gear-card {
+        padding: 20px 32px;
+    }
+    .stats-grid-compact {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 1366px) {
+    #gear-card {
+        padding: 16px 20px;
+    }
+    .gear-character-sheet {
+        gap: 0 10px;
+    }
+    .stats-grid-compact {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .stats-grid-compact .stat-column[data-stat-row="2"] {
+        grid-row: auto;
+    }
+    .center-top-row {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 1200px) {
+    .stats-grid-compact {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .stats-grid-4-col {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .gear-character-sheet {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+    #gear-icons-right {
+        grid-column: 1 / -1;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
     }
 }
 

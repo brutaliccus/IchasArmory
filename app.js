@@ -14,7 +14,7 @@ import { createItemTooltipHTML, createEnchantTooltipHTML, setGetEquippedGear } f
 import { getSetBonuses } from './modules/gear/setBonuses.js';
 import { getStatSearchTerms, parseStatsFromTooltip, KEY_MAP, getItemType, filterEnchantsByItemType, filterEnchantsByClass, getAttackPowerBonusVsCreatureType, getSpellDamageHealingBonusVsCreatureType, AP_VS_DISPLAY_ORDER, DMG_HEALING_VS_DISPLAY_ORDER, getApVsRowLabel, getDmgHealingVsRowLabel, formatSmartPercent } from './modules/character/stats.js';
 import { initializeGearCompare, setComparisonItem, getCurrentCompareSlot, setEHPCalculator, setGetCurrentClass, setCharacterDataCallbacks } from './modules/gear/gearCompare.js';
-import { filterAndRenderItems, filterAndRenderEnchants, getSelectedQualities, getCurrentFilters, openItemModal as openItemModalFromModule, openEnchantModal as openEnchantModalFromModule, repositionItemPickerIfOpen, setItemModalPlayerClassOverride, getPlayerClassForItemFilters } from './modules/ui/modal.js';
+import { filterAndRenderItems, filterAndRenderEnchants, getSelectedQualities, getCurrentFilters, openItemModal as openItemModalFromModule, openEnchantModal as openEnchantModalFromModule, repositionItemPickerIfOpen, hideAccessibleOverlay, setItemModalPlayerClassOverride, getPlayerClassForItemFilters } from './modules/ui/modal.js';
 import { initUiScale, applyUiScale } from './modules/ui/uiScale.js';
 import { syncGpMobileChrome } from './modules/ui/gpMobile.js';
 import { positionItemTooltipOnIcon } from './modules/ui/itemTooltipPosition.js';
@@ -889,7 +889,7 @@ function closeModal() {
     if (elements.modal) {
         elements.modal.classList.remove('item-picker--open');
         elements.modal.style.display = 'none';
-        elements.modal.setAttribute('aria-hidden', 'true');
+        hideAccessibleOverlay(elements.modal);
         elements.modal.dataset.gearPlanPick = 'false';
     }
     setItemModalPlayerClassOverride(null);

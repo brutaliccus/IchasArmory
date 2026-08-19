@@ -43,6 +43,7 @@ import {
     isFinePointerHover,
 } from '../ui/gpMobile.js';
 import { applyUiScale } from '../ui/uiScale.js';
+import { hideAccessibleOverlay, showAccessibleOverlay } from '../ui/modal.js';
 import {
     ensureItemSourcesLoaded,
     getPreferredSourcesForItem,
@@ -2150,7 +2151,7 @@ function hideSaveDialog() {
     const el = document.getElementById('gp-save-overwrite-dialog');
     if (el) {
         el.style.display = 'none';
-        el.setAttribute('aria-hidden', 'true');
+        hideAccessibleOverlay(el);
     }
     document.querySelectorAll('#gp-save-overwrite-dialog .stat-dropdown-menu').forEach((menu) => {
         menu.style.display = 'none';
@@ -2437,8 +2438,11 @@ function requestSaveCurrentPlan() {
     if (primarySaveBtn) primarySaveBtn.hidden = forkOnly;
     const dlg = document.getElementById('gp-save-overwrite-dialog');
     if (dlg) {
+        const opener = document.getElementById('gp-save-btn');
+        if (opener?.id) dlg.dataset.returnFocusId = opener.id;
+        else delete dlg.dataset.returnFocusId;
         dlg.style.display = 'flex';
-        dlg.setAttribute('aria-hidden', 'false');
+        showAccessibleOverlay(dlg);
     }
 }
 

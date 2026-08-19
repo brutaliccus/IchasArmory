@@ -921,6 +921,18 @@ The modal system imports and uses:
 
 ---
 
+## Accessibility (overlays)
+
+When closing `#item-modal` (or other overlays using `hideAccessibleOverlay`):
+
+1. **Blur** any focused descendant (e.g. `#modal-close-btn`) **before** `aria-hidden="true"`.
+2. Set **`inert`** on the hidden root so assistive tech and keyboard users cannot tab into it.
+3. **Restore focus** to the opener when possible: gear slot (`icon_frame_*`), GP slot card, or `document.activeElement` captured at open (`itemPickerReturnFocusEl` / `data-return-focus-id`).
+
+Exports: `releaseFocusFromOverlay`, `hideAccessibleOverlay`, `showAccessibleOverlay`.
+
+---
+
 ## Conclusion
 
 The modal system provides a powerful, extensible framework for item and enchant selection. By following the patterns established in the codebase and using the modification guidelines in this document, you can safely extend the system with new filter types and behaviors while maintaining consistency and performance.
