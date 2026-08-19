@@ -37,17 +37,17 @@ import {
     SHAMAN_CONSUME_TIERS,
 } from './modules/shaman/shamanConsumePresets.js';
 
-// Class icon data
+// Class icon data — local HD art under assets/icons/wiki_*.png
 const classIconData = {
-    warrior: { name: 'Warrior', icon: 'classicon_warrior' },
-    paladin: { name: 'Paladin', icon: 'classicon_paladin' },
-    hunter: { name: 'Hunter', icon: 'inv_weapon_bow_07' },
-    rogue: { name: 'Rogue', icon: 'inv_throwingknife_04' },
-    priest: { name: 'Priest', icon: 'inv_staff_30' },
-    shaman: { name: 'Shaman', icon: 'spell_nature_bloodlust' },
-    mage: { name: 'Mage', icon: 'inv_staff_13' },
-    warlock: { name: 'Warlock', icon: 'spell_nature_drowsy' },
-    druid: { name: 'Druid', icon: 'classicon_druid' },
+    warrior: { name: 'Warrior', icon: 'wiki_warrior' },
+    paladin: { name: 'Paladin', icon: 'wiki_paladin' },
+    hunter: { name: 'Hunter', icon: 'wiki_hunter' },
+    rogue: { name: 'Rogue', icon: 'wiki_rogue' },
+    priest: { name: 'Priest', icon: 'wiki_priest' },
+    shaman: { name: 'Shaman', icon: 'wiki_shaman' },
+    mage: { name: 'Mage', icon: 'wiki_mage' },
+    warlock: { name: 'Warlock', icon: 'wiki_warlock' },
+    druid: { name: 'Druid', icon: 'wiki_druid' },
 };
 
 // Global stat weights from last simulation
@@ -1041,6 +1041,18 @@ function scheduleGenerateClassIconsAfterClassDrawerClose() {
     _classDrawerListRefreshTimeout = window.setTimeout(run, CLASS_DRAWER_PANEL_CLOSE_MS);
 }
 
+function setImgSrcIfChanged(img, url, alt = '') {
+    if (!img) return;
+    const next = url || '';
+    if (next) {
+        if (img.getAttribute('src') !== next) img.src = next;
+        img.alt = alt;
+    } else if (img.hasAttribute('src')) {
+        img.removeAttribute('src');
+        img.alt = '';
+    }
+}
+
 function syncClassRaceDrawerToggles() {
     const classImg = document.getElementById('class-drawer-toggle-img');
     const raceImg = document.getElementById('race-drawer-toggle-img');
@@ -1048,17 +1060,14 @@ function syncClassRaceDrawerToggles() {
     const cid = getCurrentClass();
     const cdata = classIconData[cid];
     if (cdata?.icon) {
-        classImg.src = resolveIconUrl(cdata.icon);
-        classImg.alt = cdata.name || '';
+        setImgSrcIfChanged(classImg, resolveIconUrl(cdata.icon), cdata.name || '');
     }
     const rid = getCurrentRace();
     const rdata = raceIconData[rid];
     if (rdata?.icon) {
-        raceImg.src = resolveIconUrl(rdata.icon);
-        raceImg.alt = rdata.name || '';
+        setImgSrcIfChanged(raceImg, resolveIconUrl(rdata.icon), rdata.name || '');
     } else {
-        raceImg.removeAttribute('src');
-        raceImg.alt = '';
+        setImgSrcIfChanged(raceImg, '', '');
     }
 }
 
@@ -1182,12 +1191,25 @@ function generateClassIcons() {
         )
         .filter(id => id !== selected);
 
-    container.innerHTML = sortedIds.map(classId => {
+    container.querySelectorAll('.class-icon').forEach(el => {
+        if (!sortedIds.includes(el.dataset.classId)) el.remove();
+    });
+    const existing = new Set(
+        [...container.querySelectorAll('.class-icon')].map(el => el.dataset.classId)
+    );
+    sortedIds.forEach(classId => {
+        if (existing.has(classId)) return;
         const data = classIconData[classId];
-        return `<div class="class-icon" data-class-id="${classId}" data-class-name="${data.name}">
-            <img src="${resolveIconUrl(data.icon)}" alt="${data.name}">
-        </div>`;
-    }).join('');
+        const div = document.createElement('div');
+        div.className = 'class-icon';
+        div.dataset.classId = classId;
+        div.dataset.className = data.name;
+        const img = document.createElement('img');
+        img.src = resolveIconUrl(data.icon);
+        img.alt = data.name;
+        div.appendChild(img);
+        container.appendChild(div);
+    });
     syncClassRaceDrawerToggles();
 }
 
@@ -1220,12 +1242,25 @@ function generateRaceIcons(className) {
 
     const listIds = raceIds.filter(id => id !== selected);
 
-    container.innerHTML = listIds.map(raceId => {
+    container.querySelectorAll('.race-icon').forEach(el => {
+        if (!listIds.includes(el.dataset.raceId)) el.remove();
+    });
+    const existing = new Set(
+        [...container.querySelectorAll('.race-icon')].map(el => el.dataset.raceId)
+    );
+    listIds.forEach(raceId => {
+        if (existing.has(raceId)) return;
         const data = raceIconData[raceId];
-        return `<div class="race-icon" data-race-id="${raceId}" data-race-name="${data.name}">
-            <img src="${resolveIconUrl(data.icon)}" alt="${data.name}">
-        </div>`;
-    }).join('');
+        const div = document.createElement('div');
+        div.className = 'race-icon';
+        div.dataset.raceId = raceId;
+        div.dataset.raceName = data.name;
+        const img = document.createElement('img');
+        img.src = resolveIconUrl(data.icon);
+        img.alt = data.name;
+        div.appendChild(img);
+        container.appendChild(div);
+    });
     syncClassRaceDrawerToggles();
 }
 

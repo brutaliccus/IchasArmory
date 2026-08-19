@@ -26,7 +26,7 @@ Gear management module — handles equipping/unequipping items, computing aggreg
 | `resolveGearPlanIconUrl(iconRef, size?)` | Gear plan stored icons: local pack; passes through assets/ and legacy URLs. |
 | `buildChronicleIconUrl(iconRef)` | Builds `https://icons.chronicleclassic.com/turtle/{basename}.webp` from a basename or legacy URL. |
 | `buildOctowowIconUrl(iconRef, size?)` | Fallback: `https://octowow.st/db/images/icons/{large\|medium}/{basename}.png`. |
-| `resolveIconUrl(iconRef, size?)` | Preferred icon URL for items/UI: Chronicle turtle webp for game icons. Only whitelisted app UI assets under `assets/icons/` (logo, gear compare, combat toggles) stay same-origin; legacy `assets/icons/{spell,classicon,…}` paths are CDN-routed. |
+| `resolveIconUrl(iconRef, size?)` | Preferred icon URL for items/UI: Chronicle turtle webp for game icons. Whitelisted same-origin assets under `assets/icons/`: app UI (logo, gear compare, combat toggles) and HD class art `wiki_*.png` → `/assets/icons/wiki_….png`. Legacy `assets/icons/{spell,classicon,race_*,…}` paths are CDN-routed unless whitelisted. |
 | `EMPTY_ENCHANT_ICON_URL` | Hardcoded zamimg URL for the **unequipped** enchant scroll (`.enchant-btn` default in `style.css`). Not passed through `resolveIconUrl`. Applied enchants use the gold scroll via `.is-enchanted` CSS (Chronicle/octowow `inv_scroll_05`). |
 | `createIconImage(iconName, altText)` | Creates `<img>` using `resolveIconUrl` (fallback chain via `installIconLoadFallbacks`). |
 | `installIconLoadFallbacks()` | Global capture-phase `error` listener: failed icons retry Chronicle → octowow → zamimg (last resort). |

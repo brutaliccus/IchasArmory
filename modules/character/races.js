@@ -177,18 +177,18 @@ const racialBonuses = {
     ],
 };
 
+/** Race portrait basenames on Chronicle turtle CDN (race_*). */
 export const raceIconData = {
-    // ... your raceIconData remains unchanged ...
-    human: { name: 'Human', icon: 'assets/icons/human_male.jpg' },
-    dwarf: { name: 'Dwarf', icon: 'assets/icons/dwarf_male.jpg' },
-    nightelf: { name: 'Night Elf', icon: 'assets/icons/nightelf_male.jpg' },
-    highelf: { name: 'High Elf', icon: 'assets/icons/highelf_male.jpg' },
-    gnome: { name: 'Gnome', icon: 'https://octowow.st/db/images/icons/medium/race_gnome.png' },
-    orc: { name: 'Orc', icon: 'assets/icons/orc_male.jpg' },
-    troll: { name: 'Troll', icon: 'assets/icons/troll_male.jpg' },
-    tauren: { name: 'Tauren', icon: 'assets/icons/tauren_male.jpg' },
-    undead: { name: 'Undead', icon: 'assets/icons/undead_male.jpg' },
-    goblin: { name: 'Goblin', icon: 'https://octowow.st/db/images/icons/medium/race_goblin.png' },
+    human: { name: 'Human', icon: 'race_human' },
+    dwarf: { name: 'Dwarf', icon: 'race_dwarf' },
+    nightelf: { name: 'Night Elf', icon: 'race_night_elf' },
+    highelf: { name: 'High Elf', icon: 'race_high_elf' },
+    gnome: { name: 'Gnome', icon: 'race_gnome' },
+    orc: { name: 'Orc', icon: 'race_orc' },
+    troll: { name: 'Troll', icon: 'race_troll' },
+    tauren: { name: 'Tauren', icon: 'race_tauren' },
+    undead: { name: 'Undead', icon: 'race_forsaken' },
+    goblin: { name: 'Goblin', icon: 'race_goblin' },
 };
 
 /**

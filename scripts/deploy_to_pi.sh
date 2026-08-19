@@ -27,6 +27,16 @@ else
   scp -r "${ROOT}/data/loot/"* "${PI_HOST}:${PI_PATH}/data/loot/"
 fi
 
+echo "==> Syncing assets/icons/ (wiki class art + local UI icons)"
+ssh "$PI_HOST" "mkdir -p '${PI_PATH}/assets/icons' '${PI_PATH}/dist/assets/icons'"
+if command -v rsync >/dev/null 2>&1; then
+  rsync -avz "${ROOT}/assets/icons/" "${PI_HOST}:${PI_PATH}/assets/icons/"
+  rsync -avz "${ROOT}/assets/icons/" "${PI_HOST}:${PI_PATH}/dist/assets/icons/"
+else
+  scp -r "${ROOT}/assets/icons/"* "${PI_HOST}:${PI_PATH}/assets/icons/"
+  scp -r "${ROOT}/assets/icons/"* "${PI_HOST}:${PI_PATH}/dist/assets/icons/"
+fi
+
 echo "==> Syncing server/runtime files"
 for f in server.py server.js armory_proxy.py profiles.js requirements.txt package.json package-lock.json; do
   if [[ -f "${ROOT}/${f}" ]]; then

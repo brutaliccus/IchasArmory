@@ -1,14 +1,22 @@
 // Service Worker for IchaCalc
-const CACHE_VERSION = 'v259';
+const CACHE_VERSION = 'v260';
 const CACHE_NAME = `ichacalc-${CACHE_VERSION}`;
 
 // Vite handles JS/CSS caching via content-hashed filenames + immutable Cache-Control headers.
-// The SW only caches the HTML shell for offline fallback.
+// The SW caches the HTML shell for offline fallback and precaches stable class picker art.
 const urlsToCache = [
     '/',
     '/index.html',
+    '/assets/icons/wiki_warrior.png',
+    '/assets/icons/wiki_paladin.png',
+    '/assets/icons/wiki_hunter.png',
+    '/assets/icons/wiki_rogue.png',
+    '/assets/icons/wiki_priest.png',
+    '/assets/icons/wiki_shaman.png',
+    '/assets/icons/wiki_mage.png',
+    '/assets/icons/wiki_warlock.png',
+    '/assets/icons/wiki_druid.png',
 ];
-
 /** Auth, profile, and API routes must never be intercepted — always hit the network. */
 function shouldBypassServiceWorker(pathname) {
     if (pathname.startsWith('/auth/')) return true;

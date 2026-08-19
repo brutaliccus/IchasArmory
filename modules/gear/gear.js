@@ -116,12 +116,23 @@ const LOCAL_APP_ICON_BASENAMES = new Set([
     'threathold',
 ]);
 
+function isWikiClassIconRef(iconRef) {
+    return normalizeIconBasename(iconRef).startsWith('wiki_');
+}
+
 function isLocalAppIconRef(iconRef) {
-    return LOCAL_APP_ICON_BASENAMES.has(normalizeIconBasename(iconRef));
+    const base = normalizeIconBasename(iconRef);
+    return LOCAL_APP_ICON_BASENAMES.has(base) || isWikiClassIconRef(base);
 }
 
 function formatLocalAssetPath(raw) {
     return raw.startsWith('/') ? raw : `/${raw}`;
+}
+
+/** Same-origin URL for HD wiki class art under /assets/icons/wiki_*.png */
+function formatWikiClassIconPath(iconRef) {
+    const base = normalizeIconBasename(iconRef);
+    return `/assets/icons/${base}.png`;
 }
 
 /**
@@ -142,8 +153,12 @@ export function resolveGearPlanIconUrl(iconRef, size = 'large') {
 export function resolveIconUrl(iconRef, size = 'large') {
     const raw = String(iconRef || '').trim();
     if (!raw) return buildChronicleIconUrl('inv_misc_questionmark');
+    if (isWikiClassIconRef(raw)) return formatWikiClassIconPath(raw);
     if (raw.startsWith('assets/') || raw.startsWith('/assets/')) {
-        if (isLocalAppIconRef(raw)) return formatLocalAssetPath(raw);
+        if (isLocalAppIconRef(raw)) {
+            if (isWikiClassIconRef(raw)) return formatWikiClassIconPath(raw);
+            return formatLocalAssetPath(raw);
+        }
         return buildChronicleIconUrl(raw);
     }
     if (raw.startsWith('http://') || raw.startsWith('https://')) {
@@ -195,7 +210,7 @@ export function installIconLoadFallbacks() {
         const src = el.currentSrc || el.src || '';
         if (src.includes('/assets/icons/')) {
             const name = normalizeIconBasename(src);
-            if (LOCAL_APP_ICON_BASENAMES.has(name)) return;
+            if (LOCAL_APP_ICON_BASENAMES.has(name) || name.startsWith('wiki_')) return;
             const step = el.dataset.iconFb || '0';
             if (step === '0') {
                 el.dataset.iconFb = '1';

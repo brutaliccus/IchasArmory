@@ -106,15 +106,15 @@ const SLOT_LABELS = {
 };
 
 const classIconData = {
-    warrior: { name: 'Warrior', icon: 'classicon_warrior' },
-    paladin: { name: 'Paladin', icon: 'classicon_paladin' },
-    hunter: { name: 'Hunter', icon: 'inv_weapon_bow_07' },
-    rogue: { name: 'Rogue', icon: 'inv_throwingknife_04' },
-    priest: { name: 'Priest', icon: 'inv_staff_30' },
-    shaman: { name: 'Shaman', icon: 'spell_nature_bloodlust' },
-    mage: { name: 'Mage', icon: 'inv_staff_13' },
-    warlock: { name: 'Warlock', icon: 'spell_nature_drowsy' },
-    druid: { name: 'Druid', icon: 'classicon_druid' },
+    warrior: { name: 'Warrior', icon: 'wiki_warrior' },
+    paladin: { name: 'Paladin', icon: 'wiki_paladin' },
+    hunter: { name: 'Hunter', icon: 'wiki_hunter' },
+    rogue: { name: 'Rogue', icon: 'wiki_rogue' },
+    priest: { name: 'Priest', icon: 'wiki_priest' },
+    shaman: { name: 'Shaman', icon: 'wiki_shaman' },
+    mage: { name: 'Mage', icon: 'wiki_mage' },
+    warlock: { name: 'Warlock', icon: 'wiki_warlock' },
+    druid: { name: 'Druid', icon: 'wiki_druid' },
 };
 
 const SIM_HINT_DISMISS_KEY = 'ichacalc_gp_sim_hint_dismissed';
@@ -635,6 +635,33 @@ function wireClassDrawer() {
         }
     });
 
+    const classContainer = document.getElementById('gp-class-selector');
+    classContainer?.addEventListener('click', (e) => {
+        const el = e.target.closest('.gp-class-icon');
+        if (!el || !classContainer.contains(el)) return;
+        e.stopPropagation();
+        currentPlan.class = el.dataset.classId;
+        sidebar.dataset.selectedClass = el.dataset.classId;
+        currentPlan.talents = {};
+        ensurePlanRace(true);
+        persistSession();
+        updateQuickSimVisibility();
+        updateStatWeightsBtnVisibility();
+        if (currentPlan.class === 'shaman') prepareDpsSimConfigForGearPlanner();
+        closeGpClassDrawer();
+        renderGearPlanner();
+        if (gpOverlay === 'talents') {
+            const host = document.getElementById('gp-talents-host');
+            if (host) {
+                generateTalentInputs(host, currentPlan.class || 'warrior');
+                fitGpTalentTree();
+            }
+            syncGpTalentsTitle();
+        }
+        if (gpOverlay === 'buffs') refreshGpBuffsHost();
+        if (gpOverlay === 'weights') renderGpStatWeightsPanels();
+    });
+
     generateGpClassIcons();
 }
 
@@ -651,37 +678,24 @@ function generateGpClassIcons() {
         .sort((a, b) => classIconData[a].name.localeCompare(classIconData[b].name))
         .filter(id => id !== selected);
 
-    container.innerHTML = sortedIds.map(classId => {
-        const data = classIconData[classId];
-        return `<div class="class-icon gp-class-icon" data-class-id="${classId}" data-class-name="${data.name}">
-            <img src="${resolveIconUrl(data.icon)}" alt="${data.name}">
-        </div>`;
-    }).join('');
-
     container.querySelectorAll('.gp-class-icon').forEach(el => {
-        el.addEventListener('click', (e) => {
-            e.stopPropagation();
-            currentPlan.class = el.dataset.classId;
-            sidebar.dataset.selectedClass = el.dataset.classId;
-            currentPlan.talents = {};
-            ensurePlanRace(true);
-            persistSession();
-            updateQuickSimVisibility();
-            updateStatWeightsBtnVisibility();
-            if (currentPlan.class === 'shaman') prepareDpsSimConfigForGearPlanner();
-            closeGpClassDrawer();
-            renderGearPlanner();
-            if (gpOverlay === 'talents') {
-                const host = document.getElementById('gp-talents-host');
-                if (host) {
-                    generateTalentInputs(host, currentPlan.class || 'warrior');
-                    fitGpTalentTree();
-                }
-                syncGpTalentsTitle();
-            }
-            if (gpOverlay === 'buffs') refreshGpBuffsHost();
-            if (gpOverlay === 'weights') renderGpStatWeightsPanels();
-        });
+        if (!sortedIds.includes(el.dataset.classId)) el.remove();
+    });
+    const existingClassIds = new Set(
+        [...container.querySelectorAll('.gp-class-icon')].map(el => el.dataset.classId)
+    );
+    sortedIds.forEach(classId => {
+        if (existingClassIds.has(classId)) return;
+        const data = classIconData[classId];
+        const div = document.createElement('div');
+        div.className = 'class-icon gp-class-icon';
+        div.dataset.classId = classId;
+        div.dataset.className = data.name;
+        const img = document.createElement('img');
+        img.src = resolveIconUrl(data.icon);
+        img.alt = data.name;
+        div.appendChild(img);
+        container.appendChild(div);
     });
 }
 
@@ -690,7 +704,8 @@ function syncGpClassToggle() {
     const cls = currentPlan.class || 'warrior';
     const data = classIconData[cls];
     if (img && data) {
-        img.src = resolveIconUrl(data.icon);
+        const url = resolveIconUrl(data.icon);
+        if (img.getAttribute('src') !== url) img.src = url;
         img.alt = data.name;
     }
 }
@@ -720,6 +735,7 @@ function closeGpRaceDrawer() {
 function wireRaceDrawer() {
     const toggle = document.getElementById('gp-race-drawer-toggle');
     const drawer = document.getElementById('gp-cr-drawer-race');
+    const sidebar = document.getElementById('gp-class-sidebar');
     if (!toggle || !drawer) return;
     toggle.addEventListener('click', (e) => {
         e.preventDefault();
@@ -729,6 +745,18 @@ function wireRaceDrawer() {
         drawer.classList.toggle('is-open', open);
         toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
         if (open) generateGpRaceIcons();
+    });
+
+    const raceContainer = document.getElementById('gp-race-selector');
+    raceContainer?.addEventListener('click', (e) => {
+        const el = e.target.closest('.gp-race-icon');
+        if (!el || !raceContainer.contains(el)) return;
+        e.stopPropagation();
+        currentPlan.race = el.dataset.raceId;
+        if (sidebar) sidebar.dataset.selectedRace = el.dataset.raceId;
+        persistSession();
+        closeGpRaceDrawer();
+        renderGearPlanner();
     });
 }
 
@@ -741,21 +769,24 @@ function generateGpRaceIcons() {
     sidebar.dataset.selectedRace = selected;
     syncGpRaceToggle();
     const listIds = racesForGpClass(currentPlan.class || 'warrior').filter(id => id !== selected);
-    container.innerHTML = listIds.map(raceId => {
-        const data = raceIconData[raceId];
-        return `<div class="race-icon gp-race-icon" data-race-id="${raceId}" data-race-name="${data.name}">
-            <img src="${resolveIconUrl(data.icon)}" alt="${data.name}">
-        </div>`;
-    }).join('');
     container.querySelectorAll('.gp-race-icon').forEach(el => {
-        el.addEventListener('click', (e) => {
-            e.stopPropagation();
-            currentPlan.race = el.dataset.raceId;
-            sidebar.dataset.selectedRace = el.dataset.raceId;
-            persistSession();
-            closeGpRaceDrawer();
-            renderGearPlanner();
-        });
+        if (!listIds.includes(el.dataset.raceId)) el.remove();
+    });
+    const existingRaceIds = new Set(
+        [...container.querySelectorAll('.gp-race-icon')].map(el => el.dataset.raceId)
+    );
+    listIds.forEach(raceId => {
+        if (existingRaceIds.has(raceId)) return;
+        const data = raceIconData[raceId];
+        const div = document.createElement('div');
+        div.className = 'race-icon gp-race-icon';
+        div.dataset.raceId = raceId;
+        div.dataset.raceName = data.name;
+        const img = document.createElement('img');
+        img.src = resolveIconUrl(data.icon);
+        img.alt = data.name;
+        div.appendChild(img);
+        container.appendChild(div);
     });
 }
 
@@ -764,7 +795,8 @@ function syncGpRaceToggle() {
     const race = currentPlan.race || 'human';
     const data = raceIconData[race];
     if (img && data) {
-        img.src = resolveIconUrl(data.icon);
+        const url = resolveIconUrl(data.icon);
+        if (img.getAttribute('src') !== url) img.src = url;
         img.alt = data.name;
     }
 }
