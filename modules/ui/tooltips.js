@@ -124,8 +124,23 @@ function getWeaponSubtype(weaponItem) {
 }
 
 /**
+ * Weapon types used to decide whether typed weapon skill on an item applies.
+ * Uses the item's own subtype when it is a weapon (item picker / unequipped weapons),
+ * plus the equipped mainhand when present (armor and accessories).
+ */
+function getWeaponSkillMatchTypes(item) {
+    const types = new Set();
+    const itemType = getWeaponSubtype(item);
+    if (itemType) types.add(itemType);
+    const mainhand = getCurrentlyEquippedItem('mainhand');
+    const equippedType = mainhand ? getWeaponSubtype(mainhand) : null;
+    if (equippedType) types.add(equippedType);
+    return types;
+}
+
+/**
  * Calculate an item's DPS score from its stats and current stat weights.
- * Weapon skill bonuses only count if the equipped mainhand matches the skill type.
+ * Typed weapon skill counts when it matches the scored weapon and/or equipped mainhand.
  * @param {Object} item - Item object with tooltip_lines_raw
  * @param {Array|null} statWeights - Array of stat weight objects (from getStoredStatWeights)
  * @returns {number|null} DPS score, or null if weights unavailable
@@ -151,33 +166,40 @@ export function calculateItemDpsScore(item, statWeights) {
         }
     }
 
-    // Weapon skill by type: only count if the equipped mainhand matches
-    if (stats.weaponSkillByType && weightMap.wepSkill) {
-        const mainhand = getCurrentlyEquippedItem('mainhand');
-        const equippedType = mainhand ? getWeaponSubtype(mainhand) : null;
-        if (equippedType) {
+    const wepSkillWeight = weightMap.wepSkill;
+    if (wepSkillWeight) {
+        const matchTypes = getWeaponSkillMatchTypes(item);
+
+        // Weapon skill by type (e.g. "Increased Two-handed Axes +5")
+        if (stats.weaponSkillByType && matchTypes.size > 0) {
             for (const [skillType, skillValue] of Object.entries(stats.weaponSkillByType)) {
-                if (skillValue && doesWeaponSkillMatch(skillType, equippedType)) {
-                    score += skillValue * weightMap.wepSkill;
+                if (!skillValue) continue;
+                for (const weaponType of matchTypes) {
+                    if (doesWeaponSkillMatch(skillType, weaponType)) {
+                        score += skillValue * wepSkillWeight;
+                        break;
+                    }
                 }
             }
         }
-    }
 
-    // Generic weapon skill (rare — "Increased Weapon Skill +X")
-    if (stats.weaponSkill && weightMap.wepSkill) {
-        score += stats.weaponSkill * weightMap.wepSkill;
+        // Generic weapon skill (rare — "Increased Weapon Skill +X")
+        if (stats.weaponSkill) {
+            score += stats.weaponSkill * wepSkillWeight;
+        }
     }
 
     return score;
 }
 
 /**
- * Check if a weapon skill type (e.g. "Axe", "Two-handed Axe") matches the equipped weapon type.
- * Strict matching: "Axe" only matches 1H axes; "Two-handed Axe" only matches 2H axes.
+ * Check if a weapon skill type (e.g. "Axe", "Two-handed Axe") matches a weapon subtype.
+ * One-handed skill (e.g. "Axe") also matches the two-handed variant ("Two-handed Axe").
  */
-function doesWeaponSkillMatch(skillType, equippedType) {
-    return skillType === equippedType;
+function doesWeaponSkillMatch(skillType, weaponType) {
+    if (skillType === weaponType) return true;
+    if (!skillType.startsWith('Two-handed ') && weaponType === `Two-handed ${skillType}`) return true;
+    return false;
 }
 
 /**

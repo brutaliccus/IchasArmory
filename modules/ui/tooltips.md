@@ -54,15 +54,18 @@ Returns `{ ehp, mitScore, tankScore }` where `tankScore = ehp + mitScore` (stami
 ### `formatItemTankScoreBadge(tank)`
 Compact label for GP slot cards: `Tank score: X (EHP Y · MIT Z)`.
 
-**Weapon skill handling:** Items with `weaponSkillByType` (e.g., "Increased Axes +5") only contribute the `wepSkill` weight if the equipped mainhand weapon matches the skill type. `getWeaponSubtype()` reads the mainhand tooltip to determine the weapon type (e.g., "Axe", "Two-handed Mace"). A one-hand skill like "Axe" also matches "Two-handed Axe". Generic weapon skill (rare) always counts.
+**Weapon skill handling:** Items with `weaponSkillByType` (e.g., "Increased Axes +5") contribute `skillValue × wepSkill` when the skill type matches the scored item's weapon subtype and/or the equipped mainhand (`getWeaponSkillMatchTypes()`). Weapons in the item picker count their own type even when not equipped yet. `getWeaponSubtype()` reads `tooltip_lines_raw` (e.g., "Axe", "Two-handed Mace"). One-handed skill like "Axe" also matches "Two-handed Axe"; two-handed-only skill does not match a one-handed subtype. Generic weapon skill (rare) always counts.
 
 ## Internal Functions
 
 ### `getWeaponSubtype(weaponItem)`
 Extracts the weapon subtype string (e.g., `"Axe"`, `"Two-handed Mace"`) from a weapon item's `tooltip_lines_raw`. Returns `null` for non-weapons.
 
-### `doesWeaponSkillMatch(skillType, equippedType)`
-Checks if a weapon skill bonus type matches the equipped weapon. `"Axe"` matches both `"Axe"` and `"Two-handed Axe"`; `"Two-handed Axe"` only matches `"Two-handed Axe"`.
+### `getWeaponSkillMatchTypes(item)`
+Returns a `Set` of weapon subtypes for typed weapon-skill scoring: the item's own subtype when it is a weapon, plus the equipped mainhand subtype when present.
+
+### `doesWeaponSkillMatch(skillType, weaponType)`
+Checks if a weapon skill bonus type matches a weapon subtype. `"Axe"` matches both `"Axe"` and `"Two-handed Axe"`; `"Two-handed Axe"` only matches `"Two-handed Axe"`.
 
 ### `extractSetInfo(item, equippedGear)`
 Determines which set pieces are equipped and which set bonuses are active, used for green/gray highlighting. The ★ on `(N) Set:` lines uses `setDatabase` entries whose `displayName` or `displayNameAliases` matches the tooltip set name, and only tiers with **`modeledInSim: true`** on the bonus object (not merely having `statsKey`).
