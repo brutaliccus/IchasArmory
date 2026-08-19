@@ -61,7 +61,7 @@
                 var auto = Math.min(w / DESIGN_W, h / DESIGN_H);
                 auto = Math.max(AUTO_MIN, Math.min(AUTO_MAX, auto));
                 var user = parseFloat(localStorage.getItem('ichacalc_uiUserScale'));
-                if (!isFinite(user)) user = 1;
+                if (!isFinite(user)) user = gpPath ? 0.9 : 1;
                 user = Math.max(USER_MIN, Math.min(USER_MAX, user));
                 var text = parseFloat(localStorage.getItem('ichacalc_textUserScale'));
                 if (!isFinite(text)) text = 1;

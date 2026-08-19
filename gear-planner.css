@@ -924,6 +924,11 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-doc
     margin-right: auto;
 }
 
+/* Keep docked class/race chrome left of the Locations panel at 100% UI scale */
+body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-main {
+    margin-left: max(10vw, calc(var(--gp-dock-panel-width, 260px) + 100px));
+}
+
 .gp-header {
     display: grid;
     grid-template-columns: minmax(0, max-content) auto 1fr 1fr 1fr;
