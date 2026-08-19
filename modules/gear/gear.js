@@ -105,6 +105,25 @@ export function buildLocalWowIconPackUrl(iconRef) {
     return `${LOCAL_WOW_ICON_PACK_BASE}${normalizeIconBasename(iconRef)}.png`;
 }
 
+/** App UI assets under /assets/icons/ that must stay same-origin (not CDN-routed). */
+const LOCAL_APP_ICON_BASENAMES = new Set([
+    'ichabaddie_portrait',
+    'gearcompare',
+    'tanking',
+    'wearingashield',
+    'standinginfront',
+    'opener',
+    'threathold',
+]);
+
+function isLocalAppIconRef(iconRef) {
+    return LOCAL_APP_ICON_BASENAMES.has(normalizeIconBasename(iconRef));
+}
+
+function formatLocalAssetPath(raw) {
+    return raw.startsWith('/') ? raw : `/${raw}`;
+}
+
 /**
  * Resolve Gear Plan stored icon keys: local pack first, legacy URLs via resolveIconUrl.
  */
@@ -118,12 +137,15 @@ export function resolveGearPlanIconUrl(iconRef, size = 'large') {
 
 /**
  * Resolve icon refs (basename, legacy CDN URL, or assets/ path) to a loadable URL.
- * Remote game icons prefer Chronicle turtle webp; local assets/ paths pass through unchanged.
+ * Game icons use Chronicle turtle webp; only whitelisted app UI assets stay same-origin.
  */
 export function resolveIconUrl(iconRef, size = 'large') {
     const raw = String(iconRef || '').trim();
     if (!raw) return buildChronicleIconUrl('inv_misc_questionmark');
-    if (raw.startsWith('assets/') || raw.startsWith('/assets/')) return raw;
+    if (raw.startsWith('assets/') || raw.startsWith('/assets/')) {
+        if (isLocalAppIconRef(raw)) return formatLocalAssetPath(raw);
+        return buildChronicleIconUrl(raw);
+    }
     if (raw.startsWith('http://') || raw.startsWith('https://')) {
         const journal = raw.match(/ui-ej-boss-[^/?#]+\.png/i);
         if (journal) return `https://octowow.st/db/images/journal/${journal[0]}`;
@@ -171,7 +193,22 @@ export function installIconLoadFallbacks() {
         const el = e.target;
         if (!el || el.tagName !== 'IMG') return;
         const src = el.currentSrc || el.src || '';
-        if (src.startsWith('assets/') || src.includes('/assets/icons/')) return;
+        if (src.includes('/assets/icons/')) {
+            const name = normalizeIconBasename(src);
+            if (LOCAL_APP_ICON_BASENAMES.has(name)) return;
+            const step = el.dataset.iconFb || '0';
+            if (step === '0') {
+                el.dataset.iconFb = '1';
+                el.src = buildChronicleIconUrl(name);
+            } else if (step === '1') {
+                el.dataset.iconFb = '2';
+                el.src = buildOctowowIconUrl(name, 'large');
+            } else if (step === '2') {
+                el.dataset.iconFb = '3';
+                el.src = _zamimgIconUrl(name, 'large');
+            }
+            return;
+        }
         if (src.includes('/assets/wow-icons/large/')) {
             const name = src.split('/').pop()?.replace(/\.png$/i, '');
             if (!name) return;

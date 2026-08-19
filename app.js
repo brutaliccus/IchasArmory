@@ -39,15 +39,15 @@ import {
 
 // Class icon data
 const classIconData = {
-    warrior: { name: 'Warrior', icon: 'assets/icons/classicon_warrior.jpg' },
-    paladin: { name: 'Paladin', icon: 'assets/icons/classicon_paladin.jpg' },
+    warrior: { name: 'Warrior', icon: 'classicon_warrior' },
+    paladin: { name: 'Paladin', icon: 'classicon_paladin' },
     hunter: { name: 'Hunter', icon: 'inv_weapon_bow_07' },
     rogue: { name: 'Rogue', icon: 'inv_throwingknife_04' },
     priest: { name: 'Priest', icon: 'inv_staff_30' },
-    shaman: { name: 'Shaman', icon: 'assets/icons/Spell_Nature_BloodLust.png' },
+    shaman: { name: 'Shaman', icon: 'spell_nature_bloodlust' },
     mage: { name: 'Mage', icon: 'inv_staff_13' },
     warlock: { name: 'Warlock', icon: 'spell_nature_drowsy' },
-    druid: { name: 'Druid', icon: 'assets/icons/classicon_druid.jpg' },
+    druid: { name: 'Druid', icon: 'classicon_druid' },
 };
 
 // Global stat weights from last simulation
