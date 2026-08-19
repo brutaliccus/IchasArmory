@@ -44,7 +44,7 @@ Unlike the older 2560×1440 cap-at-1 formula, auto can **scale up** on 4K/ultraw
 | Function | Purpose |
 |----------|---------|
 | `computeAutoScale()` | Viewport fit per formula above (range **0.5–2.0**) |
-| `getUserScale()` | Manual multiplier from `localStorage` (default `1` CP / `0.9` GP when unset, range **0.5–2.0**) |
+| `getUserScale()` | Manual multiplier from `localStorage` (default `1` when unset, range **0.5–2.0**) |
 | `hasUserScalePreference()` | Whether the user has stored a manual scale |
 | `setUserScale(value)` | Persist manual scale and re-apply |
 | `clearUserScalePreference()` | Remove stored manual + text scale (reset to defaults) |
@@ -62,7 +62,7 @@ Unlike the older 2560×1440 cap-at-1 formula, auto can **scale up** on 4K/ultraw
 
 - UI key: `ichacalc_uiUserScale`
 - Text key: `ichacalc_textUserScale`
-- **Unset:** manual multiplier is `1` on Character Planner, `0.9` on Gear Planner (`/gear-planner`, `/gp`); effective = auto × manual for UI; text = 100%.
+- **Unset:** manual multiplier is `1` (effective = auto only for UI; text = 100%).
 - **Set:** slider value is persisted until reset clears the key(s).
 
 ## UI

@@ -4,8 +4,8 @@
     --gp-dock-width: clamp(200px, 16vw, 260px);
     --gp-dock-duration: 250ms;
     --gp-dock-ease: ease-in-out;
-    /* Center column ~80% viewport; side docks overlay edges — don't subtract dock width */
-    --gp-center-width: clamp(320px, 80vw, 1850px);
+    /* Center column ~72% viewport (90% of prior 80vw); side docks overlay edges */
+    --gp-center-width: clamp(320px, 72vw, 1665px);
 }
 
 body[data-app-mode="gearPlanner"] .app-scroll-layout {
@@ -924,9 +924,9 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-doc
     margin-right: auto;
 }
 
-/* Keep docked class/race chrome left of the Locations panel at 100% UI scale */
-body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-main {
-    margin-left: max(10vw, calc(var(--gp-dock-panel-width, 260px) + 100px));
+/* Nudge class/race right when centered column would overlap Locations dock */
+body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-class-sidebar {
+    margin-left: max(0px, calc(var(--gp-dock-panel-width, 260px) + 96px - (50vw - var(--gp-center-width) / 2)));
 }
 
 .gp-header {

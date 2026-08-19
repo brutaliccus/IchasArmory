@@ -16,17 +16,6 @@ export const AUTO_SCALE_MAX = 2.0;
 export const USER_SCALE_MIN = 0.5;
 export const USER_SCALE_MAX = 2.0;
 export const USER_SCALE_DEFAULT = 1;
-/** Default manual multiplier on Gear Planner when no saved preference (fits dock + class/race chrome). */
-export const GP_USER_SCALE_DEFAULT = 0.9;
-
-function isGearPlannerPath() {
-    const path = (location.pathname || '').replace(/\/+$/, '') || '/';
-    return path === '/gear-planner' || path === '/gp';
-}
-
-function getDefaultUserScale() {
-    return isGearPlannerPath() ? GP_USER_SCALE_DEFAULT : USER_SCALE_DEFAULT;
-}
 
 export const TEXT_SCALE_MIN = 0.5;
 export const TEXT_SCALE_MAX = 2.0;
@@ -59,12 +48,12 @@ export function hasUserScalePreference() {
 export function getUserScale() {
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw == null) return getDefaultUserScale();
+        if (raw == null) return USER_SCALE_DEFAULT;
         const n = parseFloat(raw);
-        if (!Number.isFinite(n)) return getDefaultUserScale();
+        if (!Number.isFinite(n)) return USER_SCALE_DEFAULT;
         return Math.max(USER_SCALE_MIN, Math.min(USER_SCALE_MAX, n));
     } catch {
-        return getDefaultUserScale();
+        return USER_SCALE_DEFAULT;
     }
 }
 
