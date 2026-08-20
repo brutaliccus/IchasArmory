@@ -128,6 +128,8 @@ let pickCallback = null;
 let editMode = true;
 let gpDidDrag = false;
 let gpOverlay = null;
+let gpOverlayHideTimer = null;
+const GP_OVERLAY_WIPE_MS = 700;
 let gpPinnedLocation = null;
 let gpActiveTalentTree = 0;
 let characterTalentSnapshot = null;
@@ -963,6 +965,16 @@ function syncGpTalentsHeaderLayout(treeW, scale, tree) {
     }
 }
 
+function hideGpOverlayViews() {
+    if (gpOverlay) return;
+    const talentsView = document.getElementById('gp-talents-view');
+    const buffsView = document.getElementById('gp-buffs-view');
+    const weightsView = document.getElementById('gp-stat-weights-view');
+    if (talentsView) talentsView.hidden = true;
+    if (buffsView) buffsView.hidden = true;
+    if (weightsView) weightsView.hidden = true;
+}
+
 function syncGpOverlayUi() {
     const shell = document.getElementById('gear-planner-shell');
     const talentsView = document.getElementById('gp-talents-view');
@@ -974,15 +986,31 @@ function syncGpOverlayUi() {
     const talentsOpen = gpOverlay === 'talents';
     const buffsOpen = gpOverlay === 'buffs';
     const weightsOpen = gpOverlay === 'weights';
+    const overlayOpen = talentsOpen || buffsOpen || weightsOpen;
     shell?.classList.toggle('gp-talents-open', talentsOpen);
     shell?.classList.toggle('gp-buffs-open', buffsOpen);
     shell?.classList.toggle('gp-stat-weights-open', weightsOpen);
+    shell?.classList.toggle('gp-overlay-open', overlayOpen);
     document.body.classList.toggle('gp-talents-open', talentsOpen);
     document.body.classList.toggle('gp-buffs-open', buffsOpen);
     document.body.classList.toggle('gp-stat-weights-open', weightsOpen);
-    if (talentsView) talentsView.hidden = !talentsOpen;
-    if (buffsView) buffsView.hidden = !buffsOpen;
-    if (weightsView) weightsView.hidden = !weightsOpen;
+    document.body.classList.toggle('gp-overlay-open', overlayOpen);
+    clearTimeout(gpOverlayHideTimer);
+    if (overlayOpen) {
+        shell?.classList.remove('gp-overlay-closing');
+        if (talentsView) talentsView.hidden = !talentsOpen;
+        if (buffsView) buffsView.hidden = !buffsOpen;
+        if (weightsView) weightsView.hidden = !weightsOpen;
+    } else if (isGpMobileLayout()) {
+        shell?.classList.remove('gp-overlay-closing');
+        hideGpOverlayViews();
+    } else {
+        shell?.classList.add('gp-overlay-closing');
+        gpOverlayHideTimer = setTimeout(() => {
+            hideGpOverlayViews();
+            document.getElementById('gear-planner-shell')?.classList.remove('gp-overlay-closing');
+        }, GP_OVERLAY_WIPE_MS);
+    }
     talentsBtn?.setAttribute('aria-pressed', talentsOpen ? 'true' : 'false');
     talentsBtn?.classList.toggle('is-active', talentsOpen);
     buffsBtn?.setAttribute('aria-pressed', buffsOpen ? 'true' : 'false');

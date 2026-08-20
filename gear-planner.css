@@ -7,6 +7,11 @@
     /* Center column ~72% viewport (90% of prior 80vw); side docks overlay edges */
     --gp-center-width: clamp(320px, 72vw, 1665px);
     --gp-header-sim-slot: 132px;
+    --gp-tex-marble: url('/assets/ui-textures/UI-Background-Marble.png');
+    --gp-icon-keep: 68px;
+    --gp-wipe-ms: 700ms;
+    --gp-rail-gap: 20px;
+    --gp-rail: calc(var(--gp-icon-keep) + var(--gp-rail-gap));
 }
 
 body[data-app-mode="gearPlanner"] .app-scroll-layout {
@@ -202,19 +207,49 @@ body[data-app-mode="character"] #gear-planner-shell {
     /* font-size synced to scaled .tree-name in syncGpTalentsHeaderLayout() */
 }
 
+.gp-talents-view[hidden],
+.gp-buffs-view[hidden],
+.gp-stat-weights-view[hidden] {
+    display: none !important;
+}
+
 .gp-talents-view,
 .gp-buffs-view,
 .gp-stat-weights-view {
     display: none;
 }
 
-#gear-planner-shell.gp-talents-open .gp-layout,
+.gp-talents-view:not([hidden]),
+.gp-buffs-view:not([hidden]),
+.gp-stat-weights-view:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    position: relative;
+    pointer-events: auto;
+    overflow: hidden;
+}
+
+/* Mobile: overlays still replace the gear columns */
+body.gp-mobile #gear-planner-shell.gp-talents-open .gp-layout,
+body.gp-mobile #gear-planner-shell.gp-talents-open .gp-quick-sim-wrap,
+body.gp-mobile #gear-planner-shell.gp-talents-open .gp-st-rotation-row,
+body.gp-mobile #gear-planner-shell.gp-buffs-open .gp-layout,
+body.gp-mobile #gear-planner-shell.gp-buffs-open .gp-quick-sim-wrap,
+body.gp-mobile #gear-planner-shell.gp-buffs-open .gp-st-rotation-row,
+body.gp-mobile #gear-planner-shell.gp-stat-weights-open .gp-layout,
+body.gp-mobile #gear-planner-shell.gp-stat-weights-open .gp-quick-sim-wrap,
+body.gp-mobile #gear-planner-shell.gp-stat-weights-open .gp-st-rotation-row {
+    display: none;
+}
+
 #gear-planner-shell.gp-talents-open .gp-quick-sim-wrap,
 #gear-planner-shell.gp-talents-open .gp-st-rotation-row,
-#gear-planner-shell.gp-buffs-open .gp-layout,
 #gear-planner-shell.gp-buffs-open .gp-quick-sim-wrap,
 #gear-planner-shell.gp-buffs-open .gp-st-rotation-row,
-#gear-planner-shell.gp-stat-weights-open .gp-layout,
 #gear-planner-shell.gp-stat-weights-open .gp-quick-sim-wrap,
 #gear-planner-shell.gp-stat-weights-open .gp-st-rotation-row {
     display: none;
@@ -222,7 +257,9 @@ body[data-app-mode="character"] #gear-planner-shell {
 
 #gear-planner-shell.gp-talents-open .gp-main,
 #gear-planner-shell.gp-buffs-open .gp-main,
-#gear-planner-shell.gp-stat-weights-open .gp-main {
+#gear-planner-shell.gp-stat-weights-open .gp-main,
+#gear-planner-shell.gp-overlay-open .gp-main,
+#gear-planner-shell.gp-overlay-closing .gp-main {
     display: flex;
     flex-direction: column;
     min-height: calc(var(--ichacalc-usable-h, 100dvh) - 80px);
@@ -231,16 +268,7 @@ body[data-app-mode="character"] #gear-planner-shell {
 #gear-planner-shell.gp-talents-open .gp-talents-view:not([hidden]),
 #gear-planner-shell.gp-buffs-open .gp-buffs-view:not([hidden]),
 #gear-planner-shell.gp-stat-weights-open .gp-stat-weights-view:not([hidden]) {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    position: relative;
     z-index: 5;
-    pointer-events: auto;
-    overflow: hidden;
 }
 
 #gear-planner-shell.gp-stat-weights-open .gp-stat-weights-view:not([hidden]) {
@@ -925,6 +953,150 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-dock-sidebar--right.is-doc
     margin-right: auto;
 }
 
+.gp-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    position: relative;
+    min-width: 0;
+    width: 100%;
+}
+
+.gp-stage > .gp-layout,
+.gp-stage > .gp-talents-view,
+.gp-stage > .gp-buffs-view,
+.gp-stage > .gp-stat-weights-view {
+    grid-area: 1 / 1;
+}
+
+#gear-planner-shell:not(.gp-view-mode) {
+    --gp-rail: calc(48px + 8px + var(--gp-icon-keep) + var(--gp-rail-gap));
+}
+
+#gear-planner-shell.gp-overlay-open .gp-stage,
+#gear-planner-shell.gp-overlay-closing .gp-stage {
+    flex: 1 1 auto;
+    min-height: calc(var(--ichacalc-usable-h, 100dvh) - 200px);
+}
+
+@keyframes gp-overlay-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes gp-overlay-fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Desktop: overlay sits behind the slot columns; card bodies wipe toward the icons.
+   Keep layout on top while closing so the pane fades in the gap instead of covering the icons. */
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-layout,
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-closing .gp-layout {
+    display: grid;
+    z-index: 2;
+    pointer-events: none;
+    background: transparent;
+}
+
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-slot-icon-frame,
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-alt-icon,
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-slot-row:has(.gp-slot-card--empty) .gp-slot-add,
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-closing .gp-slot-icon-frame,
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-closing .gp-alt-icon,
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-closing .gp-slot-row:has(.gp-slot-card--empty) .gp-slot-add {
+    pointer-events: auto;
+}
+
+body:not(.gp-mobile) #gear-planner-shell .gp-talents-view:not([hidden]),
+body:not(.gp-mobile) #gear-planner-shell .gp-buffs-view:not([hidden]),
+body:not(.gp-mobile) #gear-planner-shell .gp-stat-weights-view:not([hidden]) {
+    z-index: 1;
+    width: auto;
+    max-width: none;
+    margin-left: var(--gp-rail);
+    margin-right: var(--gp-rail);
+    padding: 16px 20px 24px;
+    justify-self: stretch;
+    box-sizing: border-box;
+    background: linear-gradient(145deg, #1a1a1f 0%, #121218 100%);
+    border: 1px solid #3d3520;
+    border-radius: 10px;
+}
+
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-talents-view:not([hidden]),
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-buffs-view:not([hidden]),
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-stat-weights-view:not([hidden]) {
+    animation: gp-overlay-fade-in var(--gp-wipe-ms, 700ms) ease both;
+}
+
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-closing .gp-talents-view:not([hidden]),
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-closing .gp-buffs-view:not([hidden]),
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-closing .gp-stat-weights-view:not([hidden]) {
+    animation: gp-overlay-fade-out var(--gp-wipe-ms, 700ms) ease both;
+    pointer-events: none;
+    z-index: 1;
+}
+
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-slot-card:not(.gp-slot-card--empty) {
+    background-image: none;
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-slot-card--left {
+    clip-path: inset(0 calc(100% - var(--gp-icon-keep)) 0 0 round 10px);
+}
+
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-slot-card--right {
+    clip-path: inset(0 0 0 calc(100% - var(--gp-icon-keep)) round 10px);
+}
+
+body:not(.gp-mobile) .gp-item-meta,
+body:not(.gp-mobile) .gp-toggle-alts,
+body:not(.gp-mobile) .gp-icon-remove,
+body:not(.gp-mobile) .gp-empty-primary,
+body:not(.gp-mobile) .gp-add-alt {
+    transition: opacity var(--gp-wipe-ms, 700ms) ease;
+}
+
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-item-meta,
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-toggle-alts,
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-icon-remove,
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-empty-primary,
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-add-alt {
+    opacity: 0;
+    pointer-events: none;
+}
+
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-alts-panel {
+    border-color: transparent;
+}
+
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-slot-card--empty {
+    opacity: 0;
+    pointer-events: none;
+}
+
+body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-slot-row:not(:has(.gp-slot-card--empty)) .gp-slot-add-wrap {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body:not(.gp-mobile) #gear-planner-shell .gp-slot-card {
+        transition: border-color 0.15s ease !important;
+    }
+    body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-talents-view:not([hidden]),
+    body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-buffs-view:not([hidden]),
+    body:not(.gp-mobile) #gear-planner-shell.gp-overlay-open .gp-stat-weights-view:not([hidden]),
+    body:not(.gp-mobile) #gear-planner-shell.gp-overlay-closing .gp-talents-view:not([hidden]),
+    body:not(.gp-mobile) #gear-planner-shell.gp-overlay-closing .gp-buffs-view:not([hidden]),
+    body:not(.gp-mobile) #gear-planner-shell.gp-overlay-closing .gp-stat-weights-view:not([hidden]) {
+        animation: none;
+    }
+}
+
 /* Nudge class/race right when centered column would overlap Locations dock */
 body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-class-sidebar {
     margin-left: max(0px, calc(var(--gp-dock-panel-width, 260px) + 96px - (50vw - var(--gp-center-width) / 2)));
@@ -1386,6 +1558,7 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-class-sidebar {
     width: 48px;
     height: 48px;
     margin-top: 8px;
+    transition: opacity var(--gp-wipe-ms, 700ms) ease;
 }
 
 .gp-slot-add-wrap .gp-slot-add {
@@ -1445,7 +1618,11 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-class-sidebar {
 }
 
 .gp-slot-card {
-    background: linear-gradient(145deg, #1a1a1f 0%, #121218 100%);
+    background-color: #121212;
+    background-image: var(--gp-tex-marble);
+    background-repeat: repeat;
+    background-position: center;
+    background-size: 256px 256px;
     border: 1px solid #3d3520;
     border-radius: 10px;
     padding: 8px 10px;
@@ -1453,7 +1630,8 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-class-sidebar {
     cursor: pointer;
     overflow: hidden;
     box-sizing: border-box;
-    transition: border-color 0.15s ease;
+    clip-path: inset(0 0 0 0 round 10px);
+    transition: border-color 0.15s ease, clip-path var(--gp-wipe-ms, 700ms) ease, background-color var(--gp-wipe-ms, 700ms) ease, box-shadow var(--gp-wipe-ms, 700ms) ease, opacity var(--gp-wipe-ms, 700ms) ease;
 }
 
 .gp-slot-card:hover {
@@ -1750,6 +1928,16 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-class-sidebar {
     display: block;
     object-fit: contain;
     pointer-events: none;
+}
+
+.gp-slot-row--left > .gp-slot-icon-frame > .gp-icon-remove {
+    right: -12px;
+    left: auto;
+}
+
+.gp-slot-row--right > .gp-slot-icon-frame > .gp-icon-remove {
+    left: -12px;
+    right: auto;
 }
 
 .gp-slot-card--left .gp-icon-remove {
@@ -2761,6 +2949,11 @@ body.gp-mobile .gp-slot-row--left {
 
 body.gp-mobile .gp-slot-row--right {
     flex-direction: row-reverse;
+}
+
+body.gp-mobile .gp-slot-row--right > .gp-slot-icon-frame > .gp-icon-remove {
+    right: -12px;
+    left: auto;
 }
 
 body.gp-mobile .gp-item-name {

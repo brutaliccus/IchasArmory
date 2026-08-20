@@ -43,7 +43,18 @@ export default defineConfig({
         port: 5173,
         proxy: {
             '/user':        { target: 'http://localhost:6100', changeOrigin: true },
-            '/profiles':    { target: 'http://localhost:6100', changeOrigin: true },
+            '/profiles':    {
+                target: 'http://localhost:6100',
+                changeOrigin: true,
+                // '/profiles' prefix also matches static /profiles.css and /profiles.js
+                bypass(req) {
+                    const path = (req.url || '').split('?')[0];
+                    if (path === '/profiles.css' || path === '/profiles.js'
+                        || path.startsWith('/profiles.css') || path.startsWith('/profiles.js')) {
+                        return req.url;
+                    }
+                },
+            },
             '/inbox':       { target: 'http://localhost:6100', changeOrigin: true },
             '/auth':        { target: 'http://localhost:6100', changeOrigin: true },
             '/builds':      { target: 'http://localhost:6100', changeOrigin: true },
