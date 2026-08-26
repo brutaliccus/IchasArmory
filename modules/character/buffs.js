@@ -193,7 +193,7 @@ export const raidDefensiveBuffs = [
     {
         id: 'ancestralHealing',
         name: 'Ancestral Healing',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_undyingstrength.png',
+        icon: 'spell_nature_undyingstrength',
         spellId: 16240,  // Spell ID for tooltip lookup in spells.json
         // Increases target's armor value by 25% for 15 sec after getting a critical effect from healing spells
         base_stats: { armor_percent: 0.25 }
@@ -201,7 +201,7 @@ export const raidDefensiveBuffs = [
     {
         id: 'proclaimChampion',
         name: 'Proclaim Champion',
-        icon: 'https://octowow.st/db/images/icons/large/spell_holy_proclaimchampion_02.png',
+        icon: 'spell_holy_proclaimchampion_02',
         base_stats: {
             damageReduction_percent: 0.05,  // 5% all damage reduction (physical and magical)
             fireResistance: 60,
@@ -212,9 +212,9 @@ export const raidDefensiveBuffs = [
         },
         exclusiveGroup: 'resistance_aura'
     },
-    { id: 'fireResistanceTotem', name: 'Fire Resistance Totem', icon: 'https://octowow.st/db/images/icons/large/spell_fireresistancetotem_01.png', base_stats: { fireResistance: 60 }, exclusiveGroup: 'resistance_aura' },
-    { id: 'frostResistanceTotem', name: 'Frost Resistance Totem', icon: 'https://octowow.st/db/images/icons/large/spell_frostresistancetotem_01.png', base_stats: { frostResistance: 60 }, exclusiveGroup: 'resistance_aura' },
-    { id: 'natureResistanceTotem', name: 'Nature Resistance Totem', icon: 'https://octowow.st/db/images/icons/large/spell_nature_natureresistancetotem.png', base_stats: { natureResistance: 60 }, exclusiveGroup: 'resistance_aura' },
+    { id: 'fireResistanceTotem', name: 'Fire Resistance Totem', icon: 'spell_fireresistancetotem_01', base_stats: { fireResistance: 60 }, exclusiveGroup: 'resistance_aura' },
+    { id: 'frostResistanceTotem', name: 'Frost Resistance Totem', icon: 'spell_frostresistancetotem_01', base_stats: { frostResistance: 60 }, exclusiveGroup: 'resistance_aura' },
+    { id: 'natureResistanceTotem', name: 'Nature Resistance Totem', icon: 'spell_nature_natureresistancetotem', base_stats: { natureResistance: 60 }, exclusiveGroup: 'resistance_aura' },
     {
         id: 'shadowResistanceTotem',
         spellId: 19896,  // Spell ID for icon, name, and tooltip lookup in spells.json
@@ -228,7 +228,7 @@ export const raidOffensiveBuffs = [
     {
         id: 'battleShout',
         name: 'Battle Shout',
-        icon: 'https://octowow.st/db/images/icons/large/ability_warrior_battleshout.png',
+        icon: 'ability_warrior_battleshout',
         // Base: +232 AP (Rank 7)
         base_stats: { ap: 232 },
         // Improved: +25% talent bonus
@@ -237,7 +237,7 @@ export const raidOffensiveBuffs = [
     {
         id: 'blessingOfMight',
         name: 'Greater Blessing of Might',
-        icon: 'https://octowow.st/db/images/icons/large/spell_holy_greaterblessingofkings.png',
+        icon: 'spell_holy_greaterblessingofkings',
         // Base: +185 AP
         base_stats: { ap: 185 },
         // Improved Blessing of Might: 20% more → 185 × 1.20 = 222
@@ -246,21 +246,21 @@ export const raidOffensiveBuffs = [
     {
         id: 'leaderOfThePack',
         name: 'Leader of the Pack',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_unyeildingstamina.png',
+        icon: 'spell_nature_unyeildingstamina',
         // +3% crit
         base_stats: { crit: 3 }
     },
     {
         id: 'trueshotAura',
         name: 'Trueshot Aura',
-        icon: 'https://octowow.st/db/images/icons/large/ability_trueshot.png',
+        icon: 'ability_trueshot',
         // +5% AP + 55 flat AP
         base_stats: { ap_percent: 0.05, ap: 55 }
     },
     {
         id: 'emeraldBlessing',
         name: 'Emerald Blessing',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_protectionformnature.png',
+        icon: 'spell_nature_protectionformnature',
         // +10% movement speed, +1% spell hit, +5% mana regen while casting
         base_stats: { spellHit: 1 },
         // Note: Movement speed and mana regen while casting are not tracked in current stat system
@@ -268,14 +268,14 @@ export const raidOffensiveBuffs = [
     {
         id: 'moonkinAura',
         name: 'Moonkin Aura',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_moonglow.png',
+        icon: 'spell_nature_moonglow',
         base_stats: { spellCrit: 3 },
         tooltip: 'Increases your chance to critical strike with spells by 3%.'
     },
     {
         id: 'potgSpellCrit',
         name: 'Power of the Guardian (Spell Crit)',
-        icon: 'https://octowow.st/db/images/icons/large/inv_staff_medivh.png',
+        icon: 'inv_staff_medivh',
         base_stats: { spellCrit: 2 },
         tooltip: 'Increases the spell critical chance of all party members within 30 yards by 2%.',
         exclusiveGroup: 'power_of_the_guardian'
@@ -283,7 +283,7 @@ export const raidOffensiveBuffs = [
     {
         id: 'potgSpellDamage',
         name: 'Power of the Guardian (Spell Damage)',
-        icon: 'https://octowow.st/db/images/icons/large/inv_staff_medivh.png',
+        icon: 'inv_staff_medivh',
         base_stats: { spellDamage: 33 },
         tooltip: 'Increases damage and healing done by magical spells and effects of all party members within 30 yards by up to 33.',
         exclusiveGroup: 'power_of_the_guardian'
@@ -291,7 +291,7 @@ export const raidOffensiveBuffs = [
     {
         id: 'potgHaste',
         name: 'Power of the Guardian (Haste)',
-        icon: 'https://octowow.st/db/images/icons/large/inv_staff_medivh.png',
+        icon: 'inv_staff_medivh',
         base_stats: { haste: 2 },
         tooltip: 'Increases the attack and casting speed of all party members within 30 yards by 2%.',
         exclusiveGroup: 'power_of_the_guardian'
@@ -311,7 +311,7 @@ export const weaponImbues = [
     {
         id: 'rockbiter',
         name: 'Rockbiter Weapon',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_rockbiter.png',
+        icon: 'spell_nature_rockbiter',
         base_stats: { ap: 653 },
         classes: ['shaman'],
         exclusiveGroup: 'weapon_imbue'
@@ -319,7 +319,7 @@ export const weaponImbues = [
     {
         id: 'flametongue',
         name: 'Flametongue Weapon',
-        icon: 'https://octowow.st/db/images/icons/large/spell_fire_flametounge.png',
+        icon: 'spell_fire_flametounge',
         base_stats: { fire_damage: 326 },
         classes: ['shaman'],
         exclusiveGroup: 'weapon_imbue'
@@ -327,7 +327,7 @@ export const weaponImbues = [
     {
         id: 'windfury',
         name: 'Windfury Weapon',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_cyclone.png',
+        icon: 'spell_nature_cyclone',
         base_stats: {},
         classes: ['shaman'],
         exclusiveGroup: 'weapon_imbue'
@@ -335,7 +335,7 @@ export const weaponImbues = [
     {
         id: 'frostbrand',
         name: 'Frostbrand Weapon',
-        icon: 'https://octowow.st/db/images/icons/large/spell_frost_frostbrand.png',
+        icon: 'spell_frost_frostbrand',
         base_stats: { frost_damage: 35 },
         classes: ['shaman'],
         exclusiveGroup: 'weapon_imbue'
@@ -347,7 +347,7 @@ export const shields = [
     {
         id: 'watershield',
         name: 'Water Shield',
-        icon: 'https://octowow.st/db/images/icons/large/ability_shaman_watershield.png',
+        icon: 'ability_shaman_watershield',
         base_stats: { mp5: 50 },
         classes: ['shaman'],
         exclusiveGroup: 'shield',
@@ -356,7 +356,7 @@ export const shields = [
     {
         id: 'lightningshield',
         name: 'Lightning Shield',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_lightningshield.png',
+        icon: 'spell_nature_lightningshield',
         base_stats: { nature_damage: 13 },
         classes: ['shaman'],
         exclusiveGroup: 'shield'
@@ -368,7 +368,7 @@ export const shamanTotems = [
     {
         id: 'stoneskinTotem',
         name: 'Stoneskin Totem',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_stoneskintotem.png',
+        icon: 'spell_nature_stoneskintotem',
         spellId: 10408,  // Spell ID for tooltip lookup in spells.json
         base_stats: {
             flatDamageReduction: 30  // -30 damage BEFORE armor and DR
@@ -442,50 +442,50 @@ export const paladinAuras = [
 // Flasks - Only one can be active at a time
 export const flasks = [
     { id: 'titans', name: 'Flask of the Titans', icon: 'inv_potion_52', base_stats: { health: 1200 }, exclusiveGroup: 'flask', tooltip: '+1200 Maximum Health for 2 hours. Counts as both a Battle and Guardian Elixir.' },
-    { id: 'distilled_wisdom', name: 'Flask of Distilled Wisdom', icon: 'https://octowow.st/db/images/icons/large/inv_potion_120.png', base_stats: { mana: 2000 }, exclusiveGroup: 'flask', tooltip: '+2000 Maximum Mana for 2 hours. Counts as both a Battle and Guardian Elixir.' },
-    { id: 'supreme_power', name: 'Flask of Supreme Power', icon: 'https://octowow.st/db/images/icons/large/inv_potion_41.png', base_stats: { spellDamage: 150 }, exclusiveGroup: 'flask', tooltip: '+150 Spell Damage and Healing for 2 hours. Counts as both a Battle and Guardian Elixir.' },
-    { id: 'chromatic_resistance', name: 'Flask of Chromatic Resistance', icon: 'https://octowow.st/db/images/icons/large/inv_potion_48.png', base_stats: { arcaneResistance: 50, fireResistance: 50, frostResistance: 50, natureResistance: 50, shadowResistance: 50 }, exclusiveGroup: 'flask', tooltip: '+50 to all Resistances for 2 hours. Counts as both a Battle and Guardian Elixir.' }
+    { id: 'distilled_wisdom', name: 'Flask of Distilled Wisdom', icon: 'inv_potion_120', base_stats: { mana: 2000 }, exclusiveGroup: 'flask', tooltip: '+2000 Maximum Mana for 2 hours. Counts as both a Battle and Guardian Elixir.' },
+    { id: 'supreme_power', name: 'Flask of Supreme Power', icon: 'inv_potion_41', base_stats: { spellDamage: 150 }, exclusiveGroup: 'flask', tooltip: '+150 Spell Damage and Healing for 2 hours. Counts as both a Battle and Guardian Elixir.' },
+    { id: 'chromatic_resistance', name: 'Flask of Chromatic Resistance', icon: 'inv_potion_48', base_stats: { arcaneResistance: 50, fireResistance: 50, frostResistance: 50, natureResistance: 50, shadowResistance: 50 }, exclusiveGroup: 'flask', tooltip: '+50 to all Resistances for 2 hours. Counts as both a Battle and Guardian Elixir.' }
 ];
 
 // Battle Elixirs (offensive) - Multiple can be active at the same time
 export const battleElixirs = [
     { id: 'mongoose', name: 'Elixir of the Mongoose', icon: 'inv_potion_32', base_stats: { agi: 25, crit: 2 }, tooltip: '+25 Agility and +2% Critical Strike Chance for 1 hour.' },
-    { id: 'giants', name: 'Elixir of Giants', icon: 'https://octowow.st/db/images/icons/large/inv_potion_61.png', base_stats: { str: 25 }, exclusiveGroup: 'str_buff', tooltip: '+25 Strength for 1 hour.' },
-    { id: 'greater_arcane', name: 'Greater Arcane Elixir', icon: 'https://octowow.st/db/images/icons/large/inv_potion_25.png', base_stats: { spellDamage: 35 }, tooltip: '+35 Spell Damage for 1 hour.' },
-    { id: 'greater_firepower', name: 'Elixir of Greater Firepower', icon: 'https://octowow.st/db/images/icons/large/inv_potion_60.png', base_stats: { fireSpellDamage: 40 }, tooltip: '+40 Fire Spell Damage for 1 hour.' },
-    { id: 'greater_nature_power', name: 'Elixir of Greater Nature Power', icon: 'https://octowow.st/db/images/icons/large/inv_potion_106.png', base_stats: { natureSpellDamage: 55 }, tooltip: '+55 Nature Spell Damage for 1 hour.' },
-    { id: 'greater_frost_power', name: 'Elixir of Greater Frost Power', icon: 'https://octowow.st/db/images/icons/large/inv_potion_13.png', itemId: 55046, base_stats: { frostSpellDamage: 40 }, tooltip: '+40 Frost Spell Damage for 1 hour.' }
+    { id: 'giants', name: 'Elixir of Giants', icon: 'inv_potion_61', base_stats: { str: 25 }, exclusiveGroup: 'str_buff', tooltip: '+25 Strength for 1 hour.' },
+    { id: 'greater_arcane', name: 'Greater Arcane Elixir', icon: 'inv_potion_25', base_stats: { spellDamage: 35 }, tooltip: '+35 Spell Damage for 1 hour.' },
+    { id: 'greater_firepower', name: 'Elixir of Greater Firepower', icon: 'inv_potion_60', base_stats: { fireSpellDamage: 40 }, tooltip: '+40 Fire Spell Damage for 1 hour.' },
+    { id: 'greater_nature_power', name: 'Elixir of Greater Nature Power', icon: 'inv_potion_106', base_stats: { natureSpellDamage: 55 }, tooltip: '+55 Nature Spell Damage for 1 hour.' },
+    { id: 'greater_frost_power', name: 'Elixir of Greater Frost Power', icon: 'inv_potion_13', itemId: 55046, base_stats: { frostSpellDamage: 40 }, tooltip: '+40 Frost Spell Damage for 1 hour.' }
 ];
 
 // Guardian Elixirs (defensive) - Multiple can be active at the same time
 export const guardianElixirs = [
     { id: 'fortitudeElixir', name: 'Elixir of Fortitude', icon: 'inv_potion_62', base_stats: { health: 120 }, tooltip: '+120 Maximum Health for 1 hour.' },
     { id: 'defense', name: 'Elixir of Superior Defense', icon: 'inv_potion_64', base_stats: { armor: 450 }, tooltip: '+450 Armor for 1 hour.' },
-    { id: 'mageblood', name: 'Mageblood Potion', icon: 'https://octowow.st/db/images/icons/large/inv_potion_45.png', base_stats: { mp5: 12 }, tooltip: 'Restores 12 mana per 5 sec for 1 hour.' },
-    { id: 'dreamshard', name: 'Dreamshard Elixir', icon: 'https://octowow.st/db/images/icons/large/inv_potion_113.png', base_stats: { spellCrit: 2, spellDamage: 15 }, tooltip: '+2% Spell Critical Strike Chance and +15 Spell Damage for 1 hour.' }
+    { id: 'mageblood', name: 'Mageblood Potion', icon: 'inv_potion_45', base_stats: { mp5: 12 }, tooltip: 'Restores 12 mana per 5 sec for 1 hour.' },
+    { id: 'dreamshard', name: 'Dreamshard Elixir', icon: 'inv_potion_113', base_stats: { spellCrit: 2, spellDamage: 15 }, tooltip: '+2% Spell Critical Strike Chance and +15 Spell Damage for 1 hour.' }
 ];
 
 // Concoctions - Special Turtle WoW consumables
 export const concoctions = [
-    { id: 'emerald_mongoose', name: 'Concoction of the Emerald Mongoose', icon: 'https://octowow.st/db/images/icons/large/inv_blue_gold_elixir_2.png', base_stats: { agi: 25, crit: 2, spellCrit: 2, spellDamage: 15 }, tooltip: '+25 Agility, +2% Melee Critical Strike, +2% Spell Critical Strike, and +15 Spell Damage for 1 hour. Counts as both a Battle and Guardian Elixir.' },
-    { id: 'arcane_giant', name: 'Concoction of the Arcane Giant', icon: 'https://octowow.st/db/images/icons/large/inv_yellow_purple_elixir_2.png', base_stats: { str: 25, spellDamage: 35 }, exclusiveGroup: 'str_buff', tooltip: '+25 Strength and +35 Spell Damage for 1 hour. Counts as both a Battle and Guardian Elixir.' },
-    { id: 'dreamwater', name: 'Concoction of the Dreamwater', icon: 'https://octowow.st/db/images/icons/large/inv_green_pink_elixir_1.png', base_stats: { ap: 35, spellDamage: 35 }, exclusiveGroup: 'ap_buff', tooltip: '+35 Attack Power and +35 Spell Damage for 1 hour. Counts as both a Battle and Guardian Elixir.' }
+    { id: 'emerald_mongoose', name: 'Concoction of the Emerald Mongoose', icon: 'inv_blue_gold_elixir_2', base_stats: { agi: 25, crit: 2, spellCrit: 2, spellDamage: 15 }, tooltip: '+25 Agility, +2% Melee Critical Strike, +2% Spell Critical Strike, and +15 Spell Damage for 1 hour. Counts as both a Battle and Guardian Elixir.' },
+    { id: 'arcane_giant', name: 'Concoction of the Arcane Giant', icon: 'inv_yellow_purple_elixir_2', base_stats: { str: 25, spellDamage: 35 }, exclusiveGroup: 'str_buff', tooltip: '+25 Strength and +35 Spell Damage for 1 hour. Counts as both a Battle and Guardian Elixir.' },
+    { id: 'dreamwater', name: 'Concoction of the Dreamwater', icon: 'inv_green_pink_elixir_1', base_stats: { ap: 35, spellDamage: 35 }, exclusiveGroup: 'ap_buff', tooltip: '+35 Attack Power and +35 Spell Damage for 1 hour. Counts as both a Battle and Guardian Elixir.' }
 ];
 
 // Juju Buffs
 export const jujuBuffs = [
-    { id: 'juju_power', name: 'Juju Power', icon: 'https://octowow.st/db/images/icons/large/inv_misc_monsterscales_11.png', base_stats: { str: 30 }, exclusiveGroup: 'str_buff', tooltip: '+30 Strength for 10 min.' },
-    { id: 'juju_might', name: 'Juju Might', icon: 'https://octowow.st/db/images/icons/large/inv_misc_monsterscales_07.png', base_stats: { ap: 40 }, exclusiveGroup: 'ap_buff', tooltip: '+40 Attack Power for 10 min.' },
-    { id: 'juju_ember', name: 'Juju Ember', icon: 'https://octowow.st/db/images/icons/large/inv_misc_monsterscales_15.png', base_stats: { fireResistance: 15 }, tooltip: '+15 Fire Resistance for 10 min.' },
-    { id: 'juju_chill', name: 'Juju Chill', icon: 'https://octowow.st/db/images/icons/large/inv_misc_monsterscales_09.png', base_stats: { frostResistance: 15 }, tooltip: '+15 Frost Resistance for 10 min.' },
-    { id: 'juju_flurry', name: 'Juju Flurry', icon: 'https://octowow.st/db/images/icons/large/inv_misc_monsterscales_17.png', base_stats: {}, tooltip: 'Increases attack and casting speed by 3% for 20 sec.' }
+    { id: 'juju_power', name: 'Juju Power', icon: 'inv_misc_monsterscales_11', base_stats: { str: 30 }, exclusiveGroup: 'str_buff', tooltip: '+30 Strength for 10 min.' },
+    { id: 'juju_might', name: 'Juju Might', icon: 'inv_misc_monsterscales_07', base_stats: { ap: 40 }, exclusiveGroup: 'ap_buff', tooltip: '+40 Attack Power for 10 min.' },
+    { id: 'juju_ember', name: 'Juju Ember', icon: 'inv_misc_monsterscales_15', base_stats: { fireResistance: 15 }, tooltip: '+15 Fire Resistance for 10 min.' },
+    { id: 'juju_chill', name: 'Juju Chill', icon: 'inv_misc_monsterscales_09', base_stats: { frostResistance: 15 }, tooltip: '+15 Frost Resistance for 10 min.' },
+    { id: 'juju_flurry', name: 'Juju Flurry', icon: 'inv_misc_monsterscales_17', base_stats: {}, tooltip: 'Increases attack and casting speed by 3% for 20 sec.' }
 ];
 
 // Blasted Lands Buffs
 export const blastedLandsBuffs = [
-    { id: 'roids', name: 'R.O.I.D.S.', icon: 'https://octowow.st/db/images/icons/large/inv_stone_15.png', base_stats: { str: 25 }, exclusiveGroup: 'blasted_lands', tooltip: '+25 Strength for 30 min.' },
-    { id: 'scorpok_assay', name: 'Ground Scorpok Assay', icon: 'https://octowow.st/db/images/icons/large/inv_misc_dust_07.png', base_stats: { agi: 25 }, exclusiveGroup: 'blasted_lands', tooltip: '+25 Agility for 30 min.' },
-    { id: 'cerebral_cortex', name: 'Cerebral Cortex Compound', icon: 'https://octowow.st/db/images/icons/large/inv_potion_119.png', base_stats: { int: 25 }, exclusiveGroup: 'blasted_lands', tooltip: '+25 Intellect for 30 min.' },
+    { id: 'roids', name: 'R.O.I.D.S.', icon: 'inv_stone_15', base_stats: { str: 25 }, exclusiveGroup: 'blasted_lands', tooltip: '+25 Strength for 30 min.' },
+    { id: 'scorpok_assay', name: 'Ground Scorpok Assay', icon: 'inv_misc_dust_07', base_stats: { agi: 25 }, exclusiveGroup: 'blasted_lands', tooltip: '+25 Agility for 30 min.' },
+    { id: 'cerebral_cortex', name: 'Cerebral Cortex Compound', icon: 'inv_potion_119', base_stats: { int: 25 }, exclusiveGroup: 'blasted_lands', tooltip: '+25 Intellect for 30 min.' },
     { id: 'lung_juice_cocktail', name: 'Lung Juice Cocktail', icon: 'inv_drink_12', base_stats: { sta: 25 }, exclusiveGroup: 'blasted_lands', tooltip: '+25 Stamina for 1 hour.' }
 ];
 
@@ -495,58 +495,58 @@ const LUNG_JUICE_BUFF_ID = 'lung_juice_cocktail';
 
 // Food Buffs - Only one food buff can be active at a time
 export const foodBuffs = [
-    { id: 'le_fishe', name: 'Le Fishe Au Chocolat', icon: 'https://octowow.st/db/images/icons/large/inv_misc_fishe_au_chocolate.png', base_stats: { dodge: 1, def: 4 }, exclusiveGroup: 'food', tooltip: '+1% Dodge and +4 Defense for 30 min.' },
-    { id: 'dragonbreath_chili', name: 'Dragonbreath Chili', icon: 'https://octowow.st/db/images/icons/large/inv_drink_17.png', base_stats: {}, exclusiveGroup: 'food', tooltip: 'Occasionally belch flame at enemies for 61 to 68 Fire damage when attacking.' },
-    { id: 'hardened_mushroom', name: 'Hardened Mushroom', icon: 'https://octowow.st/db/images/icons/large/inv_mushroom_15.png', base_stats: { sta: 25 }, exclusiveGroup: 'food', tooltip: '+25 Stamina for 30 min.' },
-    { id: 'lichbloom', name: 'Dirge\'s Kickin\' Chimaerok Chops', icon: 'https://octowow.st/db/images/icons/large/inv_misc_food_65.png', base_stats: { sta: 25 }, exclusiveGroup: 'food', tooltip: '+25 Stamina for 30 min.' },
-    { id: 'grilled_squid', name: 'Grilled Squid', icon: 'https://octowow.st/db/images/icons/large/inv_misc_fish_13.png', base_stats: { agi: 10 }, exclusiveGroup: 'food', tooltip: '+10 Agility for 30 min.' },
-    { id: 'power_mushroom', name: 'Power Mushroom', icon: 'https://octowow.st/db/images/icons/large/inv_mushroom_14.png', base_stats: { str: 20 }, exclusiveGroup: 'food', tooltip: '+20 Strength for 30 min.' },
-    { id: 'smoked_desert_dumplings', name: 'Smoked Desert Dumplings', icon: 'https://octowow.st/db/images/icons/large/inv_misc_food_64.png', base_stats: { str: 20 }, exclusiveGroup: 'food', tooltip: '+20 Strength for 30 min.' },
-    { id: 'empowering_herbal_salad', name: 'Empowering Herbal Salad', icon: 'https://octowow.st/db/images/icons/large/inv_misc_food_salad.png', base_stats: { healing: 24 }, exclusiveGroup: 'food', tooltip: '+24 Healing for 30 min.' },
-    { id: 'telabim_medley', name: 'Danonzo\'s Tel\'Abim Medley', icon: 'https://octowow.st/db/images/icons/large/inv_misc_food_73.png', base_stats: { haste: 2 }, exclusiveGroup: 'food', tooltip: '+2% Haste for 30 min.' },
-    { id: 'telabim_surprise', name: 'Danonzo\'s Tel\'Abim Surprise', icon: 'https://octowow.st/db/images/icons/large/inv_misc_food_92.png', base_stats: { rangedAP: 45 }, exclusiveGroup: 'food', tooltip: '+45 Ranged Attack Power for 30 min.' },
-    { id: 'telabim_delight', name: 'Danonzo\'s Tel\'Abim Delight', icon: 'https://octowow.st/db/images/icons/large/inv_drink_21.png', base_stats: { spellDamage: 22 }, exclusiveGroup: 'food', tooltip: '+22 Spell Damage for 30 min.' }
+    { id: 'le_fishe', name: 'Le Fishe Au Chocolat', icon: 'inv_misc_fishe_au_chocolate', base_stats: { dodge: 1, def: 4 }, exclusiveGroup: 'food', tooltip: '+1% Dodge and +4 Defense for 30 min.' },
+    { id: 'dragonbreath_chili', name: 'Dragonbreath Chili', icon: 'inv_drink_17', base_stats: {}, exclusiveGroup: 'food', tooltip: 'Occasionally belch flame at enemies for 61 to 68 Fire damage when attacking.' },
+    { id: 'hardened_mushroom', name: 'Hardened Mushroom', icon: 'inv_mushroom_15', base_stats: { sta: 25 }, exclusiveGroup: 'food', tooltip: '+25 Stamina for 30 min.' },
+    { id: 'lichbloom', name: 'Dirge\'s Kickin\' Chimaerok Chops', icon: 'inv_misc_food_65', base_stats: { sta: 25 }, exclusiveGroup: 'food', tooltip: '+25 Stamina for 30 min.' },
+    { id: 'grilled_squid', name: 'Grilled Squid', icon: 'inv_misc_fish_13', base_stats: { agi: 10 }, exclusiveGroup: 'food', tooltip: '+10 Agility for 30 min.' },
+    { id: 'power_mushroom', name: 'Power Mushroom', icon: 'inv_mushroom_14', base_stats: { str: 20 }, exclusiveGroup: 'food', tooltip: '+20 Strength for 30 min.' },
+    { id: 'smoked_desert_dumplings', name: 'Smoked Desert Dumplings', icon: 'inv_misc_food_64', base_stats: { str: 20 }, exclusiveGroup: 'food', tooltip: '+20 Strength for 30 min.' },
+    { id: 'empowering_herbal_salad', name: 'Empowering Herbal Salad', icon: 'inv_misc_food_salad', base_stats: { healing: 24 }, exclusiveGroup: 'food', tooltip: '+24 Healing for 30 min.' },
+    { id: 'telabim_medley', name: 'Danonzo\'s Tel\'Abim Medley', icon: 'inv_misc_food_73', base_stats: { haste: 2 }, exclusiveGroup: 'food', tooltip: '+2% Haste for 30 min.' },
+    { id: 'telabim_surprise', name: 'Danonzo\'s Tel\'Abim Surprise', icon: 'inv_misc_food_92', base_stats: { rangedAP: 45 }, exclusiveGroup: 'food', tooltip: '+45 Ranged Attack Power for 30 min.' },
+    { id: 'telabim_delight', name: 'Danonzo\'s Tel\'Abim Delight', icon: 'inv_drink_21', base_stats: { spellDamage: 22 }, exclusiveGroup: 'food', tooltip: '+22 Spell Damage for 30 min.' }
 ];
 
 // Drinks - Only one stamina drink can be active at a time
 export const drinks = [
     { id: 'rumsey', name: 'Rumsey Rum Black Label', icon: 'inv_drink_04', base_stats: { sta: 15 }, exclusiveGroup: 'stamina_drink', tooltip: '+15 Stamina for 15 min.' },
     { id: 'Merlot', name: 'Medivhs Merlot', icon: 'inv_drink_13', base_stats: { sta: 25 }, exclusiveGroup: 'stamina_drink', tooltip: '+25 Stamina for 15 min.' },
-    { id: 'merlot_blue', name: 'Medivh\'s Merlot Blue', icon: 'https://octowow.st/db/images/icons/large/inv_drink_waterskin_01.png', base_stats: { int: 15 }, exclusiveGroup: 'int_drink', tooltip: '+15 Intellect for 15 min.' },
-    { id: 'winterfall_firewater', name: 'Winterfall Firewater', icon: 'https://octowow.st/db/images/icons/large/inv_potion_92.png', base_stats: { ap: 35 }, exclusiveGroup: 'ap_buff', tooltip: '+35 Attack Power for 20 min.' },
-    { id: 'dreamtonic', name: 'Dreamtonic', icon: 'https://octowow.st/db/images/icons/large/inv_potion_114.png', base_stats: { spellDamage: 35 }, tooltip: '+35 Spell Damage for 20 min.' }
+    { id: 'merlot_blue', name: 'Medivh\'s Merlot Blue', icon: 'inv_drink_waterskin_01', base_stats: { int: 15 }, exclusiveGroup: 'int_drink', tooltip: '+15 Intellect for 15 min.' },
+    { id: 'winterfall_firewater', name: 'Winterfall Firewater', icon: 'inv_potion_92', base_stats: { ap: 35 }, exclusiveGroup: 'ap_buff', tooltip: '+35 Attack Power for 20 min.' },
+    { id: 'dreamtonic', name: 'Dreamtonic', icon: 'inv_potion_114', base_stats: { spellDamage: 35 }, tooltip: '+35 Spell Damage for 20 min.' }
 ];
 
 // Potions and other consumables
 export const potions = [
     // Stoneshield Potion armor is now handled via procs.js (on-use effect)
     // Removed armor from base_stats to prevent double-counting
-    { id: 'stoneshield', name: 'Greater Stoneshield Potion', icon: 'https://octowow.st/db/images/icons/large/inv_potion_69.png', base_stats: {}, tooltip: 'Absorbs 2250 to 3750 physical damage for 2 min.' },
-    { id: 'trolls_blood', name: 'Major Troll\'s Blood Potion', icon: 'https://octowow.st/db/images/icons/large/inv_potion_80.png', base_stats: { healthRegen: 20 }, tooltip: 'Regenerates 20 health per 5 sec for 1 hour.' },
+    { id: 'stoneshield', name: 'Greater Stoneshield Potion', icon: 'inv_potion_69', base_stats: {}, tooltip: 'Absorbs 2250 to 3750 physical damage for 2 min.' },
+    { id: 'trolls_blood', name: 'Major Troll\'s Blood Potion', icon: 'inv_potion_80', base_stats: { healthRegen: 20 }, tooltip: 'Regenerates 20 health per 5 sec for 1 hour.' },
     { id: 'zanza', name: 'Spirit of Zanza', icon: 'inv_potion_50', base_stats: { sta: 50, spi: 50 }, tooltip: '+50 Stamina and +50 Spirit for 2 hours.' },
-    { id: 'potion_of_quickness', name: 'Potion of Quickness', icon: 'https://octowow.st/db/images/icons/large/inv_potion_08.png', base_stats: {}, tooltip: 'Increases haste by 5% for 30 sec.' }
+    { id: 'potion_of_quickness', name: 'Potion of Quickness', icon: 'inv_potion_08', base_stats: {}, tooltip: 'Increases haste by 5% for 30 sec.' }
 ];
 
 // Weapon Enhancements
 export const weaponEnhancements = [
-    { id: 'elemental_sharpening', name: 'Elemental Sharpening Stone', icon: 'https://octowow.st/db/images/icons/large/inv_stone_02.png', base_stats: { crit: 2 }, exclusiveGroup: 'weapon_enhancement', tooltip: '+2% Critical Strike Chance for 30 min.' },
-    { id: 'brilliant_wizard_oil', name: 'Brilliant Wizard Oil', icon: 'https://octowow.st/db/images/icons/large/inv_potion_105.png', base_stats: { spellDamage: 36, spellCrit: 1 }, exclusiveGroup: 'weapon_enhancement', tooltip: '+36 Spell Damage and +1% Spell Critical Strike Chance for 30 min.' },
-    { id: 'brilliant_mana_oil', name: 'Brilliant Mana Oil', icon: 'https://octowow.st/db/images/icons/large/inv_potion_100.png', base_stats: { mp5: 12, healing: 25 }, exclusiveGroup: 'weapon_enhancement', tooltip: 'Restores 12 mana per 5 sec and +25 Healing for 30 min.' }
+    { id: 'elemental_sharpening', name: 'Elemental Sharpening Stone', icon: 'inv_stone_02', base_stats: { crit: 2 }, exclusiveGroup: 'weapon_enhancement', tooltip: '+2% Critical Strike Chance for 30 min.' },
+    { id: 'brilliant_wizard_oil', name: 'Brilliant Wizard Oil', icon: 'inv_potion_105', base_stats: { spellDamage: 36, spellCrit: 1 }, exclusiveGroup: 'weapon_enhancement', tooltip: '+36 Spell Damage and +1% Spell Critical Strike Chance for 30 min.' },
+    { id: 'brilliant_mana_oil', name: 'Brilliant Mana Oil', icon: 'inv_potion_100', base_stats: { mp5: 12, healing: 25 }, exclusiveGroup: 'weapon_enhancement', tooltip: 'Restores 12 mana per 5 sec and +25 Healing for 30 min.' }
 ];
 
 // Weapon Skill Masteries (Learned from books)
 export const weaponMasteries = [
-    { id: 'mastery_axes', name: 'Mastery of Axes', icon: 'https://octowow.st/db/images/icons/large/inv_axe_01.png', weaponTypes: ['Axe', 'Two-handed Axe'], base_stats: { weaponSkill: 5 } },
-    { id: 'mastery_swords', name: 'Mastery of Swords', icon: 'https://octowow.st/db/images/icons/large/inv_sword_27.png', weaponTypes: ['Sword', 'Two-handed Sword'], base_stats: { weaponSkill: 5 } },
-    { id: 'mastery_hammers', name: 'Mastery of Hammers', icon: 'https://octowow.st/db/images/icons/large/inv_hammer_01.png', weaponTypes: ['Mace', 'Two-handed Mace'], base_stats: { weaponSkill: 5 } },
-    { id: 'mastery_daggers', name: 'Mastery of Daggers', icon: 'https://octowow.st/db/images/icons/large/inv_weapon_shortblade_05.png', weaponTypes: ['Dagger'], base_stats: { weaponSkill: 5 } },
-    { id: 'mastery_fist', name: 'Mastery of Fist Weapons', icon: 'https://octowow.st/db/images/icons/large/inv_gauntlets_04.png', weaponTypes: ['Fist Weapon'], base_stats: { weaponSkill: 5 } },
-    { id: 'mastery_polearms', name: 'Mastery of Polearms', icon: 'https://octowow.st/db/images/icons/large/inv_spear_01.png', weaponTypes: ['Polearm'], base_stats: { weaponSkill: 5 } },
-    { id: 'mastery_staves', name: 'Mastery of Staves', icon: 'https://octowow.st/db/images/icons/large/inv_staff_08.png', weaponTypes: ['Staff'], base_stats: { weaponSkill: 5 } },
-    { id: 'mastery_bows', name: 'Mastery of Bows', icon: 'https://octowow.st/db/images/icons/large/inv_weapon_bow_07.png', weaponTypes: ['Bow'], base_stats: { weaponSkill: 5 } },
-    { id: 'mastery_crossbows', name: 'Mastery of Crossbows', icon: 'https://octowow.st/db/images/icons/large/inv_weapon_crossbow_07.png', weaponTypes: ['Crossbow'], base_stats: { weaponSkill: 5 } },
-    { id: 'mastery_guns', name: 'Mastery of Guns', icon: 'https://octowow.st/db/images/icons/large/inv_weapon_rifle_01.png', weaponTypes: ['Gun'], base_stats: { weaponSkill: 5 } },
-    { id: 'mastery_thrown', name: 'Mastery of Thrown', icon: 'https://octowow.st/db/images/icons/large/inv_throwingknife_04.png', weaponTypes: ['Thrown'], base_stats: { weaponSkill: 5 } }
+    { id: 'mastery_axes', name: 'Mastery of Axes', icon: 'inv_axe_01', weaponTypes: ['Axe', 'Two-handed Axe'], base_stats: { weaponSkill: 5 } },
+    { id: 'mastery_swords', name: 'Mastery of Swords', icon: 'inv_sword_27', weaponTypes: ['Sword', 'Two-handed Sword'], base_stats: { weaponSkill: 5 } },
+    { id: 'mastery_hammers', name: 'Mastery of Hammers', icon: 'inv_hammer_01', weaponTypes: ['Mace', 'Two-handed Mace'], base_stats: { weaponSkill: 5 } },
+    { id: 'mastery_daggers', name: 'Mastery of Daggers', icon: 'inv_weapon_shortblade_05', weaponTypes: ['Dagger'], base_stats: { weaponSkill: 5 } },
+    { id: 'mastery_fist', name: 'Mastery of Fist Weapons', icon: 'inv_gauntlets_04', weaponTypes: ['Fist Weapon'], base_stats: { weaponSkill: 5 } },
+    { id: 'mastery_polearms', name: 'Mastery of Polearms', icon: 'inv_spear_01', weaponTypes: ['Polearm'], base_stats: { weaponSkill: 5 } },
+    { id: 'mastery_staves', name: 'Mastery of Staves', icon: 'inv_staff_08', weaponTypes: ['Staff'], base_stats: { weaponSkill: 5 } },
+    { id: 'mastery_bows', name: 'Mastery of Bows', icon: 'inv_weapon_bow_07', weaponTypes: ['Bow'], base_stats: { weaponSkill: 5 } },
+    { id: 'mastery_crossbows', name: 'Mastery of Crossbows', icon: 'inv_weapon_crossbow_07', weaponTypes: ['Crossbow'], base_stats: { weaponSkill: 5 } },
+    { id: 'mastery_guns', name: 'Mastery of Guns', icon: 'inv_weapon_rifle_01', weaponTypes: ['Gun'], base_stats: { weaponSkill: 5 } },
+    { id: 'mastery_thrown', name: 'Mastery of Thrown', icon: 'inv_throwingknife_04', weaponTypes: ['Thrown'], base_stats: { weaponSkill: 5 } }
 ];
 
 // Druid Shapeshifting Forms - Only one can be active at a time
@@ -554,7 +554,7 @@ export const druidForms = [
     {
         id: 'cat_form',
         name: 'Cat Form',
-        icon: 'https://octowow.st/db/images/icons/large/ability_druid_catform.png',
+        icon: 'ability_druid_catform',
         base_stats: {
             ap: 120,
             agi_to_ap: 1  // Agility converts 1:1 to AP in Cat Form
@@ -565,7 +565,7 @@ export const druidForms = [
     {
         id: 'dire_bear_form',
         name: 'Dire Bear Form',
-        icon: 'https://octowow.st/db/images/icons/large/ability_racial_bearform.png',
+        icon: 'ability_racial_bearform',
         base_stats: {
             ap: 180,
             armor_percent_from_gear_buff: 3.60,  // +360% armor BONUS (base + base×3.6 = base×4.6 total)
@@ -577,7 +577,7 @@ export const druidForms = [
     {
         id: 'moonkin_form',
         name: 'Moonkin Form',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_forceofnature.png',
+        icon: 'spell_nature_forceofnature',
         base_stats: {
             armor_percent_from_gear_buff: 3.60,  // +360% armor BONUS (base + base×3.6 = base×4.6 total)
             spellCrit: 3
@@ -592,7 +592,7 @@ export const druidTalentBuffs = [
     {
         id: 'leader_of_the_pack',
         name: 'Leader of the Pack',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_unyeildingstamina.png',
+        icon: 'spell_nature_unyeildingstamina',
         base_stats: {
             crit: 3  // +3% melee and ranged crit
         },
@@ -622,7 +622,7 @@ export const warriorStances = [
     {
         id: 'battle_stance',
         name: 'Battle Stance',
-        icon: 'https://octowow.st/db/images/icons/large/ability_warrior_offensivestance.png',
+        icon: 'ability_warrior_offensivestance',
         base_stats: {},
         classes: ['warrior'],
         exclusiveGroup: 'warrior_stance'
@@ -630,7 +630,7 @@ export const warriorStances = [
     {
         id: 'defensive_stance',
         name: 'Defensive Stance',
-        icon: 'https://octowow.st/db/images/icons/large/ability_warrior_defensivestance.png',
+        icon: 'ability_warrior_defensivestance',
         base_stats: {
             damageReduction_percent: 0.10,  // -10% damage taken
             damageModifier: 0.9  // 0.9x damage dealt (affects weapon damage display)
@@ -641,7 +641,7 @@ export const warriorStances = [
     {
         id: 'berserker_stance',
         name: 'Berserker Stance',
-        icon: 'https://octowow.st/db/images/icons/large/ability_racial_avatar.png',
+        icon: 'ability_racial_avatar',
         base_stats: {
             damageIncrease_percent: 0.10,  // +10% damage taken
             crit: 3  // +3% crit chance
@@ -656,7 +656,7 @@ export const defensiveDebuffs = [
     {
         id: 'thunderfury_debuff',
         name: 'Thunderfury',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_cyclone.png',
+        icon: 'spell_nature_cyclone',
         tooltip: 'Target is consumed by a cyclone, slowing its attack speed by 20% for 12 sec.',
         base_stats: {
             attack_speed_reduction: 0.20,  // 20% attack speed slow (uptime depends on proc rate)
@@ -667,7 +667,7 @@ export const defensiveDebuffs = [
     {
         id: 'thunderclap',
         name: 'Thunderclap',
-        icon: 'https://octowow.st/db/images/icons/large/ability_thunderclap.png',
+        icon: 'ability_thunderclap',
         tooltip: 'Blasts nearby enemies with thunder increasing the time between their attacks by 10% for 18 sec',
         base_stats: {
             attack_speed_reduction: 0.10  // 10% attack speed slow
@@ -677,7 +677,7 @@ export const defensiveDebuffs = [
     {
         id: 'demoralizing_shout',
         name: 'Demoralizing Shout',
-        icon: 'https://octowow.st/db/images/icons/large/ability_warrior_warcry.png',
+        icon: 'ability_warrior_warcry',
         spellId: 11556,  // Spell ID for lookup in spells.json
         base_stats: {
             bossAttackPowerReduction: 0  // Will be parsed from spell tooltip
@@ -690,7 +690,7 @@ export const defensiveDebuffs = [
     {
         id: 'demoralizing_roar',
         name: 'Demoralizing Roar',
-        icon: 'https://octowow.st/db/images/icons/large/ability_druid_demoralizingroar.png',
+        icon: 'ability_druid_demoralizingroar',
         spellId: 9898,  // Spell ID for lookup in spells.json
         base_stats: {
             bossAttackPowerReduction: 0  // Will be parsed from spell tooltip
@@ -707,7 +707,7 @@ export const offensiveDebuffs = [
     {
         id: 'curseOfTheElements',
         name: 'Curse of the Elements',
-        icon: 'https://octowow.st/db/images/icons/large/spell_shadow_chilltouch.png',
+        icon: 'spell_shadow_chilltouch',
         spellId: 11722,  // Spell ID for lookup in spells.json
         // Reduces Fire/Frost/Arcane/Shadow resist by 75, increases Fire/Frost damage taken by 10%
         base_stats: {
@@ -722,7 +722,7 @@ export const offensiveDebuffs = [
     {
         id: 'curseOfShadows',
         name: 'Curse of Shadows',
-        icon: 'https://octowow.st/db/images/icons/large/spell_shadow_curseofachimonde.png',
+        icon: 'spell_shadow_curseofachimonde',
         spellId: 17937,  // Spell ID for lookup in spells.json (Rank 2: -75 shadow/arcane resist, +10% shadow/arcane damage)
         // Reduces Shadow and Arcane resist by 75, increases Shadow and Arcane damage taken by 10%
         base_stats: {
@@ -735,7 +735,7 @@ export const offensiveDebuffs = [
     {
         id: 'sunderArmor',
         name: 'Sunder Armor',
-        icon: 'https://octowow.st/db/images/icons/large/ability_warrior_sunder.png',
+        icon: 'ability_warrior_sunder',
         spellId: 11597,  // Spell ID for lookup in spells.json
         // 450 per stack, 5 stacks = 2250 total armor reduction
         base_stats: { enemyArmorReduction: -2250 },
@@ -744,7 +744,7 @@ export const offensiveDebuffs = [
     {
         id: 'exposeArmor',
         name: 'Expose Armor',
-        icon: 'https://octowow.st/db/images/icons/large/ability_warrior_riposte.png',
+        icon: 'ability_warrior_riposte',
         spellId: 11198,  // Spell ID for lookup in spells.json
         // Unimproved: 1700 armor reduction at 5 combo points
         base_stats: { enemyArmorReduction: -1700 },
@@ -755,7 +755,7 @@ export const offensiveDebuffs = [
     {
         id: 'fireVulnerability',
         name: 'Fire Vulnerability',
-        icon: 'https://octowow.st/db/images/icons/large/spell_fire_soulburn.png',
+        icon: 'spell_fire_soulburn',
         spellId: 12875,  // Spell ID for lookup in spells.json
         // 3% per stack, 5 stacks = 15% fire damage increase
         base_stats: { enemyFireDamageIncrease: 0.15 } // 5 stacks × 3% = 15%
@@ -763,14 +763,14 @@ export const offensiveDebuffs = [
     {
         id: 'wintersChill',
         name: 'Winter\'s Chill',
-        icon: 'https://octowow.st/db/images/icons/large/spell_frost_chillingblast.png',
+        icon: 'spell_frost_chillingblast',
         tooltip: 'Increases the chance Frost spells will critically hit the target by 10%.',
         base_stats: { enemyFrostSpellCritBonus: 0.10 }
     },
     {
         id: 'nightfall',
         name: 'Nightfall',
-        icon: 'https://octowow.st/db/images/icons/large/spell_holy_elunesgrace.png',
+        icon: 'spell_holy_elunesgrace',
         spellId: 23605,  // Spell ID for lookup in spells.json
         // Nightfall is a raid debuff that gives +10% spell damage for 7 seconds
         // It has 35-50% uptime when one person in the raid uses the Nightfall weapon
@@ -780,7 +780,7 @@ export const offensiveDebuffs = [
     {
         id: 'hemorrhage',
         name: 'Hemorrhage',
-        icon: 'https://octowow.st/db/images/icons/large/spell_shadow_lifedrain.png',
+        icon: 'spell_shadow_lifedrain',
         spellId: 16511,  // Spell ID for lookup in spells.json
         // Hemorrhage is a raid debuff that gives +2% physical damage (base) or +4% (improved with Serrated Blades)
         // It has 40-50% uptime when rogues use Hemorrhage (sporadic due to charge consumption)
@@ -792,7 +792,7 @@ export const offensiveDebuffs = [
     {
         id: 'corrosiveSpit',
         name: 'Feast of Hakkar',
-        icon: 'https://octowow.st/db/images/icons/large/spell_shadow_bloodboil.png',
+        icon: 'spell_shadow_bloodboil',
         tooltip: 'Reduces the armor of the target by 400 for 10 seconds. Applied by raid members at 65-85% uptime.',
         // Corrosive Spit is a raid debuff that reduces boss armor by 400 for 10 seconds.
         // It has 65-85% uptime with overlapping 10-second windows.
@@ -802,7 +802,7 @@ export const offensiveDebuffs = [
     {
         id: 'faerieFire',
         name: 'Faerie Fire',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_faeriefire.png',
+        icon: 'spell_nature_faeriefire',
         spellId: 9907,  // Spell ID for lookup in spells.json
         // Rank 4: 505 armor reduction
         base_stats: { enemyArmorReduction: -505 }
@@ -810,7 +810,7 @@ export const offensiveDebuffs = [
     {
         id: 'curseOfRecklessness',
         name: 'Curse of Recklessness',
-        icon: 'https://octowow.st/db/images/icons/large/spell_shadow_unholystrength.png',
+        icon: 'spell_shadow_unholystrength',
         spellId: 11717,  // Spell ID for lookup in spells.json
         // Rank 4: 640 armor reduction
         base_stats: { enemyArmorReduction: -640 }
@@ -818,7 +818,7 @@ export const offensiveDebuffs = [
     {
         id: 'annihilator',
         name: 'Armor Shatter',
-        icon: 'https://octowow.st/db/images/icons/large/inv_axe_12.png',
+        icon: 'inv_axe_12',
         spellId: 16928,  // Spell ID for lookup in spells.json
         // 100 armor per stack, max 3 stacks = 300 total armor reduction
         base_stats: { enemyArmorReduction: -300 },
@@ -827,7 +827,7 @@ export const offensiveDebuffs = [
     {
         id: 'shart',
         name: 'Shattered Armor',
-        icon: 'https://octowow.st/db/images/icons/large/inv_demonaxe.png',
+        icon: 'inv_demonaxe',
         spellId: 51144,  // Spell ID for lookup in spells.json
         // 250 armor reduction (does not stack with Annihilator)
         base_stats: { enemyArmorReduction: -250 },

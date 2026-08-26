@@ -3026,6 +3026,8 @@ function sortPersonalPlans(plans, sortKey) {
 }
 
 async function runPersonalBuildsSearch() {
+    const loadMoreWrap = document.getElementById('gp-community-load-more-wrap');
+    if (loadMoreWrap) loadMoreWrap.hidden = true;
     const results = document.getElementById('gp-community-results');
     if (results) results.innerHTML = '<div class="gp-community-empty">Loading…</div>';
     const filters = getBuildsBrowseFilters();

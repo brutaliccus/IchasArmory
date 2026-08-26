@@ -4733,28 +4733,74 @@ async function init() {
     });
 
     // Custom dropdown toggle handlers
+    function resetItemPickerDropdownMenu(menu) {
+        if (!menu) return;
+        menu.style.position = '';
+        menu.style.top = '';
+        menu.style.left = '';
+        menu.style.width = '';
+        menu.style.right = '';
+        menu.style.zIndex = '';
+        menu.style.maxHeight = '';
+    }
+
+    function positionItemPickerDropdownMenu(menu, header) {
+        const panel = header.closest('#item-modal-panel');
+        if (!panel || !menu) return;
+        const rect = header.getBoundingClientRect();
+        const margin = 8;
+        const maxH = Math.max(120, window.innerHeight - rect.bottom - margin);
+        menu.style.position = 'fixed';
+        menu.style.top = `${rect.bottom + 4}px`;
+        menu.style.left = `${rect.left}px`;
+        menu.style.width = `${rect.width}px`;
+        menu.style.right = 'auto';
+        menu.style.zIndex = '2700';
+        menu.style.maxHeight = `${Math.min(320, maxH)}px`;
+    }
+
+    function closeAllStatDropdownMenus() {
+        document.querySelectorAll('.stat-dropdown-menu').forEach((menu) => {
+            menu.style.display = 'none';
+            resetItemPickerDropdownMenu(menu);
+        });
+        document.querySelectorAll('.stat-dropdown-header').forEach((header) => {
+            header.classList.remove('open');
+            header.setAttribute('aria-expanded', 'false');
+        });
+    }
+
     document.querySelectorAll('.stat-dropdown-header').forEach(header => {
         header.addEventListener('click', (e) => {
             const dropdownId = header.dataset.dropdown;
             const menu = document.getElementById(`${dropdownId}-dropdown`);
 
             if (menu) {
+                const willOpen = menu.style.display === 'none' || !menu.style.display;
                 // Close all other dropdowns first
                 document.querySelectorAll('.stat-dropdown-menu').forEach(m => {
                     if (m !== menu) {
                         m.style.display = 'none';
+                        resetItemPickerDropdownMenu(m);
                         const otherHeader = document.querySelector(`[data-dropdown="${m.id.replace('-dropdown', '')}"]`);
-                        if (otherHeader) otherHeader.classList.remove('open');
+                        if (otherHeader) {
+                            otherHeader.classList.remove('open');
+                            otherHeader.setAttribute('aria-expanded', 'false');
+                        }
                     }
                 });
 
                 // Toggle current dropdown
-                if (menu.style.display === 'none') {
+                if (willOpen) {
                     menu.style.display = 'block';
                     header.classList.add('open');
+                    header.setAttribute('aria-expanded', 'true');
+                    positionItemPickerDropdownMenu(menu, header);
                 } else {
                     menu.style.display = 'none';
                     header.classList.remove('open');
+                    header.setAttribute('aria-expanded', 'false');
+                    resetItemPickerDropdownMenu(menu);
                 }
             }
         });
@@ -4763,12 +4809,16 @@ async function init() {
     // Close dropdowns when clicking outside
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.stat-dropdown-container')) {
-            document.querySelectorAll('.stat-dropdown-menu').forEach(menu => {
-                menu.style.display = 'none';
-            });
-            document.querySelectorAll('.stat-dropdown-header').forEach(header => {
-                header.classList.remove('open');
-            });
+            closeAllStatDropdownMenus();
+        }
+    });
+
+    window.addEventListener('resize', () => {
+        const openHeader = document.querySelector('#item-modal-panel .stat-dropdown-header.open');
+        if (!openHeader) return;
+        const menu = document.getElementById(`${openHeader.dataset.dropdown}-dropdown`);
+        if (menu && menu.style.display === 'block') {
+            positionItemPickerDropdownMenu(menu, openHeader);
         }
     });
 

@@ -14,7 +14,7 @@ import {
     getEnchantQualityClass,
 } from '../gear/enchantCategories.js';
 import { splitEnchantPickerLabel } from '../gear/enchantStatLabels.js';
-import { getStatSearchTerms, getItemType, filterEnchantsByItemType, filterEnchantsByClass, parseStatsFromTooltip, parseSetBonusSheetStats, KEY_MAP } from '../character/stats.js';
+import { getStatSearchTerms, getItemType, filterEnchantsByItemType, filterEnchantsByClass, parseStatsFromTooltip, parseSetBonusSheetStats, getEffectiveEnchantStats, KEY_MAP } from '../character/stats.js';
 import {
     ensureItemSourcesLoaded,
     getPrimarySourceLabel,
@@ -207,6 +207,10 @@ function itemHasParsedStat(item, statKey) {
     if (!statKey || !item) return false;
     const parsed = parseStatsFromTooltip(item);
     if ((parsed[statKey] || 0) > 0) return true;
+    if (item.enchant) {
+        const enchantStats = getEffectiveEnchantStats(item.enchant);
+        if ((enchantStats[statKey] || 0) > 0) return true;
+    }
     const lines = item.tooltip_lines_raw || [];
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];

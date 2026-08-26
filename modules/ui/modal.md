@@ -39,7 +39,9 @@ Opens the **anchored item picker** (not a centered fullscreen modal): `#item-mod
 3. **Instance row** (`.item-picker-instance-row`): Dungeons, Raids, World Bosses, Other dropdowns; **Can equip**, **DPS**, and **Tank** at the end of this row.
 4. **Header**: **Reset** (`#reset-filters-btn`) beside the close **X**.
 
-Filter dropdown menus use elevated `z-index` and `overflow: visible` on filter rows/panel chrome so long Quality/Source/Stat lists are not clipped inside the anchored picker (especially when opened from Gear Planner).
+Filter dropdown menus use elevated `z-index`, `overflow: visible` on filter rows/panel chrome, and **fixed positioning** (via `app.js`) when opened inside `#item-modal-panel` so long Quality/Source/Stat lists are not clipped behind the item list (especially in Gear Planner).
+
+**Vampirism filter:** Secondary → Vampirism matches parsed tooltip vampirism/leeching/“returned as healing”, set-bonus lines, and enchant stats (`getEffectiveEnchantStats`).
 
 **Three-state dropdown rows** (Primary, Secondary, Defense, Quality, and instance list rows): `.item-picker-filter-row` buttons cycle **include** (green ✓) → **exclude** (red ✕) → **off**. Armor/weapon type dropdowns remain plain checkboxes. Reset clears all three-state rows to **off** (no quality/stat filter = show all).
 
