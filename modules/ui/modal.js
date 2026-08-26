@@ -14,7 +14,7 @@ import {
     getEnchantQualityClass,
 } from '../gear/enchantCategories.js';
 import { splitEnchantPickerLabel } from '../gear/enchantStatLabels.js';
-import { getStatSearchTerms, getItemType, filterEnchantsByItemType, filterEnchantsByClass, parseStatsFromTooltip, KEY_MAP } from '../character/stats.js';
+import { getStatSearchTerms, getItemType, filterEnchantsByItemType, filterEnchantsByClass, parseStatsFromTooltip, parseSetBonusSheetStats, KEY_MAP } from '../character/stats.js';
 import {
     ensureItemSourcesLoaded,
     getPrimarySourceLabel,
@@ -199,9 +199,35 @@ const STAT_DROPDOWN_HEADERS = [
     { attr: 'quality', menuId: 'quality-dropdown', title: 'Quality' },
 ];
 
+const STAT_FILTER_PARSED_KEYS = {
+    'vampirism': 'vampirism',
+};
+
+function itemHasParsedStat(item, statKey) {
+    if (!statKey || !item) return false;
+    const parsed = parseStatsFromTooltip(item);
+    if ((parsed[statKey] || 0) > 0) return true;
+    const lines = item.tooltip_lines_raw || [];
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        if (!line.match(/^\(\d+\)\s*Set:/i)) continue;
+        const bonusLine = lines[i + 1];
+        if (!bonusLine) continue;
+        const setStats = parseSetBonusSheetStats(bonusLine);
+        if (setStats && (setStats[statKey] || 0) > 0) return true;
+    }
+    return false;
+}
+
 function itemTooltipHasStat(item, statFilter) {
-    if (!item.tooltip_lines_raw) return false;
+    if (!item.tooltip_lines_raw) {
+        const statLower = String(statFilter).toLowerCase().trim();
+        const parsedKey = STAT_FILTER_PARSED_KEYS[statLower];
+        return parsedKey ? itemHasParsedStat(item, parsedKey) : false;
+    }
     const statLower = String(statFilter).toLowerCase().trim();
+    const parsedKey = STAT_FILTER_PARSED_KEYS[statLower];
+    if (parsedKey && itemHasParsedStat(item, parsedKey)) return true;
     const searchTerms = getStatSearchTerms(statLower);
     const allTerms = [statLower, ...searchTerms];
     return item.tooltip_lines_raw.some(line => {
@@ -792,7 +818,8 @@ export function filterAndRenderItems(allItems, filters, listElement) {
                 'critical strike': 'crit', 'critical strike rating': 'crit', 'crit': 'crit',
                 'hit': 'hit', 'hit rating': 'hit',
                 'haste': 'haste', 'haste rating': 'haste',
-                'health': 'health', 'mana': 'mana'
+                'health': 'health', 'mana': 'mana',
+                'vampirism': 'vampirism', 'leeching': 'vampirism'
             };
             
             let statKey = statFilterToKey[firstStatFilter];

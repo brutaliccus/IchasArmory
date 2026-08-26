@@ -594,9 +594,9 @@ Each buff icon is rendered with the following structure:
 
 Icons are loaded from three sources:
 
-1. **Direct URL**: If `icon` property is set, use it directly
-2. **Spell ID**: If `spellId` is set, look up the spell in `spells.json` and construct icon URL
-3. **Fallback**: Use a question mark placeholder icon
+1. **Direct icon ref**: Buff `icon` fields use WoW icon **basenames** (e.g. `inv_potion_50`, `spell_nature_regeneration`) resolved through `resolveIconUrl()` from `modules/gear/gear.js` (Chronicle `https://icons.chronicleclassic.com/turtle/{basename}.webp`, then octowow/zamimg via `installIconLoadFallbacks`). Do not use legacy `assets/icons/*.jpg` aliases — they normalize to invalid basenames.
+2. **Spell ID**: If `spellId` is set, look up the spell in `spells.json` for name/icon when the buff entry omits them
+3. **Fallback**: `inv_misc_questionmark` via `resolveIconUrl`
 
 Example spell ID lookup:
 

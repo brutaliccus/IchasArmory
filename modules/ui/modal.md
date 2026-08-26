@@ -39,6 +39,8 @@ Opens the **anchored item picker** (not a centered fullscreen modal): `#item-mod
 3. **Instance row** (`.item-picker-instance-row`): Dungeons, Raids, World Bosses, Other dropdowns; **Can equip**, **DPS**, and **Tank** at the end of this row.
 4. **Header**: **Reset** (`#reset-filters-btn`) beside the close **X**.
 
+Filter dropdown menus use elevated `z-index` and `overflow: visible` on filter rows/panel chrome so long Quality/Source/Stat lists are not clipped inside the anchored picker (especially when opened from Gear Planner).
+
 **Three-state dropdown rows** (Primary, Secondary, Defense, Quality, and instance list rows): `.item-picker-filter-row` buttons cycle **include** (green ✓) → **exclude** (red ✕) → **off**. Armor/weapon type dropdowns remain plain checkboxes. Reset clears all three-state rows to **off** (no quality/stat filter = show all).
 
 **Panel layout (CSS):** `#item-modal-panel` width `min(96vw, 1320px)`; `max-height` clamped to viewport in JS (`applyItemPickerPanelBounds`). Filter block scrolls inside `max-height: min(38vh, 360px)` when tall; `#modal-item-list` keeps at least **140px** height and scrolls.
@@ -288,6 +290,8 @@ The system uses `getStatSearchTerms()` to find alternative search terms for stat
 - "spell damage and healing"
 
 **Haste** uses `STAT_ALIASES['haste']` in `modules/character/stats.js` so the filter matches Turtle equip text (e.g. "attack and casting speed", "casting speed", "% haste", "melee haste"), not only the word "haste".
+
+**Vampirism** (Secondary dropdown) uses `parseStatsFromTooltip()` / `parseSetBonusSheetStats()` via `itemHasParsedStat()` — matches equip text like `% damage dealt is returned as healing`, enchant-style vampirism/leeching lines, and flat set-bonus sheet stats, not only the word "vampirism" in tooltip text.
 
 ### Stat Preview
 

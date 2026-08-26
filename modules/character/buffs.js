@@ -116,7 +116,7 @@ export const raidStatBuffs = [
     {
         id: 'motw',
         name: 'Mark of the Wild',
-        icon: 'assets/icons/motw.jpg',
+        icon: 'spell_nature_regeneration',
         // Base: +12 stats, +285 armor, +20 all resistances
         base_stats: {
             sta: 12,
@@ -149,7 +149,7 @@ export const raidStatBuffs = [
     {
         id: 'fortitude',
         name: 'Power Word: Fortitude',
-        icon: 'assets/icons/fortitudepriest.jpg',
+        icon: 'spell_holy_wordfortitude',
         // Base: +54 stamina
         base_stats: { sta: 54 },
         // Improved: +30% talent bonus
@@ -158,7 +158,7 @@ export const raidStatBuffs = [
     {
         id: 'graceOfAir',
         name: 'Grace of Air Totem',
-        icon: 'assets/icons/grace.jpg',
+        icon: 'spell_nature_invisibilitytotem',
         // Base: +77 agility
         base_stats: { agi: 77 },
         // Improved: +25% talent bonus (for Enhancing Totems)
@@ -167,16 +167,16 @@ export const raidStatBuffs = [
     {
         id: 'strengthOfEarthTotem',
         name: 'Strength of Earth Totem',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_earthbindtotem.png',
+        icon: 'spell_nature_earthbindtotem',
         spellId: 25361,  // Spell ID for tooltip lookup in spells.json
         // Base: +77 strength
         base_stats: { str: 77 },
         // Improved: +25% talent bonus (for Enhancing Totems)
         improved_stats: { str: 96 } // 77 + floor(77 * 0.25) = 96
     },
-    { id: 'arcaneBrilliance', name: 'Arcane Brilliance', icon: 'https://octowow.st/db/images/icons/large/spell_holy_magicalsentry.png', base_stats: { int: 31 } },
-    { id: 'bok', name: 'Blessing of Kings', icon: 'assets/icons/spell_magic_magearmor.jpg', base_stats: { stat_percent: 0.10 } },
-    { id: 'bloodPact', name: "Imp's Blood Pact", icon: 'assets/icons/bloodpact.jpg', base_stats: { sta: 42 } }
+    { id: 'arcaneBrilliance', name: 'Arcane Brilliance', icon: 'spell_holy_magicalsentry', base_stats: { int: 31 } },
+    { id: 'bok', name: 'Blessing of Kings', icon: 'spell_magic_magearmor', base_stats: { stat_percent: 0.10 } },
+    { id: 'bloodPact', name: "Imp's Blood Pact", icon: 'spell_shadow_detectinvisibility', base_stats: { sta: 42 } }
 ];
 
 // Raid Buffs - Defensive Buffs (armor, damage reduction, resistances)
@@ -184,7 +184,7 @@ export const raidDefensiveBuffs = [
     {
         id: 'devotionAura',
         name: 'Devotion Aura',
-        icon: 'assets/icons/spell_holy_devotionaura.jpg',
+        icon: 'spell_holy_devotionaura',
         // Base: +735 armor
         base_stats: { armor: 735 },
         // Improved: +25% talent bonus
@@ -441,7 +441,7 @@ export const paladinAuras = [
 
 // Flasks - Only one can be active at a time
 export const flasks = [
-    { id: 'titans', name: 'Flask of the Titans', icon: 'assets/icons/flask.jpg', base_stats: { health: 1200 }, exclusiveGroup: 'flask', tooltip: '+1200 Maximum Health for 2 hours. Counts as both a Battle and Guardian Elixir.' },
+    { id: 'titans', name: 'Flask of the Titans', icon: 'inv_potion_52', base_stats: { health: 1200 }, exclusiveGroup: 'flask', tooltip: '+1200 Maximum Health for 2 hours. Counts as both a Battle and Guardian Elixir.' },
     { id: 'distilled_wisdom', name: 'Flask of Distilled Wisdom', icon: 'https://octowow.st/db/images/icons/large/inv_potion_120.png', base_stats: { mana: 2000 }, exclusiveGroup: 'flask', tooltip: '+2000 Maximum Mana for 2 hours. Counts as both a Battle and Guardian Elixir.' },
     { id: 'supreme_power', name: 'Flask of Supreme Power', icon: 'https://octowow.st/db/images/icons/large/inv_potion_41.png', base_stats: { spellDamage: 150 }, exclusiveGroup: 'flask', tooltip: '+150 Spell Damage and Healing for 2 hours. Counts as both a Battle and Guardian Elixir.' },
     { id: 'chromatic_resistance', name: 'Flask of Chromatic Resistance', icon: 'https://octowow.st/db/images/icons/large/inv_potion_48.png', base_stats: { arcaneResistance: 50, fireResistance: 50, frostResistance: 50, natureResistance: 50, shadowResistance: 50 }, exclusiveGroup: 'flask', tooltip: '+50 to all Resistances for 2 hours. Counts as both a Battle and Guardian Elixir.' }
@@ -449,7 +449,7 @@ export const flasks = [
 
 // Battle Elixirs (offensive) - Multiple can be active at the same time
 export const battleElixirs = [
-    { id: 'mongoose', name: 'Elixir of the Mongoose', icon: 'assets/icons/mongoose.jpg', base_stats: { agi: 25, crit: 2 }, tooltip: '+25 Agility and +2% Critical Strike Chance for 1 hour.' },
+    { id: 'mongoose', name: 'Elixir of the Mongoose', icon: 'inv_potion_32', base_stats: { agi: 25, crit: 2 }, tooltip: '+25 Agility and +2% Critical Strike Chance for 1 hour.' },
     { id: 'giants', name: 'Elixir of Giants', icon: 'https://octowow.st/db/images/icons/large/inv_potion_61.png', base_stats: { str: 25 }, exclusiveGroup: 'str_buff', tooltip: '+25 Strength for 1 hour.' },
     { id: 'greater_arcane', name: 'Greater Arcane Elixir', icon: 'https://octowow.st/db/images/icons/large/inv_potion_25.png', base_stats: { spellDamage: 35 }, tooltip: '+35 Spell Damage for 1 hour.' },
     { id: 'greater_firepower', name: 'Elixir of Greater Firepower', icon: 'https://octowow.st/db/images/icons/large/inv_potion_60.png', base_stats: { fireSpellDamage: 40 }, tooltip: '+40 Fire Spell Damage for 1 hour.' },
@@ -459,8 +459,8 @@ export const battleElixirs = [
 
 // Guardian Elixirs (defensive) - Multiple can be active at the same time
 export const guardianElixirs = [
-    { id: 'fortitudeElixir', name: 'Elixir of Fortitude', icon: 'assets/icons/fortitude.jpg', base_stats: { health: 120 }, tooltip: '+120 Maximum Health for 1 hour.' },
-    { id: 'defense', name: 'Elixir of Superior Defense', icon: 'assets/icons/defense.png', base_stats: { armor: 450 }, tooltip: '+450 Armor for 1 hour.' },
+    { id: 'fortitudeElixir', name: 'Elixir of Fortitude', icon: 'inv_potion_62', base_stats: { health: 120 }, tooltip: '+120 Maximum Health for 1 hour.' },
+    { id: 'defense', name: 'Elixir of Superior Defense', icon: 'inv_potion_64', base_stats: { armor: 450 }, tooltip: '+450 Armor for 1 hour.' },
     { id: 'mageblood', name: 'Mageblood Potion', icon: 'https://octowow.st/db/images/icons/large/inv_potion_45.png', base_stats: { mp5: 12 }, tooltip: 'Restores 12 mana per 5 sec for 1 hour.' },
     { id: 'dreamshard', name: 'Dreamshard Elixir', icon: 'https://octowow.st/db/images/icons/large/inv_potion_113.png', base_stats: { spellCrit: 2, spellDamage: 15 }, tooltip: '+2% Spell Critical Strike Chance and +15 Spell Damage for 1 hour.' }
 ];
@@ -510,8 +510,8 @@ export const foodBuffs = [
 
 // Drinks - Only one stamina drink can be active at a time
 export const drinks = [
-    { id: 'rumsey', name: 'Rumsey Rum Black Label', icon: 'assets/icons/rum.jpg', base_stats: { sta: 15 }, exclusiveGroup: 'stamina_drink', tooltip: '+15 Stamina for 15 min.' },
-    { id: 'Merlot', name: 'Medivhs Merlot', icon: 'assets/icons/merlot.png', base_stats: { sta: 25 }, exclusiveGroup: 'stamina_drink', tooltip: '+25 Stamina for 15 min.' },
+    { id: 'rumsey', name: 'Rumsey Rum Black Label', icon: 'inv_drink_04', base_stats: { sta: 15 }, exclusiveGroup: 'stamina_drink', tooltip: '+15 Stamina for 15 min.' },
+    { id: 'Merlot', name: 'Medivhs Merlot', icon: 'inv_drink_13', base_stats: { sta: 25 }, exclusiveGroup: 'stamina_drink', tooltip: '+25 Stamina for 15 min.' },
     { id: 'merlot_blue', name: 'Medivh\'s Merlot Blue', icon: 'https://octowow.st/db/images/icons/large/inv_drink_waterskin_01.png', base_stats: { int: 15 }, exclusiveGroup: 'int_drink', tooltip: '+15 Intellect for 15 min.' },
     { id: 'winterfall_firewater', name: 'Winterfall Firewater', icon: 'https://octowow.st/db/images/icons/large/inv_potion_92.png', base_stats: { ap: 35 }, exclusiveGroup: 'ap_buff', tooltip: '+35 Attack Power for 20 min.' },
     { id: 'dreamtonic', name: 'Dreamtonic', icon: 'https://octowow.st/db/images/icons/large/inv_potion_114.png', base_stats: { spellDamage: 35 }, tooltip: '+35 Spell Damage for 20 min.' }
@@ -523,7 +523,7 @@ export const potions = [
     // Removed armor from base_stats to prevent double-counting
     { id: 'stoneshield', name: 'Greater Stoneshield Potion', icon: 'https://octowow.st/db/images/icons/large/inv_potion_69.png', base_stats: {}, tooltip: 'Absorbs 2250 to 3750 physical damage for 2 min.' },
     { id: 'trolls_blood', name: 'Major Troll\'s Blood Potion', icon: 'https://octowow.st/db/images/icons/large/inv_potion_80.png', base_stats: { healthRegen: 20 }, tooltip: 'Regenerates 20 health per 5 sec for 1 hour.' },
-    { id: 'zanza', name: 'Spirit of Zanza', icon: 'assets/icons/zanza.jpg', base_stats: { sta: 50, spi: 50 }, tooltip: '+50 Stamina and +50 Spirit for 2 hours.' },
+    { id: 'zanza', name: 'Spirit of Zanza', icon: 'inv_potion_50', base_stats: { sta: 50, spi: 50 }, tooltip: '+50 Stamina and +50 Spirit for 2 hours.' },
     { id: 'potion_of_quickness', name: 'Potion of Quickness', icon: 'https://octowow.st/db/images/icons/large/inv_potion_08.png', base_stats: {}, tooltip: 'Increases haste by 5% for 30 sec.' }
 ];
 

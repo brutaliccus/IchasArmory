@@ -2864,7 +2864,9 @@ function formatTalentSpread(spread) {
 
 let communitySearchDebounceTimer = null;
 const COMMUNITY_SEARCH_DEBOUNCE_MS = 250;
+const COMMUNITY_PAGE_SIZE = 50;
 let buildsBrowseActiveTab = 'personal';
+let communityBrowseState = { plans: [], offset: 0, hasMore: false, total: 0, loading: false };
 
 const CLASS_TALENT_TREE_KEYS = {
     warrior: ['arms', 'fury', 'protection'],
@@ -2970,6 +2972,7 @@ function wireCommunitySearchDialog() {
     document.getElementById('gp-community-sort')?.addEventListener('change', () => runBuildsBrowseSearch());
     document.getElementById('gp-builds-tab-personal')?.addEventListener('click', () => setBuildsBrowseTab('personal'));
     document.getElementById('gp-builds-tab-community')?.addEventListener('click', () => setBuildsBrowseTab('community'));
+    document.getElementById('gp-community-load-more')?.addEventListener('click', () => loadMoreCommunityBuilds());
 }
 
 function openBuildsBrowseDialog(tab = 'personal') {
@@ -3136,26 +3139,71 @@ function buildGearPlanCardHtml(p, { variant = 'community', isLocal = false } = {
         </article>`;
 }
 
-async function runCommunitySearch() {
+async function runCommunitySearch({ append = false } = {}) {
     const results = document.getElementById('gp-community-results');
-    if (results) results.innerHTML = '<div class="gp-community-empty">Searching…</div>';
-    const filters = getBuildsBrowseFilters();
-    let plans = [];
-    if (window.profileManager?.fetchCommunityGearPlans) {
-        plans = await window.profileManager.fetchCommunityGearPlans(filters);
-    } else {
-        try {
+    const loadMoreWrap = document.getElementById('gp-community-load-more-wrap');
+    const loadMoreBtn = document.getElementById('gp-community-load-more');
+    if (communityBrowseState.loading) return;
+    communityBrowseState.loading = true;
+    if (!append) {
+        communityBrowseState = { plans: [], offset: 0, hasMore: false, total: 0, loading: true };
+        if (results) results.innerHTML = '<div class="gp-community-empty">Searching…</div>';
+        if (loadMoreWrap) loadMoreWrap.hidden = true;
+    } else if (loadMoreBtn) {
+        loadMoreBtn.disabled = true;
+        loadMoreBtn.textContent = 'Loading…';
+    }
+    const filters = {
+        ...getBuildsBrowseFilters(),
+        limit: COMMUNITY_PAGE_SIZE,
+        offset: append ? communityBrowseState.plans.length : 0,
+    };
+    let page = { plans: [], total: 0, hasMore: false, offset: 0, limit: COMMUNITY_PAGE_SIZE };
+    try {
+        if (window.profileManager?.fetchCommunityGearPlans) {
+            page = await window.profileManager.fetchCommunityGearPlans(filters);
+        } else {
             const params = new URLSearchParams();
-            Object.entries(filters).forEach(([k, v]) => { if (v) params.set(k, v); });
+            Object.entries(filters).forEach(([k, v]) => { if (v != null && v !== '') params.set(k, String(v)); });
             const qs = params.toString();
             const res = await fetch(`/community-gear-plans${qs ? `?${qs}` : ''}`, { credentials: 'include' });
             const data = await res.json();
-            plans = data.success ? (data.plans || []) : [];
-        } catch (e) {
-            console.error('[Gear Planner] community search failed', e);
+            if (data.success) {
+                page = {
+                    plans: data.plans || [],
+                    total: Number(data.total) || 0,
+                    hasMore: !!data.hasMore,
+                    offset: Number(data.offset) || 0,
+                    limit: Number(data.limit) || COMMUNITY_PAGE_SIZE,
+                };
+            }
         }
+    } catch (e) {
+        console.error('[Gear Planner] community search failed', e);
     }
-    renderCommunityResults(plans);
+    communityBrowseState.loading = false;
+    communityBrowseState.total = page.total;
+    communityBrowseState.hasMore = page.hasMore;
+    communityBrowseState.offset = page.offset;
+    communityBrowseState.plans = append
+        ? [...communityBrowseState.plans, ...(page.plans || [])]
+        : (page.plans || []);
+    renderCommunityResults(communityBrowseState.plans, { append });
+    if (loadMoreWrap) {
+        loadMoreWrap.hidden = !communityBrowseState.hasMore;
+    }
+    if (loadMoreBtn) {
+        loadMoreBtn.disabled = false;
+        const remaining = Math.max(0, communityBrowseState.total - communityBrowseState.plans.length);
+        loadMoreBtn.textContent = remaining > 0
+            ? `Load more builds (${remaining} remaining)`
+            : 'Load more builds';
+    }
+}
+
+function loadMoreCommunityBuilds() {
+    if (!communityBrowseState.hasMore || communityBrowseState.loading) return;
+    runCommunitySearch({ append: true });
 }
 
 function formatCommunityDate(iso) {
@@ -3169,11 +3217,20 @@ function formatCommunityDate(iso) {
     }
 }
 
-function renderCommunityResults(plans) {
+function renderCommunityResults(plans, { append = false } = {}) {
     const list = document.getElementById('gp-community-results');
     if (!list) return;
     if (!plans.length) {
         list.innerHTML = '<div class="gp-community-empty">No community builds found.</div>';
+        return;
+    }
+    if (append) {
+        const prevCount = list.querySelectorAll('.gp-community-card').length;
+        const newPlans = plans.slice(prevCount);
+        if (newPlans.length) {
+            list.insertAdjacentHTML('beforeend', newPlans.map((p) => buildGearPlanCardHtml(p, { variant: 'community' })).join(''));
+            wireCommunityResultCards(list, plans, { onlyUnwired: true });
+        }
         return;
     }
     list.innerHTML = plans.map((p) => buildGearPlanCardHtml(p, { variant: 'community' })).join('');
@@ -3206,8 +3263,11 @@ function wireBrowseVoteButtons(list) {
     });
 }
 
-function wireCommunityResultCards(list, plans = []) {
-    list.querySelectorAll('.gp-community-card').forEach((card) => {
+function wireCommunityResultCards(list, plans = [], { onlyUnwired = false } = {}) {
+    const cardSelector = onlyUnwired ? '.gp-community-card:not([data-browse-wired])' : '.gp-community-card';
+    list.querySelectorAll(cardSelector).forEach((card) => {
+        if (card.dataset.browseWired === '1') return;
+        card.dataset.browseWired = '1';
         card.addEventListener('click', (e) => {
             if (e.target.closest('[data-stop]')) return;
             loadCommunityPlanById(card.dataset.id);

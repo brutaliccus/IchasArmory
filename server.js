@@ -1535,9 +1535,19 @@ app.get('/community-gear-plans', (req, res) => {
             return String(b.updatedAt || '').localeCompare(String(a.updatedAt || ''));
         });
         res.set('Cache-Control', 'no-store');
+        const total = entries.length;
+        const limitRaw = parseInt(req.query.limit, 10);
+        const offsetRaw = parseInt(req.query.offset, 10);
+        const limit = Number.isFinite(limitRaw) ? Math.min(Math.max(limitRaw, 1), 100) : 50;
+        const offset = Number.isFinite(offsetRaw) ? Math.max(offsetRaw, 0) : 0;
+        const page = entries.slice(offset, offset + limit);
         res.json({
             success: true,
-            plans: entries.slice(0, 200).map(e => publicCommunityEntry(e, voterId)),
+            plans: page.map(e => publicCommunityEntry(e, voterId)),
+            total,
+            hasMore: offset + page.length < total,
+            offset,
+            limit,
         });
     } catch (error) {
         console.error('[CommunityGearPlans] list error:', error);

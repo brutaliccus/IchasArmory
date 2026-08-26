@@ -2448,6 +2448,15 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-class-sidebar {
     padding: 8px;
     background: rgba(0,0,0,0.2);
 }
+.gp-community-load-more-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 8px 0 4px;
+    flex-shrink: 0;
+}
+.gp-community-load-more-wrap[hidden] {
+    display: none !important;
+}
 .gp-community-empty { padding: 16px; text-align: center; color: #a09070; font-size: calc(0.9rem * var(--ts, 1)); }
 .gp-community-card {
     position: relative;

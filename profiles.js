@@ -1790,13 +1790,22 @@ ProfileManager.prototype.fetchCommunityGearPlans = async function fetchCommunity
         if (filters.spec) params.set('spec', filters.spec);
         if (filters.sort) params.set('sort', filters.sort);
         if (filters.voterId) params.set('voterId', filters.voterId);
+        if (filters.limit != null) params.set('limit', String(filters.limit));
+        if (filters.offset != null) params.set('offset', String(filters.offset));
         const qs = params.toString();
         const res = await fetch(`/community-gear-plans${qs ? `?${qs}` : ''}`, { credentials: 'include' });
         const data = await res.json();
-        return data.success ? (data.plans || []) : [];
+        if (!data.success) return { plans: [], total: 0, hasMore: false, offset: 0, limit: 50 };
+        return {
+            plans: data.plans || [],
+            total: Number(data.total) || 0,
+            hasMore: !!data.hasMore,
+            offset: Number(data.offset) || 0,
+            limit: Number(data.limit) || 50,
+        };
     } catch (e) {
         console.error('[Profiles] fetchCommunityGearPlans:', e);
-        return [];
+        return { plans: [], total: 0, hasMore: false, offset: 0, limit: 50 };
     }
 };
 

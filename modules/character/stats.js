@@ -251,6 +251,7 @@ export const STAT_ALIASES = {
     'block': ['block rating', '+ block', 'chance to block'],
     'block value': ['+ block value', 'block value of'],
     'mp5': ['mana per 5', 'mp5'],
+    'vampirism': ['leeching', 'returned as healing', 'damage dealt is returned'],
     'fire resistance': ['+ fire resistance'],
     'nature resistance': ['+ nature resistance'],
     'frost resistance': ['+ frost resistance'],

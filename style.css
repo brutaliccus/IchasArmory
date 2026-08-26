@@ -1965,7 +1965,7 @@ input, select {
     /* Horizontal slide from slot; transform-origin set in JS (0 0 = east, 100% 0 = west) */
     transform: translateX(-12px) scale(0.98);
     transition: opacity 0.22s ease, transform 0.22s ease;
-    overflow: hidden;
+    overflow: visible;
 }
 .item-picker-panel[data-item-picker-side="west"] {
     transform: translateX(12px) scale(0.98);
@@ -1999,11 +1999,12 @@ input, select {
     display: flex;
     flex-direction: column;
     flex: 1;
-    overflow: hidden;
+    overflow: visible;
 }
 .item-picker-filters.modal-filters {
     flex-shrink: 0;
     overflow: visible;
+    margin-bottom: 0;
 }
 .item-picker-search {
     width: 100%;
@@ -2016,13 +2017,6 @@ input, select {
     border-radius: 8px;
     color: var(--text-color);
 }
-.item-picker-filters.modal-filters {
-    flex-shrink: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    max-height: min(38vh, 360px);
-    margin-bottom: 0;
-}
 /* search + type + primary + secondary + defense + quality */
 .item-picker-filters-primary-row {
     display: grid;
@@ -2030,6 +2024,7 @@ input, select {
     gap: 8px;
     margin-bottom: 10px;
     align-items: stretch;
+    overflow: visible;
 }
 .item-picker-instance-row {
     display: grid;
@@ -2037,6 +2032,7 @@ input, select {
     gap: 8px;
     margin-bottom: 10px;
     align-items: center;
+    overflow: visible;
 }
 .item-picker-instance-actions {
     display: flex;
@@ -2224,7 +2220,7 @@ input, select {
     min-width: 100%;
     max-height: 220px;
     overflow-y: auto;
-    z-index: 2200;
+    z-index: 2600;
 }
 .instance-filter-section-title {
     padding: 8px 12px 4px;
@@ -2498,7 +2494,12 @@ input, select {
     -webkit-overflow-scrolling: touch;
 }
 .item-picker-panel .stat-dropdown-menu {
-    z-index: 2100;
+    z-index: 2600;
+}
+.item-picker-panel .stat-dropdown-container:has(.stat-dropdown-header.open) {
+    position: relative;
+    z-index: 2550;
+    overflow: visible;
 }
 
 @media (max-height: 520px) {
