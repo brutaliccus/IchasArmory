@@ -2380,7 +2380,8 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-class-sidebar {
 .gp-community-modal {
     width: min(720px, calc(var(--ichacalc-usable-w, 100vw) - 32px));
     max-height: min(85dvh, var(--ichacalc-usable-h, 100dvh));
-    height: auto;
+    /* Explicit height so the results pane (flex:1) can scroll instead of clipping cards / Load more. */
+    height: min(85dvh, var(--ichacalc-usable-h, 100dvh));
     display: flex;
     flex-direction: column;
     overflow: hidden;

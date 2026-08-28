@@ -75,6 +75,8 @@ const communityGearPlansDir = path.join(dataDir, 'community-gear-plans');
 });
 
 const communityIndexPath = path.join(communityGearPlansDir, 'index.json');
+/** Hard ceiling for a single list response. Omitted/`all=1` returns every match up to this. */
+const COMMUNITY_LIST_MAX = 5000;
 
 function readCommunityIndex() {
     try {
@@ -88,6 +90,96 @@ function readCommunityIndex() {
 
 function writeCommunityIndex(entries) {
     fs.writeFileSync(communityIndexPath, JSON.stringify(entries, null, 2));
+}
+
+function sortCommunityIndexEntries(entries) {
+    return [...entries].sort((a, b) => {
+        const scoreA = (Number(a.upvotes) || 0) - (Number(a.downvotes) || 0);
+        const scoreB = (Number(b.upvotes) || 0) - (Number(b.downvotes) || 0);
+        if (scoreB !== scoreA) return scoreB - scoreA;
+        return String(b.updatedAt || '').localeCompare(String(a.updatedAt || ''));
+    });
+}
+
+function communityIndexEntryFromPlan(plan) {
+    if (!plan) return null;
+    return toCommunityEntry(plan, { username: plan.authorName, id: plan.authorId }, {
+        votes: plan.votes,
+        upvotes: plan.upvotes,
+        downvotes: plan.downvotes,
+        createdAt: plan.createdAt,
+    });
+}
+
+/** Keep index.json aligned with on-disk plan files and unpublished cloud saves. */
+function reconcileCommunityIndex() {
+    const current = readCommunityIndex();
+    const byId = new Map();
+    for (const e of current) {
+        const id = sanitizeCommunityPlanId(e && e.id);
+        if (id) byId.set(id, e);
+    }
+    let changed = false;
+    let names = [];
+    try {
+        names = fs.readdirSync(communityGearPlansDir);
+    } catch {
+        return current;
+    }
+    const fileIds = new Set();
+    for (const name of names) {
+        if (!name.endsWith('.json') || name === 'index.json') continue;
+        const id = sanitizeCommunityPlanId(path.basename(name, '.json'));
+        if (!id) continue;
+        fileIds.add(id);
+        if (byId.has(id)) continue;
+        try {
+            const loaded = loadCommunityPlanFile(id);
+            const entry = communityIndexEntryFromPlan(loaded && loaded.plan);
+            if (entry) {
+                byId.set(id, entry);
+                changed = true;
+            }
+        } catch (_) { /* skip unreadable plan file */ }
+    }
+    for (const id of [...byId.keys()]) {
+        if (!fileIds.has(id)) {
+            byId.delete(id);
+            changed = true;
+        }
+    }
+    try {
+        const userNames = fs.readdirSync(usersDir).filter((f) => f.endsWith('.json'));
+        for (const uf of userNames) {
+            let user;
+            try {
+                user = JSON.parse(fs.readFileSync(path.join(usersDir, uf), 'utf-8'));
+            } catch (_) {
+                continue;
+            }
+            const authorId = String(user.id || path.basename(uf, '.json'));
+            for (const plan of user.gearPlans || []) {
+                if (plan.community === false) continue;
+                const id = sanitizeCommunityPlanId(plan.id);
+                if (!id || byId.has(id) || fileIds.has(id)) continue;
+                try {
+                    const entry = publishCommunityGearPlan(plan, {
+                        username: plan.authorName || user.username || 'Anonymous',
+                        id: plan.authorId || authorId,
+                    });
+                    if (entry) {
+                        byId.set(id, entry);
+                        fileIds.add(id);
+                        changed = true;
+                    }
+                } catch (_) { /* skip plans that cannot be published */ }
+            }
+        }
+    } catch (_) { /* users dir missing */ }
+    if (!changed) return current;
+    const next = sortCommunityIndexEntries([...byId.values()]);
+    writeCommunityIndex(next);
+    return next;
 }
 
 function sanitizeCommunityPlanId(id) {
@@ -1506,7 +1598,7 @@ app.get('/community-gear-plans', (req, res) => {
         const specFilter = String(req.query.spec || '').trim().toLowerCase();
         const sort = String(req.query.sort || 'popular').trim().toLowerCase();
         const voterId = sanitizeVoterId(req.query.voterId);
-        let entries = readCommunityIndex();
+        let entries = reconcileCommunityIndex();
         if (classFilter) {
             entries = entries.filter(e => String(e.class || '').toLowerCase() === classFilter);
         }
@@ -1518,9 +1610,9 @@ app.get('/community-gear-plans', (req, res) => {
         }
         if (q) {
             entries = entries.filter(e => {
-                const name = String(e.name || '').toLowerCase();
-                const author = String(e.authorName || '').toLowerCase();
-                return name.includes(q) || author.includes(q);
+                const hay = [e.name, e.authorName, e.description, e.spec, e.class]
+                    .map(x => String(x || '').toLowerCase()).join(' ');
+                return hay.includes(q);
             });
         }
         entries = [...entries].sort((a, b) => {
@@ -1536,11 +1628,16 @@ app.get('/community-gear-plans', (req, res) => {
         });
         res.set('Cache-Control', 'no-store');
         const total = entries.length;
+        const wantAll = String(req.query.all || '') === '1'
+            || String(req.query.limit || '').toLowerCase() === 'all';
         const limitRaw = parseInt(req.query.limit, 10);
         const offsetRaw = parseInt(req.query.offset, 10);
-        const limit = Number.isFinite(limitRaw) ? Math.min(Math.max(limitRaw, 1), 100) : 50;
         const offset = Number.isFinite(offsetRaw) ? Math.max(offsetRaw, 0) : 0;
-        const page = entries.slice(offset, offset + limit);
+        // Default / all=1: return the full filtered set (capped at COMMUNITY_LIST_MAX).
+        const limit = wantAll || !Number.isFinite(limitRaw)
+            ? Math.min(COMMUNITY_LIST_MAX, Math.max(total - offset, 0))
+            : Math.min(Math.max(limitRaw, 1), COMMUNITY_LIST_MAX);
+        const page = entries.slice(offset, offset + Math.max(limit, 0));
         res.json({
             success: true,
             plans: page.map(e => publicCommunityEntry(e, voterId)),

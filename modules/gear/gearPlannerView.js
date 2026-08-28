@@ -2864,9 +2864,15 @@ function formatTalentSpread(spread) {
 
 let communitySearchDebounceTimer = null;
 const COMMUNITY_SEARCH_DEBOUNCE_MS = 250;
-const COMMUNITY_PAGE_SIZE = 50;
+/** UI page size only — search/filter always run on the full in-memory catalog. */
+const BUILDS_PAGE_SIZE = 50;
+const COMMUNITY_CATALOG_PAGE = 500;
 let buildsBrowseActiveTab = 'personal';
-let communityBrowseState = { plans: [], offset: 0, hasMore: false, total: 0, loading: false };
+let communityCatalog = null;
+let communityCatalogLoading = false;
+let personalCatalog = null;
+let personalCloudIds = new Set();
+let browseResults = { filtered: [], shown: 0 };
 
 const CLASS_TALENT_TREE_KEYS = {
     warrior: ['arms', 'fury', 'protection'],
@@ -2955,7 +2961,7 @@ function wireCommunitySearchDialog() {
     document.getElementById('gp-community-search-dialog')?.addEventListener('click', (e) => {
         if (e.target.id === 'gp-community-search-dialog') hide();
     });
-    document.getElementById('gp-community-search-go')?.addEventListener('click', () => runBuildsBrowseSearch());
+    document.getElementById('gp-community-search-go')?.addEventListener('click', () => runBuildsBrowseSearch({ refreshCatalog: true }));
     document.getElementById('gp-community-q')?.addEventListener('input', () => scheduleBuildsBrowseSearch());
     document.getElementById('gp-community-q')?.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
@@ -2972,10 +2978,12 @@ function wireCommunitySearchDialog() {
     document.getElementById('gp-community-sort')?.addEventListener('change', () => runBuildsBrowseSearch());
     document.getElementById('gp-builds-tab-personal')?.addEventListener('click', () => setBuildsBrowseTab('personal'));
     document.getElementById('gp-builds-tab-community')?.addEventListener('click', () => setBuildsBrowseTab('community'));
-    document.getElementById('gp-community-load-more')?.addEventListener('click', () => loadMoreCommunityBuilds());
+    document.getElementById('gp-community-load-more')?.addEventListener('click', () => loadMoreBrowseBuilds());
 }
 
 function openBuildsBrowseDialog(tab = 'personal') {
+    communityCatalog = null;
+    personalCatalog = null;
     fillCommunitySpecFilter(document.getElementById('gp-community-class')?.value || '');
     const dlg = document.getElementById('gp-community-search-dialog');
     if (dlg) dlg.style.display = 'flex';
@@ -2987,15 +2995,15 @@ function closeBuildsBrowseDialog() {
     if (el) el.style.display = 'none';
 }
 
-async function runBuildsBrowseSearch() {
+async function runBuildsBrowseSearch({ refreshCatalog = false } = {}) {
     if (buildsBrowseActiveTab === 'personal') {
-        await runPersonalBuildsSearch();
+        await runPersonalBuildsSearch({ refreshCatalog });
         return;
     }
-    await runCommunitySearch();
+    await runCommunitySearch({ refreshCatalog });
 }
 
-function filterPersonalPlans(plans, filters) {
+function filterBrowsePlans(plans, filters) {
     const q = String(filters.q || '').trim().toLowerCase();
     return plans.filter((p) => {
         if (filters.class && String(p.class || '').toLowerCase() !== filters.class) return false;
@@ -3005,7 +3013,8 @@ function filterPersonalPlans(plans, filters) {
         }
         if (filters.spec && String(p.spec || '') !== filters.spec) return false;
         if (q) {
-            const hay = `${p.name || ''} ${p.authorName || ''}`.toLowerCase();
+            const hay = [p.name, p.authorName, p.description, p.spec, p.class]
+                .map((x) => String(x || '').toLowerCase()).join(' ');
             if (!hay.includes(q)) return false;
         }
         return true;
@@ -3025,12 +3034,62 @@ function sortPersonalPlans(plans, sortKey) {
     return sortPlansFavFirst(sorted);
 }
 
-async function runPersonalBuildsSearch() {
+function sortCommunityPlans(plans, sortKey) {
+    const sorted = [...plans];
+    if (sortKey === 'recent') {
+        sorted.sort((a, b) => String(b.updatedAt || b.createdAt || '').localeCompare(String(a.updatedAt || a.createdAt || '')));
+        return sorted;
+    }
+    sorted.sort((a, b) => {
+        const scoreA = (Number(a.upvotes) || 0) - (Number(a.downvotes) || 0);
+        const scoreB = (Number(b.upvotes) || 0) - (Number(b.downvotes) || 0);
+        if (scoreB !== scoreA) return scoreB - scoreA;
+        const upDiff = (Number(b.upvotes) || 0) - (Number(a.upvotes) || 0);
+        if (upDiff !== 0) return upDiff;
+        return String(b.updatedAt || b.createdAt || '').localeCompare(String(a.updatedAt || a.createdAt || ''));
+    });
+    return sorted;
+}
+
+function resetBrowsePage(filtered) {
+    browseResults.filtered = filtered;
+    browseResults.shown = Math.min(BUILDS_PAGE_SIZE, filtered.length);
+}
+
+function visibleBrowsePage() {
+    return browseResults.filtered.slice(0, browseResults.shown);
+}
+
+function syncBrowseLoadMoreUi() {
     const loadMoreWrap = document.getElementById('gp-community-load-more-wrap');
-    if (loadMoreWrap) loadMoreWrap.hidden = true;
-    const results = document.getElementById('gp-community-results');
-    if (results) results.innerHTML = '<div class="gp-community-empty">Loading…</div>';
-    const filters = getBuildsBrowseFilters();
+    const loadMoreBtn = document.getElementById('gp-community-load-more');
+    const remaining = Math.max(0, browseResults.filtered.length - browseResults.shown);
+    if (loadMoreWrap) loadMoreWrap.hidden = remaining <= 0;
+    if (loadMoreBtn) {
+        loadMoreBtn.disabled = false;
+        loadMoreBtn.textContent = remaining > 0
+            ? `Load more builds (${remaining} remaining)`
+            : 'Load more builds';
+    }
+}
+
+function renderVisibleBrowsePage() {
+    const visible = visibleBrowsePage();
+    if (buildsBrowseActiveTab === 'personal') {
+        renderPersonalBuildResults(visible, { cloudIds: personalCloudIds });
+    } else {
+        renderCommunityResults(visible);
+    }
+    syncBrowseLoadMoreUi();
+}
+
+function loadMoreBrowseBuilds() {
+    if (browseResults.shown >= browseResults.filtered.length) return;
+    browseResults.shown = Math.min(browseResults.shown + BUILDS_PAGE_SIZE, browseResults.filtered.length);
+    renderVisibleBrowsePage();
+}
+
+async function loadPersonalCatalog() {
     const cloudIds = new Set();
     let cloud = [];
     if (window.profileManager?.user) {
@@ -3039,10 +3098,21 @@ async function runPersonalBuildsSearch() {
     }
     const local = loadLocalGearPlans();
     const localOnly = local.filter((lp) => !cloudIds.has(String(lp.id)));
-    const allPlans = [...cloud, ...localOnly];
-    const filtered = filterPersonalPlans(allPlans, filters);
-    const sorted = sortPersonalPlans(filtered, filters.sort);
-    renderPersonalBuildResults(sorted, { cloudIds });
+    personalCloudIds = cloudIds;
+    personalCatalog = [...cloud, ...localOnly];
+    return personalCatalog;
+}
+
+async function runPersonalBuildsSearch({ refreshCatalog = false } = {}) {
+    const results = document.getElementById('gp-community-results');
+    if (refreshCatalog || !personalCatalog) {
+        if (results) results.innerHTML = '<div class="gp-community-empty">Loading…</div>';
+        await loadPersonalCatalog();
+    }
+    const filters = getBuildsBrowseFilters();
+    const filtered = sortPersonalPlans(filterBrowsePlans(personalCatalog || [], filters), filters.sort);
+    resetBrowsePage(filtered);
+    renderVisibleBrowsePage();
 }
 
 function userOwnsBrowsePlan(p) {
@@ -3141,71 +3211,66 @@ function buildGearPlanCardHtml(p, { variant = 'community', isLocal = false } = {
         </article>`;
 }
 
-async function runCommunitySearch({ append = false } = {}) {
-    const results = document.getElementById('gp-community-results');
-    const loadMoreWrap = document.getElementById('gp-community-load-more-wrap');
-    const loadMoreBtn = document.getElementById('gp-community-load-more');
-    if (communityBrowseState.loading) return;
-    communityBrowseState.loading = true;
-    if (!append) {
-        communityBrowseState = { plans: [], offset: 0, hasMore: false, total: 0, loading: true };
-        if (results) results.innerHTML = '<div class="gp-community-empty">Searching…</div>';
-        if (loadMoreWrap) loadMoreWrap.hidden = true;
-    } else if (loadMoreBtn) {
-        loadMoreBtn.disabled = true;
-        loadMoreBtn.textContent = 'Loading…';
+async function requestCommunityGearPlans(filters) {
+    if (window.profileManager?.fetchCommunityGearPlans) {
+        return window.profileManager.fetchCommunityGearPlans(filters);
     }
-    const filters = {
-        ...getBuildsBrowseFilters(),
-        limit: COMMUNITY_PAGE_SIZE,
-        offset: append ? communityBrowseState.plans.length : 0,
+    const params = new URLSearchParams();
+    Object.entries(filters).forEach(([k, v]) => {
+        if (v != null && v !== '') params.set(k, String(v));
+    });
+    const qs = params.toString();
+    const res = await fetch(`/community-gear-plans${qs ? `?${qs}` : ''}`, { credentials: 'include' });
+    const data = await res.json();
+    if (!data.success) return { plans: [], total: 0, hasMore: false, offset: 0, limit: 0 };
+    return {
+        plans: data.plans || [],
+        total: Number(data.total) || 0,
+        hasMore: !!data.hasMore,
+        offset: Number(data.offset) || 0,
+        limit: Number(data.limit) || 0,
     };
-    let page = { plans: [], total: 0, hasMore: false, offset: 0, limit: COMMUNITY_PAGE_SIZE };
-    try {
-        if (window.profileManager?.fetchCommunityGearPlans) {
-            page = await window.profileManager.fetchCommunityGearPlans(filters);
-        } else {
-            const params = new URLSearchParams();
-            Object.entries(filters).forEach(([k, v]) => { if (v != null && v !== '') params.set(k, String(v)); });
-            const qs = params.toString();
-            const res = await fetch(`/community-gear-plans${qs ? `?${qs}` : ''}`, { credentials: 'include' });
-            const data = await res.json();
-            if (data.success) {
-                page = {
-                    plans: data.plans || [],
-                    total: Number(data.total) || 0,
-                    hasMore: !!data.hasMore,
-                    offset: Number(data.offset) || 0,
-                    limit: Number(data.limit) || COMMUNITY_PAGE_SIZE,
-                };
-            }
-        }
-    } catch (e) {
-        console.error('[Gear Planner] community search failed', e);
-    }
-    communityBrowseState.loading = false;
-    communityBrowseState.total = page.total;
-    communityBrowseState.hasMore = page.hasMore;
-    communityBrowseState.offset = page.offset;
-    communityBrowseState.plans = append
-        ? [...communityBrowseState.plans, ...(page.plans || [])]
-        : (page.plans || []);
-    renderCommunityResults(communityBrowseState.plans, { append });
-    if (loadMoreWrap) {
-        loadMoreWrap.hidden = !communityBrowseState.hasMore;
-    }
-    if (loadMoreBtn) {
-        loadMoreBtn.disabled = false;
-        const remaining = Math.max(0, communityBrowseState.total - communityBrowseState.plans.length);
-        loadMoreBtn.textContent = remaining > 0
-            ? `Load more builds (${remaining} remaining)`
-            : 'Load more builds';
-    }
 }
 
-function loadMoreCommunityBuilds() {
-    if (!communityBrowseState.hasMore || communityBrowseState.loading) return;
-    runCommunitySearch({ append: true });
+async function loadCommunityCatalog() {
+    if (communityCatalogLoading && communityCatalog) return communityCatalog;
+    communityCatalogLoading = true;
+    const voterId = getCommunityVoterId();
+    let page = { plans: [], total: 0, hasMore: false };
+    try {
+        page = await requestCommunityGearPlans({ all: 1, voterId, sort: 'popular' });
+        let plans = [...(page.plans || [])];
+        while (page.hasMore && (page.plans || []).length) {
+            page = await requestCommunityGearPlans({
+                voterId,
+                sort: 'popular',
+                limit: COMMUNITY_CATALOG_PAGE,
+                offset: plans.length,
+            });
+            plans = plans.concat(page.plans || []);
+            if (page.total && plans.length >= page.total) break;
+            if (plans.length > 20000) break;
+        }
+        communityCatalog = plans;
+    } catch (e) {
+        console.error('[Gear Planner] community catalog failed', e);
+        if (!communityCatalog) communityCatalog = [];
+    } finally {
+        communityCatalogLoading = false;
+    }
+    return communityCatalog;
+}
+
+async function runCommunitySearch({ refreshCatalog = false } = {}) {
+    const results = document.getElementById('gp-community-results');
+    if (refreshCatalog || !communityCatalog) {
+        if (results) results.innerHTML = '<div class="gp-community-empty">Searching…</div>';
+        await loadCommunityCatalog();
+    }
+    const filters = getBuildsBrowseFilters();
+    const filtered = sortCommunityPlans(filterBrowsePlans(communityCatalog || [], filters), filters.sort);
+    resetBrowsePage(filtered);
+    renderVisibleBrowsePage();
 }
 
 function formatCommunityDate(iso) {
@@ -3290,7 +3355,10 @@ function wireCommunityResultCards(list, plans = [], { onlyUnwired = false } = {}
         });
     });
     wireBrowseShareButtons(list, plans);
-    wireBrowseDeleteButtons(list, plans, () => runCommunitySearch());
+    wireBrowseDeleteButtons(list, plans, () => {
+        communityCatalog = null;
+        runCommunitySearch({ refreshCatalog: true });
+    });
 }
 
 async function shareGearPlanFromBrowse(plan, variant) {
@@ -3383,12 +3451,16 @@ function wirePersonalResultCards(list, plans) {
             } else if (window.profileManager?.setGearPlanFavorite) {
                 await window.profileManager.setGearPlanFavorite(id);
             }
-            runPersonalBuildsSearch();
+            personalCatalog = null;
+            runPersonalBuildsSearch({ refreshCatalog: true });
         });
     });
     wireBrowseVoteButtons(list);
     wireBrowseShareButtons(list, plans);
-    wireBrowseDeleteButtons(list, plans, () => runPersonalBuildsSearch());
+    wireBrowseDeleteButtons(list, plans, () => {
+        personalCatalog = null;
+        runPersonalBuildsSearch({ refreshCatalog: true });
+    });
 }
 
 async function loadPersonalPlanFromBrowse(plan) {

@@ -95,7 +95,7 @@ This document provides an index of all documentation files created for the IchaC
 - Loot source filter in item modal (dungeons, raids, world bosses, other)
 - Session persistence via `ichacalc_gear_planner_session_v1`
 - Cloud saves: `user.gearPlans[]`, share URL `?gp=id`, Discord inbox `kind: gearPlan`
-- Community browser: authenticated cloud saves publish to `data/community-gear-plans/`; `GET /community-gear-plans` (+ `/:id`); GP header search modal (class/role/spec filters). Save requires role + talent-tree `spec` + icon (`data/wow-icons.json`).
+- Community browser: authenticated cloud saves publish to `data/community-gear-plans/`; Browse Builds fetches the full catalog (`GET /community-gear-plans?all=1`, index reconciled from plan files + unpublished cloud saves) then search/filters that list and paginates only the matches. Save requires role + talent-tree `spec` + icon (`data/wow-icons.json`).
 - **Armory import (Chronicle):** GP Plans header **Import** button + shared `modules/armory/armoryImport.js` pipeline; loads primaries, enchants, and **talents** on `currentPlan`. Character Planner uses the same fetch/apply module via `armory.js`.
 - Data: `data/loot/` from `npm run import:loot` (TurtleAtlasLootWeb)
 - **Mobile:** [`docs/GEAR_PLANNER_MOBILE_PLAN.md`](docs/GEAR_PLANNER_MOBILE_PLAN.md) and [`modules/ui/gpMobile.md`](modules/ui/gpMobile.md) — `body.gp-mobile`, Gear/Locations/Stats tabs, sheet modals, manual UI scale on GP mobile.
