@@ -2152,7 +2152,7 @@ const GP_WEAPON_SKILL_CHILDREN = [
 ];
 
 const GP_AVOIDANCE_CHILDREN = [
-    ['missChance', 'Chance to be Missed', 'pct'],
+    ['missChance', 'Miss', 'pct'],
     ['dodge', 'Dodge', 'pct'],
     ['parry', 'Parry', 'pct'],
     ['block', 'Block', 'pct'],
