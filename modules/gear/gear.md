@@ -25,11 +25,13 @@ Gear management module — handles equipping/unequipping items, computing aggreg
 | `buildLocalWowIconPackUrl(iconRef)` | Local save-picker URL under `/assets/wow-icons/large/`. |
 | `resolveGearPlanIconUrl(iconRef, size?)` | Gear plan stored icons: local pack; passes through assets/ and legacy URLs. |
 | `buildChronicleIconUrl(iconRef)` | Builds `https://icons.chronicleclassic.com/turtle/{basename}.webp` from a basename or legacy URL. |
-| `buildOctowowIconUrl(iconRef, size?)` | Fallback: `https://octowow.st/db/images/icons/{large\|medium}/{basename}.png`. |
+| `buildOctowowIconUrl(iconRef, size?)` | Fallback: `https://database.ravencraft.io/images/icons/{large\|medium}/{basename}.png`. |
+| `buildItemDbUrl(itemId)` | Item page: `https://database.ravencraft.io/?item={id}`. |
+| `buildNpcDbUrl(npcId)` | NPC page: `https://database.ravencraft.io/?npc={id}`. |
 | `resolveIconUrl(iconRef, size?)` | Preferred icon URL for items/UI: Chronicle turtle webp for game icons. Whitelisted same-origin assets under `assets/icons/`: app UI (logo, gear compare, combat toggles), Gear Planner WoW UI chrome (`UI-Panel-MinimizeButton-Up`, `UI-PlusButton-Up`), and HD class art `wiki_*.png` → `/assets/icons/wiki_….png`. Legacy `assets/icons/{spell,classicon,race_*,…}` paths are CDN-routed unless whitelisted. |
-| `EMPTY_ENCHANT_ICON_URL` | Hardcoded zamimg URL for the **unequipped** enchant scroll (`.enchant-btn` default in `style.css`). Not passed through `resolveIconUrl`. Applied enchants use the gold scroll via `.is-enchanted` CSS (Chronicle/octowow `inv_scroll_05`). |
+| `EMPTY_ENCHANT_ICON_URL` | Hardcoded zamimg URL for the **unequipped** enchant scroll (`.enchant-btn` default in `style.css`). Not passed through `resolveIconUrl`. Applied enchants use the gold scroll via `.is-enchanted` CSS (Chronicle/RavenCraft `inv_scroll_05`). |
 | `createIconImage(iconName, altText)` | Creates `<img>` using `resolveIconUrl` (fallback chain via `installIconLoadFallbacks`). |
-| `installIconLoadFallbacks()` | Global capture-phase `error` listener: failed icons retry Chronicle → octowow → zamimg (last resort). |
+| `installIconLoadFallbacks()` | Global capture-phase `error` listener: failed icons retry Chronicle → RavenCraft → zamimg (last resort). |
 | `applyEnchant(slotId, enchantIndex)` | Apply an enchant to a slot. |
 | `getAppliedEnchant(slotId)` | Get the enchant currently applied to a slot. |
 

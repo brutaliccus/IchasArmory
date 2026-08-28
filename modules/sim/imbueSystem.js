@@ -202,7 +202,7 @@ export function processFrostbrandWeapon(ctx, triggerSource, triggerIcon) {
             isCrit: false
         };
 
-    const icon = spell.icon || 'https://octowow.st/db/images/icons/large/spell_frost_frostbrand.png';
+    const icon = spell.icon || 'https://database.ravencraft.io/images/icons/large/spell_frost_frostbrand.png';
 
     if (ctx.recordDamage) {
         ctx.recordDamage('Frostbrand Weapon', outcome.damage, {

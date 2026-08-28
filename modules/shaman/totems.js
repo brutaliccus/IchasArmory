@@ -52,7 +52,7 @@ export const totemDefinitions = {
                 reductionPerRank: 1 // -1s per rank
             }
         },
-        icon: 'https://octowow.st/db/images/icons/large/spell_fire_sealoffire.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_fire_sealoffire.png',
         color: '#FF4500'
     },
     
@@ -73,7 +73,7 @@ export const totemDefinitions = {
                 hastePerRank: 0.10 // +10% attack speed per rank
             }
         },
-        icon: 'https://octowow.st/db/images/icons/large/spell_fire_searingtotem.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_fire_searingtotem.png',
         color: '#FF6B35'
     },
     
@@ -90,7 +90,7 @@ export const totemDefinitions = {
             pulseInterval: 2.0, // Damage every 2s
             aoeRadius: 8 // yards
         },
-        icon: 'https://octowow.st/db/images/icons/large/spell_fire_selfdestruct.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_fire_selfdestruct.png',
         color: '#FF0000'
     },
     
@@ -110,7 +110,7 @@ export const totemDefinitions = {
             initialThreat: 136, // Threat on drop
             totalPulses: 8 // 8 pulses over 15s
         },
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_stoneclawtotem.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_nature_stoneclawtotem.png',
         color: '#8B4513'
     },
     
@@ -128,7 +128,7 @@ export const totemDefinitions = {
             auraEffect: 'windfuryBuff',
             range: 20 // yards
         },
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_windfury.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_nature_windfury.png',
         color: '#87CEEB'
     },
     
@@ -146,7 +146,7 @@ export const totemDefinitions = {
             agilityBonus: 77, // +77 agility
             range: 20
         },
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_invisibilitytotem.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_nature_invisibilitytotem.png',
         color: '#00CED1'
     }
 };

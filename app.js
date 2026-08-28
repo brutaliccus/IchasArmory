@@ -3,7 +3,7 @@
 import './notifications.js';
 import './profiles.js';
 
-import { getItemsForSlot, getItemById, generateGearSlots, getGearStats, getEnchantStats, equipItem, clearItem, clearAllItems, updateStatDisplay, getCurrentlyEquippedItem, ICON_BASE_URL, ICON_BASE_URL_BACKUP, PLACEHOLDER_ICON_URL, slotIconMap, refreshEmptySlotPlaceholders, getEnchantableSlots, applyEnchant, updateEnchantDisplay, getAppliedEnchant, createIconImage, getEquippedGear, getEquippedGearObjects, setEquippedGear, getSelectedEnchants, setSelectedEnchants, isRangedWeaponEnchantable, getRangedWeaponType, getMeleeWeaponType, getAllSpellStrikeSources, resolveIconUrl } from './modules/gear/gear.js';
+import { getItemsForSlot, getItemById, generateGearSlots, getGearStats, getEnchantStats, equipItem, clearItem, clearAllItems, updateStatDisplay, getCurrentlyEquippedItem, ICON_BASE_URL, ICON_BASE_URL_BACKUP, PLACEHOLDER_ICON_URL, slotIconMap, refreshEmptySlotPlaceholders, getEnchantableSlots, applyEnchant, updateEnchantDisplay, getAppliedEnchant, createIconImage, getEquippedGear, getEquippedGearObjects, setEquippedGear, getSelectedEnchants, setSelectedEnchants, isRangedWeaponEnchantable, getRangedWeaponType, getMeleeWeaponType, getAllSpellStrikeSources, resolveIconUrl, buildItemDbUrl } from './modules/gear/gear.js';
 import { enchantDatabase } from './modules/gear/enchants.js';
 import { findEnchantIndexByEffectId } from './modules/gear/enchantEffectIds.js';
 import { generateBuffIcons, getActiveBuffs, handleBuffExclusivity, applyBuffListToDom, clearAllBuffsDebuffsInDom } from './modules/character/buffs.js';
@@ -4703,7 +4703,7 @@ async function init() {
             if (item && item.id) {
                 e.preventDefault();
                 e.stopPropagation();
-                window.open('https://octowow.st/db/?item=' + item.id, '_blank');
+                window.open(buildItemDbUrl(item.id), '_blank');
             }
         }
     });
@@ -4869,7 +4869,7 @@ async function init() {
         if (modalItem && modalItem.dataset.itemId) {
             e.preventDefault();
             e.stopPropagation();
-            window.open('https://octowow.st/db/?item=' + modalItem.dataset.itemId, '_blank');
+            window.open(buildItemDbUrl(modalItem.dataset.itemId), '_blank');
         }
     });
 

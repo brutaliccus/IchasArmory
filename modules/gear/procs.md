@@ -123,7 +123,7 @@ Trinkets that grant temporary buffs or deal damage.
 **Chance-on-Hit Trinkets:**
 - **Badge of the Swarmguard** - Stacking armor penetration (6 stacks max)
 - **Totem of the Stonebreaker** - 130 AP on shock hit (35% chance)
-- **Totem of Thundercall** (item 33089) - `procType: 'onStormstrikeHit'`, **70%** chance in `procs.js` (temporary: item DB says 35% but behaves like double rate in-game; revert proc to 35 when aligned); `effect.type: 'thundercallStormCloud'` — handled entirely by **`procEngine.js`** (`EFFECT_HANDLERS.thundercallStormCloud`): `fireMeleeAttackTriggers` → `onStormstrikeHit` → `processProcTrigger` → `rollProcChance` (uses `procsFromProcsJs` + Fortune like other item procs). Effect sets `skipScheduleExpiration` / `skipUptimeTracking` (scheduled ticks only, no fake buff expiry). `findActiveProcs` matches equipped items by **item id** even when `name` is missing. Storm cloud ticks use **`resistanceProfile: 'dot'`** so `rollForResistance('nature', { isDot: true })` runs. UI icon: `https://octowow.st/db/images/icons/large/spell_nature_callstorm.png` (proc definition + `getAbilityIconUrl('Storm Cloud (Totem of Thundercall)')` in `dps.js`). Tooltip sim star: `isItemProcModeled` uses normalized item ids + `getProcByItemId` fallback.
+- **Totem of Thundercall** (item 33089) - `procType: 'onStormstrikeHit'`, **70%** chance in `procs.js` (temporary: item DB says 35% but behaves like double rate in-game; revert proc to 35 when aligned); `effect.type: 'thundercallStormCloud'` — handled entirely by **`procEngine.js`** (`EFFECT_HANDLERS.thundercallStormCloud`): `fireMeleeAttackTriggers` → `onStormstrikeHit` → `processProcTrigger` → `rollProcChance` (uses `procsFromProcsJs` + Fortune like other item procs). Effect sets `skipScheduleExpiration` / `skipUptimeTracking` (scheduled ticks only, no fake buff expiry). `findActiveProcs` matches equipped items by **item id** even when `name` is missing. Storm cloud ticks use **`resistanceProfile: 'dot'`** so `rollForResistance('nature', { isDot: true })` runs. UI icon: `https://database.ravencraft.io/images/icons/large/spell_nature_callstorm.png` (proc definition + `getAbilityIconUrl('Storm Cloud (Totem of Thundercall)')` in `dps.js`). Tooltip sim star: `isItemProcModeled` uses normalized item ids + `getProcByItemId` fallback.
 - **Wrath of Cenarius** - 132 spell damage on spell hit (5% chance)
 - **Loop of Unceasing Frost** (ring **55503**) — `procTypes: ['onMeleeHit','onSpellHit']`, `effect.type: 'targetFireDamageTakenDebuff'`: **4%** on allowed melee only (`Auto Attack`, `Stormstrike`, `Lightning Strike (Physical)`; excludes Windfury and other melee). **Lightning Strike** does **not** use the 10% spell path on the nature hit—only the physical swing (`fireMeleeAttackTriggers` with source `Lightning Strike (Physical)`). **10%** on other `onSpellHit` sources (`denySpellHitSubstrings`: **Flametongue**, **Spell Strike** — weapon/enchant `Spell Strike (Fire)` etc. from `abilityCasting.processSpellStrikeHits`). Applies **×1.05** to `ctx.stats.fireDamageMultiplier` for **10s** (CoE-style fire taken); refresh extends duration without stacking the multiplier. Sim display: debuff **`name` `Freezing Cold`**, icon `spell_frost_frostshock.png` (`itemName` remains **Loop of Unceasing Frost** for gear matching). Per-trigger odds use `effect.procChanceByTrigger`; Fortune scales both rates without using the single-value `procsFromProcsJs` override.
 
@@ -1142,7 +1142,7 @@ console.log(`NAC uptime: ${uptimePercent.toFixed(1)}%`);
     procType: 'onUse',
     noGlobalCooldown: true,
     color: '#8B4513',
-    icon: 'https://octowow.st/db/images/icons/large/inv_trinket_naxxramas01.png',
+    icon: 'https://database.ravencraft.io/images/icons/large/inv_trinket_naxxramas01.png',
     effect: {
         type: 'statBuff',
         stats: { attackPower: 280 }
@@ -1182,7 +1182,7 @@ console.log(`NAC uptime: ${uptimePercent.toFixed(1)}%`);
     procType: 'chanceOnHit',
     procChance: 2.0, // 2% chance
     color: '#4169E1',
-    icon: 'https://octowow.st/db/images/icons/large/inv_misc_bone_dragonskull_01.png',
+    icon: 'https://database.ravencraft.io/images/icons/large/inv_misc_bone_dragonskull_01.png',
     effect: {
         type: 'statBuff',
         stats: { attackPower: 200, defenseRating: 300 }
@@ -1243,7 +1243,7 @@ console.log(`NAC uptime: ${uptimePercent.toFixed(1)}%`);
         return modifiedStats;
     },
     color: '#FFD700',
-    icon: 'https://octowow.st/db/images/icons/large/spell_holy_blessingofstrength.png'
+    icon: 'https://database.ravencraft.io/images/icons/large/spell_holy_blessingofstrength.png'
 }
 ```
 
@@ -1273,7 +1273,7 @@ console.log(`NAC uptime: ${uptimePercent.toFixed(1)}%`);
         consumedBy: ['autoAttack']
     },
     color: '#4CAF50',
-    icon: 'https://octowow.st/db/images/icons/large/ability_ghoulfrenzy.png',
+    icon: 'https://database.ravencraft.io/images/icons/large/ability_ghoulfrenzy.png',
     getTalentRank: function(characterData) {
         if (characterData?.talentBonuses?.flurry) {
             return characterData.talentBonuses.flurry;
@@ -1324,7 +1324,7 @@ console.log(`NAC uptime: ${uptimePercent.toFixed(1)}%`);
         applyMultipliers: ['elementalFury', 'elementalWeapons']
     },
     color: '#FF4500',
-    icon: 'https://octowow.st/db/images/icons/large/spell_fire_lavaspawn.png',
+    icon: 'https://database.ravencraft.io/images/icons/large/spell_fire_lavaspawn.png',
     modifiesStats: (baseStats) => baseStats
 }
 ```
@@ -1353,7 +1353,7 @@ console.log(`NAC uptime: ${uptimePercent.toFixed(1)}%`);
         stackTrigger: 'onMeleeHit'
     },
     color: '#8B4513',
-    icon: 'https://octowow.st/db/images/icons/large/inv_trinket_naxxramas05.png',
+    icon: 'https://database.ravencraft.io/images/icons/large/inv_trinket_naxxramas05.png',
     modifiesStats: (baseStats) => baseStats
 }
 ```
@@ -1383,7 +1383,7 @@ if (state.isActive && state.stacks < state.maxStacks) {
     name: 'Elemental Focus',
     itemName: 'Elemental Focus',
     color: '#00CED1',
-    icon: 'https://octowow.st/db/images/icons/large/spell_shadow_manaburn.png',
+    icon: 'https://database.ravencraft.io/images/icons/large/spell_shadow_manaburn.png',
     cooldown: 0,
     duration: 15,
     maxCharges: 2,

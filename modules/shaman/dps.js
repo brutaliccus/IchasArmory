@@ -3,7 +3,7 @@
 import { shamanSpells } from './spells.js';
 import { ShamanStats, callOfThunderCritBonusFraction } from '../character/shamanTalents.js';
 import { calculateSpellDPS, calculateSpellDamage, formatDamage, formatDPS } from './damageCalc.js';
-import { getCurrentlyEquippedItem, getAllSpellStrikeSources, getEquippedGearObjects, getItemById, equipItem, clearItem, createIconImage, slotIconMap, setVirtualStatWeightItem, clearVirtualStatWeightItem, applyEnchant, getSelectedEnchants, getEnchantableSlots, resolveIconUrl } from '../gear/gear.js';
+import { getCurrentlyEquippedItem, getAllSpellStrikeSources, getEquippedGearObjects, getItemById, equipItem, clearItem, createIconImage, slotIconMap, setVirtualStatWeightItem, clearVirtualStatWeightItem, applyEnchant, getSelectedEnchants, getEnchantableSlots, resolveIconUrl, buildNpcDbUrl } from '../gear/gear.js';
 import { GEAR_PLAN_SLOTS } from '../gear/gearPlanner.js';
 import { enchantDatabase } from '../gear/enchants.js';
 import { openCustomRadialMenu, openRadialMenu, closeRadialMenu } from '../ui/radialMenu.js';
@@ -152,9 +152,9 @@ function getCanonicalDpsBossNpcId(bossId) {
     return Number.isFinite(n) ? n : bossId;
 }
 
-/** Turtle WoW DB NPC pages use `/?npc=id` (paths like `/npc/123` return 404). */
+/** RavenCraft DB NPC pages use `/?npc=id` (paths like `/npc/123` return 404). */
 function getTurtleNpcDatabaseUrl(npcId) {
-    return `https://octowow.st/db/?npc=${encodeURIComponent(String(npcId))}`;
+    return buildNpcDbUrl(npcId);
 }
 
 function formatDpsBossFactionLabel(rawTag) {
@@ -5341,7 +5341,7 @@ function generateSimConfigModalHTML(containerElement, stats, forceDefaultBoss = 
     html += '<div class="dps-sim-config-target-meta" style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-bottom: 8px; font-size: 11px; color: #888;">';
     html += '<span>Creature type: <span class="dps-target-faction-display" style="color:#c9d4c9;">—</span></span>';
     html += '<span class="dps-boss-db-link-wrap" style="display: none;">';
-    html += '<a class="dps-boss-db-link" href="https://octowow.st/db/?npc=0" target="_blank" rel="noopener noreferrer" style="color: #6ab7ff;">Open in Turtle DB</a>';
+    html += '<a class="dps-boss-db-link" href="https://database.ravencraft.io/?npc=0" target="_blank" rel="noopener noreferrer" style="color: #6ab7ff;">Open in Turtle DB</a>';
     html += '</span>';
     html += '</div>';
 
@@ -5520,7 +5520,7 @@ function generateDpsSharedTargetStripHTML(savedDPSTab) {
     html += '<div id="dps-boss-display-name" style="font-size: 16px; font-weight: bold; color: #ffd700; line-height: 1.25; word-break: break-word; text-align: center;">Target</div>';
     html += '<div style="font-size: 11px; color: #888;">Creature type: <span class="dps-target-faction-display" style="color:#c9d4c9;">—</span></div>';
     html += '<div class="dps-boss-db-link-wrap" style="display: none; line-height: 1.2;">';
-    html += '<a class="dps-boss-db-link" href="https://octowow.st/db/?npc=0" target="_blank" rel="noopener noreferrer" style="font-size: 11px; color: #6ab7ff;">Turtle WoW DB</a>';
+    html += '<a class="dps-boss-db-link" href="https://database.ravencraft.io/?npc=0" target="_blank" rel="noopener noreferrer" style="font-size: 11px; color: #6ab7ff;">Turtle WoW DB</a>';
     html += '</div>';
     html += '</div>';
     html += '<div class="dps-combat-summary-stats" style="font-size: 11px; color: #aaa; display: flex; flex-direction: column; gap: 8px; width: 100%; text-align: center;">';

@@ -70,7 +70,7 @@ export const procDefinitions = [
             hastePercent: 20
         },
         color: '#800080',
-        icon: 'https://octowow.st/db/images/icons/large/inv_trinket_naxxramas04.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_trinket_naxxramas04.png',
         modifiesStats: (baseStats, characterData) => baseStats
     },
     {
@@ -130,7 +130,7 @@ export const procDefinitions = [
         name: 'Redoubt',
         itemName: 'Redoubt', // For talent detection
         color: '#FF9800',
-        icon: 'https://octowow.st/db/images/icons/large/ability_defend.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/ability_defend.png',
         cooldown: 0, // No cooldown
         duration: 10, // 10 seconds
         maxBlocks: 5, // Expires after 5 blocks OR 10 seconds, whichever comes first
@@ -211,7 +211,7 @@ export const procDefinitions = [
         name: 'Holy Shield',
         itemName: 'Holy Shield', // Talent-based, not item-based
         color: '#FFD700',
-        icon: 'https://octowow.st/db/images/icons/large/spell_holy_blessingofprotection.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_holy_blessingofprotection.png',
         cooldown: 10.2, // 10 second cooldown + 200ms reaction delay
         duration: 10, // 10 seconds
         maxBlocks: 4, // Expires after 4 blocks OR 10 seconds
@@ -265,7 +265,7 @@ export const procDefinitions = [
         name: 'Elemental Devastation',
         itemName: 'Elemental Devastation', // Talent-based
         color: '#A335EE',
-        icon: 'https://octowow.st/db/images/icons/large/spell_fire_elementaldevastation.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_fire_elementaldevastation.png',
         cooldown: 0, // No cooldown, can proc repeatedly
         duration: 10, // 10 seconds
         statModifiers: {}, // Will be determined by talent rank when proc activates
@@ -327,7 +327,7 @@ export const procDefinitions = [
             consumedBy: ['autoAttack'] // Only auto attacks consume charges
         },
         color: '#4CAF50',
-        icon: 'https://octowow.st/db/images/icons/large/ability_ghoulfrenzy.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/ability_ghoulfrenzy.png',
         // Get Flurry talent rank
         getTalentRank: function(characterData) {
             if (characterData && characterData.talentBonuses) {
@@ -355,7 +355,7 @@ export const procDefinitions = [
         name: 'Lightning Shield',
         itemName: 'Lightning Shield', // Spell-based
         color: '#4E84C4',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_lightningshield.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_nature_lightningshield.png',
         cooldown: 0, // No global cooldown
         internalCooldown: 2, // 2 second ICD (3 seconds with Stable Shields)
         duration: null, // Lasts until charges are consumed
@@ -401,7 +401,7 @@ export const procDefinitions = [
         name: 'Elemental Mastery',
         itemName: 'Elemental Mastery', // Talent-based
         color: '#FF7D0A',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_wispheal.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_nature_wispheal.png',
         cooldown: 180, // 3 minutes cooldown
         duration: 15, // 15 seconds duration (user specified, though description says 10s)
         statModifiers: {}, // Damage bonus is handled as a modifier, not a stat
@@ -482,7 +482,7 @@ export const procDefinitions = [
             triggersSpellHitProcs: true // Triggers Wrath of Cenarius etc.
         },
         color: '#FF4500',
-        icon: 'https://octowow.st/db/images/icons/large/inv_misc_gem_variety_02.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_misc_gem_variety_02.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -505,7 +505,7 @@ export const procDefinitions = [
             threatReduction: 35 // -35% threat generated
         },
         color: '#9C27B0',
-        icon: 'https://octowow.st/db/images/icons/large/inv_trinket_naxxramas02.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_trinket_naxxramas02.png',
         modifiesStats: (baseStats) => baseStats
     },
     // === ON-USE STAT TRINKETS ===
@@ -528,7 +528,7 @@ export const procDefinitions = [
             spellPower: 130
         },
         color: '#00BFFF',
-        icon: 'https://octowow.st/db/images/icons/large/inv_trinket_naxxramas06.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_trinket_naxxramas06.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -550,7 +550,7 @@ export const procDefinitions = [
             attackPower: 260
         },
         color: '#CD5C5C',
-        icon: 'https://octowow.st/db/images/icons/large/inv_trinket_naxxramas01.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_trinket_naxxramas01.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -572,7 +572,7 @@ export const procDefinitions = [
             attackPower: 280
         },
         color: '#8B4513',
-        icon: 'https://octowow.st/db/images/icons/large/inv_trinket_naxxramas06.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_trinket_naxxramas06.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -594,7 +594,7 @@ export const procDefinitions = [
             attackPower: 200
         },
         color: '#FF4500',
-        icon: 'https://octowow.st/db/images/icons/large/inv_misc_gem_ruby_01.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_misc_gem_ruby_01.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -618,7 +618,7 @@ export const procDefinitions = [
             autoReactivate: true
         },
         color: '#DAA520',
-        icon: 'https://octowow.st/db/images/icons/large/inv_jewelry_necklace_13.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_jewelry_necklace_13.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -649,7 +649,7 @@ export const procDefinitions = [
             consumesStormstrike: false
         },
         color: '#32CD32',
-        icon: 'https://octowow.st/db/images/icons/large/inv_potion_97.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_potion_97.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -671,7 +671,7 @@ export const procDefinitions = [
             spellPower: 175
         },
         color: '#9370DB',
-        icon: 'https://octowow.st/db/images/icons/large/inv_misc_orb_04.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_misc_orb_04.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -741,7 +741,7 @@ export const procDefinitions = [
             return modifiedStats;
         },
         color: '#FFD700',
-        icon: 'https://octowow.st/db/images/icons/large/spell_holy_blessingofstrength.png'
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_holy_blessingofstrength.png'
     },
     {
         id: 'wrath_of_cenarius',
@@ -761,7 +761,7 @@ export const procDefinitions = [
             maxStacks: 1 // Doesn't stack, just refreshes
         },
         color: '#7CFC00',
-        icon: 'https://octowow.st/db/images/icons/large/inv_jewelry_ring_40.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_jewelry_ring_40.png',
         modifiesStats: (baseStats) => baseStats
     },
     // Incendosaur 3pc: 5% chance on successful melee attack (auto, Stormstrike, Lightning Strike, Windfury) to trigger a Spellstrike dealing 15-26 Fire damage.
@@ -797,7 +797,7 @@ export const procDefinitions = [
             cannotProcFrom: ['Arcane Missiles'], // Remains of Overwhelming Power pet missiles should not trigger this
         },
         color: '#00FF7F',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_healingtouch.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_nature_healingtouch.png',
         modifiesStats: (baseStats) => baseStats
     },
     // Remains of Overwhelming Power: On-use (5 min CD, 60s duration)
@@ -837,7 +837,7 @@ export const procDefinitions = [
             }
         },
         color: '#9966CC',
-        icon: 'https://octowow.st/db/images/icons/large/inv_enchant_dustsoul.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_enchant_dustsoul.png',
         modifiesStats: (baseStats) => baseStats
     },
     // ============= DPS SIM TRINKETS/ITEMS =============
@@ -864,7 +864,7 @@ export const procDefinitions = [
             damagePercent: 20 // +20% magic damage
         },
         color: '#00FF96',
-        icon: 'https://octowow.st/db/images/icons/large/inv_misc_gem_03.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_misc_gem_03.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -892,7 +892,7 @@ export const procDefinitions = [
             stackTrigger: 'onMeleeHit'
         },
         color: '#8B4513',
-        icon: 'https://octowow.st/db/images/icons/large/inv_misc_ahnqirajtrinket_04.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_misc_ahnqirajtrinket_04.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -914,7 +914,7 @@ export const procDefinitions = [
             stats: { attackPower: 130 }
         },
         color: '#CD853F',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_stoneskintotem.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_nature_stoneskintotem.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -946,7 +946,7 @@ export const procDefinitions = [
             skipUptimeTracking: true
         },
         color: '#5CACEE',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_callstorm.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_nature_callstorm.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -967,7 +967,7 @@ export const procDefinitions = [
             lsProcChance: 0.15
         },
         color: '#7DF9FF',
-        icon: 'https://octowow.st/db/images/icons/large/inv_staff_07.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_staff_07.png',
         modifiesStats: (baseStats) => baseStats
     },
     // ===== ABILITY & TALENT BUFFS =====
@@ -981,7 +981,7 @@ export const procDefinitions = [
         },
         procType: 'onAbilityUse',
         color: '#0070DD',
-        icon: 'https://octowow.st/db/images/icons/large/ability_shaman_stormstrike.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/ability_shaman_stormstrike.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -1005,7 +1005,7 @@ export const procDefinitions = [
             requiresTalent: 'bloodlust' // Requires Bloodlust talent
         },
         color: '#FF4444',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_bloodlust.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_nature_bloodlust.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -1017,7 +1017,7 @@ export const procDefinitions = [
         procType: 'onAutoAttack', // Triggers on auto attack when Lightning Strike is on CD
         procChance: 100, // Always triggers when conditions met
         color: '#FFA500',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_callstorm.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_nature_callstorm.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -1034,7 +1034,7 @@ export const procDefinitions = [
         procType: 'onAutoAttack', // Triggers on auto attack (10% chance)
         procChance: 10, // 10% chance
         color: '#4CAF50',
-        icon: 'https://octowow.st/db/images/icons/large/ability_hunter_pet_wolf.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/ability_hunter_pet_wolf.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -1050,7 +1050,7 @@ export const procDefinitions = [
         procType: 'onMeleeHit',
         procChance: 2,
         color: '#C0C0C0',
-        icon: 'https://octowow.st/db/images/icons/large/inv_hammer_19.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_hammer_19.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -1064,7 +1064,7 @@ export const procDefinitions = [
         procType: 'onLightningStrike', // Triggers when Lightning Strike hits
         procChance: 25, // 25% chance
         color: '#00CED1',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_lightning.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_nature_lightning.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -1078,7 +1078,7 @@ export const procDefinitions = [
         procType: 'external', // Applied by another player
         uptimeRange: [35, 55], // Random uptime 35-55% based on proc rate and refreshes
         color: '#FF6B6B',
-        icon: 'https://octowow.st/db/images/icons/large/spell_holy_elunesgrace.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_holy_elunesgrace.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -1092,7 +1092,7 @@ export const procDefinitions = [
         procType: 'external', // Applied by another player
         uptimeRange: [40, 50], // Random uptime 40-50% - sporadic due to charge consumption
         color: '#DC143C',
-        icon: 'https://octowow.st/db/images/icons/large/spell_shadow_lifedrain.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_shadow_lifedrain.png',
         modifiesStats: (baseStats) => baseStats,
         // Improved version uses +4% instead of +2% (toggled via buff UI)
         hasImprovedVariant: true,
@@ -1130,7 +1130,7 @@ export const procDefinitions = [
             applyMultipliers: ['elementalFury', 'elementalWeapons', 'improvedScorch', 'curseOfElements']
         },
         color: '#FF4500',
-        icon: 'https://octowow.st/db/images/icons/large/spell_fire_lavaspawn.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_fire_lavaspawn.png',
         modifiesStats: (baseStats) => baseStats
     },
     // ============= BLADE OF ETERNAL DARKNESS =============
@@ -1165,7 +1165,7 @@ export const procDefinitions = [
             applyMultipliers: ['elementalMastery', 'naturalAlignmentCrystal', 'nightfall']
         },
         color: '#9932CC',
-        icon: 'https://octowow.st/db/images/icons/large/spell_shadow_lifedrain02.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_shadow_lifedrain02.png',
         modifiesStats: (baseStats) => baseStats
     },
     // ============= SIGIL OF ANCIENT ACCORD =============
@@ -1198,7 +1198,7 @@ export const procDefinitions = [
             isAoe: true
         },
         color: '#ADD8E6',
-        icon: 'https://octowow.st/db/images/icons/large/inv_misc_rune_03.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_misc_rune_03.png',
         modifiesStats: (baseStats) => baseStats
     },
     // ============= SPELLPOWER GOGGLES XTREME PLUS+ (Engineering head) =============
@@ -1221,7 +1221,7 @@ export const procDefinitions = [
             spellCastSlowPercent: 10
         },
         color: '#B388FF',
-        icon: 'https://octowow.st/db/images/icons/large/inv_helmet_47.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_helmet_47.png',
         modifiesStats: (baseStats) => baseStats
     },
     // ============= BINDINGS OF CONTAINED MAGIC (wrist) =============
@@ -1243,7 +1243,7 @@ export const procDefinitions = [
             stats: { spellPower: 100 }
         },
         color: '#A78BFA',
-        icon: 'https://octowow.st/db/images/icons/large/inv_bracer_10.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_bracer_10.png',
         modifiesStats: (baseStats) => baseStats
     },
     // ============= RING OF BURNING TALONS =============
@@ -1283,7 +1283,7 @@ export const procDefinitions = [
             // Elemental Mastery / NAC: handled via selfBuffMult in procEngine
         },
         color: '#FF4500',
-        icon: 'https://octowow.st/db/images/icons/large/spell_fire_incinerate.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_fire_incinerate.png',
         modifiesStats: (baseStats) => baseStats
     },
     // ============= LOOP OF UNCEASING FROST (Ring 55503) =============
@@ -1311,7 +1311,7 @@ export const procDefinitions = [
             denySpellHitSubstrings: ['Flametongue', 'Spell Strike']
         },
         color: '#79BEF6',
-        icon: 'https://octowow.st/db/images/icons/large/spell_frost_frostshock.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_frost_frostshock.png',
         modifiesStats: (baseStats) => baseStats
     },
     // ============= DRAGONBREATH CHILI (Food Buff) =============
@@ -1353,8 +1353,8 @@ export const procDefinitions = [
             applyMultipliers: ['elementalFury', 'elementalWeapons', 'improvedScorch', 'curseOfElements', 'elementalMastery', 'naturalAlignmentCrystal', 'nightfall']
         },
         color: '#FF6347',
-        icon: 'https://octowow.st/db/images/icons/large/spell_fire_incinerate.png',
-        buffIcon: 'https://octowow.st/db/images/icons/large/inv_drink_17.png', // Item icon for buff tab
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_fire_incinerate.png',
+        buffIcon: 'https://database.ravencraft.io/images/icons/large/inv_drink_17.png', // Item icon for buff tab
         modifiesStats: (baseStats) => baseStats
     },
     // ============= SULFURAS, HAND OF RAGNAROS =============
@@ -1402,7 +1402,7 @@ export const procDefinitions = [
             return (baseWeaponSpeed * this.ppm) / 60 * 100;
         },
         color: '#FF4500',
-        icon: 'https://octowow.st/db/images/icons/large/spell_fire_firebolt02.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_fire_firebolt02.png',
         modifiesStats: (baseStats) => baseStats
     },
     // ============= ELEMENTIUM REAPER (Decapitate) =============
@@ -1449,7 +1449,7 @@ export const procDefinitions = [
             return (baseWeaponSpeed * this.ppm) / 60 * 100;
         },
         color: '#A335EE',
-        icon: 'https://octowow.st/db/images/icons/large/inv_axe_09.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_axe_09.png',
         modifiesStats: (baseStats) => baseStats
     },
     // ============= MISPLACED SERVO ARM =============
@@ -1492,7 +1492,7 @@ export const procDefinitions = [
             return (baseWeaponSpeed * this.ppm) / 60 * 100;
         },
         color: '#00BFFF',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_lightning.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_nature_lightning.png',
         modifiesStats: (baseStats) => baseStats
     },
     // ============= FIST OF THE FORGOTTEN ORDER =============
@@ -1551,8 +1551,8 @@ export const procDefinitions = [
             return modifiedStats;
         },
         color: '#FFE082',
-        icon: 'https://octowow.st/db/images/icons/large/spell_holy_holysmite.png',
-        buffIcon: 'https://octowow.st/db/images/icons/large/inv_mace_33.png'
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_holy_holysmite.png',
+        buffIcon: 'https://database.ravencraft.io/images/icons/large/inv_mace_33.png'
     },
     // ============= DEATHBRINGER =============
     {
@@ -1592,7 +1592,7 @@ export const procDefinitions = [
             return (baseWeaponSpeed * this.ppm) / 60 * 100;
         },
         color: '#9370DB',
-        icon: 'https://octowow.st/db/images/icons/large/spell_shadow_shadowbolt.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_shadow_shadowbolt.png',
         modifiesStats: (baseStats) => baseStats
     },
     // ============= HAND OF EDWARD THE ODD =============
@@ -1614,7 +1614,7 @@ export const procDefinitions = [
             charges: 1
         },
         color: '#E0B0FF',
-        icon: 'https://octowow.st/db/images/icons/large/inv_mace_14.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_mace_14.png',
         modifiesStats: (baseStats) => baseStats
     },
     // ============= NERETZEK, THE BLOOD DRINKER =============
@@ -1655,7 +1655,7 @@ export const procDefinitions = [
             return (baseWeaponSpeed * this.ppm) / 60 * 100;
         },
         color: '#8B0000',
-        icon: 'https://octowow.st/db/images/icons/large/spell_shadow_lifedrain02.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_shadow_lifedrain02.png',
         modifiesStats: (baseStats) => baseStats
     },
     // ============= ELEMENTAL FOCUS (Talent) =============
@@ -1664,7 +1664,7 @@ export const procDefinitions = [
         name: 'Elemental Focus',
         itemName: 'Elemental Focus', // Talent-based
         color: '#00CED1',
-        icon: 'https://octowow.st/db/images/icons/large/spell_shadow_manaburn.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_shadow_manaburn.png',
         cooldown: 0, // No cooldown
         duration: 15, // 15 second max duration (expires if charges not consumed)
         maxCharges: 2, // 2 charges of clearcasting
@@ -1729,7 +1729,7 @@ export const procDefinitions = [
             triggersSpellHitProcs: true // Triggers Wrath of Cenarius, OBD, BoED, etc.
         },
         color: '#FF4500',
-        icon: 'https://octowow.st/db/images/icons/large/spell_fire_flametounge.png'
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_fire_flametounge.png'
     },
     {
         id: 'windfury_weapon',
@@ -1748,7 +1748,7 @@ export const procDefinitions = [
             consumesFlurryCharges: false // WF attacks don't consume Flurry
         },
         color: '#87CEEB',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_cyclone.png'
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_nature_cyclone.png'
     },
     {
         id: 'frostbrand_weapon',
@@ -1765,7 +1765,7 @@ export const procDefinitions = [
             triggersSpellHitProcs: true
         },
         color: '#5BC0DE',
-        icon: 'https://octowow.st/db/images/icons/large/spell_frost_frostbrand.png'
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_frost_frostbrand.png'
     },
     {
         id: 'hand_of_justice',
@@ -1779,7 +1779,7 @@ export const procDefinitions = [
             cannotProcFrom: ['Windfury Attack', 'Hand of Justice']
         },
         color: '#C0C0C0',
-        icon: 'https://octowow.st/db/images/icons/large/inv_jewelry_talisman_01.png'
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_jewelry_talisman_01.png'
     },
     {
         id: 'shieldrender_talisman',
@@ -1805,7 +1805,7 @@ export const procDefinitions = [
             return (baseWeaponSpeed * this.ppm) / 60 * 100;
         },
         color: '#708090',
-        icon: 'https://octowow.st/db/images/icons/large/inv_misc_stonetablet_02.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_misc_stonetablet_02.png',
         modifiesStats: (baseStats) => baseStats
     },
     {
@@ -1823,7 +1823,7 @@ export const procDefinitions = [
             noGCD: true
         },
         color: '#FFD700',
-        icon: 'https://octowow.st/db/images/icons/large/inv_misc_enggizmos_19.png'
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_misc_enggizmos_19.png'
     },
     // ============= INSOMNIUS' RETRIBUTION (Chest 55102) =============
     {
@@ -1854,7 +1854,7 @@ export const procDefinitions = [
             cannotProcFromPatterns: ['Spell Strike (']
         },
         color: '#32CD32',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_earthshock.png'
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_nature_earthshock.png'
     },
     // ============= JEWEL OF WILD MAGICS (Trinket 55087) =============
     {
@@ -1872,7 +1872,7 @@ export const procDefinitions = [
             noGCD: true
         },
         color: '#9C27B0',
-        icon: 'https://octowow.st/db/images/icons/large/spell_nature_astralrecal.png'
+        icon: 'https://database.ravencraft.io/images/icons/large/spell_nature_astralrecal.png'
     },
     // ============= POTION OF QUICKNESS (Consumable 61181) =============
     {
@@ -1897,7 +1897,7 @@ export const procDefinitions = [
             hastePercent: 5
         },
         color: '#00BFFF',
-        icon: 'https://octowow.st/db/images/icons/large/inv_potion_08.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_potion_08.png',
         modifiesStats: (baseStats) => baseStats
     },
     // ============= JUJU FLURRY (Consumable 12450) =============
@@ -1923,7 +1923,7 @@ export const procDefinitions = [
             hastePercent: 3
         },
         color: '#8B4513',
-        icon: 'https://octowow.st/db/images/icons/large/inv_misc_monsterscales_17.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_misc_monsterscales_17.png',
         modifiesStats: (baseStats) => baseStats
     }
 ];

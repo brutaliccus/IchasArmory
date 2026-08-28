@@ -1792,7 +1792,7 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-class-sidebar {
 }
 
 .gp-enchant-chrome .gp-enchant-btn.is-enchanted {
-    background-image: url('https://octowow.st/db/images/icons/medium/inv_scroll_05.png');
+    background-image: url('https://database.ravencraft.io/images/icons/medium/inv_scroll_05.png');
     border-color: #ffd700;
     box-shadow: 0 0 8px #ffd700;
     filter: none;

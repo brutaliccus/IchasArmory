@@ -3,7 +3,7 @@
 import onboardingConsumePresets from './data/onboardingConsumePresets.json';
 
 /** Same icon base as onboarding consume tier cards */
-export const SHAMAN_CONSUME_ICON_LARGE = 'https://octowow.st/db/images/icons/large';
+export const SHAMAN_CONSUME_ICON_LARGE = 'https://database.ravencraft.io/images/icons/large';
 
 /** Display order for hamburger menu (matches talent preset names + Elemental) */
 export const SHAMAN_CONSUME_SPEC_ORDER = [

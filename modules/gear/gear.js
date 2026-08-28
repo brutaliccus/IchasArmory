@@ -6,9 +6,12 @@ import { getEnchantCompactLabel } from './enchantStatLabels.js';
 import { itemLoader } from './itemLoader.js';
 import { STAT_TEMPLATE, KEY_MAP, parseStatsFromTooltip, parseSpellStrikeSourcesFromItem, parseSpellStrikeFromText, getEffectiveEnchantStats } from '../character/stats.js';
 
-// Icon constants
+// Icon / database constants
 export const CHRONICLE_ICON_BASE = 'https://icons.chronicleclassic.com/turtle';
-export const OCTOWOW_ICON_BASE = 'https://octowow.st/db/images/icons';
+export const RAVENCRAFT_DB_BASE = 'https://database.ravencraft.io';
+export const RAVENCRAFT_ICON_BASE = `${RAVENCRAFT_DB_BASE}/images/icons`;
+/** Alias for existing imports — fallback icons now come from RavenCraft. */
+export const OCTOWOW_ICON_BASE = RAVENCRAFT_ICON_BASE;
 /** @deprecated Prefer resolveIconUrl(`inventoryslot_${slotKey}`) */
 export const PLACEHOLDER_ICON_URL = `${CHRONICLE_ICON_BASE}/inventoryslot_`;
 const RELIC_CLASSES = new Set(['druid', 'shaman', 'paladin']);
@@ -63,13 +66,13 @@ export const slotIconMap = {
 export const ICON_BASE_URL = `${CHRONICLE_ICON_BASE}/`;
 /** Local barrens.chat icon pack for Gear Planner save picker */
 export const LOCAL_WOW_ICON_PACK_BASE = '/assets/wow-icons/large/';
-/** Second fallback when Chronicle + octowow fail (.jpg on Wowhead CDN) */
+/** Second fallback when Chronicle + RavenCraft fail (.jpg on Wowhead CDN) */
 export const ICON_CDN_ZAMIMG_LARGE = 'https://wow.zamimg.com/images/wow/icons/large/';
 export const ICON_CDN_ZAMIMG_MEDIUM = 'https://wow.zamimg.com/images/wow/icons/medium/';
 /** Empty enchant scroll button (`.enchant-btn` default). Not routed through `resolveIconUrl`. */
 export const EMPTY_ENCHANT_ICON_URL = 'https://wow.zamimg.com/images/wow/icons/small/inventoryslot_enchant.jpg';
-/** Octowow icon CDN (fallback after Chronicle) */
-export const ICON_BASE_URL_BACKUP = `${OCTOWOW_ICON_BASE}/large/`;
+/** RavenCraft icon CDN (fallback after Chronicle) */
+export const ICON_BASE_URL_BACKUP = `${RAVENCRAFT_ICON_BASE}/large/`;
 
 /** Strip path/extension and return lowercase WoW icon basename. */
 export function normalizeIconBasename(iconRef) {
@@ -90,14 +93,24 @@ export function buildChronicleIconUrl(iconRef) {
 }
 
 /**
- * Build https://octowow.st/db/images/icons/{size}/{basename}.png
+ * Build https://database.ravencraft.io/images/icons/{size}/{basename}.png
  * @param {string} iconRef - basename or full/legacy URL
  * @param {'large'|'medium'} [size='large']
  */
 export function buildOctowowIconUrl(iconRef, size = 'large') {
     const basename = normalizeIconBasename(iconRef);
     const folder = size === 'medium' ? 'medium' : 'large';
-    return `${OCTOWOW_ICON_BASE}/${folder}/${basename}.png`;
+    return `${RAVENCRAFT_ICON_BASE}/${folder}/${basename}.png`;
+}
+
+/** Item page on RavenCraft (AoWoW `?item=`). */
+export function buildItemDbUrl(itemId) {
+    return `${RAVENCRAFT_DB_BASE}/?item=${encodeURIComponent(String(itemId))}`;
+}
+
+/** NPC page on RavenCraft (AoWoW `?npc=`). */
+export function buildNpcDbUrl(npcId) {
+    return `${RAVENCRAFT_DB_BASE}/?npc=${encodeURIComponent(String(npcId))}`;
 }
 
 /** Local save-picker icon URL (assets/wow-icons/large/{basename}.png). */
@@ -191,7 +204,7 @@ function _isChronicleIconSrc(src) {
 }
 
 function _isOctowowIconSrc(src) {
-    return /octowow\.st\/db\/images\/icons\//i.test(src);
+    return /(?:octowow\.st\/db\/images\/icons\/|database\.ravencraft\.io\/images\/icons\/)/i.test(src);
 }
 
 function _zamimgIconUrl(name, size) {
@@ -200,7 +213,7 @@ function _zamimgIconUrl(name, size) {
 }
 
 /**
- * Installs a single capture-phase listener so failed icon loads retry Chronicle → octowow → zamimg.
+ * Installs a single capture-phase listener so failed icon loads retry Chronicle → RavenCraft → zamimg.
  * Call once from app init (covers hardcoded innerHTML URLs as well as createIconImage).
  */
 export function installIconLoadFallbacks() {

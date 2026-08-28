@@ -594,7 +594,7 @@ Each buff icon is rendered with the following structure:
 
 Icons are loaded from three sources:
 
-1. **Direct icon ref**: Buff `icon` fields use WoW icon **basenames** (e.g. `inv_potion_50`, `spell_nature_regeneration`) resolved through `resolveIconUrl()` from `modules/gear/gear.js` (Chronicle `https://icons.chronicleclassic.com/turtle/{basename}.webp`, then octowow/zamimg via `installIconLoadFallbacks`). Do not use legacy `assets/icons/*.jpg` aliases — they normalize to invalid basenames.
+1. **Direct icon ref**: Buff `icon` fields use WoW icon **basenames** (e.g. `inv_potion_50`, `spell_nature_regeneration`) resolved through `resolveIconUrl()` from `modules/gear/gear.js` (Chronicle `https://icons.chronicleclassic.com/turtle/{basename}.webp`, then RavenCraft/zamimg via `installIconLoadFallbacks`). Do not use legacy `assets/icons/*.jpg` aliases — they normalize to invalid basenames.
 2. **Spell ID**: If `spellId` is set, look up the spell in `spells.json` for name/icon when the buff entry omits them
 3. **Fallback**: `inv_misc_questionmark` via `resolveIconUrl`
 
@@ -604,7 +604,7 @@ Example spell ID lookup:
 if (buff.spellId) {
     const spell = findSpellById(buff.spellId);
     if (spell && spell.icon) {
-        iconUrl = `https://octowow.st/db/images/icons/large/${spell.icon.toLowerCase()}.png`;
+        iconUrl = `https://database.ravencraft.io/images/icons/large/${spell.icon.toLowerCase()}.png`;
     }
 }
 ```
@@ -875,7 +875,7 @@ export const foodBuffs = [
     {
         id: 'spicy_stew',
         name: 'Spicy Dragon Stew',
-        icon: 'https://octowow.st/db/images/icons/large/inv_misc_food_70.png',
+        icon: 'https://database.ravencraft.io/images/icons/large/inv_misc_food_70.png',
         base_stats: {
             sta: 30,
             armor: 200

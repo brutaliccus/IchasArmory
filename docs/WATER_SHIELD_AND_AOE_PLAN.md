@@ -1,8 +1,8 @@
 # Water Shield, Totem of Tides, and AOE Sim – Implementation Plan
 
 ## References
-- [Water Shield (51536)](https://octowow.st/db/?spell=51536): 3 globes, 130 mana when struck, 3s ICD (we use 4s per your spec).
-- [Totem of Tides (58146)](https://octowow.st/db/?item=58146): When Water Shield procs from being struck, releases tide: 25–33 Frost damage to enemies within 10 yards.
+- [Water Shield (51536)](https://database.ravencraft.io/?spell=51536): 3 globes, 130 mana when struck, 3s ICD (we use 4s per your spec).
+- [Totem of Tides (58146)](https://database.ravencraft.io/?item=58146): When Water Shield procs from being struck, releases tide: 25–33 Frost damage to enemies within 10 yards.
 
 ## Phase 1: Water Shield + Empowered Water Shield (placeholders)
 

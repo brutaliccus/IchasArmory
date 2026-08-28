@@ -20,7 +20,7 @@ import {
     GEAR_PLAN_DESCRIPTION_MAX,
     GEAR_PLAN_NAME_MAX,
 } from './gearPlanner.js';
-import { getEmptySlotPlaceholderUrl, getMeleeWeaponType, getEnchantableSlots, resolveIconUrl, buildLocalWowIconPackUrl, resolveGearPlanIconUrl } from './gear.js';
+import { getEmptySlotPlaceholderUrl, getMeleeWeaponType, getEnchantableSlots, resolveIconUrl, buildLocalWowIconPackUrl, resolveGearPlanIconUrl, buildItemDbUrl } from './gear.js';
 import { fetchArmoryData, applyArmoryEquipment, decodeChronicleTalents } from '../armory/armoryImport.js';
 import { enchantDatabase } from './enchants.js';
 import { getEnchantCompactLabel } from './enchantStatLabels.js';
@@ -3887,7 +3887,7 @@ function bindLocationItemClicks() {
         el.addEventListener('click', (e) => {
             e.stopPropagation();
             const id = el.dataset.itemId;
-            if (id) window.open('https://octowow.st/db/?item=' + id, '_blank');
+            if (id) window.open(buildItemDbUrl(id), '_blank');
         });
     });
 }
@@ -4211,7 +4211,7 @@ function bindPlannerMiddleClick() {
             e.preventDefault();
             e.stopPropagation();
             const itemId = el.dataset.itemId;
-            if (itemId) window.open('https://octowow.st/db/?item=' + itemId, '_blank');
+            if (itemId) window.open(buildItemDbUrl(itemId), '_blank');
         });
     });
 }

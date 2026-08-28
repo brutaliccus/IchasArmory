@@ -219,14 +219,14 @@ Today (`gearPlannerView.js`):
 
 - `mouseenter` → `applyLocationHighlights` + `.gp-location-hovering` dims other cards.
 - `mouseleave` → `clearLocationHighlights`.
-- Nested item click → octowow DB.
+- Nested item click → RavenCraft DB.
 
 On mobile, hover never fires. Replace with **sticky selection**:
 
 1. Tap a location row (not an item name) → pin highlight (`aria-pressed="true"` on the entry). Dim other gear rows; gold wash on matches (existing `.gp-item-name--location-hl` / `.gp-row--location-hl`).
 2. Tap the same location again (or a **Clear highlight** control in the title row) → clear.
 3. Tap a different location → retarget.
-4. Nested item tap still opens octowow. `stopPropagation` stays so it does not toggle highlight.
+4. Nested item tap still opens RavenCraft. `stopPropagation` stays so it does not toggle highlight.
 
 **Cross-pane:** after pinning a location, offer a text button **“Show on gear”** that switches to the Gear tab and `scrollIntoView` the first highlighted row. Without this, highlight is invisible while the Locations sheet covers the cards.
 
@@ -574,7 +574,7 @@ Test in Chrome device mode **and** one real iOS Safari if possible (zoom, `100dv
 | 3 | Class + race change — drawers usable; plan stats update. |
 | 4 | Edit on: add item (picker), add alt, enchant, remove X, collapse. |
 | 5 | Edit off: no add/X; cards still expand; picker does not open. |
-| 6 | Locations: pin raid, Show on gear, clear; item name opens octowow. |
+| 6 | Locations: pin raid, Show on gear, clear; item name opens RavenCraft. |
 | 7 | Stats: long labels wrap; numbers visible; empty plan copy. |
 | 8 | Talents: nodes tappable; shaman presets sheet; home icon returns to Gear. |
 | 9 | Buffs: icons wrap; exclusive buffs; consume presets. |

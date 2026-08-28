@@ -8,4 +8,4 @@ Source: [barrens.chat wowiconpack.zip](https://barrens.chat/downloads/wowiconpac
 
 Run `npm run icons:unpack` (or `npm run build`, which runs it via `prebuild`) after cloning or replacing the zip.
 
-The save-build icon picker loads the manifest and serves icons from `/assets/wow-icons/large/`. Talent, buff, and item icons elsewhere still use `resolveIconUrl` → octowow.st.
+The save-build icon picker loads the manifest and serves icons from `/assets/wow-icons/large/`. Talent, buff, and item icons elsewhere still use `resolveIconUrl` → Chronicle, then RavenCraft fallback.
