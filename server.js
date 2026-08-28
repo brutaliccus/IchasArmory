@@ -75,8 +75,8 @@ const communityGearPlansDir = path.join(dataDir, 'community-gear-plans');
 });
 
 const communityIndexPath = path.join(communityGearPlansDir, 'index.json');
-/** Hard ceiling for a single list response. Omitted/`all=1` returns every match up to this. */
-const COMMUNITY_LIST_MAX = 5000;
+/** Per-request clamp for explicit `limit` only. `all=1` / omitted limit returns the full filtered set. */
+const COMMUNITY_PAGE_MAX = 500;
 
 function readCommunityIndex() {
     try {
@@ -1633,10 +1633,10 @@ app.get('/community-gear-plans', (req, res) => {
         const limitRaw = parseInt(req.query.limit, 10);
         const offsetRaw = parseInt(req.query.offset, 10);
         const offset = Number.isFinite(offsetRaw) ? Math.max(offsetRaw, 0) : 0;
-        // Default / all=1: return the full filtered set (capped at COMMUNITY_LIST_MAX).
+        // Default / all=1: return every filtered row so search can see the full catalog.
         const limit = wantAll || !Number.isFinite(limitRaw)
-            ? Math.min(COMMUNITY_LIST_MAX, Math.max(total - offset, 0))
-            : Math.min(Math.max(limitRaw, 1), COMMUNITY_LIST_MAX);
+            ? Math.max(total - offset, 0)
+            : Math.min(Math.max(limitRaw, 1), COMMUNITY_PAGE_MAX);
         const page = entries.slice(offset, offset + Math.max(limit, 0));
         res.json({
             success: true,

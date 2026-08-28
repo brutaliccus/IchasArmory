@@ -2870,9 +2870,11 @@ const COMMUNITY_CATALOG_PAGE = 500;
 let buildsBrowseActiveTab = 'personal';
 let communityCatalog = null;
 let communityCatalogLoading = false;
+let communityCatalogPromise = null;
 let personalCatalog = null;
 let personalCloudIds = new Set();
 let browseResults = { filtered: [], shown: 0 };
+let browseSearchGen = 0;
 
 const CLASS_TALENT_TREE_KEYS = {
     warrior: ['arms', 'fury', 'protection'],
@@ -2944,6 +2946,9 @@ function setBuildsBrowseTab(tab) {
             ? 'Search name or author…'
             : 'Search saved build name…';
     }
+    browseResults = { filtered: [], shown: 0 };
+    syncBrowseLoadMoreUi();
+    syncBrowsePageStatus();
     runBuildsBrowseSearch();
 }
 
@@ -3056,6 +3061,22 @@ function resetBrowsePage(filtered) {
     browseResults.shown = Math.min(BUILDS_PAGE_SIZE, filtered.length);
 }
 
+function syncBrowsePageStatus() {
+    const el = document.getElementById('gp-community-page-status');
+    if (!el) return;
+    const total = browseResults.filtered.length;
+    const shown = browseResults.shown;
+    if (!total) {
+        el.hidden = true;
+        el.textContent = '';
+        return;
+    }
+    el.hidden = false;
+    el.textContent = shown < total
+        ? `Showing ${shown} of ${total} matching builds`
+        : `${total} matching build${total === 1 ? '' : 's'}`;
+}
+
 function visibleBrowsePage() {
     return browseResults.filtered.slice(0, browseResults.shown);
 }
@@ -3066,10 +3087,12 @@ function syncBrowseLoadMoreUi() {
     const remaining = Math.max(0, browseResults.filtered.length - browseResults.shown);
     if (loadMoreWrap) loadMoreWrap.hidden = remaining <= 0;
     if (loadMoreBtn) {
-        loadMoreBtn.disabled = false;
+        loadMoreBtn.disabled = remaining <= 0;
+        const label = buildsBrowseActiveTab === 'personal' ? 'Load more builds' : 'Load more community builds';
         loadMoreBtn.textContent = remaining > 0
-            ? `Load more builds (${remaining} remaining)`
-            : 'Load more builds';
+            ? `${label} (${remaining} remaining)`
+            : label;
+        loadMoreBtn.setAttribute('aria-label', loadMoreBtn.textContent);
     }
 }
 
@@ -3081,6 +3104,7 @@ function renderVisibleBrowsePage() {
         renderCommunityResults(visible);
     }
     syncBrowseLoadMoreUi();
+    syncBrowsePageStatus();
 }
 
 function loadMoreBrowseBuilds() {
@@ -3104,13 +3128,16 @@ async function loadPersonalCatalog() {
 }
 
 async function runPersonalBuildsSearch({ refreshCatalog = false } = {}) {
+    const gen = ++browseSearchGen;
     const results = document.getElementById('gp-community-results');
     if (refreshCatalog || !personalCatalog) {
         if (results) results.innerHTML = '<div class="gp-community-empty">Loading…</div>';
         await loadPersonalCatalog();
+        if (gen !== browseSearchGen) return;
     }
     const filters = getBuildsBrowseFilters();
     const filtered = sortPersonalPlans(filterBrowsePlans(personalCatalog || [], filters), filters.sort);
+    if (gen !== browseSearchGen) return;
     resetBrowsePage(filtered);
     renderVisibleBrowsePage();
 }
@@ -3232,43 +3259,70 @@ async function requestCommunityGearPlans(filters) {
     };
 }
 
-async function loadCommunityCatalog() {
-    if (communityCatalogLoading && communityCatalog) return communityCatalog;
-    communityCatalogLoading = true;
+function mergeCommunityCatalogPlans(plans, seen, incoming) {
+    for (const p of incoming || []) {
+        const id = String(p?.id || '');
+        if (!id || seen.has(id)) continue;
+        seen.add(id);
+        plans.push(p);
+    }
+}
+
+async function fetchCommunityCatalogPages() {
     const voterId = getCommunityVoterId();
-    let page = { plans: [], total: 0, hasMore: false };
+    const seen = new Set();
+    const plans = [];
     try {
-        page = await requestCommunityGearPlans({ all: 1, voterId, sort: 'popular' });
-        let plans = [...(page.plans || [])];
-        while (page.hasMore && (page.plans || []).length) {
+        let page = await requestCommunityGearPlans({ all: 1, voterId, sort: 'popular' });
+        mergeCommunityCatalogPlans(plans, seen, page.plans);
+        while (page.hasMore) {
+            const prevLen = plans.length;
             page = await requestCommunityGearPlans({
                 voterId,
                 sort: 'popular',
                 limit: COMMUNITY_CATALOG_PAGE,
                 offset: plans.length,
             });
-            plans = plans.concat(page.plans || []);
+            mergeCommunityCatalogPlans(plans, seen, page.plans);
             if (page.total && plans.length >= page.total) break;
-            if (plans.length > 20000) break;
+            if (plans.length === prevLen) break;
         }
-        communityCatalog = plans;
+        return plans;
     } catch (e) {
         console.error('[Gear Planner] community catalog failed', e);
-        if (!communityCatalog) communityCatalog = [];
-    } finally {
-        communityCatalogLoading = false;
+        return communityCatalog || [];
     }
-    return communityCatalog;
+}
+
+async function loadCommunityCatalog({ force = false } = {}) {
+    if (!force && communityCatalogPromise) return communityCatalogPromise;
+    if (!force && communityCatalog && !communityCatalogLoading) return communityCatalog;
+    communityCatalogLoading = true;
+    const pending = fetchCommunityCatalogPages();
+    communityCatalogPromise = pending;
+    try {
+        const plans = await pending;
+        if (communityCatalogPromise === pending) communityCatalog = plans;
+        return communityCatalog || plans;
+    } finally {
+        if (communityCatalogPromise === pending) {
+            communityCatalogLoading = false;
+            communityCatalogPromise = null;
+        }
+    }
 }
 
 async function runCommunitySearch({ refreshCatalog = false } = {}) {
+    const gen = ++browseSearchGen;
     const results = document.getElementById('gp-community-results');
     if (refreshCatalog || !communityCatalog) {
         if (results) results.innerHTML = '<div class="gp-community-empty">Searching…</div>';
-        await loadCommunityCatalog();
+        await loadCommunityCatalog({ force: refreshCatalog });
+        if (gen !== browseSearchGen) return;
     }
     const filters = getBuildsBrowseFilters();
     const filtered = sortCommunityPlans(filterBrowsePlans(communityCatalog || [], filters), filters.sort);
+    if (gen !== browseSearchGen) return;
     resetBrowsePage(filtered);
     renderVisibleBrowsePage();
 }

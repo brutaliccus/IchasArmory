@@ -2437,6 +2437,15 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-class-sidebar {
     .gp-community-filters #gp-community-q { grid-column: auto; }
     .gp-community-filters #gp-community-search-go { grid-column: auto; }
 }
+.gp-community-page-status {
+    flex-shrink: 0;
+    font-size: calc(0.8rem * var(--ts, 1));
+    color: #a09070;
+    padding: 0 2px 4px;
+}
+.gp-community-page-status[hidden] {
+    display: none !important;
+}
 .gp-community-results {
     flex: 1;
     min-height: 0;
