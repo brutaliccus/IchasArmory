@@ -2380,7 +2380,7 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-class-sidebar {
 .gp-community-modal {
     width: min(720px, calc(var(--ichacalc-usable-w, 100vw) - 32px));
     max-height: min(85dvh, var(--ichacalc-usable-h, 100dvh));
-    /* Explicit height so the results pane (flex:1) can scroll instead of clipping cards / Load more. */
+    /* Explicit height so the results pane (flex:1) can scroll instead of clipping cards. */
     height: min(85dvh, var(--ichacalc-usable-h, 100dvh));
     display: flex;
     flex-direction: column;
@@ -2458,14 +2458,51 @@ body[data-app-mode="gearPlanner"]:not(.gp-mobile) .gp-class-sidebar {
     padding: 8px;
     background: rgba(0,0,0,0.2);
 }
-.gp-community-load-more-wrap {
+.gp-community-pager {
     display: flex;
+    align-items: center;
     justify-content: center;
+    gap: 8px;
     padding: 8px 0 4px;
     flex-shrink: 0;
+    flex-wrap: wrap;
 }
-.gp-community-load-more-wrap[hidden] {
+.gp-community-pager[hidden] {
     display: none !important;
+}
+.gp-pager-btn {
+    min-width: 5.5rem;
+}
+.gp-community-page-numbers {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.gp-pager-num {
+    appearance: none;
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0 6px;
+    border: 1px solid #3a3420;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.25);
+    color: #e8dcc8;
+    cursor: pointer;
+    font-size: calc(0.8rem * var(--ts, 1));
+}
+.gp-pager-num:hover,
+.gp-pager-num:focus-visible {
+    border-color: var(--ichacalc-ui-orange, #FFA500);
+    color: #fff;
+}
+.gp-pager-num.is-active {
+    border-color: var(--ichacalc-ui-orange, #FFA500);
+    color: var(--ichacalc-ui-orange, #FFA500);
+    font-weight: 700;
+}
+.gp-pager-ellipsis {
+    color: #a09070;
+    padding: 0 2px;
 }
 .gp-community-empty { padding: 16px; text-align: center; color: #a09070; font-size: calc(0.9rem * var(--ts, 1)); }
 .gp-community-card {

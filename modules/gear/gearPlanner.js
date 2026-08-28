@@ -12,6 +12,29 @@ export const LOCAL_GEAR_PLANS_KEY = 'ichacalc_local_gear_plans_v1';
 /** Canonical role tags for community / save metadata. */
 export const GEAR_PLAN_ROLES = ['dps', 'tank', 'healer'];
 
+/** Legacy / UI labels that should still count as a canonical role. */
+export const GEAR_PLAN_ROLE_ALIASES = {
+    heal: 'healer',
+    healing: 'healer',
+    heals: 'healer',
+};
+
+/** Talent-tree key → save-dialog display name (matches classTalents.*.name). */
+export const CLASS_TALENT_TREE_LABELS = {
+    warrior: { arms: 'Arms', fury: 'Fury', protection: 'Protection' },
+    paladin: { holy: 'Holy', protection: 'Protection', retribution: 'Retribution' },
+    hunter: { beastmastery: 'Beast Mastery', marksmanship: 'Marksmanship', survival: 'Survival' },
+    rogue: { assassination: 'Assassination', combat: 'Combat', subtlety: 'Subtlety' },
+    priest: { discipline: 'Discipline', holy: 'Holy', shadow: 'Shadow' },
+    shaman: { elemental: 'Elemental', enhancement: 'Enhancement', restoration: 'Restoration' },
+    mage: { arcane: 'Arcane', fire: 'Fire', frost: 'Frost' },
+    warlock: { affliction: 'Affliction', demonology: 'Demonology', destruction: 'Destruction' },
+    druid: { balance: 'Balance', feralCombat: 'Feral Combat', restoration: 'Restoration' },
+};
+
+const HEALER_SPEC_KEYS = new Set(['restoration', 'holy', 'discipline']);
+const TANK_SPEC_KEYS = new Set(['protection']);
+
 /**
  * Default Vanilla icon keys per class + talent-tree display name.
  * Keys match `classTalents[class].*.name` (case-sensitive display names).
@@ -32,10 +55,86 @@ export function normalizeGearPlanRoles(roles) {
     const arr = Array.isArray(roles) ? roles : (roles != null && roles !== '' ? [roles] : []);
     const out = [];
     for (const r of arr) {
-        const key = String(r).toLowerCase().trim();
+        const raw = String(r).toLowerCase().trim();
+        const key = GEAR_PLAN_ROLE_ALIASES[raw] || raw;
         if (GEAR_PLAN_ROLES.includes(key) && !out.includes(key)) out.push(key);
     }
     return out;
+}
+
+export function inferGearPlanSpec(plan) {
+    const cls = String(plan?.class || '').toLowerCase();
+    const labels = CLASS_TALENT_TREE_LABELS[cls];
+    if (!labels) return '';
+    const talents = plan?.talents && typeof plan.talents === 'object' ? plan.talents : {};
+    let bestKey = '';
+    let best = 0;
+    for (const treeKey of Object.keys(labels)) {
+        let n = 0;
+        for (const [key, val] of Object.entries(talents)) {
+            if (key === treeKey || key.startsWith(`${treeKey}-`)) n += Number(val) || 0;
+        }
+        if (n > best) {
+            best = n;
+            bestKey = treeKey;
+        }
+    }
+    if (best <= 0) return '';
+    return labels[bestKey] || '';
+}
+
+export function inferGearPlanRoles(plan) {
+    const existing = normalizeGearPlanRoles(plan?.role);
+    if (existing.length) return existing;
+    const spec = String(plan?.spec || inferGearPlanSpec(plan) || '').toLowerCase();
+    if (HEALER_SPEC_KEYS.has(spec)) return ['healer'];
+    if (TANK_SPEC_KEYS.has(spec)) return ['tank'];
+    if (spec) return ['dps'];
+    return [];
+}
+
+export function planSpecForFilter(plan) {
+    const spec = String(plan?.spec || '').trim();
+    return spec || inferGearPlanSpec(plan) || '';
+}
+
+export function planRolesForFilter(plan) {
+    return inferGearPlanRoles({ ...plan, spec: planSpecForFilter(plan) });
+}
+
+/** Search/filter a full catalog. Callers paginate the returned matches. */
+export function filterGearPlans(plans, filters = {}) {
+    const q = String(filters.q || '').trim().toLowerCase();
+    const classFilter = String(filters.class || '').trim().toLowerCase();
+    const roleFilter = String(filters.role || '').trim().toLowerCase();
+    const specFilter = String(filters.spec || '').trim();
+    return (plans || []).filter((p) => {
+        if (classFilter && String(p.class || '').toLowerCase() !== classFilter) return false;
+        if (roleFilter && !planRolesForFilter(p).includes(roleFilter)) return false;
+        if (specFilter && planSpecForFilter(p) !== specFilter) return false;
+        if (q) {
+            const hay = [p.name, p.authorName, p.description, planSpecForFilter(p), p.class]
+                .map((x) => String(x || '').toLowerCase()).join(' ');
+            if (!hay.includes(q)) return false;
+        }
+        return true;
+    });
+}
+
+export function paginateList(items, page, pageSize = 50) {
+    const list = Array.isArray(items) ? items : [];
+    const size = Math.max(1, Number(pageSize) || 50);
+    const total = list.length;
+    const pageCount = total === 0 ? 1 : Math.ceil(total / size);
+    const safePage = Math.min(Math.max(1, Number(page) || 1), pageCount);
+    const start = (safePage - 1) * size;
+    return {
+        page: safePage,
+        pageCount,
+        pageSize: size,
+        total,
+        slice: list.slice(start, start + size),
+    };
 }
 
 export function defaultIconForClassSpec(classId, spec) {
@@ -227,6 +326,8 @@ export function getGearPlanData(plan) {
 
     out.role = normalizeGearPlanRoles(plan.role);
     out.spec = plan.spec != null ? String(plan.spec) : '';
+    if (!out.spec) out.spec = inferGearPlanSpec(plan);
+    if (!out.role.length) out.role = inferGearPlanRoles({ ...plan, spec: out.spec });
     out.description = sanitizeGearPlanDescription(plan.description);
     const iconRaw = plan.icon != null ? String(plan.icon).trim() : '';
     const iconKey = iconRaw
@@ -237,7 +338,8 @@ export function getGearPlanData(plan) {
     out.icon = /^[a-z0-9_]+$/.test(iconKey)
         ? iconKey
         : defaultIconForClassSpec(out.class, out.spec);
-    out.community = !!plan.community;
+    // Missing flag (pre-community schema) means "publishable"; only explicit false stays personal.
+    out.community = plan.community !== false;
     if (plan.authorName) out.authorName = String(plan.authorName);
     if (plan.authorId) out.authorId = String(plan.authorId);
     if (plan.sourceCommunityId) out.sourceCommunityId = String(plan.sourceCommunityId);

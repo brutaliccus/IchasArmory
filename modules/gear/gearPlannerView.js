@@ -17,6 +17,10 @@ import {
     sanitizeGearPlanDescription,
     sanitizeGearPlanName,
     formatGearPlanRoleLabel,
+    filterGearPlans,
+    paginateList,
+    planRolesForFilter,
+    planSpecForFilter,
     GEAR_PLAN_DESCRIPTION_MAX,
     GEAR_PLAN_NAME_MAX,
 } from './gearPlanner.js';
@@ -2873,7 +2877,7 @@ let communityCatalogLoading = false;
 let communityCatalogPromise = null;
 let personalCatalog = null;
 let personalCloudIds = new Set();
-let browseResults = { filtered: [], shown: 0 };
+let browseResults = { filtered: [], page: 1 };
 let browseSearchGen = 0;
 
 const CLASS_TALENT_TREE_KEYS = {
@@ -2946,8 +2950,8 @@ function setBuildsBrowseTab(tab) {
             ? 'Search name or author…'
             : 'Search saved build name…';
     }
-    browseResults = { filtered: [], shown: 0 };
-    syncBrowseLoadMoreUi();
+    browseResults = { filtered: [], page: 1 };
+    syncBrowsePagerUi();
     syncBrowsePageStatus();
     runBuildsBrowseSearch();
 }
@@ -2983,7 +2987,14 @@ function wireCommunitySearchDialog() {
     document.getElementById('gp-community-sort')?.addEventListener('change', () => runBuildsBrowseSearch());
     document.getElementById('gp-builds-tab-personal')?.addEventListener('click', () => setBuildsBrowseTab('personal'));
     document.getElementById('gp-builds-tab-community')?.addEventListener('click', () => setBuildsBrowseTab('community'));
-    document.getElementById('gp-community-load-more')?.addEventListener('click', () => loadMoreBrowseBuilds());
+    document.getElementById('gp-community-page-prev')?.addEventListener('click', () => goToBrowsePage(browseResults.page - 1));
+    document.getElementById('gp-community-page-next')?.addEventListener('click', () => goToBrowsePage(browseResults.page + 1));
+    document.getElementById('gp-community-page-numbers')?.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-browse-page]');
+        if (!btn) return;
+        const n = parseInt(btn.dataset.browsePage, 10);
+        if (Number.isFinite(n)) goToBrowsePage(n);
+    });
 }
 
 function openBuildsBrowseDialog(tab = 'personal') {
@@ -3009,21 +3020,7 @@ async function runBuildsBrowseSearch({ refreshCatalog = false } = {}) {
 }
 
 function filterBrowsePlans(plans, filters) {
-    const q = String(filters.q || '').trim().toLowerCase();
-    return plans.filter((p) => {
-        if (filters.class && String(p.class || '').toLowerCase() !== filters.class) return false;
-        if (filters.role) {
-            const roles = normalizeGearPlanRoles(p.role);
-            if (!roles.includes(filters.role)) return false;
-        }
-        if (filters.spec && String(p.spec || '') !== filters.spec) return false;
-        if (q) {
-            const hay = [p.name, p.authorName, p.description, p.spec, p.class]
-                .map((x) => String(x || '').toLowerCase()).join(' ');
-            if (!hay.includes(q)) return false;
-        }
-        return true;
-    });
+    return filterGearPlans(plans, filters);
 }
 
 function sortPersonalPlans(plans, sortKey) {
@@ -3058,41 +3055,63 @@ function sortCommunityPlans(plans, sortKey) {
 
 function resetBrowsePage(filtered) {
     browseResults.filtered = filtered;
-    browseResults.shown = Math.min(BUILDS_PAGE_SIZE, filtered.length);
+    browseResults.page = 1;
+}
+
+function browsePageState() {
+    return paginateList(browseResults.filtered, browseResults.page, BUILDS_PAGE_SIZE);
 }
 
 function syncBrowsePageStatus() {
     const el = document.getElementById('gp-community-page-status');
     if (!el) return;
-    const total = browseResults.filtered.length;
-    const shown = browseResults.shown;
+    const { page, pageCount, total, slice } = browsePageState();
     if (!total) {
         el.hidden = true;
         el.textContent = '';
         return;
     }
     el.hidden = false;
-    el.textContent = shown < total
-        ? `Showing ${shown} of ${total} matching builds`
-        : `${total} matching build${total === 1 ? '' : 's'}`;
+    if (pageCount > 1) {
+        const start = (page - 1) * BUILDS_PAGE_SIZE + 1;
+        const end = start + slice.length - 1;
+        el.textContent = `Showing ${start}–${end} of ${total} matching builds · Page ${page} of ${pageCount}`;
+    } else {
+        el.textContent = `${total} matching build${total === 1 ? '' : 's'}`;
+    }
 }
 
 function visibleBrowsePage() {
-    return browseResults.filtered.slice(0, browseResults.shown);
+    return browsePageState().slice;
 }
 
-function syncBrowseLoadMoreUi() {
-    const loadMoreWrap = document.getElementById('gp-community-load-more-wrap');
-    const loadMoreBtn = document.getElementById('gp-community-load-more');
-    const remaining = Math.max(0, browseResults.filtered.length - browseResults.shown);
-    if (loadMoreWrap) loadMoreWrap.hidden = remaining <= 0;
-    if (loadMoreBtn) {
-        loadMoreBtn.disabled = remaining <= 0;
-        const label = buildsBrowseActiveTab === 'personal' ? 'Load more builds' : 'Load more community builds';
-        loadMoreBtn.textContent = remaining > 0
-            ? `${label} (${remaining} remaining)`
-            : label;
-        loadMoreBtn.setAttribute('aria-label', loadMoreBtn.textContent);
+function pagerPageButtons(page, pageCount) {
+    if (pageCount <= 7) return Array.from({ length: pageCount }, (_, i) => i + 1);
+    const keep = new Set([1, pageCount, page, page - 1, page + 1]);
+    const nums = [...keep].filter((n) => n >= 1 && n <= pageCount).sort((a, b) => a - b);
+    const out = [];
+    for (const n of nums) {
+        if (out.length && n - out[out.length - 1] > 1) out.push('…');
+        out.push(n);
+    }
+    return out;
+}
+
+function syncBrowsePagerUi() {
+    const wrap = document.getElementById('gp-community-pager');
+    const prev = document.getElementById('gp-community-page-prev');
+    const next = document.getElementById('gp-community-page-next');
+    const nums = document.getElementById('gp-community-page-numbers');
+    const { page, pageCount, total } = browsePageState();
+    if (wrap) wrap.hidden = total === 0 || pageCount <= 1;
+    if (prev) prev.disabled = page <= 1;
+    if (next) next.disabled = page >= pageCount;
+    if (nums) {
+        nums.innerHTML = pagerPageButtons(page, pageCount).map((item) => {
+            if (item === '…') return '<span class="gp-pager-ellipsis" aria-hidden="true">…</span>';
+            const active = item === page;
+            return `<button type="button" class="gp-pager-num${active ? ' is-active' : ''}" data-browse-page="${item}" aria-label="Page ${item}" aria-current="${active ? 'page' : 'false'}">${item}</button>`;
+        }).join('');
     }
 }
 
@@ -3103,14 +3122,18 @@ function renderVisibleBrowsePage() {
     } else {
         renderCommunityResults(visible);
     }
-    syncBrowseLoadMoreUi();
+    syncBrowsePagerUi();
     syncBrowsePageStatus();
 }
 
-function loadMoreBrowseBuilds() {
-    if (browseResults.shown >= browseResults.filtered.length) return;
-    browseResults.shown = Math.min(browseResults.shown + BUILDS_PAGE_SIZE, browseResults.filtered.length);
+function goToBrowsePage(nextPage) {
+    const { pageCount, total } = browsePageState();
+    if (!total) return;
+    const page = Math.min(Math.max(1, nextPage), pageCount);
+    if (page === browseResults.page) return;
+    browseResults.page = page;
     renderVisibleBrowsePage();
+    document.getElementById('gp-community-results')?.scrollTo?.(0, 0);
 }
 
 async function loadPersonalCatalog() {
@@ -3183,15 +3206,16 @@ function buildBrowseCardVotesHtml(p, variant = 'community') {
 }
 
 function buildGearPlanCardHtml(p, { variant = 'community', isLocal = false } = {}) {
-    const roles = normalizeGearPlanRoles(p.role).map((r) => formatGearPlanRoleLabel(r)).join(', ');
+    const roles = planRolesForFilter(p).map((r) => formatGearPlanRoleLabel(r)).join(', ');
+    const specLabel = planSpecForFilter(p);
     const cls = p.class ? String(p.class).charAt(0).toUpperCase() + String(p.class).slice(1) : '';
     const race = formatPlanRaceLabel(p.race);
     const date = formatCommunityDate(p.updatedAt || p.createdAt);
     const spread = formatTalentSpread(computePlanTalentSpread(p));
     const desc = sanitizeGearPlanDescription(p.description || '');
     const metaParts = variant === 'personal'
-        ? [cls, race, roles, p.spec].filter(Boolean)
-        : [cls, roles, p.spec].filter(Boolean);
+        ? [cls, race, roles, specLabel].filter(Boolean)
+        : [cls, roles, specLabel].filter(Boolean);
     const authorParts = [];
     if (variant === 'personal') {
         if (isLocal) authorParts.push('Saved on this device');

@@ -40,7 +40,7 @@ Gear plan data model and localStorage persistence for the Gear Planner page.
 }
 ```
 
-Helpers: `normalizeGearPlanRoles`, `defaultIconForClassSpec`, `sanitizeGearPlanDescription`, `sanitizeGearPlanName`, `formatGearPlanRoleLabel`, `DEFAULT_SPEC_ICONS`, `GEAR_PLAN_ROLES`, `GEAR_PLAN_DESCRIPTION_MAX`, `GEAR_PLAN_NAME_MAX` (64).
+Helpers: `normalizeGearPlanRoles` (aliases `heal`/`healing`/`heals` → `healer`), `inferGearPlanSpec`, `inferGearPlanRoles`, `filterGearPlans`, `paginateList`, `defaultIconForClassSpec`, `sanitizeGearPlanDescription`, `sanitizeGearPlanName`, `formatGearPlanRoleLabel`, `DEFAULT_SPEC_ICONS`, `GEAR_PLAN_ROLES`, `GEAR_PLAN_DESCRIPTION_MAX`, `GEAR_PLAN_NAME_MAX` (64). Missing `community` is treated as publishable; explicit `false` stays personal.
 
 Items and per-slot **primary enchants** (`enchant` = index into `enchantDatabase[slot]`, or `null`). Alternatives are unenchanted. Independent of Character Planner `selectedEnchants`.
 
@@ -59,7 +59,7 @@ Cloud saves: `user.gearPlans[]` via profiles API (see `profiles.md`). Guests are
 
 - `GEAR_PLAN_SLOTS`, `GEAR_PLAN_ROLES`, `DEFAULT_SPEC_ICONS`, `createEmptyGearPlan`, `getGearPlanData`, `loadGearPlanData`
 - `getGearPlanPrimaryEquipped(plan, getItemById)` — primary-slot item snapshot for set bonuses (full item when loaded, `{ id }` stub otherwise; alts excluded)
-- `normalizeGearPlanRoles`, `defaultIconForClassSpec`
+- `normalizeGearPlanRoles`, `inferGearPlanSpec`, `inferGearPlanRoles`, `filterGearPlans`, `paginateList`, `defaultIconForClassSpec`
 - `saveGearPlannerSession`, `loadGearPlannerSession`
 - `sanitizeGearPlanStatWeightsByClass`, `migrateGearPlanStatWeightsToByClass`
 - `saveGearPlannerTankStatWeights` / `getGearPlannerTankStatWeights` (optional per-class localStorage cache)

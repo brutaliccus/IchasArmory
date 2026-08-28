@@ -176,6 +176,41 @@ function reconcileCommunityIndex() {
             }
         }
     } catch (_) { /* users dir missing */ }
+    try {
+        const shareNames = fs.readdirSync(gearPlansDir).filter((f) => f.endsWith('.json'));
+        for (const name of shareNames) {
+            let plan;
+            try {
+                plan = JSON.parse(fs.readFileSync(path.join(gearPlansDir, name), 'utf-8'));
+            } catch (_) {
+                continue;
+            }
+            if (!plan || plan.kind !== 'gearPlan') continue;
+            const spec = String(plan.spec || '').trim() || inferSpecFromPlan(plan);
+            const roles = inferRolesFromPlan({ ...plan, spec });
+            if (!roles.length || !spec || planTalentPointCount(plan) <= 0) continue;
+            let id = sanitizeCommunityPlanId(plan.id);
+            if (!id) id = sanitizeCommunityPlanId(path.basename(name, '.json'));
+            if (!id || byId.has(id) || fileIds.has(id)) continue;
+            try {
+                const entry = publishCommunityGearPlan({
+                    ...plan,
+                    id,
+                    role: roles,
+                    spec,
+                    community: true,
+                }, {
+                    username: plan.authorName || 'Anonymous',
+                    id: plan.authorId,
+                });
+                if (entry) {
+                    byId.set(id, entry);
+                    fileIds.add(id);
+                    changed = true;
+                }
+            } catch (_) { /* skip share snapshots that cannot be published */ }
+        }
+    } catch (_) { /* gear-plans dir missing */ }
     if (!changed) return current;
     const next = sortCommunityIndexEntries([...byId.values()]);
     writeCommunityIndex(next);
@@ -189,13 +224,92 @@ function sanitizeCommunityPlanId(id) {
 
 function normalizeRoles(roles) {
     const allowed = new Set(['dps', 'tank', 'healer']);
+    const aliases = { heal: 'healer', healing: 'healer', heals: 'healer' };
     const arr = Array.isArray(roles) ? roles : (roles != null && roles !== '' ? [roles] : []);
     const out = [];
     for (const r of arr) {
-        const key = String(r).toLowerCase().trim();
+        const raw = String(r).toLowerCase().trim();
+        const key = aliases[raw] || raw;
         if (allowed.has(key) && !out.includes(key)) out.push(key);
     }
     return out;
+}
+
+const CLASS_TALENT_TREE_LABELS = {
+    warrior: { arms: 'Arms', fury: 'Fury', protection: 'Protection' },
+    paladin: { holy: 'Holy', protection: 'Protection', retribution: 'Retribution' },
+    hunter: { beastmastery: 'Beast Mastery', marksmanship: 'Marksmanship', survival: 'Survival' },
+    rogue: { assassination: 'Assassination', combat: 'Combat', subtlety: 'Subtlety' },
+    priest: { discipline: 'Discipline', holy: 'Holy', shadow: 'Shadow' },
+    shaman: { elemental: 'Elemental', enhancement: 'Enhancement', restoration: 'Restoration' },
+    mage: { arcane: 'Arcane', fire: 'Fire', frost: 'Frost' },
+    warlock: { affliction: 'Affliction', demonology: 'Demonology', destruction: 'Destruction' },
+    druid: { balance: 'Balance', feralCombat: 'Feral Combat', restoration: 'Restoration' },
+};
+const HEALER_SPEC_KEYS = new Set(['restoration', 'holy', 'discipline']);
+const TANK_SPEC_KEYS = new Set(['protection']);
+
+function inferSpecFromPlan(plan) {
+    const cls = String(plan?.class || '').toLowerCase();
+    const labels = CLASS_TALENT_TREE_LABELS[cls];
+    if (!labels) return '';
+    const talents = plan?.talents && typeof plan.talents === 'object' ? plan.talents : {};
+    let bestKey = '';
+    let best = 0;
+    for (const treeKey of Object.keys(labels)) {
+        let n = 0;
+        for (const [key, val] of Object.entries(talents)) {
+            if (key === treeKey || key.startsWith(`${treeKey}-`)) n += Number(val) || 0;
+        }
+        if (n > best) {
+            best = n;
+            bestKey = treeKey;
+        }
+    }
+    return best > 0 ? (labels[bestKey] || '') : '';
+}
+
+function inferRolesFromPlan(plan) {
+    const existing = normalizeRoles(plan?.role);
+    if (existing.length) return existing;
+    const spec = String(plan?.spec || inferSpecFromPlan(plan) || '').toLowerCase();
+    if (HEALER_SPEC_KEYS.has(spec)) return ['healer'];
+    if (TANK_SPEC_KEYS.has(spec)) return ['tank'];
+    return spec ? ['dps'] : [];
+}
+
+function planTalentPointCount(plan) {
+    const talents = plan?.talents && typeof plan.talents === 'object' ? plan.talents : {};
+    return Object.values(talents).reduce((n, v) => n + (Number(v) || 0), 0);
+}
+
+function resolveCommunityEntryMeta(entry) {
+    const spec = String(entry?.spec || '').trim();
+    const roles = normalizeRoles(entry?.role);
+    const resolvedSpec = spec || (Array.isArray(entry?.talentSpread)
+        ? inferSpecFromSpread(entry.class, entry.talentSpread)
+        : '');
+    return {
+        spec: resolvedSpec,
+        roles: roles.length ? roles : inferRolesFromPlan({ spec: resolvedSpec, role: entry?.role }),
+    };
+}
+
+function inferSpecFromSpread(classId, spread) {
+    const cls = String(classId || '').toLowerCase();
+    const keys = CLASS_TALENT_TREE_KEYS[cls] || [];
+    const labels = CLASS_TALENT_TREE_LABELS[cls] || {};
+    if (!Array.isArray(spread) || !keys.length) return '';
+    let best = 0;
+    let bestKey = '';
+    keys.forEach((key, i) => {
+        const n = Number(spread[i]) || 0;
+        if (n > best) {
+            best = n;
+            bestKey = key;
+        }
+    });
+    return best > 0 ? (labels[bestKey] || '') : '';
 }
 
 function sanitizeIconKey(icon) {
@@ -291,12 +405,13 @@ function loadCommunityPlanFile(id) {
 function publicCommunityEntry(entry, voterId) {
     const upvotes = Number(entry.upvotes) || 0;
     const downvotes = Number(entry.downvotes) || 0;
+    const meta = resolveCommunityEntryMeta(entry);
     const out = {
         id: entry.id,
         name: entry.name,
         class: entry.class,
-        role: normalizeRoles(entry.role),
-        spec: entry.spec || '',
+        role: meta.roles,
+        spec: meta.spec || '',
         icon: entry.icon || 'inv_misc_questionmark',
         description: sanitizePlanDescription(entry.description),
         authorName: entry.authorName || 'Anonymous',
@@ -320,7 +435,8 @@ function publicCommunityEntry(entry, voterId) {
 function toCommunityEntry(plan, author, previous) {
     const id = sanitizeCommunityPlanId(plan.id);
     if (!id) return null;
-    const roles = normalizeRoles(plan.role);
+    const spec = String(plan.spec || '').trim() || inferSpecFromPlan(plan);
+    const roles = inferRolesFromPlan({ ...plan, spec });
     const icon = sanitizeIconKey(plan.icon) || 'inv_misc_questionmark';
     const authorName = (author && author.username)
         ? String(author.username)
@@ -337,7 +453,7 @@ function toCommunityEntry(plan, author, previous) {
         name: String(plan.name || 'Untitled').slice(0, 64),
         class: String(plan.class || '').toLowerCase().slice(0, 32),
         role: roles,
-        spec: String(plan.spec || '').slice(0, 64),
+        spec: spec.slice(0, 64),
         icon,
         description: sanitizePlanDescription(plan.description),
         authorName: authorName.slice(0, 64),
@@ -1076,8 +1192,8 @@ app.post('/user-gear-plans', requireAuth, (req, res) => {
             if (!plan || plan.kind !== 'gearPlan') {
                 return res.status(400).json({ success: false, error: 'Invalid gear plan' });
             }
-            const roles = normalizeRoles(plan.role);
-            const spec = String(plan.spec || '').trim();
+            const spec = String(plan.spec || '').trim() || inferSpecFromPlan(plan);
+            const roles = inferRolesFromPlan({ ...plan, spec });
             if (!roles.length || !spec) {
                 return res.status(400).json({
                     success: false,
@@ -1603,14 +1719,15 @@ app.get('/community-gear-plans', (req, res) => {
             entries = entries.filter(e => String(e.class || '').toLowerCase() === classFilter);
         }
         if (roleFilter) {
-            entries = entries.filter(e => normalizeRoles(e.role).includes(roleFilter));
+            entries = entries.filter(e => resolveCommunityEntryMeta(e).roles.includes(roleFilter));
         }
         if (specFilter) {
-            entries = entries.filter(e => String(e.spec || '').toLowerCase() === specFilter);
+            entries = entries.filter(e => String(resolveCommunityEntryMeta(e).spec || '').toLowerCase() === specFilter);
         }
         if (q) {
             entries = entries.filter(e => {
-                const hay = [e.name, e.authorName, e.description, e.spec, e.class]
+                const meta = resolveCommunityEntryMeta(e);
+                const hay = [e.name, e.authorName, e.description, meta.spec, e.class]
                     .map(x => String(x || '').toLowerCase()).join(' ');
                 return hay.includes(q);
             });
