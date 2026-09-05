@@ -53,7 +53,7 @@ Items and per-slot **primary enchants** (`enchant` = index into `enchantDatabase
 | `ichacalc_gp_statWeights_<class>` / `_aoe_<class>` | Shaman DPS weights per class |
 | `ichacalc_gp_local_weights_<planId>` | Local draft: `{ statWeightsByClass: { [class]: { statWeights, statWeightsAoe, tankStatWeights } } }` |
 
-Cloud saves: `user.gearPlans[]` via profiles API (see `profiles.md`). Guests are not gated: Save uses `loadLocalGearPlans` / `saveLocalGearPlans` when `profileManager.user` is absent (local saves are **not** published to community). Logged-in cloud saves publish to `GET /community-gear-plans`.
+Cloud saves: `user.gearPlans[]` via profiles API (see `profiles.md`). Guests are not gated: Save uses `loadLocalGearPlans` / `saveLocalGearPlans` when `profileManager.user` is absent (local saves are **not** published to community). Logged-in **Save** publishes to `GET /community-gear-plans`. **Share** (`POST /gear-plans`) creates a linkable `?gp=` snapshot only and never adds the plan to the community browser.
 
 ## Exports
 

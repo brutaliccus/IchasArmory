@@ -436,7 +436,7 @@ export async function exportGearPlanToURL({ plan, view }) {
         const response = await fetch('/gear-plans', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(plan),
+            body: JSON.stringify({ ...plan, community: false }),
         });
         const result = await response.json();
         if (!result.success) throw new Error(result.error || 'Save failed');

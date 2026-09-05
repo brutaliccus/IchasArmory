@@ -149,7 +149,15 @@ function communityIndexEntryFromPlan(plan) {
     });
 }
 
-/** Keep index.json aligned with on-disk plan files and unpublished cloud saves. */
+/** Share snapshots (?gp=) must never appear in the community browser. */
+function isShareOnlyCommunityListing(id, publishedUserIds) {
+    if (!id || (publishedUserIds && publishedUserIds.has(id))) return false;
+    if (String(id).startsWith('local_gp_')) return true;
+    // POST /gear-plans ids are generatePlanId() — 8-char share codes
+    return /^[A-Za-z0-9]{8}$/.test(id);
+}
+
+/** Keep index.json aligned with on-disk plan files and logged-in Save publishes. Never import gear-plans/ shares. */
 function reconcileCommunityIndex() {
     const current = readCommunityIndex();
     const byId = new Map();
@@ -158,6 +166,28 @@ function reconcileCommunityIndex() {
         if (id) byId.set(id, e);
     }
     let changed = false;
+
+    const publishedUserIds = new Set();
+    const userRecords = [];
+    try {
+        const userNames = fs.readdirSync(usersDir).filter((f) => f.endsWith('.json'));
+        for (const uf of userNames) {
+            let user;
+            try {
+                user = JSON.parse(fs.readFileSync(path.join(usersDir, uf), 'utf-8'));
+            } catch (_) {
+                continue;
+            }
+            const authorId = String(user.id || path.basename(uf, '.json'));
+            userRecords.push({ user, authorId });
+            for (const plan of user.gearPlans || []) {
+                if (plan.community === false) continue;
+                const id = sanitizeCommunityPlanId(plan.id);
+                if (id) publishedUserIds.add(id);
+            }
+        }
+    } catch (_) { /* users dir missing */ }
+
     let names = [];
     try {
         names = fs.readdirSync(communityGearPlansDir);
@@ -168,7 +198,7 @@ function reconcileCommunityIndex() {
     for (const name of names) {
         if (!name.endsWith('.json') || name === 'index.json') continue;
         const id = sanitizeCommunityPlanId(path.basename(name, '.json'));
-        if (!id) continue;
+        if (!id || isShareOnlyCommunityListing(id, publishedUserIds)) continue;
         fileIds.add(id);
         if (byId.has(id)) continue;
         try {
@@ -181,74 +211,29 @@ function reconcileCommunityIndex() {
         } catch (_) { /* skip unreadable plan file */ }
     }
     for (const id of [...byId.keys()]) {
-        if (!fileIds.has(id)) {
+        if (!fileIds.has(id) || isShareOnlyCommunityListing(id, publishedUserIds)) {
             byId.delete(id);
             changed = true;
         }
     }
-    try {
-        const userNames = fs.readdirSync(usersDir).filter((f) => f.endsWith('.json'));
-        for (const uf of userNames) {
-            let user;
-            try {
-                user = JSON.parse(fs.readFileSync(path.join(usersDir, uf), 'utf-8'));
-            } catch (_) {
-                continue;
-            }
-            const authorId = String(user.id || path.basename(uf, '.json'));
-            for (const plan of user.gearPlans || []) {
-                if (plan.community === false) continue;
-                const id = sanitizeCommunityPlanId(plan.id);
-                if (!id || byId.has(id) || fileIds.has(id)) continue;
-                try {
-                    const entry = publishCommunityGearPlan(plan, {
-                        username: plan.authorName || user.username || 'Anonymous',
-                        id: plan.authorId || authorId,
-                    });
-                    if (entry) {
-                        byId.set(id, entry);
-                        fileIds.add(id);
-                        changed = true;
-                    }
-                } catch (_) { /* skip plans that cannot be published */ }
-            }
-        }
-    } catch (_) { /* users dir missing */ }
-    try {
-        const shareNames = fs.readdirSync(gearPlansDir).filter((f) => f.endsWith('.json'));
-        for (const name of shareNames) {
-            let plan;
-            try {
-                plan = JSON.parse(fs.readFileSync(path.join(gearPlansDir, name), 'utf-8'));
-            } catch (_) {
-                continue;
-            }
-            if (!plan || plan.kind !== 'gearPlan') continue;
-            const spec = String(plan.spec || '').trim() || inferSpecFromPlan(plan);
-            const roles = inferRolesFromPlan({ ...plan, spec });
-            if (!roles.length || !spec || planTalentPointCount(plan) <= 0) continue;
-            let id = sanitizeCommunityPlanId(plan.id);
-            if (!id) id = sanitizeCommunityPlanId(path.basename(name, '.json'));
+    for (const { user, authorId } of userRecords) {
+        for (const plan of user.gearPlans || []) {
+            if (plan.community === false) continue;
+            const id = sanitizeCommunityPlanId(plan.id);
             if (!id || byId.has(id) || fileIds.has(id)) continue;
             try {
-                const entry = publishCommunityGearPlan({
-                    ...plan,
-                    id,
-                    role: roles,
-                    spec,
-                    community: true,
-                }, {
-                    username: plan.authorName || 'Anonymous',
-                    id: plan.authorId,
+                const entry = publishCommunityGearPlan(plan, {
+                    username: plan.authorName || user.username || 'Anonymous',
+                    id: plan.authorId || authorId,
                 });
                 if (entry) {
                     byId.set(id, entry);
                     fileIds.add(id);
                     changed = true;
                 }
-            } catch (_) { /* skip share snapshots that cannot be published */ }
+            } catch (_) { /* skip plans that cannot be published */ }
         }
-    } catch (_) { /* gear-plans dir missing */ }
+    }
     if (!changed) return current;
     const next = sortCommunityIndexEntries([...byId.values()]);
     writeCommunityIndex(next);
@@ -1702,7 +1687,7 @@ function generatePlanId() {
     return result;
 }
 
-// Save a gear plan (public share URL)
+// Share snapshot only (?gp=). Never publishes to the community browser.
 app.post('/gear-plans', (req, res) => {
     try {
         const planData = req.body;
@@ -1718,6 +1703,7 @@ app.post('/gear-plans', (req, res) => {
         const withMeta = {
             ...planData,
             name: sanitizePlanName(planData.name, 'Gear Plan'),
+            community: false,
             _meta: { id: planId, createdAt: new Date().toISOString() },
         };
         fs.writeFileSync(planPath, JSON.stringify(withMeta, null, 2));
