@@ -74,6 +74,44 @@ const communityGearPlansDir = path.join(dataDir, 'community-gear-plans');
     }
 });
 
+/** Empty/truncated JSON from ENOSPC mid-write — treat as missing, never throw. */
+function parseJsonOrNull(raw) {
+    if (raw == null) return null;
+    const text = String(raw).trim();
+    if (!text) return null;
+    try {
+        return JSON.parse(text);
+    } catch {
+        return null;
+    }
+}
+
+function readJsonFileOrNull(filePath) {
+    try {
+        if (!fs.existsSync(filePath)) return null;
+        return parseJsonOrNull(fs.readFileSync(filePath, 'utf-8'));
+    } catch {
+        return null;
+    }
+}
+
+function writeJsonAtomic(filePath, obj) {
+    const tmp = `${filePath}.${process.pid}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify(obj, null, 2));
+    fs.renameSync(tmp, filePath);
+}
+
+function decodeSessionJson(raw) {
+    const parsed = parseJsonOrNull(raw);
+    return parsed && typeof parsed === 'object' ? parsed : {};
+}
+
+function isIncompleteJsonError(err) {
+    if (!err) return false;
+    const msg = String(err.message || '');
+    return err instanceof SyntaxError || msg.includes('Unexpected end of JSON input');
+}
+
 const communityIndexPath = path.join(communityGearPlansDir, 'index.json');
 /** Per-request clamp for explicit `limit` only. `all=1` / omitted limit returns the full filtered set. */
 const COMMUNITY_PAGE_MAX = 500;
@@ -703,7 +741,8 @@ if (authEnabled) {
             path: sessionsDir,
             ttl: Math.floor(sessionMaxAgeMs / 1000),
             retries: 1,
-            logFn: () => {}
+            logFn: () => {},
+            decoder: decodeSessionJson
         }),
         resave: false,
         saveUninitialized: true, // Required for OAuth: Passport must persist the state before the Discord redirect
@@ -740,15 +779,17 @@ if (authEnabled) {
 
         const userFile = path.join(usersDir, `${profile.id}.json`);
         try {
-            let userRecord;
-            if (fs.existsSync(userFile)) {
-                userRecord = JSON.parse(fs.readFileSync(userFile, 'utf-8'));
+            let userRecord = readJsonFileOrNull(userFile);
+            if (userRecord && typeof userRecord === 'object') {
                 userRecord.username = userData.username;
                 userRecord.discriminator = userData.discriminator;
                 userRecord.avatar = userData.avatar;
                 userRecord.email = userData.email;
                 userRecord.lastLogin = new Date().toISOString();
             } else {
+                if (fs.existsSync(userFile)) {
+                    console.warn('[auth] Ignoring corrupt user file:', userFile);
+                }
                 userRecord = {
                     ...userData,
                     createdAt: new Date().toISOString(),
@@ -756,7 +797,7 @@ if (authEnabled) {
                     profiles: []
                 };
             }
-            fs.writeFileSync(userFile, JSON.stringify(userRecord, null, 2));
+            writeJsonAtomic(userFile, userRecord);
             return done(null, userRecord);
         } catch (error) {
             return done(error, null);
@@ -770,14 +811,14 @@ if (authEnabled) {
     passport.deserializeUser((id, done) => {
         const userFile = path.join(usersDir, `${id}.json`);
         try {
-            if (fs.existsSync(userFile)) {
-                const user = JSON.parse(fs.readFileSync(userFile, 'utf-8'));
+            const user = readJsonFileOrNull(userFile);
+            if (user) {
                 done(null, user);
             } else {
-                done(new Error('User not found'), null);
+                done(null, false);
             }
         } catch (error) {
-            done(error, null);
+            done(null, false);
         }
     });
 }
@@ -1857,6 +1898,13 @@ app.use((error, req, res, next) => {
         } else {
             console.error('[OAuth token]', oe);
         }
+    }
+    if (isIncompleteJsonError(error)) {
+        console.error('[auth] Incomplete JSON during', req.path, error.message);
+        return res.status(500).json({
+            success: false,
+            error: 'Login data was incomplete or corrupted. Try Discord login again.'
+        });
     }
     res.status(500).json({ success: false, error: error.message });
 });

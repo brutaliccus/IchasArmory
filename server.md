@@ -1085,6 +1085,7 @@ Profile JSON responses on `server.js` (`GET/POST/PATCH` profile success and `DEL
 ### Discord session storage (server.js)
 
 - **Store:** `session-file-store` writes session files under `data/sessions/` (gitignored). Previously the default MemoryStore cleared every session when `server.js` restarted during deploy.
+- **Corrupt JSON:** Empty or truncated session files (e.g. ENOSPC mid-write) are decoded as a new empty session instead of throwing `Unexpected end of JSON input`. Empty/invalid `data/users/{id}.json` is treated as a missing user on Discord callback and deserialize; login writes a replacement via temp-file rename. The Express error handler maps leftover JSON `SyntaxError`s to a clear login message rather than the raw parse error.
 - **Cookie:** `ichacalc.sid`, 7-day `maxAge`, `httpOnly`, `sameSite: lax`, `path: /`. Set `SESSION_COOKIE_SECURE=true` in `discord.env` when served only over HTTPS behind the reverse proxy.
 - **Deploy:** `scripts/deploy_to_pi.sh` syncs `package.json`, runs `npm install --omit=dev`, and restarts `ehp-calculator`. Static assets in `dist/` update via rsync; auth sessions survive restart as long as `data/sessions/` and `SESSION_SECRET` are unchanged.
 - **Service worker:** `public/sw.js` bypasses all auth/API routes; bumping `CACHE_VERSION` recaches the HTML shell only and does not invalidate Discord sessions. `/gear-planner` and `/gp` are treated as HTML (network-first) and `server.py` / `server.js` serve `index.html` for those paths.
