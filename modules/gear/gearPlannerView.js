@@ -55,6 +55,7 @@ import {
     getInstanceFilterGroups,
 } from './itemSources.js';
 import { itemLoader } from './itemLoader.js';
+import { normalizeGpShareView, applyGpShareViewToUrlString } from './gearPlannerShare.js';
 import { SHAMAN_PRESET_SPEC_ICONS } from '../shaman/shamanConsumePresets.js';
 import { SHAMAN_TALENT_PRESETS, SHAMAN_TALENT_PRESET_NAMES } from '../shaman/shamanTalentPresets.js';
 
@@ -376,6 +377,7 @@ export function initGearPlannerView(cbs) {
             applyUiScale();
             if (gpOverlay === 'talents') requestAnimationFrame(() => fitGpTalentTree());
             syncGpDockUi();
+            if (reason === 'pane') syncGearPlannerViewParam();
         },
     });
     refreshGearPlannerWhenItemsReady();
@@ -426,6 +428,79 @@ function refreshGearPlannerWhenItemsReady(plan = currentPlan) {
 
 export function getCurrentGearPlan() {
     return getGearPlanData(currentPlan);
+}
+
+/** Current first-class GP page for share URLs and the address bar. */
+export function getGearPlannerShareView() {
+    if (gpOverlay === 'talents' || gpOverlay === 'buffs' || gpOverlay === 'weights') {
+        return gpOverlay;
+    }
+    if (isGpMobileLayout()) {
+        const pane = getGpMobilePane();
+        if (pane === 'locations' || pane === 'stats') return pane;
+    }
+    return 'gear';
+}
+
+function isGearPlannerPathname(pathname = window.location.pathname) {
+    const path = String(pathname || '').replace(/\/+$/, '') || '/';
+    return path === '/gear-planner' || path === '/gp';
+}
+
+function syncGearPlannerViewParam(view = getGearPlannerShareView()) {
+    if (typeof window === 'undefined' || typeof history === 'undefined') return;
+    if (!isGearPlannerPathname()) return;
+    const next = applyGpShareViewToUrlString(window.location.href, view);
+    const cur = window.location.pathname + window.location.search + window.location.hash;
+    if (next !== cur) history.replaceState({}, '', next);
+}
+
+export async function applyGearPlannerShareView(raw) {
+    const view = normalizeGpShareView(raw);
+    if (view === 'talents') {
+        if (isGpMobileLayout() && getGpMobilePane() !== 'gear') setGpMobilePane('gear');
+        await openGpTalentsView();
+        return;
+    }
+    if (view === 'buffs') {
+        if (isGpMobileLayout() && getGpMobilePane() !== 'gear') setGpMobilePane('gear');
+        await openGpBuffsView();
+        return;
+    }
+    if (view === 'weights') {
+        if (gpClassSupportsStatWeights()) {
+            if (isGpMobileLayout() && getGpMobilePane() !== 'gear') setGpMobilePane('gear');
+            await openGpStatWeightsView();
+            return;
+        }
+        if (gpOverlay) await closeGpTalentsModal();
+        if (isGpMobileLayout()) setGpMobilePane('gear');
+        persistSession();
+        syncGearPlannerViewParam('gear');
+        return;
+    }
+    if (view === 'locations' || view === 'stats') {
+        if (gpOverlay) await closeGpTalentsModal();
+        setGpMobilePane(view);
+        persistSession();
+        syncGpMobileChrome();
+        syncGearPlannerViewParam(view);
+        return;
+    }
+    if (gpOverlay) await closeGpTalentsModal();
+    if (isGpMobileLayout() && getGpMobilePane() !== 'gear') {
+        setGpMobilePane('gear');
+        persistSession();
+        syncGpMobileChrome();
+    }
+    syncGearPlannerViewParam('gear');
+}
+
+/** Apply `?view=` when present; omit the param to keep the current page. */
+export async function applyGearPlannerShareViewFromLocation() {
+    const params = new URLSearchParams(window.location.search);
+    if (!params.has('view')) return;
+    await applyGearPlannerShareView(params.get('view'));
 }
 
 export function setGearPlan(plan) {
@@ -1152,6 +1227,7 @@ async function openGpStatWeightsView() {
     gpOverlay = 'weights';
     syncGpOverlayUi();
     renderGpStatWeightsPanels();
+    syncGearPlannerViewParam('weights');
 }
 
 function gpClassSupportsStatWeights(classId = currentPlan.class) {
@@ -1743,6 +1819,7 @@ async function openGpTalentsView() {
     syncGpOverlayUi();
     syncGpTalentPresetTools();
     await refreshGpTalentsHost();
+    syncGearPlannerViewParam('talents');
 }
 
 async function refreshGpBuffsHost() {
@@ -1804,6 +1881,7 @@ async function openGpBuffsView() {
     gpOverlay = 'buffs';
     syncGpOverlayUi();
     await refreshGpBuffsHost();
+    syncGearPlannerViewParam('buffs');
 }
 
 export async function closeGpTalentsModal() {
@@ -1836,6 +1914,7 @@ export async function closeGpTalentsModal() {
         if (tools) tools.style.display = charClass === 'shaman' ? 'flex' : 'none';
     }
     if (document.body.dataset.appMode === 'gearPlanner') renderStatsSidebar();
+    syncGearPlannerViewParam();
 }
 
 function emptyStatTemplate() {
@@ -4576,7 +4655,9 @@ function loadPlanIntoView(plan) {
 
 async function shareCurrentPlan() {
     if (callbacks.exportGearPlanToURL) {
-        await callbacks.exportGearPlanToURL(getGearPlanData(currentPlan));
+        await callbacks.exportGearPlanToURL(getGearPlanData(currentPlan), {
+            view: getGearPlannerShareView(),
+        });
     }
 }
 

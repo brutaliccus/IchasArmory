@@ -4,6 +4,7 @@ import { getCurrentlyEquippedItem, getAppliedEnchant, equipItem, applyEnchant } 
 import { enchantDatabase } from '../gear/enchants.js';
 import { updateAllTalentStates, updateTalentPoints } from '../talents_new.js';
 import { getPriorityConfig, setPriorityConfig, saveStatWeights, updateStatWeightsTable, getStatWeightsForCurrentBuild, sortStatWeightsTable, resetDpsSimBossForNewContext } from '../shaman/dps.js';
+import { buildGearPlannerShareUrl } from '../gear/gearPlannerShare.js';
 
 /**
  * Export build to URL
@@ -424,9 +425,9 @@ export async function importBuildFromURL(options) {
 }
 
 /**
- * Export gear plan to shareable URL (?gp=id)
+ * Export gear plan to shareable URL (?gp=id, optional &view=)
  */
-export async function exportGearPlanToURL({ plan }) {
+export async function exportGearPlanToURL({ plan, view }) {
     if (!plan || plan.kind !== 'gearPlan') {
         window.notify?.error('Invalid gear plan', 3000, 'Share Gear Plan');
         return;
@@ -439,7 +440,7 @@ export async function exportGearPlanToURL({ plan }) {
         });
         const result = await response.json();
         if (!result.success) throw new Error(result.error || 'Save failed');
-        const newURL = `${window.location.origin}/gear-planner?gp=${result.planId}`;
+        const newURL = buildGearPlannerShareUrl(window.location.origin, result.planId, view);
         await navigator.clipboard.writeText(newURL);
         window.notify?.success('Gear plan URL copied to clipboard!', 3000, 'Share Gear Plan');
     } catch (error) {
@@ -451,7 +452,7 @@ export async function exportGearPlanToURL({ plan }) {
 /**
  * Import gear plan from ?gp= URL param
  */
-export async function importGearPlanFromURL({ setGearPlan, setAppMode }) {
+export async function importGearPlanFromURL({ setGearPlan, setAppMode, applyShareView }) {
     const params = new URLSearchParams(window.location.search);
     const planId = params.get('gp');
     if (!planId) return;
@@ -473,6 +474,9 @@ export async function importGearPlanFromURL({ setGearPlan, setAppMode }) {
         // (avoids "Item #####" / empty locations until edit mode re-renders).
         await Promise.resolve(setGearPlan(plan));
         if (typeof setAppMode === 'function') setAppMode('gearPlanner');
+        if (typeof applyShareView === 'function') {
+            await Promise.resolve(applyShareView(params.has('view') ? params.get('view') : 'gear'));
+        }
         window.notify?.success('Gear plan loaded!', 3000, 'Gear Planner');
     } catch (error) {
         console.error('[Gear Plan Import]', error);

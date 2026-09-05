@@ -18,7 +18,7 @@ Shared Gear Planner mobile chrome: viewport detection, `body.gp-mobile`, nav off
 | `applyGpMobileClass()` | Toggles `body.gp-mobile` / `html.gp-mobile` |
 | `syncGpNavOffset()` | Sets `--gp-nav-offset` and `--gp-tabbar-height` |
 | `syncGpMobileChrome()` | Class + pane visibility + offsets |
-| `getGpMobilePane()` / `setGpMobilePane(pane)` | `gear` \| `locations` \| `stats` |
+| `getGpMobilePane()` / `setGpMobilePane(pane)` | `gear` \| `locations` \| `stats` (share URL `view=` when Locations/Stats is the active mobile page) |
 | `initGpMobile({ initialPane, onLayoutChange })` | Tab bar, ResizeObserver, matchMedia |
 
 Layout auto-fit is **skipped** on GP mobile (responsive CSS); **manual UI scale** still applies via `uiScale.js`. Text scale still applies.

@@ -182,7 +182,7 @@ Returns a complete build object:
 - Same item fetch/filter as character planner, plus class override and `data-gear-plan-pick`
 - Passes **no slot anchor** so `modal.js` centers the picker on Gear Planner
 
-**Planner modes:** `setAppMode('gearPlanner'|'character')`. Path `/gear-planner` or `/gp` opens Gear Planner on load (onboarding splash is skipped; guests can use GP with local save). Switching modes `history.replaceState`s between `/gear-planner` and `/` without dropping `?b=` / `?gp=`. In Gear Planner mode, top-nav **My Builds** (`#profiles-btn`) and **Inbox** (`#inbox-btn`) are hidden via `body[data-app-mode="gearPlanner"]` in `topnav.css` (desktop and GP mobile); logout, Discord login, UI scale, and bug report stay visible.
+**Planner modes:** `setAppMode('gearPlanner'|'character')`. Path `/gear-planner` or `/gp` opens Gear Planner on load (onboarding splash is skipped; guests can use GP with local save). Switching modes `history.replaceState`s between `/gear-planner` and `/` without dropping `?b=` / `?gp=`; leaving GP drops `view`. Gear Planner share is `origin/gear-planner?gp=<id>` plus optional `&view=talents|buffs|weights|locations|stats` from the current page. In Gear Planner mode, top-nav **My Builds** (`#profiles-btn`) and **Inbox** (`#inbox-btn`) are hidden via `body[data-app-mode="gearPlanner"]` in `topnav.css` (desktop and GP mobile); logout, Discord login, UI scale, and bug report stay visible.
 
 #### `openEnchantModal(slotId)` (Lines 356-359)
 - Fetches enchants from `enchantDatabase[slotId]`

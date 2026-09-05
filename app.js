@@ -22,7 +22,7 @@ import { itemLoader } from './modules/gear/itemLoader.js';
 import { importFromArmoryAPI as importFromArmoryModule, updateCharacterStatusBar, initializeStatusBar, updateStatusBarValues, setImportedState as setImportedStateArmory, RACE_TO_FACTION, FACTION_ICONS } from './modules/armory/armory.js';
 import { displayStatWeightFormula } from './modules/statWeightFormulas.js';
 import { exportBuildToURL as exportBuildModule, importBuildFromURL as importBuildModule, exportGearPlanToURL as exportGearPlanModule, importGearPlanFromURL as importGearPlanModule } from './modules/armory/buildManager.js';
-import { initGearPlannerView, handleGearPlanItemSelected, handleGearPlanEnchantSelected, setGearPlan, getCurrentGearPlan, renderGearPlanner, closeGpTalentsModal } from './modules/gear/gearPlannerView.js';
+import { initGearPlannerView, handleGearPlanItemSelected, handleGearPlanEnchantSelected, setGearPlan, getCurrentGearPlan, renderGearPlanner, closeGpTalentsModal, applyGearPlannerShareView, applyGearPlannerShareViewFromLocation } from './modules/gear/gearPlannerView.js';
 import { ensureItemSourcesLoaded } from './modules/gear/itemSources.js';
 import { runTankSimulation, getBossDatabase, getBossById } from './modules/tank/tankSimulator.js';
 import { raidDefinitions, getAvailableRaids, getRaidBosses } from './modules/tank/raidDefinitions.js';
@@ -192,6 +192,7 @@ function syncPlannerPath(mode) {
         history.replaceState({}, '', url);
     } else if (mode !== 'gearPlanner' && onGpPath) {
         url.pathname = '/';
+        url.searchParams.delete('view');
         history.replaceState({}, '', url);
     }
 }
@@ -243,8 +244,8 @@ async function openItemModalForGearPlan(slotId, classId) {
     openItemModalFromModule(slotId, items, elements, null);
 }
 
-async function exportGearPlanToURL(plan) {
-    await exportGearPlanModule({ plan });
+async function exportGearPlanToURL(plan, options = {}) {
+    await exportGearPlanModule({ plan, view: options.view });
 }
 
 // Helper functions for profile management
@@ -5082,7 +5083,10 @@ async function init() {
         await importGearPlanModule({
             setGearPlan,
             setAppMode,
+            applyShareView: applyGearPlannerShareView,
         });
+    } else if (isGearPlannerPath()) {
+        await applyGearPlannerShareViewFromLocation();
     }
 
     checkInitComplete();

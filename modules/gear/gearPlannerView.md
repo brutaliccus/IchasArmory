@@ -32,8 +32,9 @@ Renders the Gear Planner page: locations-needed sidebar, class drawer, two-colum
 
 ## Integration (app.js)
 
-- Direct URL `/gear-planner` (alias `/gp`) calls `setAppMode('gearPlanner')`. Character planner stays `/`. Share copies `origin/gear-planner?gp=<id>` (`?b=` character builds are unchanged).
+- Direct URL `/gear-planner` (alias `/gp`) calls `setAppMode('gearPlanner')`. Character planner stays `/`. Share copies `origin/gear-planner?gp=<id>` and adds `&view=` for the current first-class page (`talents`, `buffs`, `weights`, or mobile `locations` / `stats`). Gear paperdoll omits `view`. Unknown `view` values open gear. Switching overlays/tabs `replaceState`s `view` so the address bar matches Share. Character `?b=` links are unchanged.
 - `initGearPlannerView({ setAppMode, getItemById, openItemModalForGearPlan, openEnchantModalForGearPlan, exportGearPlanToURL })`
+- Share / deep-link view: `getGearPlannerShareView()`, `applyGearPlannerShareView(raw)`, `applyGearPlannerShareViewFromLocation()` (`modules/gear/gearPlannerShare.js`)
 - **Shared / loaded plans:** `setGearPlan`, session restore, and My Gear Plans load call `ensureGearPlanItemsReady` (awaits `ensureItemSourcesLoaded` + `itemLoader.loadSlot` for every occupied slot, plus `mainhand` when offhand has items) before `renderGearPlanner`. Guests on `/gear-planner?gp=` see real names/icons/quality, Locations Needed, and Modified stats without entering edit mode. `importGearPlanFromURL` awaits the promise returned by `setGearPlan`.
 - Item picks from modal call `handleGearPlanItemSelected(item)` when `data-gear-plan-pick` is set on modal.
 - Enchant picks call `handleGearPlanEnchantSelected(slotId, index)` when `#enchant-modal` has `data-gear-plan-enchant`. Filtering uses the plan primary (`itemOverride`), not Character Planner gear.

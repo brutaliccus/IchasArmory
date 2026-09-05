@@ -20,4 +20,4 @@ Character Planner `#serverSelect` and onboarding use Chronicle realms (`nzoth`, 
 
 - `armoryImport.js` / `armoryImport.md` — shared fetch + apply
 - `armory_proxy.py` — server adapter (never called from browser)
-- `buildManager.js` — saved build import/export
+- `buildManager.js` — saved build import/export; Gear Planner share is `?gp=` plus optional `view` from `gearPlannerShare.js`

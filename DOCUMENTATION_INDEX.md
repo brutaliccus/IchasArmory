@@ -89,12 +89,12 @@ This document provides an index of all documentation files created for the IchaC
 ## Gear & Equipment System
 
 ### Gear Planner (v1)
-**Files:** `modules/gear/gearPlanner.js`, `modules/gear/gearPlannerView.js`, `modules/gear/itemSources.js`, `modules/gear/itemLoader.js`, `gear-planner.css`
+**Files:** `modules/gear/gearPlanner.js`, `modules/gear/gearPlannerView.js`, `modules/gear/gearPlannerShare.js`, `modules/gear/itemSources.js`, `modules/gear/itemLoader.js`, `gear-planner.css`
 
 - BiS gear plans per class (items only, no enchants)
 - Loot source filter in item modal (dungeons, raids, world bosses, other)
 - Session persistence via `ichacalc_gear_planner_session_v1`
-- Cloud saves: `user.gearPlans[]`, share URL `?gp=id`, Discord inbox `kind: gearPlan`
+- Cloud saves: `user.gearPlans[]`, share URL `?gp=id` plus optional `&view=` (talents/buffs/weights/locations/stats), Discord inbox `kind: gearPlan`
 - Community browser: authenticated cloud saves publish to `data/community-gear-plans/`; Browse Builds fetches the full catalog (`GET /community-gear-plans?all=1`, no silent 5000 ceiling; index reconciled from plan files, unpublished cloud saves, and complete `gear-plans/` share snapshots) then search/filters that list and paginates matches with Previous / page numbers / Next (50 per page). Role aliases and talent-based spec/role inference keep older healer rows visible. Save requires role + talent-tree `spec` + icon (`data/wow-icons.json`).
 - **Armory import (Chronicle):** GP Plans header **Import** button + shared `modules/armory/armoryImport.js` pipeline; loads primaries, enchants, and **talents** on `currentPlan`. Character Planner uses the same fetch/apply module via `armory.js`.
 - Data: `data/loot/` from `npm run import:loot` (TurtleAtlasLootWeb)
